@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>130.36 Allocated and Unallocated Cartons</title>
+    <style type="text/css">
+        .auto-style1 {
+            text-align: left;
+        }
+        .auto-style2 {
+            text-align: center;
+        }
+        .auto-style3 {
+            width: 17%;
+        }
+        .auto-style4 {
+            text-align: left;
+            width: 17%;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        130.36 Allocated and Unallocated Cartons</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <ul style="list-style: none">
+        <li>Reviewed By: Hemant K. Varshney</li>
+        <li>$Revision: 7011 $</li>
+        <li>Status: Done</li>
+        <li>Tested By:&nbsp; Sanjeev Kumar</li>
+    </ul>
+    <p>
+        This report displaying allocated and Unallocated cartons along with pieces on the basis of label. Also it is showing total number of carton and pieces for each label.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        This report displaying allocated and Unallocated cartons along with pieces on the basis of label. Also it is showing total number of carton and pieces for each label.</p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        Retrieving labels from master_style table. Then for each label retrieving number of allocated and un-allocated cartons and their pieces from src_carton_detail table.&nbsp;</p>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="text-align:center" class="auto-style3">
+                <b>Item</b>
+            </td>
+            <td style="width:20%; text-align:center">
+                <b>Summary</b>
+            </td>
+            <td style="width:10%; text-align:center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td class="auto-style4">
+                Label</td>
+            <td style="width:20%; " class="auto-style2">
+                No</td>
+            <td style="width:10%; " class="auto-style2">
+                1</td>
+            <td style="width:45%; " class="auto-style1">
+                Label of the style.</td>
+        </tr>
+        <tr>
+            <td class="auto-style4">
+                Cartons Allocated </td>
+            <td style="width:20%; " class="auto-style2">
+                Yes</td>
+            <td style="width:10%; " class="auto-style2">
+                &nbsp;</td>
+            <td style="width:45%; " class="auto-style1">
+                Number of cartons which are already reserved against any request.</td>
+        </tr>
+        <tr>
+            <td class="auto-style4">
+                Cartons Unallocated </td>
+            <td style="width:20%; " class="auto-style2">
+                Yes</td>
+            <td style="width:10%; " class="auto-style2">
+                &nbsp;</td>
+            <td style="width:45%; " class="auto-style1">
+                Number of cartons which are&nbsp; not reserved</td>
+        </tr>
+        <tr>
+            <td class="auto-style4">
+                Cartons Total </td>
+            <td style="width:20%; " class="auto-style2">
+                Yes</td>
+            <td style="width:10%; " class="auto-style2">
+                &nbsp;</td>
+            <td style="width:45%; " class="auto-style1">
+                Total number of carton for each label</td>
+        </tr>
+        <tr>
+            <td class="auto-style4">
+                Pieces Allocated </td>
+            <td style="width:20%; " class="auto-style2">
+                Yes</td>
+            <td style="width:10%; " class="auto-style2">
+                &nbsp;</td>
+            <td style="width:45%; " class="auto-style1">
+                Pieces which are in allocated cartons</td>
+        </tr>
+        <tr>
+            <td class="auto-style4">
+                Pieces Unallocated </td>
+            <td style="width:20%; " class="auto-style2">
+                Yes</td>
+            <td style="width:10%; " class="auto-style2">
+                &nbsp;</td>
+            <td style="width:45%; " class="auto-style1">
+                Pieces which are in Unallocated cartons</td>
+        </tr>
+        <tr>
+            <td class="auto-style4">
+                Pieces Total </td>
+            <td style="width:20%; " class="auto-style2">
+                Yes</td>
+            <td style="width:10%; " class="auto-style2">
+                &nbsp;</td>
+            <td style="width:45%; " class="auto-style1">
+                Total pieces for each label</td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <p>
+        No Parameter.</p>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 2 Seconds</i></p>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>This is new report</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No Issue</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+            <h4>Private synonyms required for the tables:</h4>
+ <code>      
+Src_carton,<br />
+Src_carton_detail,<br />
+Master_style</code>                
+            <h4>
+                Script to create the synonyms:</h4>
+              
+ <code>create or replace synonym Src_carton for dcms4.Src_carton;<br />       
+create or replace synonym Src_carton_detail for dcms4.Src_carton_detail;<br />
+create or replace synonym Master_style for dcms4.Master_style;</code>
+
+         <h4>App-Settings required:</h4>
+           Not Required
+    <h2>
+        Query&#39;s documentation:</h2>
+    <pre>
+SELECT ms.label_id AS label_id, 
+       count(c.carton_id) AS Total_Cartons, 
+       SUM(cd.quantity) AS Total_Pieces,
+       count(CASE WHEN cd.req_process_id IS NOT NULL THEN cd.carton_id END) AS Allocated_Cartons, 
+       SUM(CASE WHEN cd.req_process_id IS NOT NULL THEN cd.quantity END) AS Allocated_Pieces, 
+       count(CASE WHEN cd.req_process_id IS NULL THEN cd.carton_id END) AS Unallocated_Cartons,
+       SUM(CASE WHEN cd.req_process_id IS NULL THEN cd.quantity END) AS UnAllocated_Pieces
+  FROM src_carton_detail cd
+  LEFT OUTER JOIN master_style ms
+    ON cd.style = ms.style
+ GROUP BY ms.label_id
+    </pre>
+    <h2>
+        Validation details</h2>
+
+        <p><b>Query:</b>Below query is showing total number of cartons and pieces for given label </p>
+    <pre>
+ SELECT COUNT(UNIQUE A.CARTON_ID) AS "Total Cartons",
+        SUM(A.QUANTITY) AS "Total pieces"
+   FROM SRC_CARTON_DETAIL A
+  WHERE A.STYLE IN
+       (SELECT B.STYLE FROM MASTER_STYLE B WHERE B.LABEL_ID = 'DG')
+    </pre>
+
+<p><b>Query:</b>Below query is showing Unallocated cartons and pieces for given label</p>
+
+    <pre>
+ SELECT COUNT(UNIQUE A.CARTON_ID) AS "Total Cartons",
+        SUM(A.QUANTITY) AS "Total pieces"
+   FROM SRC_CARTON_DETAIL A
+  WHERE A.STYLE IN
+       (SELECT B.STYLE FROM MASTER_STYLE B WHERE B.LABEL_ID = 'DG')
+    AND a.req_process_id IS NULL</pre>
+
+    <p><b>Query:</b>Below query is showing Allocated cartons and pieces for given label</p>
+
+    <pre>
+ SELECT COUNT(UNIQUE A.CARTON_ID) AS "Total Cartons",
+        SUM(A.QUANTITY) AS "Total pieces"
+   FROM SRC_CARTON_DETAIL A
+  WHERE A.STYLE IN
+       (SELECT B.STYLE FROM MASTER_STYLE B WHERE B.LABEL_ID = 'DG')
+    AND a.req_process_id IS NOT NULL</pre>
+</body>
+</html>

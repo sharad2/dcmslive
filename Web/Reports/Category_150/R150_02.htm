@@ -1,0 +1,491 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <form id="Form1" action="http://w3chile/xtremereporter/ReportDoc.aspx?_Report=C%3a%5cDCMSLive1%5cReports%5cR150.02.xsd"
+    method="post" name="Form1">
+    <input id="__VIEWSTATE" name="__VIEWSTATE" type="hidden" value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+    <h1 align="center" xmlns="http://www.w3.org/1999/xhtml">
+        150<b>.</b>02<b> : </b>Restock Productivity Report
+    </h1>
+    <h3>
+        Author : Dinesh Singh Panwar</h3>
+    $Revision: 4541 $<br />
+    Status : Reviewed<br />
+    Reviewed By :&nbsp;Hemant K. Varshney
+    <p author="Gaurav Agarwal" reviewer="Silky Sehgal" status="Completed">
+        This report shows productivity summary of each restocker for the past 7 days for
+        all shifts. You have the option of specifying a custom date range or shift along
+        with the warehouse ID wise details of the restocker.
+    </p>
+    <h2>
+        Overview</h2>
+    <p>
+        This report can be helpful for
+    </p>
+    <ul>
+        <li>Monitoring the restocker&#39;s productivity. It means that, how much work, performed
+            by any restocker. </li>
+        <li>Identifying the star and black sheep restockers on the basis of highest performance
+            and the lowest performance of the restockers. </li>
+        <li>Monitoring the restocker&#39;s productivity shift wise also. </li>
+    </ul>
+    <h2>
+        Algorithm</h2>
+    Information on restocking, performed by each restocker, within the specified date
+    range and other specified parameters, are retrieved. The number of units of SKUs
+    having the label MP are retrieved separately. If the carton is marked in suspense
+    by the restocker then the detail of that carton is retrieved also.
+    <br />
+    <li>
+        <h3>
+            Output</h3>
+        <table border="1" cellpadding="1" cellspacing="1" width="100%">
+            <tr>
+                <td align="middle" width="25%">
+                    <b>Item</b>
+                </td>
+                <td align="middle" width="20%">
+                    <b>Summary</b>
+                </td>
+                <td align="middle" width="10%">
+                    <b>Sort Sequence</b>
+                </td>
+                <td align="middle" width="35%">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Restocker Name
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    1
+                </td>
+                <td>
+                    <r:item> 
+                        sortsequence="1" defaultsorting="true"
+                        key="true" term="Restocker Name">The person who performed the restock 
+                    operation.</r:item>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VWh
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    Virtual Warehouse ID of Restocker
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Restock Date
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item>
+                         key="true" term="Restock Date">The date when restock 
+                    operation was performed by the restocker.</r:item>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Number of Restock Ctns
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item> 
+                         term="Restock Cartons" summary="Sum">The number of cartons, restocked by the restocker on a particular date.</r:item>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Number of Restock Pcs
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item> 
+                        term="Restock Pieces" summary="Sum">Total number of pieces, of all cartons, restocked by the restocker on a particular 
+                    date.</r:item>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Number of Restock Non MP Units
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item> 
+                         term="Units of Non-MP" summary="Sum">The difference between restocked MP units and the units of all cartons restocked, by 
+                    the restocker, are the Non MP units.</r:item>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Number of Restock MP Units Only
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item> 
+                         term="Units of MP" summary="Sum">From this report&#39;s perspective, cartons containing SKUs of label MP are special. So 
+                    the units of the label MP are displayed separately.</r:item>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Number of Suspense Ctns
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item> 
+                         term="Suspense Cartons" summary="Sum">There are several reasons why a restocker may not be able to restock a carton. Such 
+                    cartons are marked and treated as suspense cartons. Number of cartons, marked in 
+                    suspense by the restocker on the date, are suspense cartons.</r:item>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Number of Suspense Pcs
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item> 
+                        term="Suspense Pieces" summary="Sum">Total number of pieces of all cartons marked in suspense, by the restocker on the 
+                    particular date.</r:item>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Number of Suspense Units
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item>
+                    term="Suspense Units" summary="Sum">Total number of units of all cartons marked in suspense, by the restocker on the 
+                    particular date.</r:item>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    User Setup Date
+                </td>
+                <td>
+                    None
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    Date on which the User or operator had been created.
+                </td>
+            </tr>
+        </table>
+        <h2>
+            Parameters</h2>
+        <table border="1" cellpadding="1" cellspacing="1" width="100%">
+            <tr>
+                <td align="middle" width="20%">
+                    <b>Name</b>
+                </td>
+                <td align="middle" width="20%">
+                    <b>Default</b>
+                </td>
+                <td align="middle" width="60%">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Restock date
+                </td>
+                <td>
+                    Last seven days period
+                </td>
+                <td>
+                    Date range in which restock operation was performed.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Shift
+                </td>
+                <td>
+                    All
+                </td>
+                <td>
+                    A restocker can work in any shift. Also a restocker can perform the restock operation
+                    in multiple shifts. Specify if you are interested in a specific shift.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Virtual Warehouse
+                </td>
+                <td>
+                    All
+                </td>
+                <td>
+                    Virtual Warehouse Id to which the SKU belongs.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Warehouse Location
+                </td>
+                <td>
+                    All
+                </td>
+                <td>
+                    Warehouse Location to Which SKU Belongs
+                </td>
+            </tr>
+        </table>
+        <h2>
+            Performance Detail</h2>
+        <p>
+            <i>Expected Time for the report output is </i>30 seconds</p>
+        This report will exhibit linear performance with respect to the number of records
+        in box_productivity table, which qualify for the passed date range. We observed
+        30 seconds response time when 600,000 records qualified.
+        <h2>
+            Prerequisites</h2>
+        <p>
+            Private synonyms for the following tables are requried</p>
+        <p>
+            box_productivity</p>
+        <p>
+            Use the below script to create the synonyms</p>
+        <p>
+            <code>create or replace synonym box_productivity for dcms8.box_productivity;<br />
+                <br />
+        </p>
+        <h2>
+            Following AppSetting is required:</h2>
+        <code>
+            <br />
+            &lt;add key=&quot;SpecialLabelId&quot; value=&quot;MP&quot;/&gt; </code>
+        <h2>
+            Definitions</h2>
+        <dl>
+            <dt><i>Restocking</i> </dt>
+            <dd>
+                <r:definition>
+                    
+                term="Restocking">Restocking is the process of 
+                refilling SKUs at forward pick (FPK) locations. When the FPK locations need to 
+                be refilled or restocked, a replenishment request is generated for those 
+                locations. Replenishment marks cartons in BIR area, containing the required 
+                SKUs, for pulling. These cartons are then, fetched from the BIR area and brought 
+                to the restock (RST) area. Restocker picks the carton from RST area, opens it 
+                and restocks the SKUs at the designated FPK locations. This process is called 
+                Restocking. </r:definition>
+            </dd>
+            <dt><i>Units vs. Pieces</i> </dt>
+            <dd>
+                <r:definition>term="Units vs. Pieces">Units of an SKU is pieces 
+                divided by pieces per package for that SKU. 
+</r:definition>
+            </dd>
+        </dl>
+        <h2>
+            Details</h2>
+        When you drill down on a restocker, you can see the work performed by the restocker
+        at session level. You can see details of how much time was spent in each restock
+        session along with the breakdown of pieces restocked per session.
+        <h2>
+            Issues</h2>
+        <h2>
+            Behavior Change</h2>
+        <ul>
+            <li>Report will not crash if sort on &#39;Number of Restock Pcs&#39; column. 21-9-2012</li>
+        </ul>
+    </li>
+    <div id="divTechnical">
+        <h2>
+            Parameter Technical Details</h2>
+        <ul>
+            <li>Restock Date (Type = Date): You can specify the date or date range to see the restocked
+                productivity for this date or date range. This is a date range control. </li>
+            <li>Shift (Type = Number): This is a drop down list parameter control.Specify a shift
+                if you are interested in a particular shift. Default value text is &quot;All&quot;.
+                <ul>
+                    <li>Value = 1, Text = First </li>
+                    <li>Value = 2, Text = Second</li>
+                </ul>
+            </li>
+            <li>Virtual Warehouse (Type = String): This is a drop down list control. Virtual Warehouse
+                default value is &quot;All&quot;.
+                <ul>
+                    <li>Query to fill list values = &quot;SELECT vwh_id AS vwh_id, vwh_id || &#39;: Query
+                        to fill list values = &quot;SELECT vwh_id AS vwh_id, vwh_id || &#39;: &#39; || description
+                        AS description FROM tab_virtual_warehouse ORDER BY vwh_id&quot; </li>
+                </ul>
+            </li>
+            <li>Warehouse Location (Type = String): This is a drop down list control. Warehouse
+                Location default value is &quot;All&quot;. </li>
+        </ul>
+        <h2>
+            Parameter Validation</h2>
+        No special validations.
+        <h2>
+            Query&#39;s documentation:</h2>
+        <ul>
+            <li>
+                <pre>
+  <selectsql>
+        SELECT /*+index(bp BOXPROD_OPERATION_START_DATE_I)*/
+               bp.vwh_id AS vwh_id,
+               bp.operator AS operator,              
+               NVL(COUNT(CASE
+                 WHEN bp.outcome = 'RESTOCKED' THEN
+                  bp.ucc128_id
+               END),0) AS restocked_cartons,
+               NVL(SUM(CASE
+                 WHEN bp.outcome = 'RESTOCKED' THEN
+                  bp.num_of_pieces
+               END),0) AS restocked_pieces,
+               NVL(SUM (CASE
+                 WHEN bp.outcome = 'RESTOCKED' THEN
+                  bp.num_of_units
+               END),0) AS restocked_num_of_units,
+               NVL(SUM(CASE
+                 WHEN bp.outcome = 'RESTOCKED' AND
+                      BP.label_id &lt;&gt; :special_label_id THEN
+                  bp.num_of_units
+               END),0) AS restocked_non_mp_units,
+               NVL(SUM(CASE
+                 WHEN bp.outcome = 'RESTOCKED' AND
+                      BP.label_id = :special_label_id THEN
+                  bp.num_of_units
+               END),0) AS restocked_mp_units,
+               NVL(COUNT( DISTINCT CASE
+                 WHEN bp.outcome = 'CARTON IN SUSPENSE' THEN
+                  bp.ucc128_id
+               END),0) AS cartons_in_suspense,
+               NVL(SUM(CASE
+                 WHEN bp.outcome = 'CARTON IN SUSPENSE' THEN
+                  bp.num_of_pieces
+               END),0) AS pieces_in_suspense,
+               NVL(SUM(CASE
+                 WHEN bp.outcome = 'CARTON IN SUSPENSE' THEN
+                  bp.num_of_units
+               END),0) AS units_in_suspense,
+                max(au.CREATED) as user_setup_Date,
+                <![CDATA[
+                $ShiftDateSelectClause$                     
+                ]]>
+        FROM box_productivity bp
+       
+        LEFT OUTER JOIN all_users au on au.username = bp.operator
+         WHERE bp.operation_code = '$RST'
+         AND bp.operation_start_date &gt;= cast(:operation_start_date_from AS DATE)
+         AND bp.operation_start_date &lt; cast(:operation_start_date_to AS DATE) + 2
+         <if>AND bp.vwh_id = :vwh_id</if>
+         <if>AND bp.warehouse_location_id = :warehouse_location_id</if>    <![CDATA[
+                    $ShiftDateWhere2$                     
+                 ]]>
+          GROUP BY vwh_id,
+          operator,<![CDATA[
+                    $ShiftDateGroupClause$                     
+                   ]]>
+                    </pre>
+            </li>
+        </ul>
+        <p>
+            <br />
+        </p>
+        <h2>
+            Validation details</h2>
+        Bellow queries may have the where clause in the [] brackets. It means these are
+        the optional parameters. If you do not want to pass these parameters just remove
+        the [] section.
+        <br />
+        <br />
+        <b>Validation Query 1: Below query shows the no. of restock cartons and pieces.
+        </b>
+        <pre>
+        SELECT COUNT(DISTINCT BP.UCC128_ID),
+               SUM(BP.NUM_OF_PIECES) AS RESTOCKED_PIECES,
+               MAX(AU.CREATED) AS SETUP_DATE,
+                BP.OPERATOR
+       FROM BOX_PRODUCTIVITY BP
+       LEFT OUTER JOIN ALL_USERS AU
+        ON AU.USERNAME = BP.OPERATOR
+       WHERE BP.OPERATION_CODE = '$RST'
+       AND BP.OPERATION_START_DATE > = TO_DATE('9/18/2012', 'mm/dd/yyyy')
+       AND BP.OPERATION_START_DATE < TO_DATE('9/25/2012', 'mm/dd/yyyy') + 1
+       AND BP.VWH_ID = '15'
+       AND BP.OUTCOME = 'RESTOCKED'
+       GROUP BY BP.OPERATOR
+</pre>
+        <b>Validation Query 2: Below query shows the no. of suspense carton, pieces and unit.</b><pre>
+SELECT COUNT(DISTINCT BP.UCC128_ID) AS CARTONS_IN_SUSPENSE,
+       SUM(BP.NUM_OF_PIECES) AS PIECES_IN_SUSPENSE,
+       SUM(BP.NUM_OF_UNITS) AS UNITS_IN_SUSPENSE,
+       MAX(AU.CREATED) AS SETUP_DATE,
+       BP.OPERATOR
+  FROM BOX_PRODUCTIVITY BP
+  LEFT OUTER JOIN ALL_USERS AU
+    ON AU.USERNAME = BP.OPERATOR
+ WHERE BP.OPERATION_CODE = '$RST'
+   AND BP.OPERATION_START_DATE > = TO_DATE('9/18/2012', 'mm/dd/yyyy')
+   AND BP.OPERATION_START_DATE < TO_DATE('9/25/2012', 'mm/dd/yyyy') + 1
+   AND BP.OUTCOME = 'CARTON IN SUSPENSE'
+   AND BP.VWH_ID = '15'
+ GROUP BY BP.OPERATOR
+</pre>
+    </div>
+    </form>
+</body>
+</html>

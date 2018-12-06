@@ -1,0 +1,637 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <form id="Form1" action="http://w3chile/xtremereporter/ReportDoc.aspx?_Report=C%3a%5cDCMSLive1%5cReports%5cR150.101.xsd"
+    method="post" name="Form1">
+    <div>
+        <input id="__VIEWSTATE" name="__VIEWSTATE" type="hidden" value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+    </div>
+    <h1 align="center" xmlns="http://www.w3.org/1999/xhtml">
+        150<b>.</b>101<b> : </b>Restock Productivity Detail Report
+    </h1>
+    <h3>
+     Author :Dinesh Singh Panwar</h3>
+    $Revision: 1558 $<br />
+    Status: Reviewed<br xmlns="http://www.w3.org/1999/xhtml" />
+    Reviewed By : Hemant K. Varshney
+    <p author="Gaurav Agarwal" reviewer="Laxman Singh" status="Completed" xmlns="http://www.w3.org/1999/xhtml">
+        Report display the restock productivity details of the particular restocker
+        for the specific date,warehouse ID and shift. In this report you can see the work
+        performed by the restocker at session level. You can see how much time was spent
+        in each restock session along with the breakdown of pieces restocked per session.
+        If some carton is in suspense already and the user put that carton in suspense again
+        then, this report claims that it will not consider these duplicate scans. That is,
+        this report will show just one suspense record for such carton.
+    </p>
+    
+        <h2>Overview:-&nbsp;</h2>
+    <p>
+    This Report can be further drilldown on Restocked cartons to see details of 
+    those cartons.You can drilldown this report from the report &quot;(R150_02) Restock 
+    Productivity&quot;.</p>
+    <br/>
+    In this report Restocker and Restock date parameters are required, reason behind 
+    this is, the report display the details for the particular restocker and date.
+    <h2>
+        Algorithm</h2>
+    Information of Restock operation, performed by the restocker, for the specified 
+    date and other specified parameters, are retrieve. The number of units of SKUs 
+    having the label MP are retrieve Saperatily. If the carton is sent to suspense 
+    by the restocker then the detail of that carton is also retrieved.
+    <br/>
+    <li>If there is a carton, which was in 
+        suspense already and the user put that carton in suspense again then,this report 
+        claims that it will not consider these duplicate scans. </li>
+    <li>When In the same process if a user 
+        put the carton first in suspense and then restocked, in this case we consider 
+        the carton in restock case only.
+        <h3>
+            Output</h3>
+        <table border="1" cellpadding="1" cellspacing="1" width="100%">
+            <tr>
+                <td align="middle" width="25%">
+                    <b>Item</b></td>
+                <td align="middle" width="20%">
+                    <b>Summary</b></td>
+                <td align="middle" width="10%">
+                    <b>Sort Sequence</b></td>
+                <td align="middle" width="35%">
+                    <b>Detail</b></td>
+            </tr>
+            <tr>
+                <td>
+                    <i><b>Process ID </b></i>
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    1</td>
+                <td>
+                    <r:item SortSequence="1" Key="true" 
+Term="Process ID ">The id of the process against which restocker performed the operation</R:ITEM></td>
+            </tr>
+            <tr>
+                <td>
+                    <i><b>Operation Date</b></i></td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp; </td>
+                <td>
+                    <r:item Key="true" 
+Term="Operation Date">The date on which, Restock operation was performed by the restocker</R:ITEM></td>
+            </tr>
+            <tr>
+                <td>
+                    <i><b>Vwh</b></i></td>
+                <td>
+                    No</td>
+                <td align="middle">
+                    &nbsp;</td>
+                <td>
+                    <r:item Key="true" Term="VWH ID">Restocker warehouse id 
+                    details</r:item></td>
+            </tr>
+            <tr>
+                <td>
+                    Start Time</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item Term="Start Time">The time on which work was started 
+                    on the particular process by the restocker</R:ITEM></td>
+            </tr>
+            <tr>
+                <td>
+                    End Time</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item  Term="End Time">The time on which work was ended on 
+                    the particular process by the restocker</R:ITEM></td>
+            </tr>
+            <tr>
+                <td>
+                    Label</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item Term="Label ID">This is one of the label id of the box 
+                    which was restocked by the restocker</R:ITEM></td>
+            </tr>
+            <tr>
+                <td>
+                    Total Hrs Worked</td>
+                <td>
+                    Sum</td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item Term="Total Hrs Worked" 
+Summary="Sum">The total time which was spended on the particular process by the restocker</R:ITEM></td>
+            </tr>
+            <tr>
+                <td>
+                    Restocked Cts</td>
+                <td>
+                    Sum</td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item  Term="Restocked Cts" 
+Summary="Sum">The number of Cartons, restocked by the restocker on the particular date.</R:ITEM></td>
+            </tr>
+            <tr>
+                <td>
+                    Restocked Pcs</td>
+                <td>
+                    Sum</td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item  Term="Restocked Pcs" 
+Summary="Sum">The number of Pieces, of all cartons, restocked by the restocker on the particular 
+                    date.</R:ITEM></td>
+            </tr>
+            <tr>
+                <td>
+                    Restocked
+                    Non MP Units</td>
+                <td>
+                    Sum</td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item Term="Non MP Units" 
+Summary="Sum">The difference between Restocked MP units and the Units of all cartons, Restocked by 
+                    the restocker are the Non MP units. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Restocked
+                    MP Units Only</td>
+                <td>
+                    Sum</td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item  Term="MP Units" Summary="Sum">From this report&#39;s 
+                    perspective, cartons containing SKUs of label MP are special. So the units of 
+                    the label MP are displayed Saperately. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Suspense Ctns</td>
+                <td>
+                    Sum</td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item  Term="Suspense Ctns" 
+Summary="Sum">There are several reasons why a restocker may not be able to restock a carton. Such 
+                    cartons are sent to suspense. Number of cartons, sent to suspense by the 
+                    restocker on the date, are Suspense cartons. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Suspense Pcs</td>
+                <td>
+                    Sum</td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item  Term="Suspense Pcs" 
+Summary="Sum">The number of Pieces, of all cartons sent to suspense area, by the restocker on the 
+                    particular date. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Suspense Units</td>
+                <td>
+                    Sum</td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item  Term="Suspense Units" 
+Summary="Sum">The number of Units, of all cartons sent to suspense area, by the restocker on the 
+                    particular date. </R:ITEM>
+                </td>
+            </tr>
+        </table>
+        <h2>
+            Parameters</h2>
+        <table border="1" cellpadding="1" cellspacing="1" width="100%">
+            <tr>
+                <td align="middle" width="20%">
+                    <b>Name</b></td>
+                <td align="middle" width="20%">
+                    <b>Default</b></td>
+                <td align="middle" width="60%">
+                    <b>Detail</b></td>
+            </tr>
+            <tr>
+                <td>
+                    Restocker</td>
+                <td>
+                    Any Restocker</td>
+                <td>
+                    The restocker,who performed the operation.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Restock Date</td>
+                <td>
+                    Any Date</td>
+                <td>
+                    The date on which restocked operation was performed by the passed restocker.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Shift</td>
+                <td>
+                    All Shifts</td>
+                <td>
+                    Restocker can work in any shift. Restocker can perform the restock operation in 
+                    multiple shifts. Specify a shift if you interested in a specific shift.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Virtual Warehouse</td>
+                <td>
+                    All</td>
+                <td>
+                    Virtual Warehouse ID to which the restocker belongs.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Warehouse Location</td>
+                <td>
+                    All</td>
+                <td>
+                    Warehouse Location to which the restocker belongs</td>
+            </tr>
+        </table>
+        <h2>
+            Performance Detail</h2>
+        <p>
+            <i>Expected Time for the report output is </i>1 Seconds</p>
+                This report will exhibit linear performance with respect to the number of 
+        records in box_productivity table which qualify for the passed date .&nbsp;
+        <h2>
+            Behavior Change</h2>
+    </li>
+    <p>
+        &nbsp;</p>
+
+        <h2> Following AppSetting is required:</h2>
+    <code>
+        <br />
+        &lt;add key=&quot;SpecialLabelId&quot; value=&quot;MP&quot;/&gt;
+    <h2>
+        Issues</h2>
+        <div id="divTechnical">
+            <h2>
+            Parameter Technical Details</h2>
+        <ul>
+            <li>Restocker (Type = String): Name of the restocker </li>
+            <li>Restock Date (Type = Date): You can specify the date or date range to see the 
+                restocked productivity for this date or date range. This is a date range 
+                control. </li>
+            <li>Virtual Warehouse (Type = String): This is a drop down list control. Virtual 
+                    Warehouse default value is &quot;All&quot;.
+                    <ul>
+                        <li>Query to fill list values = &quot;SELECT vwh_id AS vwh_id, vwh_id || &#39;: Query to fill list values = &quot;SELECT vwh_id AS vwh_id, vwh_id || &#39;: &#39; || 
+                            description AS description FROM tab_virtual_warehouse ORDER BY vwh_id&quot; 
+                        </li>
+                </ul>
+            </li>
+            <li>Shift (Type = Number): This is a drop down list parameter control.Specify a shift if 
+                    you are interested in a particular shift. Default value text is &quot;All&quot;.
+                    <ul>
+                        <li>Value = 1, Text = First </li>
+                        <li>Value = 2, Text = Second</li>
+                </ul>
+            </li>
+             <li>Warehouse Location (Type=String): This is a drop down list parameter control.Default Value is All.
+            </li>
+        </ul>
+        <h2>
+            Query&#39;s documentation:</h2>
+        <ul>
+            <r:doc>
+                <pre>
+ with restock_prod as 
+(
+SELECT /*+index(bp BOXPROD_P_OPERTATION_START_I)*/bp.operator AS OPERATOR,
+       bp.vwh_id AS VWH_ID,
+       bp.process_id AS PROCESS_ID,     
+       bp.operation_start_date AS operation_start_date,     
+       MIN(bp.operation_start_date) over(partition by bp.operator, bp.vwh_id, bp.process_id, trunc(bp.operation_start_date), bp.outcome) AS PROCESS_START_TIME,
+       MAX(bp.operation_end_date) over(partition by bp.operator, bp.vwh_id, bp.process_id, trunc(bp.operation_start_date), bp.outcome) AS PROCESS_END_TIME,
+       decode(bp.outcome,'RESTOCKED',count(distinct bp.ucc128_id) over(partition by bp.operator,bp.vwh_id,bp.process_id,trunc(bp.operation_start_date),bp.outcome)) AS RESTOCKED_CARTONS,
+       decode(bp.outcome,'RESTOCKED',sum(bp.num_of_pieces) over(partition by bp.operator,bp.vwh_id,bp.process_id,trunc(bp.operation_start_date),bp.outcome)) AS RESTOCKED_PIECES,
+       decode(bp.outcome,'RESTOCKED',sum(bp.num_of_units) over(partition by bp.operator,bp.vwh_id,bp.process_id,trunc(bp.operation_start_date),bp.outcome)) AS RESTOCKED_UNITS,
+       SUM((CASE
+                 WHEN bp.outcome = 'RESTOCKED' AND
+                      BP.label_id &lt;&gt; :special_label_id THEN
+                  bp.num_of_units
+               END)) over(partition by bp.operator, bp.vwh_id, bp.process_id, trunc(bp.operation_start_date), bp.outcome) AS restocked_non_mp_units,
+       SUM((CASE
+             WHEN BP.LABEL_ID = :special_label_id AND BP.OUTCOME = 'RESTOCKED' THEN
+              BP.NUM_OF_UNITS
+           END)) over(partition by bp.operator, bp.vwh_id, bp.process_id, trunc(bp.operation_start_date), bp.outcome) AS MP_UNITS,
+       decode(bp.outcome,'CARTON IN SUSPENSE',count(distinct bp.ucc128_id) over(partition by bp.operator,bp.vwh_id,bp.process_id,trunc(bp.operation_start_date),bp.outcome)) AS CARTONS_IN_SUSPENSE,
+       decode(bp.outcome,'CARTON IN SUSPENSE',sum(bp.num_of_pieces) over(partition by bp.operator,bp.vwh_id,bp.process_id,trunc(bp.operation_start_date),bp.outcome)) AS PIECES_IN_SUSPENSE,
+       decode(bp.outcome,'CARTON IN SUSPENSE',sum(bp.num_of_units) over(partition by bp.operator,bp.vwh_id,bp.process_id,trunc(bp.operation_start_date),bp.outcome)) AS UNITS_IN_SUSPENSE,
+       MAX(bp.label_id) over(partition by bp.operator, bp.vwh_id, bp.process_id, trunc(bp.operation_start_date), bp.outcome) AS LABEL_ID
+  FROM box_productivity bp
+    WHERE bp.outcome in ('RESTOCKED', 'CARTON IN SUSPENSE')
+   AND bp.operation_code = '$RST'
+   AND bp.operator = :operator
+   AND bp.operation_start_date between :shift_start_date -1 and :shift_start_date + 2
+    <![CDATA[
+       $ShiftDateWhere$                     
+     ]]>
+   <![CDATA[
+       $ShiftNumberWhere$                     
+     ]]>
+   <if>AND bp.vwh_id = :vwh_id</if>
+   <if>AND bp.warehouse_location_id = :warehouse_location_id</if>
+)
+SELECT rp.VWH_ID AS VWH_ID,
+       rp.operator AS OPERATOR,
+       rp.process_id AS PROCESS_ID,      
+       min(rp.process_start_time) AS PROCESS_START_TIME,
+       max(rp.process_end_time) AS PROCESS_END_TIME,
+       round((max(rp.process_end_time) - min(rp.process_start_time)) * 24,4) AS HOURS_WORKED,
+       NVL(max(rp.restocked_cartons),0) AS RESTOCKED_CARTONS,
+       NVL(max(rp.restocked_pieces),0) AS RESTOCKED_PIECES,
+       NVL(max(rp.restocked_units),0) AS RESTOCKED_UNITS,
+       NVL(max(rp.mp_units),0) AS MP_UNITS,
+       NVL(max(rp.cartons_in_suspense),0) AS CARTONS_IN_SUSPENSE,
+       NVL(max(rp.pieces_in_suspense),0) AS PIECES_IN_SUSPENSE,
+       NVL(max(rp.units_in_suspense),0) AS UNITS_IN_SUSPENSE,
+       max(rp.label_id) AS LABEL_ID,
+       NVL(max(RP.restocked_non_mp_units),0) as NON_MP_UNITS,
+       trunc(rp.operation_start_date) as operation_start_date
+  FROM restock_prod rp
+ GROUP BY rp.VWH_ID,
+          rp.operator,
+          rp.process_id,
+          trunc(rp.operation_start_date)
+  </pre>
+                </R:DOC>
+        </ul>
+        <h2>
+        Validation details</h2>
+        Bellow queries may have the where clause in the [] brackets. It means these are 
+        the optional parameters. If you do not want to pass these parameters just remove 
+        the [] section.
+        <br />
+        <br />
+        <b>Validation Query:</b><pre></pre>
+        <pre>SELECT bp.process_id,
+       bp.operator,
+       bp.vwh_id,
+       trunc(bp.operation_start_date),
+       min(bp.operation_start_date) AS PROCESS_START_TIME,
+       max(bp.operation_end_date) AS PROCESS_END_TIME,
+       round((max(bp.operation_end_date) - min(bp.operation_start_date)) * 24,
+             4) AS HOURS_WORKED
+  FROM box_productivity bp
+ WHERE bp.operation_code = '$RST'
+   AND bp.operator = 'RST'
+   AND bp.operation_start_date &gt;= (:operation_start_date_from) 
+   AND bp.operation_start_date &lt;(:operation_start_date_to) + 1
+ GROUP BY bp.process_id,
+          bp.operator,
+          bp.vwh_id,
+          trunc(bp.operation_start_date)
+            </pre>
+
+        <b>Description:</b>
+        <pre>Above query can be used to verify the start time, End time and Total time worked for the specific date. 
+          </pre>
+        <b>Validation Query:</b>
+        <pre>with special_label_info as
+(
+  SELECT /*+index(bp BOXPROD_OPERATION_START_DATE_I)*/ bp.vwh_id AS vwh_id,
+         bp.operator AS operator,
+         bp.operation_start_date as operation_date,
+          CASE
+   WHEN (bp.operation_start_date - TRUNC(bp.operation_start_date)) * 24 BETWEEN 5.1 AND 15.5 THEN
+    1
+   ELSE
+    2
+ END AS shift_number,
+ CASE
+   WHEN (bp.operation_start_date - TRUNC(bp.operation_start_date)) * 24 <= 5.1 THEN
+    TRUNC(bp.operation_start_date - 1)
+   ELSE
+    TRUNC(bp.operation_start_date)
+ END AS shift_start_date,
+         bp.num_of_units AS MP_UNITS
+    FROM box_productivity bp
+    LEFT OUTER JOIN master_sku msku on bp.upc_code = msku.upc_code
+    LEFT OUTER JOIN master_style mstyle on msku.style = mstyle.style
+    WHERE mstyle.label_id = :Special_label_id
+    AND bp.operation_code = '$RST'
+    AND bp.outcome = 'RESTOCKED'
+    AND bp.operation_start_date >= (:operation_start_date_from)
+    AND bp.operation_start_date <  (:operation_start_date_to) + 2
+)
+SELECT sli.vwh_id AS vwh_id,
+       sli.operator AS operator,
+       sli.shift_start_date as operation_date,
+       sum(sli.MP_UNITS) AS MP_UNITS 
+FROM special_label_info sli
+WHERE sli.shift_number = (:shift_number)
+   [AND sli.vwh_id = (:vwh_id)]
+   AND sli.shift_start_date >= (:operation_start_date_from)
+   AND sli.shift_start_date <  (:operation_start_date_to) + 1
+GROUP BY sli.operator, sli.shift_start_date, sli.vwh_id, sli.shift_number  
+            </pre>
+        <b>Description:</b>
+        <pre>Above query can be used to verify the Mp units, label id. Pass the specific date.
+          </pre>
+        <b>Validation Query:</b><pre>          
+        <r:query>
+With suspense_info as
+(
+SELECT /*+INDEX(bp boxprod_operation_start_date_i) */
+ bp.operator AS OPERATOR,
+ bp.vwh_id AS VWH_ID,
+ trunc(bp.operation_start_date) AS OPERATION_DATE,
+ CASE
+   WHEN (bp.operation_start_date - TRUNC(bp.operation_start_date)) * 24 BETWEEN 5.1 AND 15.5 THEN
+    1
+   ELSE
+    2
+ END AS shift_number,
+ CASE
+   WHEN (bp.operation_start_date - TRUNC(bp.operation_start_date)) * 24 <= 5.1 THEN
+    TRUNC(bp.operation_start_date - 1)
+   ELSE
+    TRUNC(bp.operation_start_date)
+ END AS shift_start_date,
+ bp.ucc128_id AS CARTONS_IN_SUSPENSE,
+ bp.num_of_pieces AS PIECES_IN_SUSPENSE,
+ bp.num_of_units AS UNITS_IN_SUSPENSE
+  FROM box_productivity bp
+ WHERE bp.outcome = 'CARTON IN SUSPENSE'
+   AND bp.operation_code = '$RST'
+   AND bp.operation_start_date >= (:operation_start_date_from)
+   AND bp.operation_start_date < (:operation_start_date_to) + 2
+)
+SELECT si.operator,
+       si.vwh_id AS vwh_id,
+       si.shift_number as shift_number,
+       si.shift_start_date as shift_start_date,
+       count(distinct(si.CARTONS_IN_SUSPENSE)) AS CARTONS_IN_SUSPENSE,
+       sum(si.PIECES_IN_SUSPENSE) AS PIECES_IN_SUSPENSE,
+       sum(si.UNITS_IN_SUSPENSE) AS UNITS_IN_SUSPENSE
+  FROM suspense_info si
+ WHERE si.shift_number = (:shift_number)
+   [AND si.vwh_id = (:vwh_id)]
+   AND si.shift_start_date >= (:operation_start_date_from)
+   AND si.shift_start_date < (:operation_start_date_to) + 1
+ GROUP BY si.operator, si.shift_start_date, si.vwh_id, si.shift_number</r:query>
+               </pre>
+        <pre></pre>
+        <b>Description:</b>
+        <pre>Above Query can be used to verify the suspense carton, pieces, and units. Pass the specific date.</R:DESCRIPTION></pre>
+        <b>Validation Query:</b><pre><r:query></pre>
+        <pre><r:query>
+with restocked_info as
+(
+    SELECT /*+INDEX(bp boxprod_operation_start_date_i) */
+     bp.operator AS OPERATOR,
+     bp.vwh_id AS VWH_ID,
+     (bp.operation_start_date) AS OPERATION_DATE,
+     CASE
+       WHEN (bp.operation_start_date - TRUNC(bp.operation_start_date)) * 24 BETWEEN 5.1 AND 15.5 THEN
+        1
+       ELSE
+        2
+     END AS shift_number,
+     CASE
+       WHEN (bp.operation_start_date - TRUNC(bp.operation_start_date)) * 24 <= 5.1 THEN
+        TRUNC(bp.operation_start_date - 1)
+       ELSE
+        TRUNC(bp.operation_start_date)
+     END AS shift_start_date,
+     (bp.ucc128_id) AS RESTOCKED_CARTONS,
+     (bp.num_of_pieces) AS RESTOCKED_PIECES,
+     (bp.num_of_units) AS RESTOCKED_UNITS
+      FROM box_productivity bp
+     WHERE bp.outcome = 'RESTOCKED'
+       AND bp.operation_code = '$RST'
+       AND bp.operation_start_date >= (:operation_start_date_from)
+       AND bp.operation_start_date < (:operation_start_date_to) + 2
+ )
+ SELECT ri.operator AS OPERATOR,
+        ri.vwh_id AS VWH_ID,
+        ri.shift_number as shift_number,
+        ri.shift_start_date,
+        count(distinct(ri.RESTOCKED_CARTONS)) AS RESTOCKED_CARTONS,
+        sum(ri.RESTOCKED_PIECES) AS RESTOCKED_PIECES,
+        sum(ri.RESTOCKED_UNITS) AS RESTOCKED_UNITS
+   FROM restocked_info ri
+  WHERE ri.shift_number = (:shift_number)
+    [AND ri.vwh_id = (:vwh_id)]     
+    AND ri.shift_start_date >= (:operation_start_date_from)
+    AND ri.shift_start_date <  (:operation_start_date_to) + 1
+  GROUP BY ri.operator,
+           ri.shift_start_date,
+           ri.vwh_id,
+           ri.shift_number</r:query>
+            </pre>
+          <pre></pre>
+        <b>Description:</b>
+        <pre>Above Query can be used to verify the restocked carton, pieces, and units. Pass the specific date.</pre>
+        <b>Validation Query:</b><pre><r:query></pre>
+        <pre><r:query>
+       select bp.process_id,
+       min(bp.operation_start_date) as start_time,
+       max(bp.operation_end_date) as end_time,
+       round((max(bp.operation_end_date) - min(bp.operation_start_date)) * 24,
+             4) as total_hours_worked,
+       count(distinct bp.ucc128_id) as restocked_carton,
+       sum(bp.num_of_pieces) as restocked_pieces,
+       sum(bp.num_of_units) as restocked_units
+  from box_productivity bp
+where bp.operation_code = :operation_code
+   and bp.operator = :restocker_name
+   and bp.vwh_id = [:vwh_id]
+   and bp.outcome = 'restocked'
+   and bp.operation_start_date >= to_date(:restock_date, 'mm/dd/yyyy')
+   and bp.operation_start_date < to_date(:restock_date, 'mm/dd/yyyy') + 1
+group by bp.process_id,
+          bp.operator,
+          bp.vwh_id,
+          trunc(bp.operation_start_date);
+          </r:query></pre>
+          <b>Description:</b>
+        <pre>Above Query validate the process_id,start_time,end_time,total_hours_worked,restock carton,restocked_pieces and restocked_units.
+</pre>
+<pre></pre>
+     <b>Validation Query:</b><pre><r:query></pre>
+        <pre><r:query>
+       select bp.process_id,
+       count(distinct bp.ucc128_id) as suspense_carton,
+       sum(bp.num_of_pieces) as suspense_pieces,
+       sum(bp.num_of_units) as suspense_units
+  from box_productivity bp
+where bp.operation_code =  :operation_code
+   and bp.operator =  :restocker_name
+   and bp.vwh_id = [:vwh_id]
+   and bp.outcome = 'carton in suspense'
+   and bp.operation_start_date >= to_date(:restock_date, 'mm/dd/yyyy')
+   and bp.operation_start_date < to_date(:restock_date, 'mm/dd/yyyy') + 1
+group by bp.process_id,
+          bp.operator,
+          bp.vwh_id,
+          trunc(bp.operation_start_date);
+          </r:query></pre>
+           <b>Description:</b>
+        <pre>Above Query validate the process_id,suspense carton,suspense pieces and suspense units.
+</pre>
+
+        <!--End divTechnical-->
+    </div>
+    </form>
+</body>
+</html>

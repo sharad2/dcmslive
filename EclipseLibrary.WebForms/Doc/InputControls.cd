@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EclipseLibrary.Web.JQuery.Input.InputControlBase">
+    <Position X="10.25" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ASAAJAABIBCKAMEBAAkACAgBCJACEQQBBCg0BIgVCAA=</HashCode>
+      <FileName>Web\JQuery\Input\InputControlBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EclipseLibrary.Web.JQuery.WidgetBase" Collapsed="true">
+    <Position X="10.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gCAICAAAIAIAQIAYAEAAREJAIAAKAQBmADAEAQAAAAA=</HashCode>
+      <FileName>Web\JQuery\WidgetBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EclipseLibrary.Web.JQuery.Input.AjaxDropDown" Collapsed="true">
+    <Position X="3.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAKAACAIAARAIQAAEAAAAAAoACAQAAABAkAAAACAA=</HashCode>
+      <FileName>Web\JQuery\Input\AjaxDropDown.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EclipseLibrary.Web.JQuery.Input.CheckBoxEx" Collapsed="true">
+    <Position X="6" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAACEAAEAAAAAAIAAAAQAADAgCAAACAA=</HashCode>
+      <FileName>Web\JQuery\Input\CheckBoxEx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EclipseLibrary.Web.JQuery.Input.CheckBoxListEx" Collapsed="true">
+    <Position X="8.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUwKAoCgAAACgAwAAMAAAAAEJATAQQAACEkBIAADAA=</HashCode>
+      <FileName>Web\JQuery\Input\CheckBoxListEx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EclipseLibrary.Web.JQuery.Input.DropDownListEx" Collapsed="true">
+    <Position X="10.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEBIAoCgAAACgEYAAEAAAAAEpASAQAAABAkBAAADAA=</HashCode>
+      <FileName>Web\JQuery\Input\DropDownListEx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EclipseLibrary.Web.JQuery.Input.RadioButtonListEx" Collapsed="true">
+    <Position X="12.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAACAQAACAAQAAMAAAAAAJACAQAAALggAAAACAA=</HashCode>
+      <FileName>Web\JQuery\Input\RadioButtonListEx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EclipseLibrary.Web.JQuery.Input.TextArea" Collapsed="true">
+    <Position X="15" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAQAAEAAIAAAIACAABAACAgCAAAAAA=</HashCode>
+      <FileName>Web\JQuery\Input\TextArea.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EclipseLibrary.Web.JQuery.Input.TextBoxEx" Collapsed="true">
+    <Position X="17.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BgEAIAAAQAEAwAAAAgUAAAAEAIEAEQRJADA8CAAAAAA=</HashCode>
+      <FileName>Web\JQuery\Input\TextBoxEx.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Enum Name="EclipseLibrary.Web.JQuery.Input.ClientCodeType" Collapsed="true">
+    <Position X="19.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAIAAQAgAAQAAAAAAABQAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Web\JQuery\Input\InputControlBase.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

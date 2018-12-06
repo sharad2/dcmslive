@@ -1,0 +1,688 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>110.11: Orders having a given DC Cancel Date</title>
+    <style type="text/css">
+
+        .style6
+        {
+            width: 51px;
+        }
+        </style>
+</head>
+<body>
+    <h1 align="center">
+        110<b>.</b>11<b> : </b>Active orders for a given Start Date or DC Cancel Date</h1>
+    Author : Sanjeev Kumar<br />
+    $Revision: 32001 $<br />
+    Status: Reviewed<br />
+    Reviewed By : Hemant K. Varshney<br />
+    Tested By:
+    Sanjeev Kumar
+    <p>
+        The report displays list of Active orders for passed DC Cancel date or start date on the
+        basis of Export or domestic orders and optionally for a Label ID and Virtual Warehouse.
+        The user has option to filter out the data on the basis of selecting the value of
+        customer group or for the specific customer or exclude specific customer.Now report is capable for displaying VAS orders.Now you can see applied VAS on orders also you can filter order list for specific VAS(Value Added Service).</p>
+    <h2>
+        Overview</h2>
+    <p>
+        The report displays list of Active orders for passed DC Cancel date or start date on the
+        basis of Export or domestic orders and optionally for a Label ID and Virtual Warehouse.
+        The user has option to filter out the data on the basis of selecting the value of
+        customer group or for the specific customer or exclude specific customer. This report
+        is useful for the followings:</p>
+    <ul>
+        <li>The report aids in order scheduling and prioritizing. </li>
+        <li>Detailed Customer-wise order information is available. </li>
+        <li>Useful for estimating future cash inflows.</li>
+    </ul>
+    <p>
+        <b>Customer Group :</b><i> Customer group is set of some attributes defined in the database.
+            These attributes are Customer ID, Attribute Customer ID, Customer Store ID and Customer
+            DC ID. We make the group of such attributes so that user can see the records of
+            such attributes by selecting only one group insetad of poviding the value for each
+            attribute. This group may have only Customer IDs to see the records of group of
+            customers.</i></p>
+    <h2>
+        Algorithm</h2>
+    We are using a ps and po for getting the order information of in process po per
+    customer and we are getting the order information of unprocess order information
+    per customer from dem_pickslip i.e ps_status_id = 1. Customer related information
+    will come from the table cust.
+    <h3>
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="25%" align="center">
+                <b>Item</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Summary</b>
+            </td>
+            <td width="10%" align="center">
+                <b>Default
+                    <br />
+                    Sort Sequence</b>
+            </td>
+            <td width="35%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Customer
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                Report is displaying customer Id with customer name.</td>
+        </tr>
+        <tr>
+            <td>
+                VWh
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Virtual Warehouse of Pickslip.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Profile
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                3</td>
+            <td>
+                The Pickslip prefix of order.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                PO
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2</td>
+            <td>
+                The Purchase Order ID.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                PO Attrib 1</td>
+            <td class="style6">
+                NO</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                This column is showing STO number.</td>
+        </tr>
+        <tr>
+            <td>
+                Status
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Indicates the processing stage of the pickslip from in order bucket to transferred.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Imported Date
+            </td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;
+                &nbsp;
+            </td>
+            <td>
+                The pickslip import date.</td>
+        </tr>
+        <tr>
+            <td>
+                Start Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Earliest date on which customer is willing to accept the shipment.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                DC Cancel Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                The latest date by which pickslip must have left Distribution Centre in order to
+                reach customer on time.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                #Pickslips
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total no of pickslip for each order of customer with iteration and report status.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                VAS</td>
+            <td>
+                All VAS</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Any VAS(Value Added Service) applied on order</td>
+        </tr>
+        <tr>
+            <td>
+                $Value
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Order value in dollars.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pieces Ordered
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Pieces ordered in PO
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Label</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Label_id of the particular PO.</td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center" width="20%">
+                <b>Name</b>
+            </td>
+            <td align="center" width="20%">
+                <b>Default</b>
+            </td>
+            <td align="center" width="60%">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Customer
+                Order Type
+            </td>
+            <td>
+                Domestic
+            </td>
+            <td>
+                Customer order type.
+            </td>
+        </tr>
+         <tr>
+            <td>
+                Start Date From
+            </td>
+            <td>
+                Current date
+            </td>
+            <td>
+                The Start date from which you want to display information.(i.e.Reqiured when radio button is checked).
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Start Date To
+            </td>
+            <td>
+                Next 7 days
+            </td>
+            <td>
+                The Start date to which you want to display 
+                information</td>
+        </tr>
+        <tr>
+            <td>
+                DC Cancel Date From
+            </td>
+            <td>
+                Current date
+            </td>
+            <td>
+                The DC Cancel date from which you want to display information.(i.e.Reqiured when radio button is checked).
+            </td>
+        </tr>
+        <tr>
+            <td>
+                DC Cancel Date To
+            </td>
+            <td>
+                Next 7 days
+            </td>
+            <td>
+                The DC Cancel date to which you want to display information.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Label
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                The Label Id for which you want to display information
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Vitrual Warehouse
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                The Virtual Warehouse for which you want to display information.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Orders Required VAS</td>
+            <td>
+                All VAS</td>
+            <td>
+                This is Value Added Service dropdown so that user can see the vas order for particular&nbsp; VAS tag.&nbsp; </td>
+        </tr>
+        <tr>
+            <td>
+                Customer Group
+            </td>
+            <td>
+                All Customers
+            </td>
+            <td>
+                Customer Group from which you&nbsp; want to dispaly information.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Specific Customers
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                The Customer ids for which you want to display the information.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Exclude Customers.
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                The customers which you would like to exclude from the result
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 10</i> sec.</p>
+    <h2>
+        Behavior Change</h2>
+        <ol>
+        <li>
+            <p class="MsoNormal">
+                Now report will show STO against a PO. This additional information will be displayed under a new column &#39;PO Attrib 1&#39;.</p>
+            </li>
+        </ol>
+
+    <h2>
+        Issues</h2>
+    <p>
+        No know issue</p>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        ps,<br />
+        po,<br />
+        dem_pickslip,<br />
+        cust,<br />
+        customer_group,<br />
+        ps_vas,<br />
+        tab_vas
+    </p>
+    <p>
+        Use the below script to create the synonyms<br />
+        <br />
+        <code>create or replace synonym ps for dcms8.ps;
+            <br />
+             create or replace synonym po for dcms8.po;
+             <br />
+             create or replace synonym ps_vas for dcms8.ps_vas;
+            <br />
+             create or replace synonym dem_pickslip for dcms4.dem_pickslip;
+            <br />
+             create or replace synonym cust for dcms8.cust;
+            <br />
+             create or replace synonym customer_group for dcms8.customer_group;
+            <br />
+             create or replace synonym ps_vas for dcms8.ps_vas;
+            <br />
+             create or replace synonym tab_vas for dcms8.tab_vas;
+        </code></p>
+    <p>
+        Following appSettings are required:</p>
+    <br />
+    <h2>
+        Technical Documentation</h2>
+    <h2>
+        Parameter Technical Details</h2>
+    <ul>
+        <li>Order Type (Type = String): This is a list parameter control. Select the Order type
+            Null value text is.
+            <ul>
+                <li>Value = DOM, Text = Domestic </li>
+                <li>Value = EXP, Text = International</li>
+            </ul>
+        </li>
+        <li>DC Cancel dates (Type = Date): Enter the latest date by which pickslip must have
+            left Distribution Centre in order to reach customer on time This is a date range
+            control. </li>
+        <li>Label ID (Type = String): The label whose purchase order you are interested in.</li>
+        <li>Vwh ID (Type = String): This is a list parameter control. By default, inventory
+            of all Virtual Warehouse is shown for each area. If your focus is on the inventory
+            in a particular Virtual Warehouse, Specify that Virtual Warehouse Id. Null value
+            text is "All".
+            <ul>
+                <li>Query to fill list values = <code>select tab_virtual_warehouse.vwh_id, tab_virtual_warehouse.vwh_id
+                    from tab_virtual_warehouse</code></li>
+            </ul>
+        </li>
+        <li>Customer Group (Type=String): The Customer Group which is set of customers filters
+            (i.e. customer_id, attribute_customer_id, customer_dc_id and customer_store_id).
+            This is a list parameter control. By default, all customer group. If your focus
+            is on the a particular customer group, then select the specific customer group value.
+            <ul>
+                <li>Query to fill list values = <code>select distinct customer_group_id as group_id
+                    from customer_group</code></li>
+            </ul>
+        </li>
+        <li>Customer ID (Type = String): The customer whose purchase order you are interested
+            in.</li>
+        <li>Exclude Customers(Type = Boolean): This is a check box control. Checked the exclude
+            customers and Unchecked the include customers. By Default unchecked.</li>
+    </ul>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.&nbsp;
+    <p>
+        &nbsp;</p>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <ul>
+        <li>
+            <pre> WITH Q1 AS
+ (SELECT PS.PICKSLIP_ID,
+         MAX(PS.SALES_ORDER_ID) AS STO,
+         MAX(PS.CUSTOMER_ID) AS CUSTOMER_ID,
+         MAX(PS.PO_ID) AS PO_ID,
+         MAX(PS.LABEL_ID) AS LABEL_ID,
+         MAX(PS.ITERATION) AS ITERATION,
+         MAX(PS.PICKSLIP_PREFIX) AS PICKSLIP_PREFIX,
+         MAX(PS.REPORTING_STATUS) AS REPORTING_STATUS,
+         MAX(PS.CUSTOMER_DC_ID) AS CUSTOMER_DC_ID,
+         MAX(PS.CUSTOMER_STORE_ID) AS CUSTOMER_STORE_ID,
+         MAX(PS.ATTRIBUTE_CUSTOMER_ID) AS ATTRIBUTE_CUSTOMER_ID,
+         MAX(PS.TOTAL_QUANTITY_ORDERED) AS TOTAL_QUANTITY_ORDERED,
+         MAX(PS.TOTAL_DOLLARS_ORDERED) AS TOTAL_DOLLARS_ORDERED,
+         MAX(PS.PICKSLIP_IMPORT_DATE) AS PICKSLIP_IMPORT_DATE,
+         MAX(PO.START_DATE) AS START_DATE,
+         MAX(PO.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+         MAX(PO.CANCEL_DATE) AS CANCEL_DATE,
+         MAX(PS.VWH_ID) AS VWH_ID,
+         PV.VAS_ID AS VAS_ID,
+         MAX(TV.DESCRIPTION) AS VAS
+    FROM PS
+   INNER JOIN PO
+      ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+     AND PS.PO_ID = PO.PO_ID
+     AND PS.ITERATION = PO.ITERATION
+    LEFT OUTER JOIN PS_VAS PV
+      ON PS.PICKSLIP_ID = PV.PICKSLIP_ID
+    left outer JOIN tab_vas tv on
+            pv.vas_id = tv.vas_CODE
+   WHERE PS.TRANSFER_DATE IS NULL
+       and ps.pickslip_cancel_date is null
+   <if>AND po.dc_cancel_date &gt;= cast(:FromDate1 as date)
+        AND po.dc_cancel_date &lt; cast(:ToDate1 as date) +1</if>
+    <if>AND po.start_date &gt;= cast(:FromDate as date)
+        AND po.start_date &lt; cast(:ToDate as date) +1</if>
+    <if><a pre="AND ps.label_id in  (" sep="," post=")">:label_id</a></if>
+    <if c="$custGroup='SC'"><a pre="AND ps.customer_id in  (" sep="," post=")" >:IncludeCustomer</a></if>
+    <if c="$custGroup ='E'"><a pre="AND ps.customer_id not in  (" sep="," post=")">:ExcludeCustomer</a></if>
+    <if c="$customer_type='D'">AND ps.export_flag IS NULL</if>
+    <if c="$customer_type='I'">AND ps.export_flag = 'Y'</if>
+    <if c="$customer_type='B'"></if>
+    <if>AND ps.vwh_id= cast(:Vwh_id as varchar2(255))</if> 
+    <if c="$vas"> 
+        and pv.vas_id is not null        
+    <if c="$vas_id !='vas'">and pv.vas_id =:vas_id</if>    </if>  
+   GROUP BY PS.PICKSLIP_ID, PV.VAS_ID
+  UNION ALL
+  SELECT DP.PICKSLIP_ID,
+         MAX(DP.SALES_ORDER_ID) AS STO,
+            MAX(DP.CUSTOMER_ID) AS CUSTOMER_ID,
+         MAX(DP.CUSTOMER_ORDER_ID) AS PO_ID,
+         MAX(DP.PICKSLIP_TYPE) AS LABEL_ID,
+         1 AS ITERATION,
+         MAX(DP.PICKSLIP_PREFIX) AS PICKSLIP_PREFIX,
+         'IN ORDER BUCKET' AS REPORTING_STATUS,
+         MAX(DP.CUSTOMER_DIST_CENTER_ID) AS CUSTOMER_DC_ID,
+         MAX(DP.CUSTOMER_STORE_ID) AS CUSTOMER_STORE_ID,
+         NULL AS ATTRIBUTE_CUSTOMER_ID,
+         MAX(DP.TOTAL_QUANTITY_ORDERED) AS TOTAL_QUANTITY_ORDERED,
+         MAX(DP.TOTAL_DOLLARS_ORDERED) AS TOTAL_DOLLARS_ORDERED,
+         MAX(DP.PICKSLIP_IMPORT_DATE) AS PICKSLIP_IMPORT_DATE,
+         MAX(DP.DELIVERY_DATE) AS START_DATE,
+         MAX(DP.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+         MAX(DP.CANCEL_DATE) AS CANCEL_DATE,
+         MAX(DP.VWH_ID) AS VWH_ID,
+         PV.VAS_ID  AS VAS_id,
+         MAX(TV.DESCRIPTION) AS VAS
+    FROM DEM_PICKSLIP DP
+    LEFT OUTER JOIN PS_VAS PV
+      ON DP.PICKSLIP_ID = PV.PICKSLIP_ID
+    LEFT OUTER JOIN tab_vas tv on
+            pv.vas_id = tv.vas_CODE
+   WHERE DP.PS_STATUS_ID = 1
+   <if>AND DP.dc_cancel_date &gt;= cast(:FromDate1 as date)
+       AND DP.dc_cancel_date &lt; cast(:ToDate1 as date) +1</if>
+   <if>AND DP.delivery_date &gt;= cast(:FromDate as date)
+       AND DP.delivery_date &lt; cast(:ToDate as date) +1</if>
+   <a pre="AND DP.pickslip_type in (" sep="," post=")">:label_id</a>
+   <if c="$custGroup ='SC'"><a pre="AND DP.customer_id in  (" sep="," post=")">:IncludeCustomer</a></if>
+   <if c="$custGroup ='E'"><a pre="AND DP.customer_id not in  (" sep="," post=")">:ExcludeCustomer</a></if>
+   <if c="$customer_type='D'">AND DP.export_flag IS NULL</if>
+   <if c="$customer_type='I'">AND DP.export_flag = 'Y'</if>
+   <if c="$customer_type='B'"></if>          
+   <if c="$vas"> 
+       and pv.vas_id is not null        
+   <if c="$vas_id !='vas'">and pv.vas_id =:vas_id</if>    </if>            
+   <if>AND DP.vwh_id= cast(:Vwh_id as varchar2(255))</if>
+   GROUP BY DP.PICKSLIP_ID, PV.VAS_ID)
+SELECT Q1.CUSTOMER_ID,
+       MAX(C.NAME) AS customer_name,
+       Q1.PO_ID,
+       Q1.ITERATION,
+       Q1.LABEL_ID,
+       Q1.REPORTING_STATUS,
+       Q1.VWH_ID,
+      CASE
+         WHEN COUNT(UNIQUE Q1.STO) > 1 THEN
+          '*****'
+         ELSE
+          TO_CHAR(MAX(Q1.STO))
+       END AS STO,
+       COUNT(DISTINCT Q1.pickslip_id) AS no_of_pickslip,
+       MAX(Q1.PICKSLIP_PREFIX) AS PICKSLIP_PREFIX,
+       SYS.STRAGG(UNIQUE(NVL2(q1.VAS, (Q1.VAS || ','), ''))) AS VAS,
+       SUM(Q1.TOTAL_QUANTITY_ORDERED) AS TOTAL_QUANTITY_ORDERED,
+       SUM(ROUND(Q1.TOTAL_DOLLARS_ORDERED)) AS TOTAL_DOLLARS_ORDERED,
+       MIN(TRUNC(Q1.PICKSLIP_IMPORT_DATE)) AS MIN_PICKSLIP_IMPORT_DATE,
+       MAX(TRUNC(Q1.PICKSLIP_IMPORT_DATE)) AS MAX_PICKSLIP_IMPORT_DATE,
+       COUNT(DISTINCT TRUNC(Q1.PICKSLIP_IMPORT_DATE)) AS COUNT_PICKSLIP_IMPORT_DATE,
+       MIN(Q1.START_DATE) AS DELIVERY_DATE,
+       MIN(Q1.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+       MIN(Q1.CANCEL_DATE) AS CANCEL_DATE
+  FROM Q1
+  LEFT OUTER JOIN CUST C
+    ON Q1.CUSTOMER_ID = C.CUSTOMER_ID
+  <if c="$group_id"> LEFT OUTER JOIN CUSTOMER_GROUP CG
+    ON Q1.CUSTOMER_ID = CG.CUSTOMER_ID</if>
+WHERE 1 = 1
+<if c="$group_id">
+AND (cg.attribute_customer_id IS NULL OR cg.attribute_customer_id = q1.attribute_customer_id)
+AND (cg.customer_dc_id IS NULL OR cg.customer_dc_id = q1.customer_dc_id)
+AND (cg.customer_store_id IS NULL OR cg.customer_store_id = q1.customer_store_id)
+AND cg.customer_group_id = cast(:group_id as varchar2(255))</if>
+ GROUP BY Q1.CUSTOMER_ID,
+          Q1.PO_ID,
+          Q1.ITERATION,
+          Q1.LABEL_ID,
+          Q1.REPORTING_STATUS,
+          Q1.VWH_ID</pre>
+        </li>
+    </ul>
+    <h2>
+        Validation</h2>
+    Validation details Bellow queries may have the where clause in the [] brackets.
+    It means these are the optional parameters. If you do not want to pass these parameters
+    just remove the [] section.
+    <br />
+    <br />
+    <b>QUERY: Below query is showing Data DC cancel date , PO and Customer wise.</b><pre>
+        SELECT ps.customer_id AS "CUSTOMER_ID",
+               ps.po_id AS "PO_ID",
+               ps.iteration AS "ITERATION",
+               ps.vwh_id AS "WAREHOUSE_ID",
+               MAX(ps.label_id) AS "LABEL_ID",
+               MAX(ps.pickslip_prefix) AS "PICKSLIP_PREFIX",
+               ps.Report_Status AS "REPORT_STATUS",
+               COUNT(DISTINCT ps.pickslip_id) AS "NO_OF_PICKSLIP",
+               SUM(round(PS.Total_Dollars_Ordered)) AS "DOLLAR_VALUE"
+          FROM rep_active_ps ps
+         WHERE ps.customer_id = :Customer_ID
+           AND ps.po_id = :PO_ID
+           AND ps.label_id = :Label
+           AND ps.dc_cancel_date >= to_date(:From_DC_Cancel_Date) 
+           AND ps.dc_cancel_date <  to_date(:To_DC_Cancel_Date) + 1 
+         GROUP BY ps.Report_Status,
+                  ps.customer_id,
+                  ps.po_id,
+                  ps.iteration,
+                  ps.vwh_id
+</pre>
+    <b>QUERY :- Below query is showing data Start Date, PO and customer wise.</b>
+    <pre>
+        SELECT ps.customer_id AS "CUSTOMER_ID",
+       ps.po_id AS "PO_ID",
+       ps.iteration AS "ITERATION",
+       ps.vwh_id AS "WAREHOUSE_ID",
+       MAX(ps.label_id) AS "LABEL_ID",
+       MAX(ps.pickslip_prefix) AS "PICKSLIP_PREFIX",
+       ps.Report_Status AS "REPORT_STATUS",
+       COUNT(DISTINCT ps.pickslip_id) AS "NO_OF_PICKSLIP",
+       SUM(round(PS.Total_Dollars_Ordered)) AS "DOLLAR_VALUE"
+  FROM rep_active_ps ps
+ WHERE ps.customer_id = 'TRANSFER'
+   AND ps.po_id = '00300006557'
+   AND ps.label_id =''
+    AND PS.START_DATE >= TO_DATE('1/25/2013','MM/DD/YYYY')
+     AND PS.START_DATE < TO_DATE('7/2/2013','MM/DD/YYYY') + 1
+ GROUP BY ps.Report_Status,
+          ps.customer_id,
+          ps.po_id,
+          ps.iteration,
+          ps.vwh_id
+
+    </pre>
+    <b>Query: This query shoes VAS ID along with reporting status, label and customer. </b><pre>
+        SELECT PS.REPORTING_STATUS, PS.CUSTOMER_ID, PS.LABEL_ID, PV.VAS_ID
+  FROM PS
+ INNER JOIN PS_VAS PV
+    ON PS.PICKSLIP_ID = PV.PICKSLIP_ID
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND PS.PO_ID = '4351092'
+                 </pre>
+    <b>Description:</b>
+    <pre>
+            Run the above query to validate the status, number of pickslip and total dollar value for pass the customer_id 
+            with label_id, dc_cancel_date range and customer_id(which you not want to display information)</pre>
+</body>
+</html>

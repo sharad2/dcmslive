@@ -1,0 +1,1021 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title>GridViewEx Control</title>
+    <style type="text/css">
+        .style1
+        {
+            background-color: #FFFF00;
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        GridViewEx Control</h1>
+    <p>
+        <code>GridViewEx</code> is a jquery enabled GridView control. It provides several
+        additional features on top of the built in GridView control
+    </p>
+    <dl>
+        <dt>Accessible Markup</dt>
+        <dd>
+            GridViewEx generates THEAD, TBODY and TFOOT elements which are important for much
+            of jquery functionality.</dd>
+        <dt>Two row headers </dt>
+        <dd>
+            Normal grid view forces you to have one line headers. GridViewEx adds the ability
+            to have two line headers. <a href="#TwoRow">More</a>...
+        </dd>
+        <dt>Single and multiple row selection</dt>
+        <dd>
+            By setting the <code>SelectionMode</code> property to SingleRow or MultipleRow,
+            you enable the end user to select one or more rows.Additionally, you can also set
+            <code>SelectionMode</code> property to MultipleRowWithCheckBox, if you want the
+            end user to make selection using a checkbox. Control displays a checkbox in each
+            row for selection. A check box is also displayed at the header which can be used
+            to select all rows of the grid.This is strictly client side functionality based
+            on the jquery <code>selectable</code> plugin. <a href="#Selection">More</a>...</dd>
+        <dt>Theming</dt>
+        <dd>
+            You should use a skin to theme the grid view. For best results, do not use any inline
+            styles. Use the ui-selected style for the selected row. <a href="#Theming">More</a>...
+        </dd>
+        <dt>Automatic EmptyDataText</dt>
+        <dd>
+            If the data source returns null, then no empty text is shown. If it returns a non
+            null enumerable having no rows, then the empty text is displayed. The default value
+            of EmptyDataText is &quot;No rows found&quot;. You can override this automatic behavior
+            by specifying an EmptyDataTemplate.</dd>
+        <dt>Enhanced Sorting</dt>
+        <dd>
+            You can sort on multiple columns. You can control the sort expression for descending
+            sorts. You can specify default sort expression and default sort direction. <a href="#Sorting">
+                More</a>...
+        </dd>
+        <dt><a href="#Scripting">Convenient Client Scripting</a></dt>
+        <dd>
+            As applications become more ajaxified, client script manipulation of table data
+            becomes important. GridViewEx is able to generate client script functions to help
+            you manipulate data in individual rows and cells. Without this help, you are forced
+            to manipulate cells based on their index within the row. With client scripting support,
+            you can access columns by name. You specify the name of the column using the AccessibleHeaderText
+            property of each column. Then in javascript you can write <code>var $piecesCell = $('td',
+                $clickedRow).eq($.inArray('Pieces', gvCartonEditor_ColumnNames))</code>. $piecesCell
+            = $(':column(Pieces)', $clickedRow);
+        </dd>
+        <dt>Support for Matrix Reports</dt>
+        <dd>
+            You can use <code>GridViewExMatrixField</code> to create matrix reports. <a href="#Matrix">
+                More...</a>
+        </dd>
+        <dt>Grand Totals and Subtotals</dt>
+        <dd>
+            MultiBoundField and SiteHyperLinkField work in conjunction with GridViewEx to provide
+            the ability to display column totals. First you specify DataFooterFields=&quot;pieces,dollars&quot;
+            to indicate which field needs to be summarized. Next you specify DataSummaryCalculation=&quot;ValueSummation&quot;
+            or DataSummaryCalculation=&quot;Datasource&quot;. In the former case (DataSummaryCalculation=&quot;ValueSummation&quot;),
+            GridViewEx will compute the sum of pieces and dollars fields as they are retrieved
+            from the database and the result will be displayed in the footer cell. In the latter
+            case (DataSummaryCalculation=&quot;Datasource&quot;), GridViewEx will assume that
+            the summary calculation has alredy been performed by the data source and so the
+            value of the field from one of the rows will be displayed as is in the footer cell.
+            You can specify DataFooterFormatString to controll the formatting of the output.
+            <p>
+                5 Sep 2009: Added ability to compute weighted averages for grand totals as well
+                as subtotals. You specify DataSummaryCalculation=&quot;ValueWeightedAverage&quot;.
+                This requires that you specify exactly two footer fields. Each footer field will
+                be individually summed and the ratio will be displayed as the summary. DataFooterFormatString
+                should refer to only one place holder and not two. In the following example, we
+                are cacluating percentage pieces shipped and displaying this percentage as subtotals
+                as well as grand total.</p>
+            <pre>
+&lt;eclipse:MultiBoundField DataFields="pct_pieces_shp_ord" SortExpression="pct_pieces_shp_ord"
+    HeaderText="% Pieces Shipped" DataSummaryCalculation="ValueWeightedAverage" DataFormatString="{0:P2}"
+    DataFooterFields="pieces_shipped,pieces_ordered" /&gt;
+</pre>
+        </dd>
+        <dt><a href="#Inserting">Inserting Rows</a></dt>
+        <dd>
+            The derived class <code>GridViewExInsert</code> provides full support for inserting
+            rows. You can set the property <code>InsertRowsCount</code> to indicate how many
+            rows you want to display in insert mode.</dd>
+        <dt><a href="#RowMenu">Row Menu</a></dt>
+        <dd>
+            You associate a row menu with each row of the grid. The menu pops up when the user
+            hovers on the row. You decide what items the menu should contain and what should
+            happen when the item is clicked.</dd>
+    </dl>
+    <h2 id="RowMenu">
+        Popup Row Menu</h2>
+    <p>
+        Popup Row Menu is a replacement of Hover menu and it can be attached to any grid,
+        to display additional items. When the user moves the mouse cursor over a grid row
+        the menu is displayed.See below mentioned example for using it in a grid. The bucket_id
+        is passed using the datakey.</p>
+    <pre>
+     &lt;jquery:GridViewEx ID="gvBucket" DataSourceID="dsBucket" AutoGenerateColumns="False"
+        runat="server" AllowSorting="true" AllowPaging="true"
+        DataKeyNames="bucket_id" ClientIdSameAsId="true"&gt;
+        &lt;RowMenuItems&gt;
+            &lt;jquery:RowMenuItem Text="PO List" NavigateUrl="~/Apps/Bucket/PoList.aspx?bucket_id={0}" /&gt;
+            &lt;jquery:RowMenuItem Text="Pickslip List" NavigateUrl="~/Apps/Bucket/PickslipList/PickslipList.aspx?bucket_id={0}" /&gt;
+        &lt;/RowMenuItems&gt;        
+        &lt;Columns&gt;
+            &lt;jquery:SelectCheckBoxField /&gt;
+            &lt;eclipse:SequenceField /&gt;
+            &lt;asp:TemplateField HeaderText="Wave" SortExpression="bucket_id"&gt;
+                &lt;ItemTemplate&gt;
+                    &lt;%#Eval("bucket_id") %&gt;
+                &lt;/ItemTemplate&gt;
+            &lt;/asp:TemplateField&gt;
+             &lt;/Columns&gt;
+    &lt;/jquery:GridViewEx&gt;
+    </pre>
+    <p>
+        It also provides you client event &quot;OnClientClick&quot; to handle advanced schenarios.
+        For example you can load a dialog showing box details in following way.</p>
+    <pre>
+     &lt;jquery:GridViewEx runat="server" ID="gvBoxes" DataKeyNames="ucc128_id_key,pickslip_id"
+            DataSourceID="dsBoxes" AutoGenerateColumns="false"            
+            ClientIdSameAsId="true"&gt;
+            &lt;Selectable EnableClientState="true" OnSelectableStop="/&gt;
+            &lt;RowMenuItems&gt;
+                &lt;jquery:RowMenuItem Text="Box Details...." OnClientClick="function(keys){
+$(dlgBoxDetails).ajaxDialog('option', 'data', {ucc_id_list: keys[0]})
+    .dialog('option', 'title', 'Box Details')
+    .ajaxDialog('load');
+                                    }" /&gt;
+            &lt;/RowMenuItems&gt;
+            &lt;Columns&gt;
+                &lt;jquery:SelectCheckBoxField&gt;
+                &lt;/jquery:SelectCheckBoxField&gt;
+                &lt;eclipse:SequenceField /&gt;
+                &lt;asp:HyperLinkField DataTextField="pickslip_id" DataNavigateUrlFields="pickslip_id"
+                    DataNavigateUrlFormatString="~/Apps/Bucket/PickSlipDetails/PickSlipDetails.aspx?pickslip_id={0}"
+                    HeaderText="Pickslip" SortExpression="pickslip_id" ItemStyle-HorizontalAlign="Right" /&gt;
+                &lt;asp:TemplateField HeaderText="UCC ID" ItemStyle-Wrap="false" SortExpression="ucc128_id_key"
+                    AccessibleHeaderText="ucc128_id"&gt;
+                    &lt;ItemTemplate&gt;
+                        &lt;jquery:AjaxData runat="server" Name="ucc_id_list" RenderVisible="true"&gt;
+                            &lt;%# Eval("ucc128_id_key") %&gt;
+                        &lt;/jquery:AjaxData&gt;
+                     
+                    &lt;/ItemTemplate&gt;
+                &lt;/asp:TemplateField&gt;
+            &lt;/Columns&gt;
+        &lt;/jquery:GridViewEx&gt;
+    
+    
+    </pre>
+    <h2 id="Inserting">
+        Inserting Rows</h2>
+    <p>
+        The derived class <code>GridViewExInsert</code> provides full support for inserting
+        rows. You can set the property <code>InsertRowsCount</code> to indicate how many
+        rows you want to display in insert mode. Normally you will provide a button to add
+        a new row. In the server click handler of this button, you will set InsertRowsCount
+        to 1. You should also have a <code>CommandFieldEx</code> field within the grid which
+        is aware of insertable rows. It will display the Insert button when the row is in
+        the Insert mode.
+    </p>
+    <p>
+        MultiBoundField now provides EditItemTemplate as well as InsertItemTemplate. You
+        can use the MultiBoundField to take advantage of its readonly features, or you can
+        use the TemplateField and define its InsertTemplate. If InsertTemplate is not defined,
+        then the EditTemplate is used. If neither is defined, then you obtain readonly behavior.
+    </p>
+    <h2 id="Scripting">
+        Manipulating Cells with JavaScript</h2>
+    <p>
+        If you set EnableTableScripting=&quot;true&quot;, the code for the custom selector
+        :col is generated. The custom selector :col returns true if the td belongs to a
+        specific column. It can only be applied to td elements. For all other elements,
+        it returns false. If you forget to set EnableTableScripting=&quot;true&quot;, then
+        no error will be generated and it will appear that this selector is selecting all
+        columns. Be careful about this subtle bug. Another rule you must follow for now
+        is to keep all code which is using :col function outside JqueryScriptManager.</p>
+    <p>
+        You specify the name of your column via AccessibleHeaderText. Following are some
+        examples.</p>
+    <dl>
+        <dt>Selecting all pieces columns </dt>
+        <dd>
+            <code>$('td:col(Pieces)', $('#gv'));</code>
+        </dd>
+        <dt>Summing values of a column and displaying sum in footer.</dt>
+        <dd>
+            In this example, each column contains a slider whose value we are summing.</dd>
+        <dd>
+            <pre>
+var sum = 0;
+$('> tbody td:col(Pieces) .ui-slider', $(gvSize)).each(function() {
+    var val = $(this).slider('option', 'tbvalue');
+    if (!isNaN(val)) {
+        sum = sum + Number(val);
+    }
+});
+// Show the sum in footer
+$('> tfoot td:col(Pieces)', $(gvSize)).html(sum)
+</pre>
+        </dd>
+        <dt>Performing some action when cells of a particular column are clicked </dt>
+        <dd>
+            Here we show an alert when the user clicks on any cell in the Identifier column.</dd>
+        <dd>
+            <pre>
+$(gvCartonEditor).click(function(e) {
+    if ($(e.target).is('td:col(Identifier)')) {
+       alert('Identifier');
+    }
+});</pre>
+        </dd>
+    </dl>
+    <h2 id="Matrix">
+        Matrix Reports</h2>
+    <p>
+        Define master columns using DefaultSortExpression e.g. <code>DefaultSortExpression="color;dimension;sku_size;vwh_id;$"</code>.
+        Add Matrix Field to your grid
+    </p>
+    <pre>
+    &lt;jquery:MatrixField DataHeaderField="carton_storage_area" DataValueField="quantity" /&gt;</pre>
+    <p>
+        The following are the basic steps involved in creating a matrix report. As an example,
+        we talk about a report which will display the count of green cartons validated per
+        case_id for each workstation and user. The latter two columns are called <i>Matrix Merge
+            Columns.</i></p>
+    <ol>
+        <li>First create the report without worrying about the matrix column. The column you
+            will eventually spread out as the matrix column should be displayed as a normal
+            column. At this point you are displaying the columns work_station, operator, grn_ctn_case_id,
+            green_cartons.</li>
+        <li>Ensure that the primary key of your query result set is work_station, operator.
+            This is easily accomplished by setting these as the group by of your query. Note
+            that there will be no validation of this primary key. Your results will simply be
+            wrong if you do not honor this primary key contract.</li>
+        <li>Ensure that your results are retrieved in the order of work_station, operator. This
+            is accomplished by setting the grid property DefaultSortExpression=&quot;work_station,
+            operator&quot;. Once again, this is a contract which you must honor - no error will
+            be raised if you forget this.</li>
+        <li>Now introduce the MatrixField as one of your grid columns. Specify DataMergeFields=&quot;work_station,
+            operator&quot;. This means that if two adjacent rows have same values for all merge
+            fields, the two rows will be merged into one. Now you can understand why sorting
+            on the merge fields is so important.</li>
+        <li>Decide what fields you want to spread out into a column. In our example this is
+            DataHeaderField=&quot;grn_ctn_case_id&quot;. Now every distinct value for grn_ctn_case_id
+            retrieved by your query will become a matrix column.</li>
+        <li>Decide what values you want to show in each column. In our example, DataValueFields=&quot;green_cartons&quot;
+            says that the value of the field green_cartons should be displayed in the column
+            for the corresponding grn_ctn_case_id.</li>
+    </ol>
+    <p>
+        It is possible to have more columns in the grid which are not master columns. They
+        will show up with value which would have been displayed in the first row.</p>
+    <p>
+        You can control the sort order of the rendered columns by specifying the DataSortField
+        property. By default, the columns are sorted by header text ascending.</p>
+    <h3>
+        Programmatically accessing Matrix cell values</h3>
+    <p>
+        You can access all row and column totals in the DataBound event of GridView, as
+        shown in this example:</p>
+    <pre>
+void gv_DataBound(object sender, EventArgs e)
+{
+    // Search for the matrix field whose values you wish to access
+    GridViewExMatrixField mf = gv.Columns.OfType&lt;GridViewExMatrixField&gt;().Single();
+    decimal? grandTotal = mf.GrandTotals[0];	// Grand total of all columns
+    lblTotal.Text = string.Format("{0}", grandTotal);
+    var maxRowTotal = mf.Rows.Max(p =&gt; p.RowTotals[0]);		// Max row total
+    MatrixRow shlRow = mf.GetRow(_shlRowIndex);			// Access a specific row
+    // for each matrix column
+    foreach (var col in mf.MatrixColumns)
+    {
+        // total of the current column
+        var colTotal = Convert.ToDecimal(col.FooterValues[0]);
+        LeftLabel ll = new LeftLabel();
+        ll.Text = string.Format("Total Pieces for SHL-A {0}", col.HeaderValue);
+        tcpSummary.Controls.Add(ll);
+        decimal? shlQty = Convert.ToDecimal(shlRow.CellInfo[col][0]);  // cell value of a specific row
+        Label lbl = new Label();
+        lbl.Text = string.Format("{0:N0}", shlQty - (colTotal - shlQty));      // = 2 * shlQty - colTotal
+        tcpSummary.Controls.Add(lbl);
+    }
+}    </pre>
+    <h3>
+        Displaying custom content within a Matrix Cell using ItemTemplate</h3>
+    <p>
+        By default, each matrix cell displays the values of fields specified in DataValueFields
+        using the format string DataValueFormatString. If this does not meet your requirements,
+        you control what is displayed by specifying the ItemTemplate as shown in the example
+        below. You will use Eval to evaluate whatever you want just like you would have
+        done in the ItemTemplate of a TemplateField.</p>
+    <p>
+        ItemTemplate is displayed for all matrix cells which have been retrieved by your
+        query. So for example, if your query returns a row for SHL area for a particular
+        SKU, that SKU will show some value in the SHL column. This value may appear to be
+        blank if the query retrieved NULL pieces for SHL for this SKU. Your query will likely
+        not have rows of this SKU for all areas. Areas for which rows were not returned
+        will be always blank unless you use the DefualtTemplate desribed later.</p>
+    <pre>
+&lt;jquery:MatrixField DataHeaderField="carton_storage_area" DataValueFields="quantity"
+        HeaderText="Quantity in" DataValueFormatString="{0:N0}" DisplayColumnTotals="true"
+        DisplayRowTotals="true" DataMergeFields="color,dimension,sku_size,vwh_id"&gt;
+        &lt;ItemTemplate&gt;
+            &lt;eclipse:SiteHyperLink ID="shlSKU" runat="server" SiteMapKey="R130_105.aspx" Text='&lt;%# MatrixBinder.Eval("quantity") %&gt;'
+                NavigateUrl='&lt;%# string.Format("style={0}&color={1}&dimension={2}&sku_size={3}&vwh_id={4}",
+                tbStyle.Text, MatrixBinder.Eval("color"), MatrixBinder.Eval("dimension"), MatrixBinder.Eval("sku_size"), MatrixBinder.Eval("vwh_id")) %&gt;'&gt;
+            &lt;/eclipse:SiteHyperLink&gt;
+        &lt;/ItemTemplate&gt;
+&lt;/jquery:MatrixField&gt;</pre>
+    <p>
+        Note that when ItemTemplate is specified, the DataValueFormatString property is
+        not used.</p>
+    <h3>
+        Programmatically Manipulating ItemTemplate and DefaultTemplate</h3>
+    <p>
+        The controls you define within the ItemTemplate or the DefaultTemplate, cannot be
+        discovered during RowDataBound using e.Row.FindControl() as you would expect for
+        controls in a normal template. Instead, you must hook up the DataBinding event of
+        specific controls within your template and manipulate them there. During this event,
+        you can access the data values using the MatrixBinder.Eval() method.</p>
+    <h3>
+        Displaying custom content in empty cells using DefaultTemplate</h3>
+    <p>
+        As explained above, an empty cell is one for which your query does not retrieve
+        any row. You can place custom content in these cells by defining the Default Template.
+        In the below example the default template places the value 0 i.e. zero to all the
+        matrix cells where the data value was not retrieved. Note that you must use MatrixBinder.Eval
+        instead of the normal Eval. Furthermore you can Eval only your DataMergeFields,
+        DataValueFields and DataHeaderField. Trying to Eval any other field will raise an
+        exception.</p>
+    <pre>
+<code>&lt;jquery:MatrixField DataHeaderField="carton_storage_area" DataValueFields="quantity"
+    HeaderText="Quantity in" DataValueFormatString="{0:N0}" DisplayColumnTotals="true"
+    DisplayRowTotals="true" DataMergeFields="color,dimension,sku_size,vwh_id"&gt; &lt;DefaultTemplate&gt;
+    &lt;eclipse:SiteHyperLink ID="shlSKU1" runat="server" SiteMapKey="R130_105.aspx"
+    Text='0' NavigateUrl='&lt;%# string.Format("style={0}&color={1}&dimension={2}&sku_size={3}&vwh_id={4}",
+    tbStyle.Text, MatrixBinder.Eval("color"), MatrixBinder.Eval("dimension"), MatrixBinder.Eval("sku_size"),
+    MatrixBinder.Eval("vwh_id")) %&gt;'&gt; &lt;/eclipse:SiteHyperLink&gt; &lt;/DefaultTemplate&gt;
+    &lt;ItemTemplate&gt; &lt;eclipse:SiteHyperLink ID="shlSKU" runat="server" SiteMapKey="R130_105.aspx"
+    Text='&lt;%# MatrixBinder.Eval("quantity") %&gt;' NavigateUrl='&lt;%# string.Format("style={0}&color={1}&dimension={2}&sku_size={3}&vwh_id={4}",
+    tbStyle.Text, MatrixBinder.Eval("color"), MatrixBinder.Eval("dimension"), MatrixBinder.Eval("sku_size"),
+    MatrixBinder.Eval("vwh_id")) %&gt;'&gt; &lt;/eclipse:SiteHyperLink&gt; &lt;/ItemTemplate&gt;
+    &lt;/jquery:MatrixField&gt;</code>
+</pre>
+    <p>
+        Note that the restriction on only being able to evaluate DataValueFields (and other
+        fields) is not really a limitation. You can always specify as many DataValueFields
+        as you want.
+    </p>
+    <h3>
+        Displaying Column and Row sum</h3>
+    <p>
+        <b>Column Sum</b> : For displaying MatrixField column sum use the property DisplayColumnTotals=&quot;true&quot;.
+        MatrixField displays the sum in accordence to the footer format string specified
+        i.e. DataFooterFormatString, however if&nbsp; DataFooterFormatString is not specefied
+        then it displays the sum in the format specified in DataValueFormatString. MatrixFiled
+        performs summation for only DataFiled specefied in format string so if DataValueFields
+        has multiple DataFileds and DataFooterFormatString has the value &quot;{0}&quot;
+        then it will perform the calculation on the basis of first DataValueField and if
+        DataFooterFormatString has multiple values then it will perform summation for all
+        those DataValueFields.</p>
+    <p>
+        <b>Row Sum</b> : For displaying MatrixField row sum use the properties DisplayRowTotals=&quot;true&quot;.
+        Since row total is displayed as new column in the grid which has default header
+        text as &quot;Total&quot; this can be changed by specefying the HeaderText in RowTotalHeaderText=&quot;&lt;developer-input&gt;&quot;.
+        MatrixField displays the sum in accordence to the footer format string specified
+        i.e. DataFooterFormatString only rest all the rules are that of column sum. Since
+        rowsum is cosidered some other column for end user so this is rendered as seperate
+        column i.e. HeaderText of matrixcell wil not be displayed on first row of header.</p>
+    <p>
+        Below is the example for these:</p>
+    <pre>
+<code>&lt;jquery:MatrixField DataHeaderField="carton_storage_area" DataValueFields="quantity"
+    HeaderText="Quantity in" DataValueFormatString="{0:N0}" DisplayColumnTotals="true"
+    DisplayRowTotals="true" DataMergeFields="color,dimension,sku_size,vwh_id"&gt; &lt;/jquery:MatrixField&gt;
+</code>
+</pre>
+    <p>
+        Note that MatrixBinder can only evaluate values for fields specified in either DataHeaderField
+        or DataValueFields or DataMergeFields, this however is not a limitation since you
+        can specify any number of fields in DataValueFields and data for DataValueFields
+        will only be displayed for the fields specified in DataValueFormatString.</p>
+    <h3>
+        Managing display for Null headers</h3>
+    <p>
+        Matrix column provides the property NullHeaderText. If the propert hasn&#39;t been
+        specefied and there is data for null heades then by default the table will display
+        the data with the column header as NULL, if you specefy some string within the property
+        then it will display the result with that string header however if you set the property
+        to empty i.e.NullHeaderText=&quot;&quot; then it is considered that you do not want
+        the column to be displayed and the system woun&#39;t display the column.
+    </p>
+    <h3>
+        Implementation Philosophy
+    </h3>
+    <p>
+        ultiple cells. A custom DataControlField can implement the interface IHasMultipleCells
+        to indicate that this field has multiple cells. When a custom field implements this
+        interfaces, GridViewEx gives a chance to this field to create a custom cell. As
+        an example, GridViewExMatrixField implements this interface and creates custom GridViewExMatrixCell.
+        All this happens in the InitializeRow() override of GridViewEx. Other than this,
+        GridViewEx is completely unaware of matrix functionality. GrieViewExMatrixField
+        keeps a record of each master row of the grid. It makes all non master rows invisible.
+        It adds the matrix columns to each master row thereby resulting in a matrix report.
+        This is done by hooking to the grid's RowDataBound event. In this event,we Find
+        out whether we have already added the master of this row to our internal list. If
+        not then add it now, else make the row invisible.
+    </p>
+    <h2 id="Sorting">
+        Enhanced Sorting</h2>
+    <p>
+        The sorting features of GridViewEx have been built with these design goals in mind.</p>
+    <ol>
+        <li>Every list displayed must be sorted in some reasonable way.</li>
+        <li>It should be abundantly clear to the user what the sort criterion is.</li>
+    </ol>
+    <p>
+        To achieve these goals, GridViewEx allows you to specify which column or columns
+        it should be initially sorted on as well as the initial sort direction. To enforce
+        this goal, GridViewEx passes this sort expression to the data source to ensure that
+        the sorting infact does happen. To further reinforce these goals, an error is raised
+        if you fail to specify the default sort expression. As a result, it is impossible
+        to unintentionally display unsorted data in the grid.</p>
+    <p>
+        The sort criterion is made obvious to the user by displaying sort icons in
+        the header text of columns on which the grid is sorted. The DefaultSortExpression
+        you specify is matched against the sort expression of each individual column. Wherever
+        a match is found, the associated column displays a sort icon in its header text.</p>
+    <p>
+        In the following example, descending sort icons will be displayed in the header
+        for columns Style, Color, Dimension and Size. You can also control where the <code>DESC</code>
+        clause will appear when your sort expression consists of multiple columns. In the
+        following example, the placeholder {0} will be replaced by DESC when descending
+        sort is requested. For ascending sorts, {0} will be replaced with an empty string.</p>
+    <pre>
+&lt;jquery:GridViewEx runat="server" ID="gv" DataSourceID="ds"
+    AllowSorting="true" DefaultSortExpression=&quot;style {0},color {0:I},dimension {0},sku_size {0} NULLS LAST&quot;
+	SortDirection=&quot;Ascending&quot;&gt;
+    &lt;Columns&gt;
+        &lt;eclipse:MultiBoundField DataFields="style,color,dimension,sku_size" HeaderText=&quot;SKU" SortExpression="style"
+	DataFormatString=&quot;...&quot; /&gt;
+        ...
+    &lt;/Columns&gt;
+&lt;/jquery:GridViewEx&gt;</pre>
+    <p>
+        Since GridViewEx requests the data source to sort data, problems arise if the associated
+        datasource does not support sorrting. In this situation, GridViewEx does not attempt
+        to sort using the DefaultSortExpression. It assumes that the rows are presorted.
+        It still uses the DefaultSortExpression to associate sort icons with header text.
+        There may be occasions when your data is presorted and you do not want the grid
+        to request sorting. In such cases, you can set the Presorted property to true (TODO:
+        Not yet implemented). This tells GridViewEx that the data is already sorted and
+        it will not attempt to sort it. It becomes your responsibility to ensure that the
+        data is actually presorted.</p>
+    <h3>
+        Multi Column Sorting</h3>
+    <p>
+        In multiple column sorting scenario, you may want some of the columns to be initially
+        sorted ascending and some other columns to be initially sorted descending. In this
+        next example we want to initially sort by start date descending and within the start
+        date we want to sort by pieces ascending. We achieve this by using the format specifier
+        I. {0:I} is replaced with the inverse of the current sort direction.</p>
+    <pre>
+&lt;jquery:GridViewEx runat="server" ID="gv" DataSourceID="ds"
+    AllowSorting="true" DefaultSortExpression=&quot;start_date {0},pieces {0:I}&quot;
+	SortDirection=&quot;Descending&quot;&gt;
+    &lt;Columns&gt;
+        &lt;eclipse:MultiBoundField DataFields="style,color,dimension,sku_size" HeaderText=&quot;SKU" SortExpression="style"
+	DataFormatString=&quot;...&quot; /&gt;
+        ...
+    &lt;/Columns&gt;
+&lt;/jquery:GridViewEx&gt;</pre>
+    <p>
+        So in the above example, the resulting Default expression is <code>start_date DESC,pieces</code>.
+        Since the default sort direction is descending, <code>start_date {0}</code> is replaced
+        with <code>start_date DESC</code>. Because of the <code>I</code> format specifier
+        in <code>pieces {0:I}</code>, the place holder is replaced by the <em>inverse</em>
+        of the current sort direction which is ascending.
+    </p>
+    <h3>
+        How Sorting and Master Detail Works</h3>
+    <p>
+        Sorting and master detail features are intrinsically related and therefore are discussed
+        here together. We will use the following GridViewEx markup for our discussion. In
+        this sample GridViewEx markup, we have 5 sortable columns: style, color, dimension,
+        size and priority. Each of these columns are sortable and each has SortExpression
+        property specified. The DefaultSortExpression specifies that the grid should display
+        a master row, one per style. The detail rows of each master should be sorted by
+        priority descending.</p>
+    <pre>
+&lt;jquery:GridViewEx runat="server" ID="gv" AllowSorting="true"
+    DefaultSortExpression="style;$;priority {0:I}"&gt;
+    &lt;Columns&gt;
+        &lt;eclipse:SequenceField /&gt;
+        &lt;asp:BoundField DataField="style" HeaderText="Style" SortExpression="style" /&gt;
+        &lt;asp:BoundField DataField="color" HeaderText="Color" SortExpression="color" /&gt;
+        &lt;asp:BoundField DataField="dimension" HeaderText="Dimension" SortExpression="dimension" /&gt;
+        &lt;eclipse:MultiBoundField DataFields="sku_size" HeaderText="Size" SortExpression="sku_size"
+            HeaderToolTip="SKU Size" /&gt;
+        &lt;asp:BoundField DataField="priority" HeaderText="Priority" SortExpression="priority {0:I}" /&gt;
+    &lt;/Columns&gt;
+&lt;/jquery:GridViewEx&gt;         
+         </pre>
+    <p>
+        We will now walk through the implementation code within GridViewEx which enables
+        this feature to function.</p>
+    <ol>
+        <li>The value of DefaultSortExpression is set to <code>style;$;priority {0:I}</code>.
+            The grid sets an internal flag indicating that master columns need to be recomputed.
+            <pre>
+public string DefaultSortExpression {
+    get
+    {
+        return _defaultSortExpression;
+    }
+    set
+    {
+        if (_masterColumnsCreated)
+        {
+            throw new NotSupportedException("Will this happen?");
+        }
+        _defaultSortExpression = value;
+        _masterColumnsCreated = false;
+    }
+}        </pre>
+        </li>
+        <li>The sort expression of the grid now becomes <code>style {0};priority {0:I}</code>
+            which is almost same as the <code>DefaultSortExpression</code> without the group
+            by indicator $. <code>FixSortExpressions</code> has added the {0} which you had
+            not added in your markup. Rest of the code relies on the fact that the {0} is present
+            in every sort expression.
+            <pre>
+public override string SortExpression
+{
+    get
+    {
+        return SortFormatProvider.FixSortExpressions(_defaultSortExpression, true);
+    }
+}   </pre>
+        </li>
+        <li>When it is time to select the data from the data source, the grid converts your
+            sort expression into something that is usable by the data source. This is where
+            we also look at the <code>PreSorted</code> property. If it is true, then no sort
+            expression is passed to the data source.
+            <pre>
+protected override DataSourceSelectArguments CreateDataSourceSelectArguments()
+{
+    DataSourceSelectArguments args = base.CreateDataSourceSelectArguments();
+    // Details omitted
+    // args.SortExpression = style ASC, priority DESC
+    args.SortExpression = SortFormatProvider.FormatSortExpression(this.SortExpression);
+    return args;
+}</pre>
+        </li>
+        <li>Once data is available, grid is asked to create the header cells. It chooses to
+            create <code>GridViewExHeaderCell</code> which have the logic to display sort buttons.
+            <pre>
+protected override void InitializeRow(GridViewRow row, DataControlField[] fields)
+{
+    switch (row.RowType)
+    {
+        case DataControlRowType.Header:
+            foreach (DataControlField field in fields)
+            {
+                GridViewExHeaderCell cell = new GridViewExHeaderCell(this, field);
+                row.Cells.Add(cell);
+            }
+            break;
+
+        default:
+            base.InitializeRow(row, fields);
+            break;
+    }
+}        </pre>
+        </li>
+        <li>The class GridViewExHeaderCell is responsible for generating the link buttons which
+            cause the grid to get sorted when it is clicked. These link buttons are configured
+            such that the normal GridView thinks that one of its sort buttons was clicked. The
+            command argument with this button is set to inverted sort_expression. For ascending
+            columns, the sort expression is for descending sorts and vice versa. When a column
+            is clicked, the master sort expressions are preserved. When a master item is clicked,
+            all sort expressions are preserved. The pseudo code of the GridViewExHeaderCell.RenderContents()
+            override is shown below.
+            <pre>
+protected override void RenderContents(HtmlTextWriter writer)
+{
+    bool bIsSortable = _gv.AllowSorting && !string.IsNullOrEmpty(this.ContainingField.SortExpression);
+
+    // Find the number which needs to be displayed along with the sort icon
+    bool bIsMasterExpression = true;
+    for (int i = 0; i &lt; listGridSortExpressions.Count; ++i)
+    {
+        if (listGridSortExpressions[i] == "$")
+        {
+            bIsMasterExpression = false;
+        }
+        if (SortFormatProvider.SortExpressionsEqual(listGridSortExpressions[i], this.ContainingField.SortExpression))
+        {
+            nSortIndex = i;
+            break;
+        }
+    }
+    if (nSortIndex &gt;= 0)
+    {
+        if (listGridSortExpressions[nSortIndex].Contains("{0:I}"))
+        {
+            // Toggle the direction
+            dirIcon = SortDirection.Descending;
+        }
+    }
+
+    if (this.ColumnSpan == 0)
+    {
+        // Case 1: Sortable with icon
+        // Case 2: Sortable without icon
+        // Case 3: Not sortable with icon
+        // Case 4: Not sortable, no icon
+        if (bIsSortable)
+        {
+            ...
+            if (nSortIndex &lt; 0)
+            {
+                // Case 2. This column is not currently part of sorting. Use the sort expression as is.
+                list.Add(SortFormatProvider.FixSortExpressions(this.ContainingField.SortExpression, false));
+                RenderSortableNoIcon(writer, options);
+            }
+            else
+            {
+                // Case 2: Invert the sort expression
+                if (bIsMasterExpression)
+                {
+                    // Invert the sort direction of the master and keep all other sort expressions
+                    list[nSortIndex] = SortFormatProvider.InvertSortExpression(list[nSortIndex]);
+                }
+                else
+                {
+                    // Keep the master sort expression and invert the sort expression of this column
+                    list.Add(SortFormatProvider.InvertSortExpression(listGridSortExpressions[nSortIndex]));
+                }
+                ...
+                RenderSortableWithIcon(writer, options, dirIcon, bIsMasterExpression ? nSortIndex : nSortIndex - 1);
+            }
+        }
+        else
+        {
+            // Not sortable
+            if (nSortIndex &lt; 0)
+            {
+                // Case 4
+                writer.Write(this.Text);
+            }
+            else
+            {
+                // Case 3
+                RenderNotSortableWithIcon(writer, dirIcon, nSortIndex);
+            }
+        }
+    }
+    else
+    {
+        // Top row of the header should never have icons
+        // Case 4
+        writer.Write(this.Text);
+    }
+}</pre>
+        </li>
+        <li>When one of the sort buttons is clicked, this command argument is passed as the
+            sort expression to the OnSorting() override in GridViewEx. This override simply
+            saves the passed sort expression as the default sort expression. Recall that the
+            direction had been toggled when the button was rendered.
+            <pre>
+protected override void OnSorting(GridViewSortEventArgs e)
+{
+    _sortExpression = e.SortExpression;
+    base.OnSorting(e);
+}
+</pre>
+        </li>
+        <li>Eventually GridViewEx.CreateDataSourceSelectArguments() override is called. This
+            simpy uses the current sort expression as explained above.</li>
+        <li>Finally the time to render the sort icons arrives and the cycle repeats.</li>
+    </ol>
+    <h2 id="TwoRow">
+        Two Row Headers</h2>
+    <p>
+        Normal grid view forces you to have one line headers. GridViewEx adds the ability
+        to have two line headers. You can specify a two line Header text using | as the
+        seperator, e.g. Pieces|Created. If adjacent fields have the same text in the first
+        line, the header is spanned. Example:
+    </p>
+    <pre>
+&lt;jquery:GridViewEx ID="gvStyleColor" runat="server"&gt;
+    &lt;Columns&gt;
+        &lt;eclipse:MultiBoundField DataFields="source_prefix,source_item_id"
+            HeaderText="Source" /&gt;
+        &lt;asp:BoundField DataField="pieces_expected" HeaderText="<span class="style1"># Pieces|Expected</span>"
+            ReadOnly="true" &gt;
+            &lt;ItemStyle HorizontalAlign="Right" /&gt;
+        &lt;/asp:BoundField&gt;
+        &lt;asp:TemplateField HeaderText="<span class="style1"># Pieces|Created</span>"&gt;
+            &lt;ItemTemplate&gt;
+                &lt;asp:Label ID="lbqtycreated" runat="server" Text='&lt;%# Eval("qty_created", "{0:N0}")%&gt;' /&gt;
+            &lt;/ItemTemplate&gt;
+        &lt;/asp:TemplateField&gt;
+        &lt;asp:BoundField DataField="count_size" HeaderText="# Sizes" ReadOnly="true" /&gt;
+    &lt;/Columns&gt;
+&lt;/jquery:GridViewEx&gt;</pre>
+    <p>
+        This results in the following header row
+    </p>
+    <table rules="all">
+        <thead>
+            <tr>
+                <th rowspan="2">
+                    Source
+                </th>
+                <th colspan="2">
+                    # Pieces
+                </th>
+                <th rowspan="2">
+                    # Sizes
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    Expected
+                </th>
+                <th>
+                    Created
+                </th>
+            </tr>
+        </thead>
+    </table>
+    <h2 id="Selection">
+        Single and Multiple Row Selection</h2>
+    <p>
+        By setting the <code>SelectionMode</code> property to SingleRow or MultipleRow,
+        you enable the end user to select one or more rows. This is strictly client side
+        functionality based on the jquery <code>selectable</code> plugin. We have noticed
+        sluggish performance when the table contains more than a few hundred rows. Avoid
+        using this feature for large tables.</p>
+    <p>
+        5 Nov 2009. The SelectedValues property returns a comma seperated list of all selected
+        data keys.</p>
+    <p>
+        Here is an example of how you could use this. In this example, the grid allows multiple
+        selections. The number of selected rows is displayed after the user updates the
+        selection.</p>
+    <pre>
+$(document).ready(function() {
+    $('#mygrid').bind('selectablestop', function(e) {
+        $('#myspan').html($('.ui-selected', this).length);
+    });
+
+});    
+    </pre>
+    <p>
+        We bind to the <code>selectablestop</code> event and count the number of rows which
+        have the <code>ui-selected</code> class. This count is then displayed in a span.
+        Read more about the <code>selectable</code> plugin and the functionality it offers
+        on the <a href="http://docs.jquery.com/UI/Selectable">JQuery UI site</a>.
+    </p>
+    <p>
+        In this next example the grid allows single selection. We open an AjaxPanel whenever
+        the user selects a row. The parameters to pass to the ajax panel are retrieved from
+        the currently selected row.</p>
+    <pre>
+$(document).ready(function() {
+    // After a row is selected, reload the visible ajax panel
+    $('#mygrid').bind('selectablestop', function(event, ui) {
+        var $span = $('.ui-selected span[item_id]', this);
+        if ($span.length > 0) {
+            $('#myAjaxPanel').ajaxPanelLoad(
+                { item_id: $span.attr('item_id'), dimension: $span.attr('dimension') }
+            );
+        }
+    });
+
+});
+    </pre>
+    <p>
+        You can prevent a row from becoming selectable by assigning the ui-state-disabled
+        class to it. This is useful if you do not want to allow the user to select boxes
+        which have already been completed. In this sample code, we assign the ui-state-disabled
+        class to all those rows which correspond to picksing status TRANSFERED.
+    </p>
+    <pre>
+protected void gvBoxes_RowDataBound(object sender, GridViewRowEventArgs e)
+{
+    switch (e.Row.RowType)
+    {
+        case DataControlRowType.DataRow:
+            string pickingStatus = DataBinder.Eval(e.Row.DataItem, "picking_status", "{0}");
+            if (pickingStatus == "TRANSFERED")
+            {
+                if ((e.Row.RowState & DataControlRowState.Alternate) == DataControlRowState.Alternate)
+                {
+                    e.Row.CssClass = gvBoxes.RowStyle.CssClass + " " + gvBoxes.AlternatingRowStyle.CssClass + " ui-state-disabled";
+                }
+                else
+                {
+                    e.Row.CssClass = gvBoxes.RowStyle.CssClass + " ui-state-disabled";
+                }
+                
+            }
+            break;
+    }
+}</pre>
+    <p>
+        You can also enable or disable the selction functionality. At design time you do
+        this by setting the Enabled property of Selectable to false.</p>
+    <pre>
+&lt;jquery:GridViewEx runat="server"&gt;
+    &lt;Selectable SelectionMode="MultipleRowWithCheckBox" Enabled="false" /&gt; 
+&lt;/jquery:GridViewEx&gt;</pre>
+    <p>
+        You can also change the enable state using javascript. In this example, selection
+        functionality is disabled when all accordion panes are closed. It is enabled when
+        any pane is open. Notice that you are reponsible for enabling and disabling check
+        boxes if they exist.
+    </p>
+    <pre>
+function accDelete_Change(event, ui) {
+    var index = $('>H3', this).index(ui.newHeader);
+    switch (index) {
+        case -1:
+            // All panes closed. Nothing is selectable
+            $(gvBoxes).selectable('disable').find(
+                'input.selectCheckBox'
+            ).attr(
+                'disabled', 'disabled'
+            );
+            break;
+
+        default:
+            // Something is open
+            $(gvBoxes).selectable('enable').find(
+                'input.selectCheckBox'
+            ).removeAttr('disabled');
+            break;
+    }
+}
+</pre>
+    <h2 id="Theming">
+        Theming</h2>
+    <p>
+        Here is an example skin and css which works well. Note that you must avoid inline
+        styles at all costs. Use CssClass only. Otherwise you might find that your selected
+        style is not displaying as expected because it is getting overridden by some inline
+        style.
+    </p>
+    <pre>
+&lt;jquery:GridViewEx runat="server" CssClass="gridview"&gt;
+    &lt;RowStyle CssClass="row" /&gt;
+    &lt;AlternatingRowStyle CssClass="alternatingRow" /&gt;
+    &lt;HeaderStyle CssClass="headerRow" /&gt;
+    &lt;PagerStyle CssClass="pagerRow" /&gt;
+    &lt;FooterStyle CssClass="footerRow" /&gt;
+    &lt;SelectedRowStyle CssClass="ui-selected" /&gt;
+    &lt;PagerSettings Position="TopAndBottom" LastPageText="&lt;span class='ui-state-default ui-icon ui-icon-arrowthickstop-1-e' title='Last page' /&gt;"
+        FirstPageText="&lt;span class='ui-state-default ui-icon ui-icon-arrowthickstop-1-w' title='First page' /&gt;"
+        NextPageText="&lt;span class='ui-state-default ui-icon ui-icon-arrowthick-1-e' title='Next page' /&gt;"
+        PreviousPageText="&lt;span class='ui-state-default ui-icon ui-icon-arrowthick-1-w' title='Previous page' /&gt;"
+        PageButtonCount="10" Mode="NumericFirstLast" /&gt;    
+&lt;/jquery:GridViewEx&gt;
+</pre>
+    <pre>
+.gridview
+{
+	font: normal 85%/150% Verdana, Arial, Helvetica, sans-serif;
+	border-collapse: collapse;
+	border: 3px solid #f0f8ff;
+	border-top: 5px double #87CEFA;
+	border-bottom: 5px double #87CEFA;
+}
+.headerRow {
+	font: bold 1.1em/120% Verdana, Arial, Helvetica, sans-serif;
+	padding: 5px 10px;
+	font-variant: small-caps;
+	color: #047;
+	font-weight: bold;
+	text-align: left;
+	letter-spacing: -1px;
+	background: #F0F8FF;	
+}
+
+.row {
+	padding: 5px 10px;
+	background: #fff;
+	color: #000;
+}
+
+.footerRow {
+	color: #047;
+	font-weight: normal;
+	font-variant: normal;
+	font-size: 1em;
+}
+.alternatingRow {
+	border: 1px solid #87CEFA;
+	background: #F0F8FF;	
+}
+.pagerRow {
+	border: none;
+	padding-top: 10px;
+	text-align:center;
+	font-size:larger;
+}
+.gridview caption {
+	font-family: "Georgia", serif;
+	letter-spacing: 5px;
+	font-style: italic;
+	text-align: left;
+	text-indent: 2em;
+	text-transform: uppercase;
+	font-size: 150%;
+	padding: 10px 0;
+	color: #047;
+	border-top: solid 0.25mm;
+}
+.gridview table a:link {
+	color: #DC143C;
+}
+.gridview table th a:link {
+	color: #047;
+	text-decoration: none;
+}
+.gridview table a:visited{
+	color: #036;
+}
+.gridview table a:hover{
+	color: #000;
+	text-decoration:none;
+}
+.gridview table a:active{
+	color: #000;
+}
+
+.ui-selecting { background: #FECA40; }
+.ui-selected { background: #F39814; color: white; }
+</pre>
+    <h2>
+        Javascript Functions to access rows,columns and cells
+    </h2>
+    Many javascript functions are provided to access rows,colomns and cells easily.
+    They are discussed below.
+    <h4>
+        autoUpdateSum:</h4>
+    <p>
+        Hooks up to the change event of all the textboxes in the passed column. When the
+        change event is fired, it recalculates the sum of the column and updates the footer
+        text.
+    </p>
+    Example: in $(document).ready you can pass the column name as shown below to automatically
+    update the PiecesToday column.
+    <pre>
+        $(document).ready(function() { $('form#frmRmaSku #gvSKU').gridViewEx('autoUpdateSum',
+        'PiecesToday'); });
+    </pre>
+    <h4>
+        cell:</h4>
+    <p>
+        Given the row and column, returns a specific TD element. Row can be a jquery object
+        representing a tr element (typically returned by row method), or it can be an array
+        of keys.
+    </p>
+    Example1: in you can pass the column name as shown below to automatically update
+    the start_date and cancel_date column.
+    <pre>
+      function gvPo_EditDates_Click(keys) {
+            var $tr = $(this).gridViewEx('row', keys);
+            _selectedKeys = keys;
+            _$selectedRow = $tr.addClass('ui-selected');
+        }
+        ///call page method to update order dates
+                CallPageMethod(
+                "UpdateOrderDates", data, function(result) {
+                    //on success put latest text to start_date and cancel_date column .
+                    $(_grid).gridViewEx('cell', _$selectedRow, 'start_date').latestText(data.startDate);
+                    $(_grid).gridViewEx('cell', _$selectedRow, 'cancel_date').latestText(data.orderCancelDate)
+                    $(dlg).dialog('close');
+                },
+                function(xhr, status, e) {
+                    // On failure.
+                    alert(xhr.responseText);
+                }
+            );
+    </pre>
+    Example2:&nbsp;&nbsp; In this case we find row of grid which are click then cell then there value.&nbsp;
+    <pre>
+    "function(keys){          
+            var $row=$('#gvCartonAudit').gridViewEx('row',keys);
+            var $cell=$('#gvCartonAudit').gridViewEx('cell',$row,'groupid');            
+            var group_id=$('#group_id',$cell).text();            
+            $('#dlgCartonAuditTransaction').ajaxDialog('option','data',{group_id:group_id})
+            .ajaxDialog('load');
+                      
+            }"
+    </pre>
+</body>
+</html>

@@ -1,0 +1,314 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+    <style type="text/css">
+        .style1
+        {
+            font-weight: bold;
+            font-style: italic;
+        }
+        .style2
+        {
+            font-weight: bold;
+        }
+        .style3
+        {
+            font-weight: normal;
+            font-style: normal;
+        }
+        .style4
+        {
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <form name="Form1" method="post" action="ReportDoc.aspx?_Report=C%3a%5cDCMSLive%5cReports%5cR130.31.xsd"
+    id="Form1">
+    <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTEzNDA3MDMyNjVkZPEvTwECqjV0POB+FxLkh0ryqz4e" />
+    <h1 align="center">
+        130<b>.</b>31<b> : No. Of cartons of each label in each building</b></h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    $Revision: 4571 $
+    <br />
+    Reviewed By : Hemant K. Varshney<br />
+    Status: Tested
+    <br />
+        Tested By : Shivani Bist
+    <h2>
+        Overview</h2>
+    <p>
+        Displays label wise carton count of specific inventory quality in numbered areas 
+        of all buildings.</p>
+    <p>
+        <strong>Note :-</strong>If the building is not known then it will be addressed as
+        unknown.</p>
+    <h2>
+        Algorithm</h2>
+    The carton details along with Virtual Warehouse are retrieved from src_carton table. The building for carton is retrieved from tab_inventory_area
+    and maaster_storage_location tables and label from master_style.<h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="20%" align="center">
+                <b>Name</b>
+            </td>
+            <td width="20%" align="center">
+                Type
+            </td>
+            <td width="20%" align="center">
+                <b>Default</b>
+            </td>
+            <td width="60%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Quality Code
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                Please Select
+            </td>
+            <td>
+                Quality of the cartons
+            </td>
+        </tr>
+    </table>
+    &nbsp;<h3>
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="25%" align="center">
+                <b>Item</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Summary</b>
+            </td>
+            <td width="10%" align="center">
+                <b>Sort Sequence</b>
+            </td>
+            <td width="35%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                <r:item term="Warehouse Location" key="true" sortsequence="1">
+            &nbsp;Building of cartons.
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td class="style1">
+                <b><span class="style3">VWh</span><i> </i></b>
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2
+            </td>
+            <td>
+                <r:item term="VWH ID" key="true" sortsequence="2">
+            The virtual warehouse Id.
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Quality
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Quality&nbsp; of carton count.
+            </td>
+        </tr>
+        <tr>
+            <td class="style2">
+                <span class="style4">Label</span>
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                3
+            </td>
+            <td>
+                L<r:item term="Label" key="true" sortsequence="3">abel of the SKU contains by the carton.
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No Of Cartons
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="No Of Cartons" summary="Sum">
+            The count of total cartons.
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total</td>
+            <td>
+                Sum</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                total&nbsp; no. of cartons for all virtual warehouse in each building and each 
+                label.</td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 0.5</i> second</p>
+    &nbsp;<h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Changed name of column&nbsp; from Wloc to Building.</li>
+        <li>If the building is not known then it will be addressed as unknown.</li>
+        <li>Only quality filter is required to run this report. It will show everything for 
+            the pass quality.</li>
+        <li>Changed report title from &quot;Numbered Area Carton Details Report&quot; to No. Of 
+            cartons of each label in each building.</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    No Known Issue.
+    <br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Synonyms used in the report are</p>
+    <p>
+        SRC_CARTON,
+        <br />
+        SRC_CARTON_DETAIL,<br />
+        MASTER_STYLE,<br />
+        MASTER_STORAGE_LOCATION,<br />
+        TAB_INVENTORY_AREA</p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        create or replace synonym SRC_CARTON for dcms4.SRC_CARTON;<br />
+        create or replace synonym SRC_CARTON_DETAIL for dcms4.SRC_CARTON_DETAIL;
+        <br />
+        create or replace synonym MASTER_STYLE for dcms4.MASTER_STYLE;
+        <br />
+        create or replace synonym MASTER_STORAGE_LOCATION for dcms4.MASTER_STORAGE_LOCATION;<br />
+        create or replace synonym TAB_INVENTORY_AREA for dcms4.TAB_INVENTORY_AREA;
+        <br />
+        <br />
+        There is no appSetting used in the report.</p>
+    <h2>
+        Query's documentation:</h2>
+    <ul>
+        <li>
+            <r:doc>
+            The query will get all the carton details along with warehouse Id from tables src_carton and src_carton_detail.
+            The label assigned to carton is retrieved from master_style. The warehouse location for carton is retrieved on the basis of location in master_storage_location.
+          </r:doc>
+            <pre>
+          WITH Q1 AS
+ (SELECT CTN.VWH_ID AS VWH_ID,
+         CTN.CARTON_ID AS CARTON,
+         COUNT(DISTINCT CTN.CARTON_ID) OVER(PARTITION BY COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                  MSLOC.WAREHOUSE_LOCATION_ID,
+                  'Unknown'),MS.LABEL_ID) AS NO_OF_CARTONS,
+         MS.LABEL_ID AS LABEL_ID,
+         COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                  MSLOC.WAREHOUSE_LOCATION_ID,
+                  'Unknown') AS WAREHOUSE_LOCATION_ID
+    FROM SRC_CARTON CTN
+   INNER JOIN SRC_CARTON_DETAIL CTNDET
+      ON CTN.CARTON_ID = CTNDET.CARTON_ID
+   INNER JOIN MASTER_SKU MSKU
+      ON CTNDET.SKU_ID = MSKU.SKU_ID
+    LEFT OUTER JOIN MASTER_STYLE MS
+      ON MSKU.STYLE = MS.STYLE
+    LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSLOC
+      ON CTN.LOCATION_ID = MSLOC.LOCATION_ID
+     AND CTN.CARTON_STORAGE_AREA = MSLOC.STORAGE_AREA
+   INNER JOIN TAB_INVENTORY_AREA TIA
+      ON CTN.CARTON_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+   WHERE TIA.LOCATION_NUMBERING_FLAG = 'Y'
+    <if>and ctn.quality_code=:quality_code</if>)
+SELECT *
+  FROM Q1 PIVOT XML(COUNT(DISTINCT CARTON) AS CARTON FOR(VWH_ID) IN(ANY))</pre>
+        </li>
+    </ul>
+    <h2>
+        Validation details<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <b>Query1: Below query shows carton count per quality.</b>
+    <pre>
+            SELECT COUNT(S.CARTON_ID)
+            FROM SRC_CARTON S
+            INNER JOIN TAB_INVENTORY_AREA T
+            ON S.CARTON_STORAGE_AREA = T.INVENTORY_STORAGE_AREA
+            WHERE S.QUALITY_CODE = '01'
+            AND T.LOCATION_NUMBERING_FLAG = 'Y'
+            </pre>
+    <b>Query2 : Below query show the carton count quality code and&nbsp; building wise.</b>
+    <pre>
+            SELECT COUNT(S.CARTON_ID)
+            FROM SRC_CARTON S
+            LEFT OUTER JOIN MASTER_STORAGE_LOCATION M
+            ON S.CARTON_STORAGE_AREA = M.STORAGE_AREA
+            AND S.LOCATION_ID = M.LOCATION_ID
+            INNER JOIN TAB_INVENTORY_AREA T
+            ON S.CARTON_STORAGE_AREA = T.INVENTORY_STORAGE_AREA
+            WHERE S.QUALITY_CODE = '01'
+            AND NVL(T.WAREHOUSE_LOCATION_ID, M.WAREHOUSE_LOCATION_ID) = 'FDC'
+            AND T.LOCATION_NUMBERING_FLAG = 'Y'
+            </pre>
+    <b>Query3: Below query shows the carton count label wise</b>
+    <pre>
+            SELECT COUNT(S.CARTON_ID)
+  FROM SRC_CARTON S
+ INNER JOIN SRC_CARTON_DETAIL SD
+    ON S.CARTON_ID = SD.CARTON_ID
+ INNER JOIN MASTER_STYLE MS
+    ON SD.STYLE = MS.STYLE
+  LEFT OUTER JOIN MASTER_STORAGE_LOCATION M
+    ON S.CARTON_STORAGE_AREA = M.STORAGE_AREA
+   AND S.LOCATION_ID = M.LOCATION_ID
+ INNER JOIN TAB_INVENTORY_AREA T
+    ON S.CARTON_STORAGE_AREA = T.INVENTORY_STORAGE_AREA
+ WHERE S.QUALITY_CODE = '01'
+   AND MS.LABEL_ID = 'FL'
+   AND NVL(T.WAREHOUSE_LOCATION_ID, M.WAREHOUSE_LOCATION_ID) = 'FDC'
+   AND T.LOCATION_NUMBERING_FLAG = 'Y'
+            </pre>
+    </form>
+</body>
+</html>

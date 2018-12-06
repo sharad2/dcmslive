@@ -1,0 +1,93 @@
+﻿/*****************************************  Styles on master page  *******************************************/
+
+
+/*  Programming: Eclipse Systems (P) Ltd., NOIDA, INDIA
+ *  E-mail: support@eclsys.com
+ *
+ *  $Revision: 36659 $
+ *  $Author: ssinghal $
+ *  $HeadURL: http://vcs.eclipse.com/svn/net35/Projects/XTremeReporter3/trunk/Website/App_Themes/Default/Default.css$
+ *  $Id: Default.css 36659 2010-10-26 06:23:22Z ssinghal $
+ * Version Control Template Added.
+ */
+
+
+body
+{
+    font-size: 62.5%;
+}
+
+
+
+#page-wrap
+{
+    min-width: 780px;
+    max-width: 1260px;
+    margin: 10px auto;
+}
+
+
+.main-content
+{
+    padding-left: 200px;
+}
+
+
+#left-sidebar
+{
+    width: 159px;
+    float: left;
+    padding-left: 1mm;
+    height: 72px;
+}
+
+#footer
+{
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.pageTitle
+{
+    font-family: Times New Roman;
+    font-size: 18pt;
+    font-style: italic;
+}
+
+.ExecutionTime
+{
+    margin: 4mm 1mm 1mm 1mm;
+    padding: 1mm 1mm 1mm 1mm;
+}
+
+/************** Specialized columns *****************/
+.DateColumn
+{
+    white-space: nowrap;
+    text-align: right;
+    mso-number-format: "\[$-409\]m\\\/d\\\/yyyy\\ h\:mm\:ss\\ AM\/PM\;\@";
+}
+.ecl-appliedfilters
+{
+    margin-top: 0mm!important;
+    padding-top: .5mm!important;
+    padding-bottom: 0em!important;
+}
+
+.ecl-appliedfilters .ecl-appliedfilters_nofilters
+{
+    margin: 0mm 0mm 0mm 0mm!important;
+}
+
+
+html>/**/body .gvex-expandcollapse
+{
+    margin-top:0em!important;
+    margin-left:1em!important;
+    margin-bottom:0.5em!important;
+}
+.gvex-expandcollapse 
+{
+    margin: 0em 0em 0.5em 1em!important;
+}

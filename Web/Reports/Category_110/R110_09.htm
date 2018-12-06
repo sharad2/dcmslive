@@ -1,0 +1,630 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h1 align="center">
+        110<b>.0</b>9<b> : </b>SKUs in a Purchase Order</h1>
+    <h3>
+        Author : Chetan Kumar</h3>
+    $Revision: 515 $<br />
+    Status: Reviewed & Tested<br />
+    Reviewed By : Pravin Awasthi<br />
+    Tested By : G Lal
+    <p>
+        This report displays details of all SKUs in the specified PO. The report displays
+        a detailed status of ordered SKUs customer wise and how much quantity is short for
+        particular SKU along with the Virtual Warehouse. You can further restrict the SKUs
+        included by specifying optional filters.
+    </p>
+    <h2>
+        Overview</h2>
+    <p>
+        The report displays a ordered quantity of the SKUs ordered based on specified PO.
+        The report also displays the short pieces to complete the packing of passed PO on
+        the basis of total ordered pieces and total packed pieces. This report also displays
+        the location of the SKUs in a PO, if more than one location exists we are displaying
+        the MAX location number and if no location is assigned report will display No Location
+        against that SKU.</p>
+    <h2>
+        Output</h2>
+    <p>
+        Report is showing % progress of PO on the above of grid view.</p>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td width="25%" align="center">
+                    <b>Item</b>
+                </td>
+                <td width="20%" align="center">
+                    <b>Summary</b>
+                </td>
+                <td width="10%" align="center">
+                    <b>Default Sort Sequence</b>
+                </td>
+                <td width="35%" align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Customer ID
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    &nbsp; 2
+                </td>
+                <td>
+                    The Customer ID of Purchase Order
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Customer Name
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    &nbsp; 1
+                </td>
+                <td>
+                    The Customer Name
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    UPC Code
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    &nbsp;
+                </td>
+                <td>
+                    The UPC_CODE of SKU
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Style
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                </td>
+                <td>
+                    The Style of SKU
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Color
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                </td>
+                <td>
+                    The Color of SKU
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Dimension
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                </td>
+                <td>
+                    The Dimmension of SKU
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Size
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                </td>
+                <td>
+                    The Size of SKU
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Quantity Ordered
+                </td>
+                <td>
+                    SUM
+                </td>
+                <td align="center">
+                </td>
+                <td>
+                    The ordered quantity of SKU
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Quantity Short
+                </td>
+                <td>
+                    SUM
+                </td>
+                <td align="center">
+                </td>
+                <td>
+                    The short quantity of SKU. It is calculated as total quantity ordered - total quantity
+                    packed in box.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Assigned FPK Location
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    3
+                </td>
+                <td>
+                    The Location in forward pick area, to which the SKU is assigned.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VWh
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                </td>
+                <td>
+                    The virtaul warehouse of Location in forward pick area, to which the SKU is assigned.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td width="20%" align="center">
+                    <b>Name</b>
+                </td>
+                <td width="20%" align="center">
+                    <b>Default</b>
+                </td>
+                <td width="60%" align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    PO
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                    Specify PO whose details want to see.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Customer ID
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                    Specify customer ID if you want to see the detail for particular customer.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pickslip Import Date
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                    Date range in which the Pickslip was imported. Use this filter if a customer orders
+                    multiple times using the same PO Id. This is also useful for large POs because you
+                    can filter out some of the pickslips.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Ship Date
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                    Specify a date if you are interested in only those pickslips which were shipped
+                    on a specific date.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Virtual Warehouse
+                </td>
+                <td>
+                    All warehouses
+                </td>
+                <td>
+                    Each pickslip belongs to a particular virtual warehouse. A PO could contain pickslips
+                    of multiple warehouses. Specify a warehouse if you interested in a specific warehouse.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        More Filters
+    </h2>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center" width="20%">
+                <b>Name</b>
+            </td>
+            <td align="center" width="20%">
+                <b>Default</b>
+            </td>
+            <td align="center" width="60%">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Customer Order Type
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                Customer order type.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                DC Cancel From Date
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                The DC Cancel date from which you want to display information.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                DC Cancel To Date
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                The DC Cancel date to which you want to display information.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Label
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                The Label Id of Style.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>10 Sec.</p>
+    This Report displays the linear performance with respect to ps, psdet, po, cust,
+    box, boxdet, ship, ialoc, master_sku, dem_pickslip and dem_pickslip_detail. There
+    is index based scan on the table ps, psdet, po, cust, box, boxdet, ship, master_sku,
+    dem_pickslip and dem_pickslip_detail. Index PSDET_PICKSLIP_FK_I used in the table
+    PSDET, Index PS_PO_I, PSDET_PS_FK_I used in the table DEM_PICKSLIP, Index CUST_PK
+    used in the CUST table , Index SHIP_SHIP_DATE_I used in the table SHIP, Index BOX_PS_FK_I,
+    BOXDET_PK used in the BOX table,Index SKU_UK used in the MASTER_SKU table, INDEX
+    PS_TRANSFER_DATE_I is full scan and Table ialoc is full scan.
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>We have removed the&nbsp; "pickslip type" parameter from this report. By NM 17th
+            July 2009 email subject &quot;110.11 report is slow (ticket 77593)&quot; dated 17
+            July 2009. </li>
+        <li>Added the New Tab More Filters for showing the customer order type, DC Cancel Date
+            and Label ID as parameter. These parmeter are passing from the Main Report 110.11
+            to Report 110.10 and then this report. As per email 110.11 report is slow(ticket
+            77593) dated 26th August 2009.</li>
+        <li>In this report we are using partition keys transfer_ date and stop_process_date,
+            And due to this reason data may mismatch when compared to the older version of this
+            report. </li>
+        <li>Sorting order has been change. </li>
+    </ul>
+    <h2>
+        Issues</h2>
+    No Known Issue.
+    <br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        ps,<br />
+        psdet,<br />
+        po,<br />
+        box,<br />
+        boxdet,<br />
+        ialoc,<br />
+        ship,<br />
+        cust,<br />
+        dem_pickslip,<br />
+        dem_pickslip_detail,<br />
+        master_sku
+    </p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>create or replace synonym ps for dcms8.ps;<br />
+            create or replace synonym psdet for dcms8.psdet;<br />
+            create or replace synonym po for dcms8.po;<br />
+            create or replace synonym box for dcms8.box;<br />
+            create or replace synonym boxdet for dcms8.boxdet;<br />
+            create or replace synonym ialoc for dcms8.ialoc;<br />
+            create or replace synonym ship FOR dcms8.ship;<br />
+            create or replace synonym cust for dcms8.cust;<br />
+            create or replace synonym dem_pickslip for dcms4.dem_pickslip;<br />
+            create or replace synonym dem_pickslip_detail FOR dcms4.dem_pickslip_detail;<br />
+            create or replace synonym master_sku for DCMS4.master_sku;</code></p>
+    <p>
+        No appSettings is required:</p>
+    <h2>
+        Technical Documentaion</h2>
+    <div id="divTechnical">
+        <h2>
+            Parameter Technical Details</h2>
+        <ul>
+            <li>PO (Type =String): Customer Purchase Order Id
+                <li>Customer Id (Type = String): The customer whose purchase order you are interested
+                    in
+                    <li>Pickslip Import Date (Type = Date): Restrict output to pickslips imported within
+                        this date range This is a date range control.
+                        <li>Ship Date (Type =Date): The customer whose purchase order you are interested in
+                            <li>Virtual Warehouse (Type = String): This is a list parameter control. By default,
+                                inventory of all Virtual Warehouse is shown for each area. If your focus is on the
+                                inventory in a particular Virtual Warehouse, Specify that Virtual Warehouse Id.
+                                Null value text is "All".
+                                <ul>
+                                    <li>Query to fill list values = "select tab_virtual_warehouse.vwh_id, tab_virtual_warehouse.vwh_id
+                                        from tab_virtual_warehouse" </li>
+                                </ul>
+        </ul>
+        <h2>
+            Parameter Validation</h2>
+        No special validations.<br />
+        <h2>
+            Query's documentation:</h2>
+        <ul>
+            <li>For each SKU in the PO, gets all required information: </li>
+        </ul>
+        <pre>
+  with all_ordered as (
+        SELECT psdet.upc_code AS upc_code,
+         psdet.pieces_ordered AS pieces_ordered,
+               ps.vwh_id AS vwh_id,
+               ps.customer_id AS customer_id
+        FROM psdet
+         INNER JOIN ps ON ps.pickslip_id = psdet.pickslip_id
+         [$:from_dc_cancel_date$INNER JOIN po ON po.po_id = ps.po_id
+                                             AND po.customer_id = ps.customer_id
+                                             AND po.iteration = ps.iteration$]
+                                             
+         WHERE ps.po_id = :po_id
+           AND ps.reporting_status IS NOT NULL
+           AND ps.transfer_date is null
+         [$:customer_id$AND ps.customer_id = :customer_id$]
+           [$:vwh_id$AND ps.vwh_id = :vwh_id$]
+           [$:reporting_status$AND ps.reporting_status = :reporting_status$]
+           [$:iteration$AND ps.iteration = :iteration$]
+           [$:min_pickslip_import_date$AND ps.pickslip_import_date &gt;= :min_pickslip_import_date$]
+           [$:max_pickslip_import_date$AND ps.pickslip_import_date &lt; :max_pickslip_import_date +1$]
+           [$:from_dc_cancel_date$AND po.dc_cancel_date &gt;= :from_dc_cancel_date$]
+           [$:to_dc_cancel_date$AND po.dc_cancel_date &lt; :to_dc_cancel_date+1$]
+           [$:pickslip_prefix$AND ps.pickslip_prefix = :pickslip_prefix$]
+           [$:label_id$AND ps.label_id = :label_id$]
+           [$:customer_type='D'$AND ps.export_flag IS NULL$]
+           [$:customer_type='I'$AND ps.export_flag = 'Y'$]                
+        UNION ALL
+        SELECT dempsdet.upc_code AS upc_code,
+         dempsdet.quantity_ordered AS pieces_ordered,
+               dps.vwh_id AS vwh_id,
+               dps.customer_id AS customer_id
+        FROM dem_pickslip_detail dempsdet
+         INNER JOIN dem_pickslip dps ON dps.pickslip_id = dempsdet.pickslip_id
+         WHERE dps.ps_status_id = 1
+         AND dps.customer_order_id = :po_id
+         [$:customer_id$AND dps.customer_id = :customer_id$]
+         [$:min_pickslip_import_date$AND dps.pickslip_import_date &gt;=:min_pickslip_import_date$]
+           [$:max_pickslip_import_date$AND dps.pickslip_import_date &lt; :max_pickslip_import_date +1$]
+           [$:vwh_id$AND dps.vwh_id = :vwh_id$]
+           [$:from_dc_cancel_date$AND dps.dc_cancel_date &gt;= :from_dc_cancel_date$]
+           [$:to_dc_cancel_date$AND dps.dc_cancel_date &lt; :to_dc_cancel_date+1$]
+           [$:pickslip_prefix$AND dps.pickslip_prefix = :pickslip_prefix$]
+           [$:label_id$AND dps.pickslip_type = :label_id$]
+           [$:customer_type='D'$AND dps.export_flag IS NULL$]
+           [$:customer_type='I'$AND dps.export_flag = 'Y'$]
+        ),
+        sku_ordered AS (
+        SELECT upc_code AS upc_code,
+               SUM(pieces_ordered) AS pieces_ordered,
+               vwh_id AS vwh_id,
+               customer_id AS customer_id
+          FROM all_ordered
+         GROUP BY upc_code, vwh_id, customer_id
+        ),
+        sku_shipped AS (
+        SELECT boxdet.upc_code AS upc_code,
+               SUM(boxdet.current_pieces) AS current_pieces,
+               ps.vwh_id AS vwh_id,
+               ps.customer_id AS customer_id
+          FROM boxdet
+         INNER JOIN ps ON ps.pickslip_id = boxdet.pickslip_id
+         INNER JOIN box ON box.pickslip_id = ps.pickslip_id
+             AND box.ucc128_id = boxdet.ucc128_id
+         [$:from_dc_cancel_date$INNER JOIN po ON po.po_id = ps.po_id
+                                             AND po.customer_id = ps.customer_id
+                                             AND po.iteration = ps.iteration$]
+          [$:ship_date$LEFT OUTER JOIN ship ON ps.shipping_id = ship.shipping_id$]
+         WHERE ps.po_id = :po_id
+           AND ps.reporting_status IS NOT NULL
+         [$:customer_id$AND ps.customer_id = :customer_id$]
+           [$:ship_date$AND ship.ship_date Between trunc(:ship_date) and trunc(:ship_date + 1)$]
+           [$:vwh_id$AND ps.vwh_id = :vwh_id$]
+           [$:reporting_status$AND ps.reporting_status = :reporting_status$]
+           [$:iteration$AND ps.iteration = :iteration$]
+           [$:min_pickslip_import_date$AND ps.pickslip_import_date &gt;= :min_pickslip_import_date$]
+           [$:max_pickslip_import_date$AND ps.pickslip_import_date &lt; :max_pickslip_import_date +1$]
+           [$:from_dc_cancel_date$AND po.dc_cancel_date &gt;= :from_dc_cancel_date$]
+           [$:to_dc_cancel_date$AND po.dc_cancel_date &lt; :to_dc_cancel_date+1$]
+           [$:pickslip_prefix$AND ps.pickslip_prefix = :pickslip_prefix$]
+           [$:label_id$AND ps.label_id = :label_id$]
+           [$:customer_type='D'$AND ps.export_flag IS NULL$]
+           [$:customer_type='I'$AND ps.export_flag = 'Y'$]
+           AND ps.transfer_date is null
+           AND box.stop_process_date is null
+           AND boxdet.stop_process_date is null           
+         GROUP BY boxdet.upc_code,
+                  ps.vwh_id,
+                  ps.customer_id
+         ),
+        ialoc_info AS 
+        (
+        SELECT il.assigned_upc_code assigned_upc_code,
+               il.vwh_id vwh_id,
+               MAX(il.location_id) location_id
+          FROM ialoc il
+         GROUP BY il.assigned_upc_code,
+                  il.vwh_id
+        )
+
+        SELECT skuo.vwh_id AS vwh_id,
+               skuo.customer_id AS customer_id,
+               skuo.upc_code,
+               nvl(skuo.pieces_ordered, 0)  AS total_quantity_ordered,
+               nvl(skus.current_pieces, 0) as current_pieces,
+               nvl(skuo.pieces_ordered, 0) - nvl(skus.current_pieces, 0) AS shortage_in_pieces,
+               cust.NAME AS customer_name,
+               sku.style AS style,
+               sku.color AS color,
+               sku.dimension AS dimension,
+               sku.sku_size AS sku_size,
+               nvl(iloc.location_id, 'No Location') AS assgined_fpk_location
+       FROM sku_ordered skuo
+       LEFT OUTER JOIN sku_shipped skus ON skuo.upc_code = skus.upc_code
+                             AND skuo.vwh_id = skus.vwh_id
+                         AND skuo.customer_id = skus.customer_id
+          LEFT OUTER JOIN master_sku sku ON sku.upc_code = skuo.upc_code
+          LEFT OUTER JOIN ialoc_info iloc ON iloc.assigned_upc_code = skuo.upc_code
+                                         AND iloc.vwh_id = skuo.vwh_id
+          LEFT OUTER JOIN cust cust ON cust.customer_id = skuo.customer_id                                   
+        </pre>
+        <h2>
+            Validation details</h2>
+        Bellow queries may have the where clause in the [] brackets. It means these are
+        the optional parameters. If you do not want to pass these parameters just remove
+        the [] section.<br />
+        <b>
+            <br />
+            Query1:</b><pre>             SELECT UPC_CODE, SUM(PSDET.PIECES_ORDERED)
+              FROM PS, PSDET
+              WHERE PS.PICKSLIP_ID = PSDET.PICKSLIP_ID
+              AND PS.PO_ID= :PO_ID
+              and ps.reporting_status is not null
+              GROUP BY UPC_CODE;
+            </pre>
+        <b>Description:</b><pre>
+            Enter the PO_ID and validiate the result same for quantity ordered.
+</pre>
+        <b>Query2:</b><pre>            SELECT I.ASSIGNED_UPC_CODE, i.location_id
+               FROM IALOC I
+              WHERE I.ASSIGNED_UPC_CODE IN
+                         (SELECT UPC_CODE
+                            FROM PS, PSDET
+                           WHERE PS.PICKSLIP_ID = PSDET.PICKSLIP_ID
+                             AND PS.PO_ID = :PO_ID
+                             and ps.reporting_status is not null);
+            </pre>
+        <b>Description:</b><pre>
+            Enter the PO_ID and validiate the result same for assigned fpk location.</pre>
+    </div>
+    <p>
+        <b>Query3:</b></p>
+    <pre>
+        SELECT nvl((SELECT SUM(dpdet.quantity_ordered) 
+                     FROM dem_pickslip dps 
+                    INNER JOIN dem_pickslip_detail dpdet ON dps.pickslip_id = dpdet.pickslip_id 
+                     LEFT OUTER JOIN master_sku sku ON dpdet.upc_code = sku.upc_code 
+                    WHERE dps.ps_status_id = 1 
+                      AND dps.customer_order_id = :PO_ID
+                      AND dps.customer_id = :customer_id 
+                      AND dps.pickslip_import_date between :min_pickslip_import_date and :max_pickslip_import_date
+                      AND dps.vwh_id = :vwh_id
+                      AND sku.inactive_flag IS NULL),0) + 
+               nvl((SELECT SUM(psdet.pieces_ordered) 
+                     FROM ps 
+                    INNER JOIN psdet ON ps.pickslip_id = psdet.pickslip_id
+                     LEFT OUTER JOIN master_sku sku ON psdet.upc_code = sku.upc_code  
+                    WHERE ps.po_id = :PO_ID
+                      AND ps.customer_id = :customer_id 
+                      AND ps.pickslip_import_date  between :min_pickslip_import_date and :max_pickslip_import_date 
+                      AND ps.vwh_id = :vwh_id
+                      AND sku.inactive_flag IS NULL
+                      and ps.reporting_status is not null),0) as total_quantity 
+           from dual;
+      </pre>
+    <b>Description:</b><pre>
+    Enter po, customer_id, pickslip_import_date / date range and vwh_id value in the above query you will get total quantity ordered.
+        </pre>
+    <b>Query4:</b><pre> SELECT /*+ INDEX(boxdet boxdet_pk) */ 
+       nvl(SUM(boxdet.current_pieces), 0) as total_quantity_box
+  FROM box 
+ INNER JOIN boxdet ON boxdet.ucc128_id = box.ucc128_id 
+                  AND boxdet.pickslip_id = box.pickslip_id 
+ INNER JOIN ps ON box.pickslip_id = ps.pickslip_id 
+  LEFT OUTER JOIN master_sku sku ON boxdet.upc_code = sku.upc_code
+ WHERE ps.po_id = :po_id
+   AND ps.customer_id = :customer_id
+   AND ps.pickslip_import_date between :min_pickslip_import_date and :max_pickslip_import_date
+   AND ps.vwh_id = :vwh_id 
+   AND sku.inactive_flag IS NULL
+   and ps.reporting_status is not null;
+     </pre>
+    <b>Description:</b><pre>
+    Enter same po, customer_id, pickslip_import_date / date range and vwh_id value in the above query you will get total quantity in box.
+        </pre>
+    <b>Calculation for short pieces</b><pre> Total Short quantity = total_quantity - total_quantity_box
+     </pre>
+    <b>Description:</b><pre>
+    Getting the value of total_quantity from query3 and total_quantity_box from query 4 then you will get short quantity in po.
+  </pre>
+</body>
+</html>

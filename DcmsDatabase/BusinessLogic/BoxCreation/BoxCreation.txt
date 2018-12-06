@@ -1,0 +1,95 @@
+﻿Algorithm:
+Handle the box contraints during the box creation
+
+-- SKU Contraints
+	Single Sku per box if $SSB is set as Y or SCDZ in splh or custsplh table for that customer.
+	Single Style Color per box, if $SSB is set as SC in splh or custsplh table for that customer.
+	No constraint if $SSB is set as NULL or no row for $SSB in splh or custsplh table for that customer.
+	
+-- Pickslip level min max pieces
+	If PSMINMAX is required assume $SSB is on and put one sku per box and honor the min max pieces.
+	If PSMINMAX is set as Y then also honor the $SSB if its valus is SC mix the SKU according to thier mon max pieces for single style color
+	This will ensure how many pieces can be put in one box according to defined min max pieces at pickslip level per sku.
+	In case in min max pieces are not defined and $PSMINMAX is set as REQUIRED, this will give the error.
+	
+Compute a possible solution for each SKU case.
+Accept the solution which has the minimum number of boxes. In case of a tie, use the solution which is using the
+smallest case.
+
+If a SKU is too large cannot fit 1 piece in any case, we will atleast use 1 pieces in each case try to use smaller case.
+
+Finally, attempt to use a smaller case for each box in the hope of reducing unused space even futher.
+If the case is over full, we will try to use a larger case.
+
+Goal:
+We make a best effort to create the boxes even if some customer specified conditions come in the way.
+
+
+Error Handling:
+We describe what violations are possible and how we handle them.
+- One of the SKUs is too big to fit in any SKU case. In this situation, we use the largest case available.
+On the floor, the operator might discover that the case is too small, but at least she gets a chance to use
+a more reasonable case.
+- Missing Volume for SKU. Raises error.
+- Missing volume for Case. The case is not considered. If no cases left, raises error.
+
+
+Box Constraints 
+---------------------------------------------------
+-: BOX CREATION CONSTRAINTS :-
+
+1.	First check the value of splh PSMINMAX 
+
+IF ($PSMINMAX  == REQUIRED)
+{
+Then honor psdet min max limit. 
+
+
+Through exception and not make bucket avl if min max is not defied in psdet table.
+// Assume $SSB to be on (no need to check in ‘custsplh’ table).
+
+}
+
+Else ($PSMINMAX == Y)
+{ 
+Honor PSDET min max limit including all other customer 
+special handlings which are defined in  table custsplh table. 
+}
+
+2.	HANDLING of SSB:-
+
+This splh should be checked only if $PSMINMAX is not set to 'REQUIRED'
+Under this splh you will have to handle the SC and SCDZ splh values.
+
+3.	Now get min and max piece limits for label. 
+
+IF(all the skus are not having same label)
+{
+SKUs with multiple label Ids exists. We will not try to honor the min/max piece limit at label level
+}
+
+IF(all the skus are having same label)
+{
+            See the table custlblsplh for the following splh ID. 
+$MINPPB
+$MAXPPB
+}
+
+Ensure that max piece limit should be more than min piece limit
+if (value of $MAXPPB < value of $MINPPB) 
+{
+                        Throw Exception.
+}
+
+4.	Now check the custsplh value of splh $DLBP. This is for distributing last box pieces.
+
+5.	Now check the custsplh value of splh $CSEMINVOL
+Now check the custsplh value of splh $CSEMAXVOL
+
+Get all the possible box cases for the customer of the passed pickslip by following the cust level constraints. 
+If the values of splh id $CSEMINVOL and $CSEMAXVOL are defined and in the database there is no case whith in the min max volume range defined in the custsplh table then through Exception. In this scenario 
+ 
+If splh value is not defied against the splh ids $CSEMINVOL and $CSEMAXVOL then it means you do not have to take care of special volume cases so go for the max volume case.
+
+6.	Now its the turn of weight level constraints.
+In the custsplh table see the splh values of $BOXMAXWT, BOXMINWT program should take care of these customer lavel box weight constraints.

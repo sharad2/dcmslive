@@ -1,0 +1,721 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>Hourly Productivity Report</title>
+</head>
+<body>
+    <h1 align="center">
+        &nbsp;150<b>.</b>06<b> : </b>Hourly Productivity Report
+    </h1>
+    <h3>
+        Author : Manmohan Bisht</h3>
+    $Revision: 1217 $<br />
+    Status: Reviewed<br />
+    Reviewed By : Hemant K. Varshney<p>
+        This report displays the pitching and restocking hourly productivity for a given
+        operation date or date range. You can also filter on the basis of first shift,second
+        shift or all shifts along with the Vitual Warehouse and warehouse location. Displays
+        the over all productivity within the DC(Distribution center). Also display running
+        average of pitched pieces per clock hour and pieces to be pitched in one hour based
+        on the scanning time.</p>
+    <h2>
+        Overview</h2>
+    For a specified,operation date/date range the report displays the hourly productivity
+    for $RST and PITCH operation code where $RST shows the information with Restocked
+    cartons only. Information related to cartons in suspense is not displayed. The report
+    displays :<br />
+    <ul>
+        <li>Productivity for operation code $RST and PITCH during a particular hour which do
+            not include cartons in suspense.</li>
+        <li>Operation Date at which the productivity take place for a specified operation code.
+        </li>
+        <li>Start Time for a particular operation date or date range during a particular hour.
+        </li>
+        <li>End Time for a particular operation date or date range during a particular hour.
+        </li>
+        <li>Total pieces pitched or restocked between a particular operation hour of that operation
+            date. </li>
+        <li>Total Units pitched or restocked between a particular operation&nbsp; hour of that
+            operation date.</li>
+        <li>Virtual Warehouse for the pieces\units pitched or restocked for a particular operation
+            date</li>
+        <li>Calculating the average for total pieces pitch in clock hours and pieces to be 
+            pitched in one hours based on total scan time for operation code PITCH.</li>
+    </ul>
+    <h2>
+        Definitions</h2>
+    <ul>
+        <li><i>Restocking</i>
+            <ul>
+                <li>It provides functionality for restocking carton contents i.e. SKU to specific rail
+                    location for which requirement has been already generated. Requirement must be generated
+                    for a location and carton must be physically present (by pulling) at restock aisle
+                    before restocking that carton content to that particular location. </li>
+            </ul>
+        </li>
+        <li><i>Pitching</i>
+            <ul>
+                <li>A customer order is fulfilled on sending the required inventory to the respective
+                    customer. The required inventory is packed in boxes and these boxes are then shipped
+                    to the relevant customer. The process of filling the boxes with the required inventory
+                    is known as Pitching. </li>
+            </ul>
+        </li>
+        <li><i>Starting Hour</i>
+            <ul>
+                <li>The rounded value of hours of OPERATION_START_DATE for each OPERATION_CODE, WAREHOUSE_ID
+                    and OPERATION_START_DATE.<br />
+                    For eample:last activity was done at 7:01:36 i.e. Starting hours is 7:00:00</li>
+            </ul>
+        </li>
+        <li><i>Ending Hour</i>
+            <ul>
+                <li>The rounded value of hours of OPERATION_END_DATE for each OPERATION_CODE, WAREHOUSE_ID
+                    and OPERATION_START_DATE.<br />
+                    For eample:last activity was done at 7:28:36 i.e. Ending hours is 8:00:00<br />
+                </li>
+            </ul>
+        </li>
+        <li><i>Lunch</i> <i>Hour</i><ul>
+            <li>The value of lunch hours which is deducted from total hours worked for lunch time.
+                <br />
+                i.e. 0.5 hours lunch each shift. We will not deduct any lunch hours in between 5
+                to 12, we will deduct .5 as lunch hours in between 12 to 21 and after 21 we will
+                deduct 1 as lunch hours for day operation. There is hradcoding for lunch time in
+                first shift it is 12:00 PM to 12:30 PM and in secon shift it is 9:00 PM to 9:30
+                PM.<br />
+            </li>
+        </ul>
+        </li>
+        <li><i>Hours Worked</i>
+            <ul>
+                <li>The total hours worked for the day. It is cumulative hour by hour so at last
+                    we will have the total hours. The lunch break time is also deducted from respective
+                    hour. It is calculate as follows:<br />
+                    Ending Hour - Lunch Hour -&nbsp; Shift Start Hour</li>
+                <li>If this report is running for all shift then it take first shift start hour as shift
+                    start hour otherwise it take shift start time as shift start hour according to shift
+                    choosen by the user.</li>
+            </ul>
+        </li>
+        <li><i>Running average pieces per clock hour</i>
+            <ul>
+                <li>Total pieces pitched&nbsp;per hour worked per warehouse. The hours worked will
+                    be calculated from shift start time. It is calculated as follows:<br />
+                    total pieces pitched / total clock hours pitched<br />
+                    Total clock hours pitched is the time in hours from the shift start time to current
+                    hour in which he pitched those pieces.</li>
+                <li>For example, my shift start time is 7:00 AM and total pieces pitched for 10th hour(pieces
+                    pitched during 9:00 AM to 10:00 AM) are 210 then Running Average pieces per clock
+                    hour will be 210/(10 -7) = 70. If lunch hours are also coming then 30 min also deducted.<br />
+                </li>
+            </ul>
+        </li>
+        <li><i>Running average pieces per system pitch hour</i>
+            <ul>
+                <li>Total pieces pitched per system pitch hour per warehouse, calculate the pieces assuming
+                    if only user need to scan to complete the pitching. This is based on actual scan
+                    time not on process start and end time diffrence. This shows, according to system
+                    how many pieces to be pitched if only scanning will be done. It is calculate as
+                    follows:<br />
+                    total pieces pitched / total scan time.<br />
+                    Total scan time is that time, that is took by pitcher in scanning the pieces.</li>
+                <li>For example, a pitcher pitch 200 pieces for 10th hour(pieces pitched during 9:00
+                    AM to 10:00 AM), and total scan time for scanning these 200 pieces is 20 seconds,
+                    then Running average pieces per system pitch hour will be 200/(20/3600) = 4000.</li>
+            </ul>
+        </li>
+        <li><i>Actual Working start time and Ending time</i><ul>
+            <li>The first shift start time is 5.00 AM but
+                normal working start time for first shift is 7.00 AM. Due to this reason we added 
+                2 hours from the first shift start time. On the basis of normal working shift 
+                start we are calculating the running average pieces per clock hour. Also we are not shows any value in running average pieces per clock hour and Running 
+                average pieces per system pitch hours if user will start
+                his work before the start of normal working hours for first shift. </li>
+            <li>There is no difference in second shift start time and normal working hours for second
+                shift start time. Due to this reason we will not deduct any hours from second shift
+                start time. But the normal ending working hours for second shift is 2.30 AM. Due
+                this reason we will not shows any value in running average pieces per clock hour 
+                and Running average pieces per system pitch hours
+                if user will finish his work after the ending of normal working hours for second
+                shift. </li>
+        </ul>
+        </li>
+    </ul>
+    <h2>
+    Example to Show how calculation is done to calucluate values of Running average pieces per clock hour and Running average pieces per system pitch hour
+    </h2>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+    <tr>
+    <td align="center" width="25%">
+    <b>Vwh</b>
+    </td>
+    <td>
+    <b>Opeartion Date</b>
+    </td> 
+    <td>
+    <b>Start time</b>
+    </td>
+    <td>
+    <b>
+    End time
+    </b>
+    </td>
+    <td><b>Total_Pieces</b></td>
+    <td><b>Total_Units</b></td>
+    <td><b>Running Av Pieces per Clock hr</b></td>
+    <td><b>Running Av Pieces Per Pitch hr</b></td> 
+    </tr>
+    <tr>
+    <td>15</td>
+    <td>4/16/2010</td>
+    <td>15:07:44</td>
+    <td>15:49:11</td>
+    <td>31</td>
+    <td>31</td>
+    <td>3.65</td>
+    <td>57.53</td>
+    </tr>
+    <tr>
+    <td>15</td>
+    <td>4/16/2010</td>
+    <td>16:04:12</td>
+    <td>16:04:35</td>
+    <td>6</td>
+    <td>6</td>
+    <td>3.89</td>
+    <td>46.17</td>
+    </tr>
+
+    </table>
+
+   <pre>
+    Note System Hours are fetched from query and not show in grid value of system hours for first row is 1940 and second is 945 respectively<br />
+    In case there are no system_seconds we would not calculate values of Running Av Pieces per Clock hr and Running Av Pieces Per Pitch hr<br />
+    parameters passed to get this out put are as follows:-
+    Operation date From:-4/16/2010  to:-4/16/2010<br />
+    Shift=All<br />
+    Virtual Warehouse=All<br />
+    Warehouse Location=All<br />
+    <b>calculation for first row is done as follows:-</b>
+    * First We get  End time which is 15:49 PM and  Start time 15:07 PM<br />
+    * From  end time we get  working day start time,which is 5.00 AM as this example is for all shift<br />
+    * End hour is round of value of End time and that calculates as 15:00 PM<br />
+    * we add one hour in  End hour as work was performed between 15:00 PM and 16:00 PM. So End hour becomes 16:00 PM <br />
+    * Now we calculate   clock hours ,which is  calculated as  clock hours=  End hour-  Working day start<br />
+    * so it becomes   = 16.00 PM- 5.00 AM i.e 11:00 hours<br />
+    * Now we will need total hours worked which is clock hours- lunch hours<br />
+    * i.e. 0.5 hours lunch each shift. We will not deduct any lunch hours in between 5
+     to 12, we will deduct .5 as lunch hours in between 12 to 21 and after 21 we will
+    deduct 1 as lunch hours for day operation. There is hradcoding for lunch time in
+    first shift it is 12:00 PM to 12:30 PM and in secon shift it is 9:00 PM to 9:30 PM.<br />
+    * In our case we will deduct 30 minutes from clock hours as our duration of working hours is between 12 and 21.our working hours are between 15:00 PM and 16:00 PM<br />         
+    * so now total hours worked=11.00-.30 i.e 10.30<br />      
+    * if report is running for no shift or for the first shift we deduct 2 hours from total hours worked<br />
+    * since our example is also for all shifts hence total hours worked=(total hours worked-2) and it  become 8.30<br />
+    * Running Av Pieces per Clock hr = totalpices/total hours worked.hours
+                                        = 31/ 8.5
+                                        = 3.65<br />
+   Running Av Pieces Per Pitch hr=total pieces/pitched hours<br />
+   pitched hours=system seconds/3600<br />
+   system seconds are fetched from mpc_productivity.seconds_worked<br />
+   in our example systems seconds are 1940<br />
+   so pitched hours=1940/3600
+                   =0.5388
+   pitched hours= 31/0.5388
+                = 57.5257
+   while Calculating for second row pieces and pitched hours are comulated as date remain same.
+   hence pices become=31+6=37 and pitched hours=0.533 + 945/3600.
+   Rest of the calculation are done as above
+   </pre> 
+    
+    <h2>
+        Details</h2>
+    <b>Pitching Process</b> A pitcher performs the activity of pitching by picking up
+    a cart from a pre defined area, fill all the boxes present on this cart and finally
+    leaves the cart at the drop off area. From this area, a transporter moves all these
+    boxes to either the red area or green area. A cart normally contains NINE boxes
+    at a time.Before the pitching starts, a box may not be empty since earlier less
+    pieces were available due to which the box remained incomplete and now remaining
+    pieces are required to be pitched.
+    <h2>
+        Algorithm</h2>
+    Get the sum of pieces and units for a particular operation date or date range from
+    BOX_PRODUCTIVITY. and where outcome is equal to restocked for operation_code $RST
+    and PITCH. Get the system hours for a particular opertaion date or date range from
+    MPC_PRODCUTIVITY.
+    <h3>
+        Output</h3>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center" width="25%">
+                <b>Item</b>
+            </td>
+            <td align="center" width="20%">
+                <b>Summary</b>
+            </td>
+            <td align="center" width="10%">
+                <b>Sort Sequence</b>
+            </td>
+            <td align="center" width="35%">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Operation
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                Productivity for operation code $RST and PITCH during a particular hour which do
+                not include cartons in suspense
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Vwh
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                3
+            </td>
+            <td>
+                Virtual Warehouse for the pieces\units pitched or restocked for a particular operation
+                date
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Operation Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2
+            </td>
+            <td>
+                Operation Date at which the productivity take place for a specified operation code.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Start Time
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Start Time for a particular operation date or date range during a particular hour.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                End Time
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                End time for a particular operation date or date range during a particular hour.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total pieces pitched or restocked between a particular operation date.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Units
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total Units pitched or restocked between a particular operation date
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Running Av Pieces Per Clock Hour
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total pieces pitched per hours worked per warehouse. It is showing the average for
+                hourly pitching pieces from the shift start time to that hour.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Running Av Pieces Per Pitch Hour
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;Total pieces pitched per system pitch hour per warehouse. This is being caluclated
+                on the base of total scan time, it is giving the how many pieces can be pitched
+                if only scanning will be done.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pitch Hour (Hidden)
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                This column have the value for total scan time. We have this column because earlier
+                it was not clear from where we are getting the total scan time and calulating the
+                average system pitched pieces.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center" width="20%">
+                <b>Name</b>
+            </td>
+            <td align="center" width="20%">
+                <b>Default</b>
+            </td>
+            <td align="center" width="60%">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Operation Date
+            </td>
+            <td>
+                Last 7 days period
+            </td>
+            <td>
+                This allows you to view hourly productivity for last 7 days by default.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Shift
+            </td>
+            <td>
+                All shift
+            </td>
+            <td>
+                This parameter allows you to view hourly productivity for a selected shift only.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Virtual Warehouse
+            </td>
+            <td>
+                All Virtual Warehouses
+            </td>
+            <td>
+                This allow you to view hourly productivity for a selected virtual warehouse.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Warehouse Location
+            </td>
+            <td>
+                All Warehouse Locations
+            </td>
+            <td>
+                This allow you to view hourly productivity for a selected Warehouse Location.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 10</i> second This report will exhibit
+        linear performance with respect to the number of records in box_productivity, mpc_productivity,
+        mpc, mpcloc , master_sku, master_style, tab_label_group and tab_warehouse_location
+        table, which qualify for the passed date range. Perfomance is degraded due to the
+        adding the table mpc_productivity.
+    </p>
+    &nbsp;<h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Added the two new column Running avg pieces for clock hour and pitch hour only for
+            PITCH operation.BY NM 26 Aug 2009 , 150.06 run rate report enhancements (ticket
+            91930).</li>
+        <li>
+            Currently we are getting the shift start time for calculating the running average 
+            pieces per clock hour. Now we will calculate this column value on the basis of 
+            normal working start time. By NM 23 Dec 2009 email “150.06 run rate report 
+            enhancements (ticket 91930)“ 5th November 2009.For better performance now this productivity report will show productivity only 
+            on the basis of productivity tables. Changes done agaisnt Phase 4 of ticket 
+            109646.
+        </li>
+        <li>
+            For better performance now this productivity report will show productivity only on the basis of productivity tables. Changes done agaisnt Phase 4 of ticket 109646. 
+        </li>
+    </ul>
+    <h2>
+        Issues</h2>
+    No Known Issue.
+    <br />
+    <br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        box_productivity,<br />
+        mpc_productivity,<br />
+    </p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>create or replace synonym box_productivity for dcms8.box_productivity;
+            <br />
+            create or replace synonym mpc_productivity for dcms8.mpc_productivity;
+            </code></p>
+    <p>
+        Following appSettings are required:</p>
+    &lt;add key="Shifts" value="5.0,15.5"/&gt;<br />
+    <br />
+    <h2>
+        Parameter Technical Details</h2>
+    <ul>
+        <li>Opeartion date (Type = Date): Restrict output of Hourly Productivity within the
+            specified date range This is a date range control. </li>
+        <li>Shift (Type = Number): This is a list parameter control. You can select shift to
+            see the restocked productivity for the selected shift. Defaults value text is All.
+            <ul>
+                <li>Value = 1, Text = First </li>
+                <li>Value = 2, Text = Second </li>
+            </ul>
+        </li>
+        <li>Virtual Warehouse (Type = String): This is a list parameter control. Virtual Warehouse
+            ID Null value text is All.
+            <ul>
+                <li>Query to fill list values = select tvw.vwh_id, tvw.vwh_id from tab_virtual_warehouse
+                    tvw </li>
+            </ul>
+        </li>
+        <li>Warehouse Location (Type = String): This is a list parameter control. By default,
+            pitcher productivity of all Warehouse Location is shown . If your focus is on the
+            productivity in a particular Warehouse Location, Specify that Warehouse Location.
+            Null value text is All.
+            <ul>
+                <li>Query to fill list values = select warehouseloc.warehouse_location_id,warehouseloc.warehouse_location_id
+                    from :+DefaultSchemaName+:.warehouseloc </li>
+            </ul>
+        </li>
+    </ul>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.
+    <h2>
+        Query&#39;s documentation:</h2>
+    <ul>
+        <li>The query gets the number of pieces and number of units, pitched and restocked for
+            a specified date range and shift.
+            <pre> 
+  WITH hourly_productivity AS 
+        (
+            SELECT /*+index(BOXPROD BOXPROD_OPERATION_START_DATE_I) */ 
+             boxprod.operation_code AS operation_code,
+                   boxprod.operation_start_date AS operation_start_date,
+                   boxprod.num_of_pieces AS num_of_pieces,
+                   boxprod.num_of_units AS num_of_units,
+                   boxprod.vwh_id AS vwh_id,
+                   boxprod.process_id AS process_id,
+                   [$ShiftDateSelectClause$boxprod.operation_start_date$]
+              FROM box_productivity boxprod
+             WHERE ((boxprod.operation_code = '$RST' AND boxprod.outcome = 'RESTOCKED') OR
+                   (boxprod.operation_code = 'PITCH'))
+                   [$:vwh_id$AND boxprod.vwh_id = :vwh_id$]
+                   [$:warehouse_location_id$AND boxprod.warehouse_location_id = :warehouse_location_id$]
+              AND boxprod.operation_start_date &gt;= :operation_start_date_from
+              AND boxprod.operation_start_date &lt; :operation_start_date_to + 2
+              [$ShiftNumberWhere$boxprod.operation_start_date$]   
+         ),box_prod AS
+         (
+        SELECT DECODE(prod.operation_code, '$RST', 'RESTOCK', prod.operation_code) AS operation_code,
+               trunc(prod.operation_start_date, 'hh24') as operation_start_date,     
+               min(prod.operation_start_date) AS start_time,
+               max(prod.operation_start_date) AS end_time,
+               sum(prod.num_of_pieces) AS total_pieces,
+               sum(prod.num_of_units) AS total_units,
+               prod.vwh_id AS vwh_id,
+			   prod.shift_start_date AS shift_start_date
+          FROM hourly_productivity prod
+         WHERE prod.shift_start_date &gt;= :operation_start_date_from
+           AND prod.shift_start_date &lt; :operation_start_date_to + 1 
+         GROUP BY prod.operation_code, 
+                  trunc(prod.operation_start_date, 'hh24'), 
+                  prod.vwh_id,
+                  prod.shift_start_date 
+          ),mpc_prod_info AS
+         (
+         SELECT /*+index(m mpcprod_operation_date_i)*/
+                 SUM(m.seconds_worked) AS system_seconds,
+                 trunc(m.operation_date, 'hh24') AS operation_date_hour,
+                 m.mpc_id AS mpc_id,
+                 m.vwh_id AS vwh_id,
+                 [$ShiftDateSelectClause$m.operation_date$]
+	        FROM mpc_productivity m
+           WHERE m.operation_date &gt;= :operation_start_date_from
+	         AND m.operation_date &lt; :operation_start_date_to + 2
+	         [$ShiftNumberWhere$m.operation_date$] 
+             [$:vwh_id$ AND mpc.vwh_id = :vwh_id$]
+           GROUP BY trunc(m.operation_date, 'hh24'),
+					m.mpc_id,
+					m.vwh_id,
+			 [$ShiftDateGroupClause$m.operation_date$]
+        ),mpc_inner AS 
+        (
+          SELECT mpi.mpc_id AS mpc_id,
+                 mpi.vwh_id AS vwh_id,
+                 mpi.shift_start_date AS shift_start_date,
+                 mpi.operation_date_hour AS operation_date_hour,
+                 MAX(mpi.system_seconds) AS total_system_seconds
+            FROM mpc_prod_info mpi
+           WHERE mpi.shift_start_date &gt;= :operation_start_date_from
+             AND mpi.shift_start_date &lt; :operation_start_date_to + 1
+             [$:warehouse_location_id$ and mpi.warehouse_location_id = :warehouse_location_id $]
+           GROUP BY mpi.mpc_id,
+		            mpi.vwh_id,
+		            mpi.shift_start_date,
+		            mpi.operation_date_hour
+        ), mpc_prod AS 
+       (
+         SELECT mm.operation_date_hour AS operation_date_hour,
+		        mm.shift_start_date AS shift_start_date,
+		        mm.vwh_id AS vwh_id, 
+		        SUM(mm.total_system_seconds) AS total_system_seconds
+           FROM mpc_inner mm
+         GROUP BY mm.operation_date_hour,
+				  mm.shift_start_date,
+				  mm.vwh_id
+          )
+           SELECT bp.operation_code AS operation_code,
+			      bp.operation_start_date AS operation_start_date,
+			      bp.start_time AS start_time,
+			      bp.end_time AS end_time,
+			      bp.total_pieces AS total_pieces,
+			      bp.total_units AS total_units,
+			      bp.vwh_id AS vwh_id,
+			      bp.shift_start_date AS shift_start_date,
+		          CASE
+				    WHEN bp.operation_code = 'PITCH' THEN
+					  mp.total_system_seconds
+			       END AS system_seconds
+	         FROM box_prod bp
+	          LEFT OUTER JOIN mpc_prod mp ON bp.operation_start_date = mp.operation_date_hour
+										 AND bp.shift_start_date = mp.shift_start_date
+										 AND bp.vwh_id = mp.vwh_id                             
+            </pre>
+        </li>
+    </ul>
+    <h2>
+        Validation details</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.
+    <br />
+    <br />
+    <b>Query:</b><pre>
+            SELECT /*+index(BOXPROD BOXPROD_OPERATION_START_DATE_I)*/ boxprod.operation_code AS OPERATION_CODE,
+            TRUNC(boxprod.operation_start_date, &#39;hh24&#39;) AS OPERATION_DATE,
+            min(boxprod.operation_start_date) AS START_TIME,
+            max(boxprod.operation_start_date) AS END_TIME,
+            sum(boxprod.num_of_pieces) AS TOTAL_PIECES,
+            sum(boxprod.num_of_units) AS TOTAL_UNITS,
+            boxprod.vwh_id AS WAREHOUSE_ID
+            FROM box_productivity boxprod
+            where boxprod.operation_code = &#39;PITCH&#39;
+            AND boxprod.vwh_id = &#39;15&#39;
+            AND boxprod.operation_start_date &gt;=(:operation_start_date)
+            AND boxprod.operation_start_date &lt;(:operation_start_date) + 1
+            GROUP BY boxprod.operation_code,
+            TRUNC(boxprod.operation_start_date, &#39;hh24&#39;),
+            boxprod.vwh_id
+          </pre>
+    <b>Description:</b><pre>
+            Use the above query to validate the details for Pitched pieces for
+            specified date range and warehouse id.
+          </pre>
+    <b>Query:</b><pre>
+            SELECT /*+index(BOXPROD BOXPROD_OPERATION_START_DATE_I)*/ boxprod.operation_code AS OPERATION_CODE,
+            TRUNC(boxprod.operation_start_date, &#39;hh24&#39;) AS OPERATION_DATE,
+            min(boxprod.operation_start_date) AS START_TIME,
+            max(boxprod.operation_start_date) AS END_TIME,
+            sum(boxprod.num_of_pieces) AS TOTAL_PIECES,
+            sum(boxprod.num_of_units) AS TOTAL_UNITS,
+            boxprod.vwh_id AS WAREHOUSE_ID
+            FROM box_productivity boxprod
+            WHERE boxprod.operation_code = &#39;$RST&#39;
+            AND boxprod.OUTCOME = &#39;RESTOCKED&#39;
+            AND boxprod.vwh_id = &#39;15&#39;
+            AND boxprod.operation_start_date &gt;= (:operation_start_date)
+            AND boxprod.operation_start_date &lt; (:operation_start_date) + 1 
+            AND boxprod.num_of_pieces is not null
+            GROUP BY boxprod.operation_code,
+            TRUNC(boxprod.operation_start_date, &#39;hh24&#39;),
+            boxprod.vwh_id
+          </pre>
+    <b>Description:</b><pre>
+            Use the above query to validate the details for Restocked pieces for 
+            specified date range and warehouse id.
+          </pre>
+     <b>Query:</b><pre>
+           select round(sum(mpc.seconds_worked / 3600), 4) as system_hours
+           from mpc_productivity mpc
+           where mpc.operation_date between
+           to_date(':operation_start_date 00:00:00', 'mm/dd/yyyy hh24:mi:ss') and
+           to_date(':operation_start_date 23:59:59', 'mm/dd/yyyy hh24:mi:ss')
+          </pre>
+       <b>Description:</b><pre>
+            Use the above query to validate the system_hours 
+            for a given date.
+          </pre>
+    <!--End divTechnical-->
+</body>
+</html>

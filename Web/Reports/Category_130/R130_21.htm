@@ -1,0 +1,552 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//Dtd HTML 4.0 transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        130<b>.</b>21<b> : </b>Picking Area Cycle Count Report</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <br />
+    $Revision: 5601 $<br />
+    Reviewed By: Manmohan Bisht<br />
+    Status:Tested<br />
+    Tested By: Hemant K. Singh
+    <p>
+        This report displays the cycle count accuracy of forward pick locations for a specified
+        period of time. Locations displayed can be restricted by specifying pitch aisle
+        or location range. You have options to view discrepant locations only or locations
+        not scanned.
+    </p>
+    <h2>
+        Overview</h2>
+    <br />
+    Displays details of all those locations, for which the cycle count process was started
+    and completed within the specified period of time. It also displays location accuracy
+    and SKU accuracy of all the locations scanned.
+    <h2>
+        Algorithm</h2>
+    Get the cycle count information from cyc_process and cyc_process_detail table for
+    the specified period of time. If pitch aisle have been specified, get the locations
+    from ialoc table. Retrieve locations separately, if 'Show Not Scanned Locations'
+    check box has been selected.
+    <h3>
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 25%; text-align: center">
+                <b>Item</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Summary</b>
+            </td>
+            <td style="width: 10%; text-align: center">
+                <b>Default Sort Sequence</b>
+            </td>
+            <td style="width: 35%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Location
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center">
+                1
+            </td>
+            <td>
+                The Location ID, which was scanned and which was not scanned during the cycle count
+                process.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                CYC Start Date
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center">
+                &nbsp;
+            </td>
+            <td>
+                The date on which the Cycle count process was started
+            </td>
+        </tr>
+        <tr>
+            <td>
+                CYC End Date
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center">
+                &nbsp;
+            </td>
+            <td>
+                The date on which the Cycle count process was completed
+            </td>
+        </tr>
+        <tr>
+            <td>
+                UPC Code
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center">
+                &nbsp;
+            </td>
+            <td>
+                SKU at the Location
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Style
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center">
+                &nbsp;
+            </td>
+            <td>
+                Style of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Color
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center">
+                &nbsp;
+            </td>
+            <td>
+                Color of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Dimension
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center">
+                &nbsp;
+            </td>
+            <td>
+                Dimension of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                SKU Size
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center">
+                &nbsp;
+            </td>
+            <td>
+                Size of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                System Pieces
+            </td>
+            <td>
+                Sum of pieces
+            </td>
+            <td style="text-align: center">
+                &nbsp;
+            </td>
+            <td>
+                The SKU quantity at the location as shown by the System
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Scanned Pieces
+            </td>
+            <td>
+                Sum of pieces
+            </td>
+            <td style="text-align: center">
+                &nbsp;
+            </td>
+            <td>
+                The SKU quantity at the location as counted by CYC operator
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Iteration
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center">
+                &nbsp;
+            </td>
+            <td>
+                If a location is marked for the cycle count again due to discrepancy then count
+                is incremented by 1. This is called cycle count iteration
+            </td>
+        </tr>
+        <tr>
+            <td>
+                CYC User
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center">
+                &nbsp;
+            </td>
+            <td>
+                The User, who cycle counted the location
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 20%; text-align: center">
+                <b>Name</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Type</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Default</b>
+            </td>
+            <td style="width: 60%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                CYC From Date
+            </td>
+            <td>
+                Date
+            </td>
+            <td>
+                7 days before current date
+            </td>
+            <td>
+                The date when cycle count process was started.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                CYC To Date
+            </td>
+            <td>
+                Date
+            </td>
+            <td>
+                Current date
+            </td>
+            <td>
+                The date when cycle count process ended.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pitch Aisle
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                Any aisle
+            </td>
+            <td>
+                Any Pitch Aisle. If you specify the pitch aisle
+            </td>
+        </tr>
+        <tr>
+            <td>
+                From Location
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                Any location
+            </td>
+            <td>
+                Start location for a specific location range. If you provide this parameter, then
+                end location parameter should be provided also
+            </td>
+        </tr>
+        <tr>
+            <td>
+                To Location
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                Any location
+            </td>
+            <td>
+                End location for specific location range. The corresponding start location should
+                be provided also
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Hide No Discrepant Location
+            </td>
+            <td>
+                Boolean
+            </td>
+            <td>
+                False
+            </td>
+            <td>
+                This can be used to view discrepant locations only.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Show Not Scanned Locations
+            </td>
+            <td>
+                Boolean
+            </td>
+            <td>
+                False
+            </td>
+            <td>
+                This can be used to view un-scanned locations.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 0</i>.5 seconds</p>
+    <ul>
+        <li>This report will exhibit sublinear performance with respect to the number of records
+            in cyc_process and cyc_process_detail table which qualify for the passed date. Execution
+            plan exhibits index range scan on the tables cyc_process, cyc_process_detail and
+            master_sku Index CPS_CYC_START_DATE_I used in CYC_PROCESS table. Index CCL_UK used
+            in cyc_process_detail table and Index SKU_UK used in MASTER_SKU table.</li>
+        <li>Index based scan on table ialoc, ia , cyc_process and master_sku table. Index IALOC_PK
+            used in ialoc table, IA_PK in ia table, CPS_PK in cyc_process table and SKU_UK in
+            master_sku table.</li>
+    </ul>
+    <h2>
+        Definitions</h2>
+    <dl>
+        <dt><i>Cycle Count process</i></dt>
+        <dd>
+            Locations in the FPK are regularly checked to find out, whether there is any discrepancy
+            between the quantity reflected by the system and actual quantity of the SKU at a
+            particular location. If there is any difference and it is under the tolerance limit,
+            then the actual physical quantity is updated in the system. However, if it is not
+            under the tolerance limit, the concerned manager is informed about it. This process
+            is called Cycle Count process. The location where the cycle count process was performed.
+            There can be a case, when a location exists in the ialoc table, but currently not
+            having its entry in the cyc_process_detail table. Cycle counting cannot be performed
+            for such locations. These locations, which were not found during the cycle count
+            process are called as 'Not Scanned Locations'. The discrepant location is the location,
+            where there is difference between the SKU quantity reflected by the system and the
+            actual SKU quantity counted manually.
+        </dd>
+        <dt><i>Location Accuracy</i></dt>
+        <dd>
+            The location accuracy defines, the percentage of locations scanned, which are not
+            discrepant. It is calculated using the formula: (1 - (error locations / total locations)
+            ) * 100</dd>
+        <dt><i>SKU Accuracy</i></dt>
+        <dd>
+            The SKU accuracy defines, the percentage of SKU quantity at the scanned locations,
+            found to be correct as per system. It is calculated using the formula: (1 - (ABS(Scanned
+            Pieces - System Pieces) / System Pieces) ) * 100, if accuracy is less than 0 or
+            greater than 100 then the result will be displayed as NaN even if total system pieces
+            is less than or equal to 0 the also the result will be displayed as NaN.</dd>
+    </dl>
+    <h2>
+        Behavior Change</h2>
+    <h2>
+        Issues</h2>
+    <p>
+        No Known Issue.</p>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Synonyms used in the report are</p>
+    <p>
+        cyc_process_detail,<br />
+        ialoc,<br />
+        master_sku,<br />
+        cyc_process</p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        create or replace synonym cyc_process_detail for dcms8.cyc_process_detail;
+        <br />
+        create or replace synonym ialoc for dcms8.ialoc;
+        <br />
+        create or replace synonym master_sku for dcms4.master_sku;
+        <br />
+        create or replace synonym cyc_process for dcms8.cyc_process;
+        <br />
+    </p>
+    There is no appSetting used in the report.
+    <br />
+    <br />
+    <h2>
+        Parameter Validation</h2>
+    <h2>
+        Sub-Query&#39;s documentation:</h2>
+    <ul>
+        <li><b>The Query fetches the data from the tables cyc_process_detail, cyc_process, ialoc
+            and master_sku using joins. </b>
+            <pre>
+ SELECT ms.style               AS style,
+       ms.color               AS color,
+       ms.dimension           AS dimension,
+       ms.sku_size            AS sku_size,
+       cpd.location_id        AS location,
+       cpd.upc_code           AS upc_code,
+       cpd.new_pieces         AS scanned_pieces,
+       cpd.original_pieces    AS system_pieces,
+       cpd.cyc_start_date     AS cyc_start_date,
+       cpd.cyc_end_date       AS cyc_end_date,
+       cpd.process_iteration  AS iteration,
+       cp.cyc_user            AS cyc_user,
+       cpd.process_id         AS process_id,
+       cpd.recount_process_id AS recount_process_id
+  FROM cyc_process_detail cpd
+  LEFT OUTER JOIN cyc_process cp
+    ON cpd.process_id = cp.process_id
+  LEFT OUTER JOIN master_sku ms
+    ON cpd.upc_code = ms.upc_code
+  [$:PITCH_AISLE_ID$ LEFT OUTER JOIN ialoc ialoc ON cpd.location_id = ialoc.location_id$]
+ WHERE cpd.recount_process_id IS NULL
+   AND cp.cyc_start_date &gt;= CAST(:cyc_start_date AS DATE)
+   AND cp.cyc_start_date &lt; CAST(:cyc_end_date AS DATE)+ 1
+   [$:PITCH_AISLE_ID$ AND ialoc.ia_id IN (SELECT ia_id FROM ia WHERE ia.picking_area_flag = 'Y') AND ialoc.pitch_aisle_id = CAST(:PITCH_AISLE_ID AS Varchar2(255))$]
+   [$:FROM_LOCATION$ AND cpd.location_id &gt;= CAST(:FROM_LOCATION AS VARCHAR2(255)) AND cpd.location_id &lt;= CAST(:TO_LOCATION$ AS VARCHAR2(255))]
+   [$:NO_HIDE$ AND cpd.new_pieces &lt;&gt; cpd.original_pieces $]
+UNION ALL
+SELECT ms.style               AS style,
+       ms.color               AS color,
+       ms.dimension           AS dimension,
+       ms.sku_size            AS sku_size,
+       cpd.location_id        AS location,
+       cpd.upc_code           AS upc_code,
+       cpd.new_pieces         AS scanned_pieces,
+       cpd.original_pieces    AS system_pieces,
+       cpd.cyc_start_date     AS cyc_start_date,
+       cpd.cyc_end_date       AS cyc_end_date,
+       cpd.process_iteration  AS iteration,
+       cp.cyc_user            AS cyc_user,
+       cpd.process_id         AS process_id,
+       cpd.recount_process_id AS recount_process_id
+  FROM cyc_process_detail cpd
+  LEFT OUTER JOIN cyc_process cp
+    ON cpd.recount_process_id = cp.process_id
+  LEFT OUTER JOIN master_sku ms
+    ON cpd.upc_code = ms.upc_code
+  [$:pitch_aisle_id$ LEFT OUTER JOIN ialoc ialoc ON cpd.location_id = ialoc.location_id$]
+ WHERE cpd.recount_process_id IS NOT NULL
+   AND cp.cyc_start_date &gt;= CAST(:cyc_start_date AS DATE)
+   AND cp.cyc_start_date &lt; CAST(:cyc_end_date AS DATE) + 1
+   [$:PITCH_AISLE_ID$ AND ialoc.ia_id IN (SELECT ia_id FROM ia WHERE ia.picking_area_flag = 'Y') AND ialoc.pitch_aisle_id = CAST(:PITCH_AISLE_ID AS Varchar2(255))$]
+   [$:FROM_LOCATION$ AND cpd.location_id &gt;= CAST(:FROM_LOCATION AS VARCHAR2(255)) AND cpd.location_id &lt;= CAST(:TO_LOCATION$ AS VARCHAR2(255))]
+   [$:NO_HIDE$ AND cpd.new_pieces &lt;&gt; cpd.original_pieces $]</pre>
+        </li>
+    </ul>
+    <ul>
+        <li><b>The Query retrieves the Locations from ialoc and cycle_process_detail table,
+            which have not been scanned for the specified period of time.</b>
+            <pre>
+        SELECT IALOC.LOCATION_ID AS LOCATION_ID
+          FROM IALOC IALOC
+         WHERE IALOC.IA_ID IN (SELECT ia_id FROM ia WHERE ia.picking_area_flag = 'Y')
+         [$:FROM_LOCATION$AND IALOC.LOCATION_ID &gt;= CAST(:FROM_LOCATION as varchar2(255)) AND IALOC.LOCATION_ID &lt;= cast(:TO_LOCATION as varchar2(255))$]
+         [$:PITCH_AISLE_ID$AND IALOC.PITCH_AISLE_ID = CAST(:PITCH_AISLE_ID as varchar2(255))$]
+         AND NOT EXISTS
+         (SELECT DISTINCT (CPD.LOCATION_ID) AS LOCATION
+            FROM CYC_PROCESS_DETAIL CPD
+           WHERE CPD.LOCATION_ID = IALOC.LOCATION_ID
+             AND CPD.CYC_START_DATE &gt;= cast(:CYC_START_DATE as date)
+             AND CPD.CYC_START_DATE &lt; cast(:CYC_END_DATE as date)+ 1)</pre>
+        </li>
+    </ul>
+    <h2>
+        Validation details</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.
+    <br />
+    <b>Query1:</b><pre>
+SELECT i.location_id AS location_id,
+       i.assigned_upc_code AS upc_code,
+       i.last_cyc_start_date AS cyc_start_date,
+       i.last_cyc_end_date AS cyc_end_date,
+       i.last_cyc_process_id AS process_id
+  FROM ialoc i
+ WHERE i.location_id = :location_id;</pre>
+    <b>Description:</b><pre>
+Pass the location id and verfiy the upc code, cyc start date, cyc end date. The result of above query is matching with the 
+last of row the pass location.</pre>
+    <b>Query2:</b>
+    <pre>
+SELECT i.iacontent_id as upc_code,
+       i.number_of_units as scanned_pieces
+  FROM ialoc_content i
+ WHERE i.location_id = :location_id;
+</pre>
+<b>Description</b>
+<pre>
+Pass the location id and verfiy the upc code and scanned_pieces. The result of above query is matching with the 
+last of row the pass location.
+</pre>
+    <b>Query3:</b>
+<pre>
+SELECT cpd.process_id AS process_id,
+       cpd.cyc_start_date AS cyc_start_date,
+       cpd.cyc_end_date AS cyc_end_date,
+       cpd.upc_code AS upc_code,
+       cpd.original_pieces AS system_pieces,
+       cpd.new_pieces AS scanned_pieces,
+       cpd.recount_process_id AS recount_process_id
+  FROM cyc_process_detail cpd
+ WHERE cpd.process_id =:process_id;
+</pre>
+<b>Description</b>
+<pre>
+Pass the process id which is getting from query 1 and verfiy upc code, cyc start date, cyc end date, system_pieces and
+scanned_pieces.</pre>
+    <b>Query4:</b>
+<pre>
+SELECT cp.process_id AS process_id,
+       cp.cyc_user   AS cyc_user
+  FROM cyc_process cp
+ WHERE cp.process_id in (:process_id, :recount_process_id);
+</pre>
+<b>Description</b>
+<pre>
+Pass the process id, recount process id which is getting from query 1 and query 3 respectivily and verfiy the cyc_user name.
+</pre>
+</body>
+</html>

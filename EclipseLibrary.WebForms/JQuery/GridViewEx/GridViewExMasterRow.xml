@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<GridViewExMasterRow>
+  <doc name="class">
+    <remarks>
+      <para>
+        The <c>GridViewExMasterRow</c> has the ability to display master row just above the normal row. For example
+        you may have a query which retrieves goods received for any day, for a single day there may be many goods
+        received and you want to prioterize receive date, then by making this particular column as master the
+        <see cref="GridViewEx" /> will insert a master row above the normal rows diaplying the date and rest all the
+        data for that date will be displayed just below this row.
+      </para>
+      <para>
+        The property <c>DefaultSortExpression</c> of the <c>GridView</c> tells the grid that whether the grid specefied consist of
+        MasterRow or not. If the property consist of $ then all the columns prceding this symbol will be considered as master rows
+        As <see cref="GridViewEx/CreateRow" /> creates date row, if the property <see cref="DisplayMasterRow" /> is set to true
+        and <see cref="MasterColumnIndexs" /> is not null it asks <c>GridViewExMasterRow</c> to create the row.
+        <c>GridViewExMasterRow</c> hooks to <c>GridViewEx</c> <c>RowDataBound</c> event. When constructed, it hooks to the grid's
+        <c>RowDataBound</c> event only if this is the first master row. <see cref="gv_RowDataBound" /> is called for each row in the grid.
+        During this event, we check whether the current row belongs to us, it does this by performing html comparison. If it does,
+        we increment our row count. If it does not, then the set of our child rows is final. This new row is the new master.
+        <![CDATA[
+        <jquery:GridViewEx ID="gv" runat="server" DataSourceID="ds" AutoGenerateColumns="false"
+          AllowSorting="true" ShowFooter="true" DefaultSortExpression="lane_id;$;bucket_id">
+          <Columns>
+            ............................
+            ............................
+          </Columns>
+        </jquery:GridViewEx>
+      ]]>
+      </para>
+      <para>
+        After one of the master is complete it is required to evalute sum for each master, which is computed by the function
+        <see cref="InitializeSubTotals" />
+      </para>
+      <para>
+        The deatils of master row and its value are stored in a List variable, which renders all the contents with in a master
+        row. The method which performs the rendering for the master row header is <see cref="RenderMasterRowHeader" /> which
+        is being called by <see cref="Render" /> event of the class.
+      </para>
+    </remarks>
+  </doc>
+</GridViewExMasterRow>

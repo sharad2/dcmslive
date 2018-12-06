@@ -1,0 +1,295 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0063)http://w3chile/xtremereporter/reportdoc.aspx -->
+<HTML 
+xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>Report Documentation</TITLE>
+<META content="text/html; charset=utf-8" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 8.00.6001.18702">
+<META name=CODE_LANGUAGE content=C#>
+<META name=vs_defaultClientScript content=JavaScript>
+<META name=vs_targetSchema 
+content=http://schemas.microsoft.com/intellisense/ie5>
+<SCRIPT type=text/javascript>
+		    /*
+		      Toggles the visibility of the passed divToToggle object.
+		    */
+			function toggleVisibility(oVisibilityToggle, oInnerTextToggle)
+			{
+                if (oVisibilityToggle.style.display=='none')
+
+                {
+                  oVisibilityToggle.style.display='';
+                  oInnerTextToggle.innerText = "Hide Technical Documentaion";
+                }
+                else
+                {
+                  oVisibilityToggle.style.display='none';
+                  oInnerTextToggle.innerText = "View Technical Documentaion" 
+                }
+            }
+
+		</SCRIPT>
+    <style type="text/css">
+        .style1
+        {
+            font-weight: bold;
+        }
+    </style>
+</HEAD>
+<BODY>
+<FORM id=Form1 method=post name=Form1 action=reportdoc.aspx?_Report=R30.03.xsd>
+    <INPUT id=__VIEWSTATE 
+value=/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT type=hidden 
+name=__VIEWSTATE class="style1">
+<H1 align=center xmlns="http://www.w3.org/1999/xhtml">30<B>.</B>03<B> : 
+</B>Cartons In Examining Area</H1>
+<H3>Author : Gyaneshwar Lal</H3>$Revision: 3933 $<br />
+Status: Reviewed<BR 
+xmlns="http://www.w3.org/1999/xhtml">Reviewed By :&nbsp;Hemant K. Varshney
+<P xmlns="http://www.w3.org/1999/xhtml" Reviewer="Vipin Raturi" 
+Status="Completed" Author="Silky Sehgal">This report displays the list of cartons 
+    with other details which have stayed in the examining area for at least 
+    specified number of days. </P>
+<H2>Overview</H2>
+<P>This report displays the list of cartons with other details which are in 
+    examining area for specified number of days. <BR>It also displays the details 
+    about each cartons as below: <LI>The packing instructions i.e. how many pieces should be packed per package 
+and what are the packaging preferences.
+<LI>The relevant inputs for packing dept. like ; sale type and price season 
+code.
+<LI>Productivity and efficiency of examining department.
+<LI>Viewing details of a particular SKU in the specified Area.
+<H2 xmlns="http://www.w3.org/1999/xhtml">Algorithm</H2>Get all the carton 
+details in examining area from master table src_bundle_inventory. 
+<H3 xmlns="http://www.w3.org/1999/xhtml">Output</H3>
+<TABLE border=1 cellSpacing=1 cellPadding=1 width="100%" 
+xmlns="http://www.w3.org/1999/xhtml">
+  <TBODY>
+  <TR>
+    <TD width="25%" align=middle><B>Item</B></TD>
+    <TD width="20%" align=middle><B>Summary</B></TD>
+    <TD width="10%" align=middle><B>Default Sort Sequence</B></TD>
+    <TD width="35%" align=middle><B>Detail</B></TD></TR>
+  <TR>
+    <TD><I><B>VWH</B></I></TD>
+    <TD>No </TD>
+    <TD align=middle>2</TD>
+    <TD><r:item 
+      xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+      xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+      xmlns:mstns="http://tempuri.org/R30.03.xsd" SortSequence="1" Key="true" 
+      Term="VWH ID">The virtual warehouse ID for the carton. </R:ITEM></TD></TR>
+  <TR>
+    <TD>Carton</TD>
+    <TD>No </TD>
+    <TD align=middle>3&nbsp; </TD>
+    <TD><r:item 
+      xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+      xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+      xmlns:mstns="http://tempuri.org/R30.03.xsd" Term="Carton ID">The carton ID 
+      for which the carton details are shown in examining area. </R:ITEM></TD></TR>
+  <TR>
+    <TD>Style</TD>
+    <TD>No </TD>
+    <TD align=middle>&nbsp; </TD>
+    <TD><r:item 
+      xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+      xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+      xmlns:mstns="http://tempuri.org/R30.03.xsd" Term="Style">Style of the 
+      SKU.</R:ITEM></TD></TR>
+  <TR>
+    <TD>Color</TD>
+    <TD>No </TD>
+    <TD align=middle>&nbsp; </TD>
+    <TD><r:item 
+      xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+      xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+      xmlns:mstns="http://tempuri.org/R30.03.xsd" Term="Color">Color of the 
+      SKU.</R:ITEM></TD></TR>
+  <TR>
+    <TD>Dimension</TD>
+    <TD>No </TD>
+    <TD align=middle>&nbsp; </TD>
+    <TD><r:item 
+      xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+      xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+      xmlns:mstns="http://tempuri.org/R30.03.xsd" Term="Dimension">Dimension of 
+      the SKU.</R:ITEM></TD></TR>
+  <TR>
+    <TD>Sku Size</TD>
+    <TD>No </TD>
+    <TD align=middle>&nbsp; </TD>
+    <TD><r:item 
+      xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+      xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+      xmlns:mstns="http://tempuri.org/R30.03.xsd" Term="Sku Size">Size of the 
+      SKU.</R:ITEM></TD></TR>
+  <TR>
+    <TD>Days</TD>
+    <TD>No </TD>
+    <TD align=middle>&nbsp;1 </TD>
+    <TD><r:item 
+      xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+      xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+      xmlns:mstns="http://tempuri.org/R30.03.xsd" Term="Days">Days which are 
+      calculated as (sysdate - modified_date).</R:ITEM></TD></TR>
+  <TR>
+    <TD>Pieces</TD>
+    <TD>Sum</TD>
+    <TD align=middle>&nbsp; </TD>
+    <TD><r:item 
+      xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+      xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+      xmlns:mstns="http://tempuri.org/R30.03.xsd" Term="Pieces" 
+      Summary="Sum">Quantity stored in carton</R:ITEM></TD></TR>
+  <TR>
+    <TD>Pieces Per Package</TD>
+    <TD>Sum</TD>
+    <TD align=middle>&nbsp; </TD>
+    <TD><r:item 
+      xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+      xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+      xmlns:mstns="http://tempuri.org/R30.03.xsd" Term="Pieces Per Package" 
+      Summary="Sum">Pieces stored in cartons per package.</R:ITEM></TD></TR>
+  <TR>
+    <TD>Packaging Preference</TD>
+    <TD>No </TD>
+    <TD align=middle>&nbsp; </TD>
+    <TD><r:item 
+      xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+      xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+      xmlns:mstns="http://tempuri.org/R30.03.xsd" 
+      Term="Packaging Preference">The pakaging preference for 
+    cartons.</R:ITEM></TD></TR>
+  <TR>
+    <TD>Sale Type</TD>
+    <TD>No </TD>
+    <TD align=middle>&nbsp; </TD>
+    <TD><r:item 
+      xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+      xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+      xmlns:mstns="http://tempuri.org/R30.03.xsd" Term="Sale Type">The sale type 
+      for packing department.</R:ITEM></TD></TR>
+  <TR>
+    <TD>Price Season Code</TD>
+    <TD>No </TD>
+    <TD align=middle>&nbsp; </TD>
+    <TD><r:item 
+      xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+      xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+      xmlns:mstns="http://tempuri.org/R30.03.xsd" Term="Price Season Code">Price 
+      season code for packing department</R:ITEM></TD></TR></TBODY></TABLE>
+<H2 xmlns="http://www.w3.org/1999/xhtml">Parameters</H2>
+<TABLE border=1 cellSpacing=1 cellPadding=1 width="100%" 
+xmlns="http://www.w3.org/1999/xhtml">
+  <TBODY>
+  <TR>
+    <TD width="20%" align=middle><B>Name</B></TD>
+    <TD width="20%" align=middle><B>Default</B></TD>
+    <TD width="60%" align=middle><B>Detail</B></TD></TR>
+  <TR>
+    <TD>No. of days</TD><TD>0</TD>
+    <TD>The value should be greater than or equal to &#39;0&#39; and less than or equal to &#39;180&#39; 
+        days.</TD></TR>
+  <TR>
+    <TD>Virtual Warehouse</TD>
+    <TD>All</TD>
+    <TD>Virtual warehouse ID for the cartons can selected from drop-down list. Select 
+        &quot;All&quot; to view from all the virtual warehouses. </TD></TR>
+    </TBODY></TABLE>
+<H2 xmlns="http://www.w3.org/1999/xhtml">Performance Details</H2>
+<P xmlns="http://www.w3.org/1999/xhtml"><I>Expected Time for the report output 
+is </I>1 second</P>The query exhibits linear performance with respect to the 
+number of records in src_bundle_inventory. There is full scan on table 
+src_bundle_inventory. 
+<H2 xmlns="http://www.w3.org/1999/xhtml">Behavior Change</H2>
+    <ul>
+        <li>Default sorting has been changed from Days (desc), VWh Id to Days(desc), VWH ID, 
+            Carton ID. This was done against the mail &quot;RE: New reporting system (ticket 
+            100343) - Phase IV - 30.03&quot;</li>
+    </ul>
+<H2 xmlns="http://www.w3.org/1999/xhtml">Issue. </H2>
+    <p xmlns="http://www.w3.org/1999/xhtml">No known issue</p>
+    <h2>Prerequisites</h2>
+   Private synonyms for the following table is requried<p>&nbsp;src_bundle_inventory</p>
+    <p>
+    <br />
+        Use the below script to create the synonyms<br />
+    <br />
+        <code>create or replace synonym src_bundle_inventory for 
+        dcms4.src_bundle_inventory;
+    </code></p>
+    <p xmlns="http://www.w3.org/1999/xhtml">
+        Following appsetting is required:</p>
+<code>&lt;add key="ExaminingAreaCode" value="EXM"/&gt;
+</code>
+    <BR xmlns="http://www.w3.org/1999/xhtml">
+<H2>Parameter Technical Details>
+  <LI>No. of Days (Type = XmlInt): Enter the number of days from which you wish 
+  to see the carton details.</LI>
+  <LI>Virtual Warehouse (Type = ID): This is a drop-down list parameter control. By default, 
+  inventory of all Warehouse is shown for each area. If your focus is on the 
+  inventory in a particular Warehouse, Specify that Virtual Warehouse. Null value 
+  text is "All". 
+  <UL>
+    <LI>Query to fill list values = "select tab_virtual_warehouse.vwh_id, 
+    tab_virtual_warehouse.vwh_id from tab_virtual_warehouse" </LI></UL></LI>
+    <li>Area: This value is defaulted in web.config file. This report intents to show records from 
+    examining area so it has to be defaulted to &#39;EXM&#39; </li>
+    </UL>
+<H2>Parameter Validation</H2>
+<UL>
+  <LI>Validation Condition : <r:validator 
+  xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  xmlns:mstns="http://tempuri.org/R30.03.xsd" 
+  
+          ErrorMessage="please enter a value greater than or equal to '0' and less than or equal to '180'in the 'Number of Days' field.">(($DAYS 
+  &gt;= 0) and ($DAYS &lt;= 180)) </R:VALIDATOR>
+  <LI>ErrorMessage : Not needed, as the parameter control of the page itself does not accepts erronous value as input.</LI></UL>
+<H2>Query's documentation:</H2>
+<UL>
+  <LI><r:doc 
+  xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  xmlns:mstns="http://tempuri.org/R30.03.xsd">The query will get all the cartons 
+  details which are in specified area from table src_bundle_inventory. <PRE>            SELECT src.vwh_id AS "VWH_ID",
+            src.carton_id AS "CARTON_ID",
+            src.style AS "STYLE",
+            src.color AS "COLOR",
+            src.dimension AS "DIMENSION",
+            src.sku_size AS "SKU_SIZE",
+            TRUNC(sysdate - src.modified_date) AS "DAYS",
+            (src.quantity) - NVL(src.quantity_removed, 0) AS "PIECES",
+            src.pieces_per_package AS "PIECES_PER_PACKAGE",
+            src.Packaging_preference AS "PACKAGING_PREFERENCE",
+            src.sale_type_id AS "SALE_TYPE_ID",
+            src.price_season_code AS "PRICE_SEASON_CODE"
+            FROM src_bundle_inventory src
+            WHERE src.sku_storage_Area = 'EXM'
+            AND (src.quantity) - NVL(src.quantity_removed, 0) &gt; 0
+            AND (sysdate - src.modified_date) &gt;= :DAYS
+          </PRE></R:DOC></LI></UL>
+
+<H2>Validation details</H2>Below query has the where clause, please comment them out if you don't want them to 
+be applied on the query.
+ <BR/><BR/><B>Query:</B><PRE><r:query 
+        xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+        xmlns:mstns="http://tempuri.org/R30.03.xsd"><PRE>              
+        SELECT a.vwh_id, a.carton_id, a.style, a.color, 
+            a.dimension, a.sku_size, 
+            trunc( sysdate - a.modified_date) AS days,
+            (nvl(a.quantity,0) - nvl(a.quantity_removed,0)) AS pieces,
+            a.pieces_per_package, a.packaging_preference, 
+            a.sale_type_id, a.price_season_code
+            FROM src_bundle_inventory a 
+            WHERE 
+            a.sku_storage_area='EXM' -- FOR EXAMINING AREA
+            AND (nvl(a.quantity,0) - nvl(a.quantity_removed,0)) > 0 
+            AND (sysdate - a.modified_date) > 7 -- Change to view for different number of days.
+            </PRE></R:QUERY></PRE><B>Description:</B><PRE><r:description 
+        xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+        xmlns:mstns="http://tempuri.org/R30.03.xsd">
+            The query will get the carton details in examining area for the specified number of days.
+          </R:DESCRIPTION></PRE></FORM><!--End divTechnical--></LI></BODY></HTML>

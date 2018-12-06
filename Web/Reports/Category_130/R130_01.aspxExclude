@@ -1,0 +1,246 @@
+﻿<%@ Page Title="Pull Carton Suspense Report" Language="C#" MasterPageFile="~/MasterPage.master" %>
+<%--*
+ *  Programming: Eclipse Systems (P) Ltd., NOIDA, INDIA
+ *  E-mail: support@eclsys.com
+ *
+ *  $Revision: 5979 $
+ *  $Author: skumar $
+ *  $HeadURL: http://server/svn/dcmslive/Projects/DcmsLive/trunk/Web/Reports/Category_130/R130_01.aspxExclude $
+ *  $Id: R130_01.aspxExclude 5979 2013-08-12 11:20:58Z skumar $
+ * Version Control Template Added.
+--%>
+<script runat="server">
+
+protected override void OnLoad(EventArgs e)
+    {
+        base.OnLoad(e); 
+        // Handling dynamic headertext of the operator column
+
+        if (rblOptions.Value == "ForDate" && IsPostBack)
+        {
+            DataControlField dcf = (from DataControlField dc in gv.Columns
+                                    where dc.AccessibleHeaderText.Equals("Operator")
+                                    select dc).Single();
+            dcf.HeaderText = "Pullar";
+        }
+    }
+    </script>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <meta name="Description" content="This report lists all suspense cartons with SKU details for the specified pull date range in the pulling process or the detail of all the cartons which are currently in suspense, i.e. which can't be traced in Distribution Centre for specified days." />
+    <meta name="ReportId" content="130.01" />
+    <meta name="Browsable" content="True" />
+    <meta name="Version" content="$Id: R130_01.aspxExclude 5979 2013-08-12 11:20:58Z skumar $" />
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <jquery:Tabs runat="server" ID="tabs">
+        <jquery:JPanel ID="JPanel" runat="server" HeaderText="Filters">
+            <eclipse:TwoColumnPanel ID="TwoColumnPanel1" runat="server">
+             <eclipse:LeftPanel ID="LeftPanel1" runat="server" Span="true">
+                    <i:RadioButtonListEx runat="server" ID="rblOptions" Visible="false" Value="ForDate" 
+                        QueryString="RadioGroup" />
+                </eclipse:LeftPanel>
+                <eclipse:LeftPanel ID="LeftPanel2" runat="server">
+                    <i:RadioItemProxy ID="RadioItemProxy1" runat="server" Text="Suspense Date"
+                        CheckedValue="ForDate" QueryString="RadioGroup" FilterDisabled="true" ToolTip="Check to view returned SKUs which are completely recieved to modified within specified dates" />
+                </eclipse:LeftPanel>
+                <asp:Panel ID="Panel1" runat="server">
+                    <d:BusinessDateTextBox ID="dtFrom" runat="server" FriendlyName="From Suspense Date"
+                        Text="-7">
+                        <Validators>
+                            <i:Date DateType="Default" />
+                            <i:Filter DependsOn="rblOptions" DependsOnState="Value" DependsOnValue="ForDate" />
+                            <i:Required />
+                        </Validators>
+                    </d:BusinessDateTextBox>
+                    <d:BusinessDateTextBox ID="dtTo" runat="server" FriendlyName="To Suspense Date"
+                        Text="0">
+                        <Validators>
+                            <i:Date DateType="ToDate" />
+                            <i:Filter DependsOn="rblOptions" DependsOnState="Value" DependsOnValue="ForDate" />
+                        </Validators>
+                    </d:BusinessDateTextBox>
+                </asp:Panel>
+                <eclipse:LeftPanel ID="LeftPanel3" runat="server">
+                    <i:RadioItemProxy runat="server" Text="Cartons in suspense for more than days" ID="rbdays" CheckedValue="SUSPENSE_DAYS"
+                        QueryString="RadioGroup" FilterDisabled="true" ToolTip="Check to view records of a specific day " />
+                </eclipse:LeftPanel>
+                <asp:Panel runat="server" ID="p_receipt">
+                    <i:TextBoxEx ID="tbdays" runat="server" FriendlyName="No of days" CssClasses="val-ignore">
+                        <Validators>
+                        <i:Value ValueType="Integer" />
+                            <i:Filter DependsOn="rblOptions" DependsOnState="Value" DependsOnValue="SUSPENSE_DAYS" />
+                            <i:Required />
+                        </Validators>
+                    </i:TextBoxEx>
+                </asp:Panel>
+                <eclipse:LeftLabel ID="LeftLabel4" runat="server" Text="Building" />
+                <d:BuildingSelector ID="ctlWarehouseLocation" runat="server"  FriendlyName="Building"
+                ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>" ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>"
+                    ShowAll="true" />
+            </eclipse:TwoColumnPanel>
+            <asp:Label ID="label3" runat="server" />
+        </jquery:JPanel>
+        <jquery:JPanel ID="JPanel1" runat="server" HeaderText="Sorting">
+            <jquery:SortColumnsChooser ID="SortColumnsChooser1" runat="server" GridViewExId="gv"
+                EnableGroupBy="true" />
+        </jquery:JPanel>
+    </jquery:Tabs>
+    <uc2:ButtonBar2 ID="ButtonBar1" runat="server" />
+            <oracle:OracleDataSource ID="ds" runat="server" ConnectionString="<%$ ConnectionStrings:dcmslive %>"
+                ProviderName="<%$ ConnectionStrings:dcmslive.ProviderName %>">
+        <SelectSql>
+     <if c="$SUSPENSE_DAYS">
+SELECT ctndet.style AS STYLE,
+       ctndet.color AS  COLOR ,
+       ctndet.dimension AS  DIMENSION ,
+       ctndet.sku_size AS  SKU_SIZE ,
+       sum(ctndet.quantity) AS  QUANTITY ,
+       ctn.carton_id AS  carton_id ,
+       max(ctn.location_id) AS  LOCATION_ID ,
+       max(ctn.pallet_id) AS  PALLET_ID ,
+       trunc(max(ctn.suspense_date)) AS  SUSPENSE_DATE ,
+       max(ctn.modified_by) AS  Operator_name ,
+       max(ctn.carton_storage_area) AS  CARTON_STORAGE_AREA ,
+       MSLOC.warehouse_loc AS warehouse_location_id
+ FROM src_carton ctn 
+ inner join src_carton_detail ctndet
+    on ctn.carton_id = ctndet.carton_id
+  LEFT OUTER JOIN master_storage_location msloc
+      ON CTN.CARTON_STORAGE_AREA = MSLOC.STORAGE_AREA 
+      AND CTN.LOCATION_ID = MSLOC.LOCATION_ID
+       where 1=1
+       and ctn.suspense_date IS NOT NULL
+       <if> AND msloc.warehouse_loc = :warehouse_location_id</if>
+       <if>AND trunc(ctn.suspense_date) &lt;= trunc(SYSDATE) - :SUSPENSE_DAYS</if>
+       and ctn.carton_storage_area=:carton_storage_area
+        GROUP BY ctndet.style,
+          ctndet.color,
+          ctndet.dimension,
+          ctndet.sku_size,
+          ctn.carton_id,
+          msloc.warehouse_loc    
+      union
+SELECT ctndet.style AS STYLE,
+       ctndet.color AS  COLOR ,
+       ctndet.dimension AS  DIMENSION ,
+       ctndet.sku_size AS  SKU_SIZE ,
+       sum(ctndet.quantity) AS  QUANTITY ,
+       ctn.carton_id AS  CARTON_ID ,
+       max(ctn.location_id) AS  LOCATION_ID ,
+       max(ctn.pallet_id) AS  PALLET_ID ,
+       trunc(max(ctn.suspense_date)) AS  SUSPENSE_DATE ,
+       max(ctn.modified_by) AS  Operator_name ,
+       max(ctn.carton_storage_area) AS  CARTON_STORAGE_AREA ,
+       wloc.warehouse_location_id AS  warehouse_location_id    
+ FROM src_carton ctn 
+ inner join src_carton_detail ctndet
+    on ctn.carton_id = ctndet.carton_id
+  inner join master_style ms
+    on ms.style = ctndet.style
+ left outer join tab_label_group tbl
+    on ms.label_id = tbl.label_id
+    and ctn.vwh_id = tbl.vwh_id
+ inner join warehouseloc wloc
+    on wloc.label_group = tbl.label_group
+ WHERE ctn.suspense_date IS NOT NULL
+ <if>AND trunc(ctn.suspense_date) &lt;= trunc(SYSDATE) - :SUSPENSE_DAYS</if>
+ <if>AND wloc.warehouse_location_id=:warehouse_location_id</if>
+ and ctn.carton_storage_area !=:carton_storage_area
+ GROUP BY ctndet.style,
+          ctndet.color,
+          ctndet.dimension,
+          ctndet.sku_size,
+          ctn.carton_id,
+          wloc.warehouse_location_id
+          </if>
+   <else>
+    SELECT ctnprodet.carton_id AS carton_id,
+       max(ctnprodet.to_carton_area) AS CARTON_STORAGE_AREA,
+       max(ctnprodet.insert_date) AS SUSPENSE_DATE,
+       max(ctnprodet.to_location_id) AS LOCATION_ID,
+       max(ctnprodet.to_pallet_id) AS PALLET_ID,
+       max(ctnprodet.inserted_by) AS Operator_name,
+       ctndet.style AS STYLE,
+       ctndet.color AS COLOR,
+       ctndet.dimension AS DIMENSION,
+       ctndet.sku_size AS SKU_SIZE,
+       sum(ctndet.quantity) AS QUANTITY,
+       wloc.warehouse_location_id AS warehouse_location_id
+  FROM src_carton_process_detail ctnprodet 
+   INNER JOIN src_carton_detail ctndet ON
+   CTNPRODET.CARTON_ID = CTNDET.CARTON_ID
+   INNER JOIN master_style ms ON 
+   CTNDET.STYLE = MS.STYLE
+   INNER JOIN tab_label_group tbl ON
+   MS.LABEL_ID = TBL.LABEL_ID
+   AND CTNPRODET.VWH_ID = TBL.VWH_ID
+   INNER JOIN warehouseloc wloc ON
+   TBL.LABEL_GROUP = WLOC.LABEL_GROUP
+ WHERE ctnprodet.old_suspense_date is null
+   AND ctnprodet.new_suspense_date is not null
+   AND ctnprodet.module_code = 'PUL'
+   And ctnprodet.insert_date &gt;= CAST(:FROM_SUSPENSE_DATE as DATE)
+   AND ctnprodet.insert_date &lt; CAST(:TO_SUSPENSE_DATE as DATE)+ 1
+   <if>AND wloc.warehouse_location_id=:warehouse_location_id</if>
+ GROUP BY ctnprodet.carton_id,
+          ctndet.style,
+          ctndet.color,
+          ctndet.dimension,
+          ctndet.sku_size,
+          wloc.warehouse_location_id
+      </else>
+        </SelectSql>
+        <SelectParameters>
+        <asp:ControlParameter ControlID="ctlWarehouseLocation" Direction="Input" Name="warehouse_location_id" Type="String" />
+        <asp:Parameter Name="carton_storage_area" Type="String" DefaultValue="<%$  AppSettings: CartonReserveArea %>" />
+        <asp:ControlParameter ControlID="dtFrom" Type="DateTime"  Direction="Input" Name="FROM_SUSPENSE_DATE" />
+        <asp:ControlParameter ControlID="dtTo" Type="DateTime" Direction="Input" Name="TO_SUSPENSE_DATE" />
+        <asp:ControlParameter ControlID="tbDays" Direction="Input" Name="SUSPENSE_DAYS" Type="String" />
+        </SelectParameters>
+    </oracle:OracleDataSource>
+    <jquery:GridViewEx ID="gv" runat="server" AutoGenerateColumns="false" AllowSorting="true"
+        ShowFooter="true" DataSourceID="ds" DefaultSortExpression="Carton_id">
+        <Columns>
+            <eclipse:SequenceField />
+           <eclipse:MultiBoundField DataFields="Carton_id" HeaderText="Carton id" SortExpression="Carton_id">
+             <ItemStyle HorizontalAlign="Right" />
+           </eclipse:MultiBoundField>
+           <eclipse:MultiBoundField DataFields="CARTON_STORAGE_AREA" HeaderText="Carton Storage Area" SortExpression="CARTON_STORAGE_AREA">
+              <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="STYLE" HeaderText="Style" SortExpression="STYLE">
+              <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="COLOR" HeaderText="Color" SortExpression="COLOR">
+              <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="DIMENSION" HeaderText="Dimension" SortExpression="DIMENSION">
+              <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="SKU_SIZE" HeaderText="SKU Size" SortExpression="SKU_SIZE">
+              <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="QUANTITY" HeaderText="Quantity" SortExpression="QUANTITY"
+             DataSummaryCalculation="ValueSummation" DataFormatString="{0:N0}" DataFooterFormatString="{0:N0}">
+               <ItemStyle HorizontalAlign="Right" />
+                <FooterStyle HorizontalAlign="Right" />
+             </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="LOCATION_ID" HeaderText="Location" SortExpression="LOCATION_ID">
+              <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="PALLET_ID" HeaderText="Pallet_Id" SortExpression="PALLET_ID">
+              <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="SUSPENSE_DATE" HeaderText="Suspense_Date" SortExpression="SUSPENSE_DATE">
+              <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="Operator_name" HeaderText="Operator" SortExpression="Operator_name" AccessibleHeaderText="Operator">
+              <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="warehouse_location_id" HeaderText="Building" SortExpression="warehouse_location_id">
+              <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+        </Columns>
+    </jquery:GridViewEx>
+</asp:Content>
+

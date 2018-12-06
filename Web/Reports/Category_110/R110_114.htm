@@ -1,0 +1,421 @@
+﻿<html>
+<head>
+    <title>In Process Report - Box Detail</title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        110<b>.114 : In Process Report - Box Detail</b></h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    $Revision: 7061 $<br />
+    Status: Done<br />
+    Tested By: Sanjeev Kumar 
+    <p>
+        This report is displaying box id along with expected pieces, current pieces and
+        stop process reason in specified box area for passed customer id of un-transferred and un-cancelled orders. The user has option
+        to filter out the data on the basis of specified PO, Customer DC, Pickslip, Label,
+        Bucket and Box Area.</p>
+    <h2>
+        Overview</h2>
+    <ul>
+        <li>For the specified Customer ID and area this report is showing the ucc128_id , expected
+            pieces, current pieces&nbsp; and stop process reason of each boxes of un-transferred and un-cancelled orders.</li>
+        <li>It can be further drilldown on ucc128_id to show the detail of SKUs in box</li>
+        <li>For the sake of performance we are considering those pickslips whose import date
+            is less than two months from today by default or passed from parent report.</li>
+    </ul>
+    <h2>
+        Algorithm
+    </h2>
+    <p>
+        Get the no. of boxes for passed area and customer_id 
+        using the table PS, BOX, BOXDET and BUCKET. We are looking only those buckets which
+        having available for pitching i.e. available for pitching flag is &#39;Y&#39;.</p>
+    <h2>
+        Output</h2>
+    <table border="1" cellpadding="0" cellspacing="1">
+        <tr>
+            <td>
+                <b>Item</b>
+            </td>
+            <td>
+                <p>
+                    <b>Summary</b></p>
+            </td>
+            <td>
+                <b>Default Sort Sequence</b>
+            </td>
+            <td>
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Box</td>
+            <td>
+                No
+            </td>
+            <td>
+                1
+            </td>
+            <td>
+                The UCC128 Id of the box.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pieces Expected
+            </td>
+            <td>
+                Yes
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Total no. expected pieces in each box.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pieces Current
+            </td>
+            <td>
+                Yes
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Total no. of current pieces in each box.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    Stop Process Reason</p>
+            </td>
+            <td>
+                <p>
+                    No
+                </p>
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+                <p>
+                    Stop process reason code for each box.</p>
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td align="center">
+                    <b>Name</b>
+                </td>
+                <td align="center">
+                    <b>Default</b>
+                </td>
+                <td align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Customer ID</p>
+                </td>
+                <td>
+                    <p>
+                        None</p>
+                </td>
+                <td>
+                    <p>
+                        Customer ID for which you want to see the data.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        PO</p>
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                    <p>
+                        PO for which you want to display information</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Customer DC
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                    Customer DC of PO for which you want to display information.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Pickslip</p>
+                </td>
+                <td>
+                    <p>
+                        None</p>
+                </td>
+                <td>
+                    <p>
+                        Pickslip for which you want to display information.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Label
+                    </p>
+                </td>
+                <td>
+                    <p>
+                        None</p>
+                </td>
+                <td>
+                    <p>
+                        You can pass multiple Label IDs separated by a comma (,)</p>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <p>
+                        Bucket
+                    </p>
+                </td>
+                <td>
+                    <p>
+                        None</p>
+                </td>
+                <td>
+                    <p>
+                        Bucket for which you want to display information.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Pickslip import date from today (In Days)</p>
+                </td>
+                <td>
+                    <p>
+                        60</p>
+                </td>
+                <td>
+                    <p>
+                        The no of days back from today from which you want to display information.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Virtual Warehouse</p>
+                </td>
+                <td>
+                    <p>
+                        ALL</p>
+                </td>
+                <td>
+                    <p>
+                        The virtual warehouse from which you want to display information.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Area</td>
+                <td>
+                    Expediter Bucket</td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    Only VAS boxes</td>
+                <td>
+                    Checked&nbsp;</td>
+                <td>
+                    &nbsp;This parameter helps to find out&nbsp; VAS boxes in different area. &nbsp;</td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 1</i>0 Sec.</p>
+    <p>
+        This Report displays the linear performance with respect to PS, BUCKET, BOX and
+        BOXDET Table.There is index based scan on the PS, BOX, BOXDET and BUCKET table.
+        Index PS_PO_PK_I used in the table PS, Index BKT_PK used in the table BUCKET, Index
+        BOX_PS_FK_I used in the table BOX and Index BOXDET_PK used in the table BOXDET.
+    </p>
+    <h2>
+        Behavior Change</h2>
+    <ol>
+        <li> Now report will show VAS area boxes along with number of pieces in VAS area.</li>
+        <li> Added VAS filter.</li>
+    </ol>
+    <h2>
+        Issues</h2>
+    No Known Issue.
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        box,<br />
+        ps,<br />
+        bucket,<br />
+        boxdet<br />
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>create or replace synonym box for dcms8.box;<br />
+            create or replace synonym ps for dcms8.ps;<br />
+            create or replace synonym boxdet for dcms8.boxdet;<br />
+            create or replace synonym bucket for dcms8.bucket;</code></p>
+    <p>
+        No appSettings are required.<br />
+    </p>
+    <h2>
+        Technical Documentation</h2>
+    <div id="divTechnical">
+        <h2>
+            Parameter Technical Detail</h2>
+    </div>
+    <ul>
+        <li>Customer Id (Type = String): The customer ID</li>
+        <li>PO (Type =String): Customer Purchase Order Id</li>
+        <li>Customer DC(Type=String): The Customer DC ID.</li>
+        <li>Pickslip (Type=Int32): Pickslip ID</li><li>Label(Type=String): Label Id of Pickslip</li><li>
+            Bucket(Type=Int32): Bucket Id for customer purchase order.</li><li>Pickslip Import Date
+                from Today(Type = Int32): The no of days back from today from which you not want
+                to display information.</li>
+        <li>Virtual Warehouse(Type = String): This is a list parameter control. By default,
+            inventory of all Warehouse is shown for each area. If your focus is on the inventory
+            in a particular Warehouse, Specify that virtual warehouse.<ul>
+                <li>Query to fill list values = "select tab_virtual_warehouse.vwh_id, tab_virtual_warehouse.vwh_id
+            from tab_virtual_warehouse"</li>
+            </ul>
+        </li>
+        <li>Inventory Area (Type = String): This is a list parameter control. Inventory Area 
+            of distribution center. Null value text is 
+            <ul>
+                <li>Value = EB, Text = Expediter Bucket</li>
+            </ul>
+        </li>
+        <li>Query to fill list values = &quot;select distinct (ia_id) as ia_id, &#39;(&#39;
+            || ia_id || &#39;) &#39; || short_description as short_description, &#39;Physical
+            Areas&#39; AS option_group, ia.process_flow_sequence as area_sequence from ia ia
+            order by area_sequence&quot;</li>
+    </ul>
+        </li>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.<br />
+    <h2>
+        Query's documentation:</h2>
+    <ul>
+        <li>For passed box area,customer and virtual warehouse gets all required information:
+        </li>
+        <li>
+            <pre>
+   SELECT box.ucc128_id AS ucc128_id,
+			   SUM(boxdet.expected_pieces) AS expected_pieces,
+			   SUM(boxdet.current_pieces) AS current_pieces,
+			   MIN(box.stop_process_reason) AS stop_process_reason
+	      FROM ps
+         INNER JOIN box ON ps.pickslip_id = box.pickslip_id
+         INNER JOIN boxdet ON box.pickslip_id = boxdet.pickslip_id
+						  AND box.ucc128_id = boxdet.ucc128_id        
+         WHERE ps.transfer_date is null
+	       AND ps.pickslip_import_date &gt;= CAST(SYSDATE AS DATE) - :no_of_days
+	       AND ps.pickslip_import_date &lt; CAST(SYSDATE AS DATE) + 1
+           <if c="$box_ia_id ='VAS'">AND ps.pickslip_id in (select pv.pickslip_id from ps_vas pv)
+               and box.pallet_id is not null
+               and box.Pitching_End_Date is not null
+               and box.Verify_Date is null
+           </if>
+            <if c="$VASID">AND ps.pickslip_id in (select pv.pickslip_id from ps_vas pv)</if>
+           <if>AND ps.customer_id=:customer_id</if>         
+           <if>AND ps.po_id=:po_id</if>
+           <if>AND ps.customer_dc_id=:customer_dc_id</if>
+           <if>AND ps.pickslip_id=:pickslip_id</if>
+           <if>AND ps.label_id=:label_id</if>
+           <if>AND ps.bucket_id=:bucket_id</if>
+           <if>AND ps.vwh_id=:vwh_id</if>
+           <if c="$box_ia_id ='EB'">AND box.ia_id is null</if>          
+           <else c="$box_ia_id !='VAS'">AND box.ia_id=:box_ia_id</else>
+         GROUP BY box.ucc128_id                                  </pre>
+        </li>
+    </ul>
+    <h2>
+        Validation detail</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.<br />
+    <b>
+        <br />
+        Query1:</b>
+    <pre>SELECT BOX.UCC128_ID, BOX.STOP_PROCESS_REASON
+  FROM BOX
+ WHERE BOX.IA_ID = :box_ia_id
+   AND BOX.PICKSLIP_ID IN
+       (SELECT PICKSLIP_ID
+          FROM PS
+          LEFT OUTER JOIN BUCKET B ON PS.BUCKET_ID = B.BUCKET_ID
+         WHERE B.AVAILABLE_FOR_PITCHING = 'Y'
+           AND PS.CUSTOMER_ID = :CUSTOMER_ID
+           AND PS.PICKSLIP_IMPORT_DATE &gt;= (SYSDATE - :no_of_days)
+           AND PS.PICKSLIP_IMPORT_DATE &lt; SYSDATE + 1
+           AND PS.PO_ID = :PO_ID
+           AND PS.CUSTOMER_DC_ID = :CUSTOMER_DC_ID
+           AND PS.PICKSLIP_ID = :PICKSLIP_ID
+           AND PS.LABEL_ID = :LABEL_ID
+           AND PS.BUCKET_ID = :BUCKET_ID
+           AND PS.VWH_ID = :VWH_ID)
+   ORDER BY BOX.UCC128_ID;       
+    </pre>
+    <b>Description:</b><p>
+        Enter the Customer_id, po_id, Customer_dc_id, pickslip_id, bucket_id, label_id and vwh_id or not
+        Enter any parameter except no of days(default 60) and validiate the result same
+        for ucc128_id and stop process resaon.</p>
+    <b>Query2:</b>
+    <pre>SELECT T.UCC128_ID, SUM(T.EXPECTED_PIECES), SUM(T.CURRENT_PIECES)
+  FROM BOXDET T
+ WHERE T.UCC128_ID IN(SELECT BOX.UCC128_ID
+  FROM BOX
+ WHERE BOX.IA_ID = :box_ia_id
+   AND BOX.PICKSLIP_ID IN
+       (SELECT PICKSLIP_ID
+          FROM PS
+          LEFT OUTER JOIN BUCKET B ON PS.BUCKET_ID = B.BUCKET_ID
+         WHERE B.AVAILABLE_FOR_PITCHING = 'Y'
+           AND PS.CUSTOMER_ID = :CUSTOMER_ID
+           AND PS.PICKSLIP_IMPORT_DATE &gt;= (SYSDATE - :no_of_days)
+           AND PS.PICKSLIP_IMPORT_DATE &lt; SYSDATE + 1
+           AND PS.PO_ID = :PO_ID
+           AND PS.CUSTOMER_DC_ID = :CUSTOMER_DC_ID
+           AND PS.PICKSLIP_ID = :PICKSLIP_ID
+           AND PS.LABEL_ID = :LABEL_ID
+           AND PS.BUCKET_ID = :BUCKET_ID
+           AND PS.VWH_ID = :VWH_ID))
+  GROUP BY T.UCC128_ID
+ ORDER BY T.UCC128_ID;
+            </pre>
+    <b>Description:</b><p>
+        Enter the Customer_id, po_id, customer_dc_id, pickslip_id, bucket_id, label_id and vwh_id or not
+        Enter any parmeter except no of days(default 60) and validiate the result same
+        for expected pieces and current pieces in each box.</p>
+</body>
+</html>

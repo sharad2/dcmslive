@@ -1,0 +1,155 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <!-- The configuration and platform will be used to determine which
+         assemblies to include from solution and project documentation
+         sources -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2558f515-9f98-4649-8f7b-a48f17b9783e}</ProjectGuid>
+    <SHFBSchemaVersion>1.9.0.0</SHFBSchemaVersion>
+    <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
+         Studio adds them anyway -->
+    <AssemblyName>Documentation</AssemblyName>
+    <RootNamespace>Documentation</RootNamespace>
+    <Name>Documentation</Name>
+    <!-- SHFB properties -->
+    <OutputPath>.\Help\</OutputPath>
+    <HtmlHelpName>EclipseLibrary</HtmlHelpName>
+    <Language>en-US</Language>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="..\bin\Debug\EclipseLibrary.dll" xmlns="" />
+      <DocumentationSource sourceFile="..\bin\Debug\EclipseLibrary.xml" xmlns="" />
+    </DocumentationSources>
+    <HtmlSdkLinkType>None</HtmlSdkLinkType>
+    <MSHelpViewerSdkLinkType>Id</MSHelpViewerSdkLinkType>
+    <VisibleItems>Attributes, ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</VisibleItems>
+    <SyntaxFilters>CSharp</SyntaxFilters>
+    <HelpFileFormat>MSHelpViewer</HelpFileFormat>
+    <CopyrightHref>www.eclsys.com</CopyrightHref>
+    <CopyrightText>Eclipse Systems Private Limited</CopyrightText>
+    <FeedbackEMailAddress>support%40eclsys.com</FeedbackEMailAddress>
+    <HelpTitle>EclipseLibrary</HelpTitle>
+    <SdkLinkTarget>Self</SdkLinkTarget>
+    <ProductTitle>EclipseLibrary Documentation</ProductTitle>
+    <VendorName>Eclipse Systems</VendorName>
+    <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter, IncludeTargets, AutoDocumentDispose</MissingTags>
+    <ApiFilter>
+      <Filter entryType="Namespace" fullName="EclipseLibrary.Web.JQuery" isExposed="True" xmlns="">
+        <Filter entryType="Class" fullName="EclipseLibrary.Web.JQuery.MatrixField" filterName="MatrixField" isExposed="True">
+          <Filter entryType="Method" fullName="EclipseLibrary.Web.JQuery.MatrixField.CreateCell" filterName="CreateCell" isExposed="False" />
+          <Filter entryType="Method" fullName="EclipseLibrary.Web.JQuery.MatrixField.CreateField" filterName="CreateField" isExposed="False" />
+          <Filter entryType="Method" fullName="EclipseLibrary.Web.JQuery.MatrixField.RenderSubtotals" filterName="RenderSubtotals" isExposed="False" />
+          <Filter entryType="Property" fullName="EclipseLibrary.Web.JQuery.MatrixField.DataFooterFormatString" filterName="DataFooterFormatString" isExposed="False" />
+          <Filter entryType="Property" fullName="EclipseLibrary.Web.JQuery.MatrixField.DataHeaderField" filterName="DataHeaderField" isExposed="False" />
+          <Filter entryType="Property" fullName="EclipseLibrary.Web.JQuery.MatrixField.DataSortField" filterName="DataSortField" isExposed="False" />
+          <Filter entryType="Property" fullName="EclipseLibrary.Web.JQuery.MatrixField.SortExpression" filterName="SortExpression" isExposed="False" />
+        </Filter>
+      </Filter>
+      <Filter entryType="Namespace" fullName="EclipseLibrary.Web.Old" isExposed="False" xmlns="" />
+      <Filter entryType="Namespace" fullName="EclipseLibrary.Web.SiteStructure" isExposed="True" xmlns="">
+        <Filter entryType="Class" fullName="EclipseLibrary.Web.SiteStructure.SiteHyperLinkField" filterName="SiteHyperLinkField" isExposed="True">
+          <Filter entryType="Property" fullName="EclipseLibrary.Web.SiteStructure.SiteHyperLinkField.DataFooterFields" filterName="DataFooterFields" isExposed="False" />
+        </Filter>
+      </Filter>
+    </ApiFilter>
+    <ComponentConfigurations>
+      <ComponentConfig id="Code Block Component" enabled="True" xmlns="">
+        <component id="Code Block Component" type="SandcastleBuilder.Components.CodeBlockComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+          <!-- Base path for relative filenames in source attributes
+                 (optional) -->
+          <basePath value="{@HtmlEncProjectFolder}" />
+          <!-- Connect to language filter (optional).  If omitted,
+                 language filtering is enabled by default. -->
+          <languageFilter value="true" />
+          <!-- Allow missing source files (Optional).  If omitted,
+                 it will generate errors if referenced source files
+                 are missing. -->
+          <allowMissingSource value="false" />
+          <!-- Remove region markers from imported code blocks.  If omitted,
+                 region markers in imported code blocks are left alone. -->
+          <removeRegionMarkers value="false" />
+          <!-- Code colorizer options (required).
+                 Attributes:
+                    Language syntax configuration file (required)
+                    XSLT style file (required)
+                    "Copy" image file URL (required)
+                    Default language (optional)
+                    Enable line numbering (optional)
+                    Enable outlining (optional)
+                    Keep XML comment "see" tags within the code (optional)
+                    Tab size override (optional, 0 = Use syntax file setting)
+                    Use language name as default title (optional) -->
+          <colorizer syntaxFile="{@SHFBFolder}Colorizer\highlight.xml" styleFile="{@SHFBFolder}Colorizer\highlight.xsl" copyImageUrl="../icons/CopyCode.gif" language="cs" numberLines="false" outlining="false" keepSeeTags="false" tabSize="0" defaultTitle="true" />
+        </component>
+      </ComponentConfig>
+    </ComponentConfigurations>
+    <PlugInConfigurations>
+      <PlugInConfig id="Output Deployment" enabled="True">
+        <configuration deleteAfterDeploy="false">
+          <deploymentLocation id="help1x" location="">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="help2x" location="">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="helpViewer" location="\\w8ethopia\drive_d\App Documentation\Eclipse Library">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="website" location="">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+        </configuration>
+      </PlugInConfig>
+    </PlugInConfigurations>
+  </PropertyGroup>
+  <!-- There are no properties for these groups.  AnyCPU needs to appear in
+       order for Visual Studio to perform the build.  The others are optional
+       common platform types that may appear. -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Win32' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Conceptual\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Conceptual\Welcome.aml" />
+    <None Include="Conceptual\GridViewExWidget.aml" />
+    <None Include="Conceptual\Enabling Authentication.aml" />
+    <None Include="Conceptual\Creating First Web Project.aml" />
+    <None Include="Conceptual\Creating an AJAX Dialog.aml" />
+    <None Include="Conceptual\ajaxDialogWidget.aml" />
+    <None Include="Conceptual\Ajax Overview.aml" />
+    <None Include="Conceptual\Adding Theme Selector.aml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ContentLayout Include="Conceptual\Content Layout.content" />
+  </ItemGroup>
+  <!-- Import the SHFB build targets -->
+  <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
+</Project>

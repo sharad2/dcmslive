@@ -1,0 +1,890 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>130.28 Report to shortage of SKU and pull back quantity</title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        &nbsp;130.28 SKUs In Shortage And Min Pullback Quantity</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <ul style="list-style: none">
+        <li><strong>Reviewed By:</strong>Manmohan Bisht</li>
+        <li><strong>$Revision:</strong>14968 $</li>
+        <li><strong>Status:</strong> Tested</li>
+        <li><strong>Tested By:H.K.Singh</strong></li>
+    </ul>
+    <p>
+        Lists SKUs with Shortage and Min Pull Back Quantity</p>
+    <h2>
+        Overview</h2>
+    <p>
+       Shows SKU for which inventory is not available in picking area. It also shows inventory in areas from where shoratge could be full filled. Also you can see the Shortage SKU for specific customer,bucket,virtual warehouse.</p>
+       
+    <p> 
+                You have an option to list shortage (if exist) for all orders,Shortage for orders of buckets or for some specific bucket. If report run for either Orders of Bucket or Orders of Specific Bucket in that case orders for which buckets are not created  
+                are not considered.The report does not display the SKUs if they are marked as underpitch.</p>
+            <p>
+                One can see shortage of SKU in particular building as well against selected picking area.
+            </p>
+            <p>
+                All unreserved carton 
+                and sku inventory is visible.
+            <p>
+                If inventory exists for multiple qualities, the quality code is suffixed to the 
+                carton area name.</p>
+            
+    <h2>
+        Algorithm</h2>
+    <p>
+        The query fetches quantity ordered from the DEM_PICKSLIP_DETAIL and PS tables. Its
+        unreserved available quantities in various carton areas is fetched from SRC_CARTON_DETAIL.
+        We are also showing unreserved quantity available in FPK from IA table also quantity in box
+        table is considered as inventory in hand</p>
+
+        <p>Picked Pieces: If reservation exist for Ordered SKU either of Pulling or Pitching type then consider Boxdet.expected pieces as Picked Pieces. i.e If carton_id exist in box table it means box is reseved and pieces are guaranteed to be picked.In this situation boxdet.expected pieces are considered as picked_pieces.
+        In case carton_id is null then query looks at Ia_id.if Ia_id is not null then MPC have been created meaning pieces are guaranteed to be picked.In this situation also Boxdet.expected_pieces are considered as picked_pieces. </p>
+       
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 25%; text-align: center">
+                <b>Item</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Summary</b>
+            </td>
+            <td style="width: 10%; text-align: center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Vwh
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;</td>
+            <td style="width: 45%; text-align: left">
+                Virual Warehouse of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Style
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                2&nbsp;
+            </td>
+            <td style="width: 45%; text-align: left">
+                SKU Style
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Color
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                1</td>
+            <td style="width: 45%; text-align: left">
+                SKU Color
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Dim.
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                4
+            </td>
+            <td style="width: 45%; text-align: left">
+                SKU Dimension
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Size
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                5&nbsp;
+            </td>
+            <td style="width: 45%; text-align: left">
+                SKU Size
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Label
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%; text-align: left">
+                Label Id of SKU
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Pieces in 
+                Selected Building</td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%; text-align: left">
+                Inventory of the Ordered SKU in various carton areas and 
+                Sku area.Shown in green for areas selected against &quot;Check For Inventory In&quot; and 
+                in yellow for areas selected against &quot;Inventory Can Be Pulled From&quot;.</td>
+        </tr>
+         <tr>
+            <td style="width: 25%; text-align: left">
+                Bucket Count</td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%; text-align: left">
+                Number of Buckets created against ordred SKUs 
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Ordered
+            </td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;">
+                Ordered 
+                Quanityt of SKU 
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Picked
+            </td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;">
+                &nbsp;Quantity of Ordered SKU which 
+                is either picked or expected to be picked because of reservation against them</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Available
+            </td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;">
+                Sum of unreserved 
+                inventory of ordered SKU in areas selected against &quot;Check For Inventory In (Shown in green)</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Shortage
+            </td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                3</td>
+            <td style="width: 45%; text-align: left">
+                Shortage = (Ordered Quantity of SKU -Picked Pieces)-Avalilable inventory 
+                &gt;0</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Pieces in Other Buildings
+            </td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;</td>
+            <td style="width: 45%; text-align: left">
+                Unreserved inventory available in areas of&nbsp; buildings other than selected 
+                building.Shown in green for areas selected against &quot;Check For Inventory In&quot; and 
+                in yellow for areas selected against &quot;Inventory can be pulled from&quot;.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Total Pullable</td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;</td>
+            <td style="width: 45%; text-align: left">
+                Sum of
+                inventory 
+                Pullable from selected areas against &quot;Inventory Can Be Pulled From&quot;.shown in 
+                yellow</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Min
+                PullBack Pieces 
+            </td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;</td>
+            <td style="width: 45%; text-align: left">
+              Least of Shortage and Total Pullable
+            </td>
+        </tr>
+    </table>
+    <h5>Note:-Value after "-" sign in areas denotes the quality of inventory</h5>
+    <h2>
+        Parameters </h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 20%; text-align: center">
+                <b>Name</b>
+            </td>
+            <td style="width: 15%; text-align: center">
+                <b>Type</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Default</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Building
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                (Please Select)
+            </td>
+            <td style="width: 45%; text-align: left">
+                The Building for which you want to see the orders
+            </td>
+        </tr>
+         <tr>
+            <td style="width: 20%; text-align: left">
+                Virtual Warehouse
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                (Any)
+            </td>
+            <td style="width: 45%; text-align: left">
+                Virtual warehouse for which orders to be fetched.
+            </td>
+                The
+                Virtual Warehouse
+                for which you want to see the orders</td>
+        </tr>
+          <tr>
+            <td style="width: 20%; text-align: left">
+                Customer
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                (None)
+            </td>
+            <td style="width: 45%; text-align: left">
+               The customer for which you want to see the orders. 
+            </td>
+        </tr>
+          <tr>
+            <td style="width: 20%; text-align: left">
+                Label
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                (None)
+            </td>
+            <td style="width: 45%; text-align: left">
+               The Label for which you want to see the orders. 
+            </td>
+        </tr>
+         <tr>
+            <td style="width: 20%; text-align: left">
+                All Orders</td>
+            <td style="width: 15%; text-align: center">
+                RadioButton</td>
+            <td style="width: 20%; text-align: center">
+                Checked</td>
+            <td style="width: 45%; text-align: left">
+                Shows all orders. 
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Order of bucket</td>
+            <td style="width: 15%; text-align: center">
+                RadioButton</td>
+            <td style="width: 20%; text-align: center">
+                Unchecked</td>
+            <td style="width: 45%; text-align: left">
+                Shows the orders of the all bucket. 
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Orders of Specific Bucket.</td>
+            <td style="width: 15%; text-align: center">
+                RadioButton</td>
+            <td style="width: 20%; text-align: center">
+                Unchecked</td>
+            <td style="width: 45%; text-align: left">
+                Show the orders for specific bucket.</td>
+        </tr>
+         <tr>
+            <td style="width: 20%; text-align: left">
+                Check For Inventory In</td>
+            <td style="width: 15%; text-align: center">
+                CheckBox
+            </td>
+            <td style="width: 20%; text-align: center">
+                (None)
+            </td>
+            <td style="width: 45%; text-align: left">
+                Area  where sku inventory is available .This area is highlited in grid view in green color
+            </td>
+        </tr>
+         <tr>
+            <td style="width: 20%; text-align: left">
+                Inventory 
+                Can Be Pulled From 
+            </td>
+            <td style="width: 15%; text-align: center">
+                CheckBox
+            </td>
+            <td style="width: 20%; text-align: center">
+                (None)
+            </td>
+            <td style="width: 45%; text-align: left">
+                Any area from where inventory can be pulled to overcome shoratge showed in yellow color. 
+            </td>
+        </tr>
+         <tr>
+            <td style="width: 20%; text-align: left">
+                Show Pullable SKUs
+            </td>
+            <td style="width: 15%; text-align: center">
+                Check box
+            </td>
+            <td style="width: 20%; text-align: center">
+                (None)
+            </td>
+            <td style="width: 45%; text-align: left">
+                Check it to see only pullable quantity
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Quality Code
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                01:Quality Code</td>
+            <td style="width: 45%; text-align: left">
+                Inventory Quality.This Filter is applied on Carton Inventory only.
+            </td>
+        </tr>
+       
+       
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Start Date</td>
+            <td style="width: 15%; text-align: center">
+                Date range from date = current date, To date = current date&nbsp; next seven days</td>
+            <td style="width: 20%; text-align: center">
+                Unchecked</td>
+            <td style="width: 45%; text-align: left">
+                This parameter is for selecting the Start Date range for which user wants to
+                see the report. There is a checkbox which is near to this date parameter. For applying
+                this date filter this checkbox must be checked. </td>
+        </tr>
+       
+       
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Cancel Date</td>
+            <td style="width: 15%; text-align: center">
+                Date range from date = current date, To date = current date&nbsp; next seven days</td>
+            <td style="width: 20%; text-align: center">
+                Unchecked</td>
+            <td style="width: 45%; text-align: left">
+                This parameter is for selecting the Cancel Date range for which user wants to
+                see the report. There is a checkbox which is near to this date parameter. For applying
+                this date filter this checkbox must be checked. </td>
+        </tr>
+       
+       
+    </table>
+    <h2>
+        Behaviour Change</h2>
+    <ol>
+        <li>Now, report is ready for separate picking area for each Building.</li>
+    </ol>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No Known Issue</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+    <ul>
+        <li>
+            <h4>
+                Private synonyms requried for the tables:
+            </h4>
+            <pre>
+<code>SRC_CARTON, SRC_CARTON_DETAIL, MASTER_SKU, DEM_PICKSLIP, DEM_PICKSLIP_DETAIL,
+    PS,CUST, BOXDET, MASTER_STYLE, TAB_INVENTORY_AREA, IALOC, IALOC_CONTENT, IA</code></pre>
+            <ul>
+                <li>
+                    <h4>
+                        Script to create the synonyms:</h4>
+                    <pre>
+ <code>create or replace synonym SRC_CARTON for dcms4.SRC_CARTON;<br />
+     create or replace synonym SRC_CARTON_DETAIL for dcms8.SRC_CARTON_DETAIL;<br />
+     create or replace synonym MASTER_SKU for dcms4.MASTER_SKU;<br />
+     create or replace synonym DEM_PICKSLIP for dcms4.DEM_PICKSLIP;<br />
+     create or replace synonym DEM_PICKSLIP_DETAIL for dcms4.DEM_PICKSLIP_DETAIL;<br />
+     create or replace synonym PS for dcms8.PS;<br />
+     create or replace synonym CUST for dcms8.CUST;<br />
+     create or replace synonym PSDET for dcms8.PSDET;<br />
+     create or replace synonym BOXDET for dcms8.BOXDET;<br />
+     create or replace synonym MASTER_STYLE for dcms4.MASTER_STYLE;<br />
+     create or replace synonym IALOC for dcms8.IALOC;<br />
+     create or replace synonym IALOC_CONTENT for dcms8.IALOC_CONTENT;<br />
+     create or replace synonym IA for dcms8.IA;<br />
+     create or replace synonym tab_quality_code for dcms4.tab_quality_code;<br />
+     create or replace synonym tab_inventory_area for dcms4.tab_inventory_area;<br />
+     create or replace synonym master_storage_location for dcms4.master_storage_location;<br />
+     create or replace synonym resvdet for dcms8.resvdet;</code></pre>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <h2>
+        Technical documentation:</h2>
+     <p>
+        Shoratge=Pieces ordered -&nbsp; (Picked Pieces+ Available Pieces), If Shoratge is more than min pull back quantity then it is shown in red color<br />
+        Picked Pieces:- Pieces picked or guarantedd to be picked because of reservation agaist them.<br />
+        Available Pieces:-Sum of quantity in checked areas aginst "Check For Inventotyr In" this quantity is shown in green color.<br />
+        Total Pullable:-Sum of quantity in areas checked other than area checked under "check for inventory section" shown with yellow color.<br />
+        If any area is checked under "Inventory can be pulled from" then<br />
+        Total Pullable:-Sum of quantity in checked area.While considering this filter we do not look at passed building<br />
+        It means quanitity can be pulled with in building itself.<br />
+        Min Pull Back Quantity:- Least of Shortage and Total Pullable 
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </p>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <pre>
+  WITH ALL_ORDERED_SKU AS
+ (
+ <if c="$order_type='A'">
+ SELECT /*+ INDEX(dp ps_pdstat_fk_i) INDEX(dpd psdet_ps_fk_i) */ msku.sku_id,
+         DP.VWH_ID            AS VWH_ID,
+         DPD.QUANTITY_ORDERED AS QUANTITY_ORDERED,
+         null as Bucket_id
+    FROM DEM_PICKSLIP DP
+   INNER JOIN DEM_PICKSLIP_DETAIL DPD
+      ON DPD.PICKSLIP_ID = DP.PICKSLIP_ID
+   inner join master_sku msku
+      on msku.style = dpd.style
+     and msku.color = dpd.color
+     and msku.dimension = dpd.dimension
+     and msku.sku_size = dpd.sku_size
+   WHERE DP.PS_STATUS_ID = 1
+    <if> AND DP.VWH_ID = :VWH_ID</if>
+     <if>and dp.customer_id=:customer_id</if>
+     <if>AND DP.DELIVERY_DATE &gt;= CAST(:FROM_START_DATE as DATE)</if>
+     <if>AND DP.DELIVERY_DATE &lt; CAST(:TO_START_DATE as DATE)+1</if>
+     <if>AND DP.CANCEL_DATE &gt;= CAST(:FROM_CANCEL_DATE as DATE)</if>
+     <if>AND DP.CANCEL_DATE &lt; CAST(:TO_CANCEL_DATE as DATE) +1</if>
+     <%--<if>AND DP.WAREHOUSE_LOCATION_ID = :warehouse_location_id</if>--%>
+         <if>AND <a pre="NVL(DP.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:warehouse_location_id</a></if>
+  UNION ALL
+  </if>
+  SELECT ms.sku_id,
+         P.VWH_ID          AS VWH_ID,
+         PD.PIECES_ORDERED AS QUANTITY_ORDERED,
+         p.bucket_id as Bucket_id
+    FROM PS P
+   INNER JOIN PSDET PD
+      ON P.PICKSLIP_ID = PD.PICKSLIP_ID
+   INNER JOIN MASTER_SKU MS
+      ON MS.UPC_CODE = PD.UPC_CODE
+   INNER JOIN PO ON
+      P.CUSTOMER_ID = PO.CUSTOMER_ID
+      AND P.PO_ID = PO.PO_ID
+      AND P.ITERATION = PO.ITERATION
+   WHERE P.TRANSFER_DATE IS NULL
+     <%--<if>AND P.WAREHOUSE_LOCATION_ID = :warehouse_location_id</if>--%>
+    <if>AND <a pre="NVL(P.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:warehouse_location_id</a></if>
+     <if>AND P.VWH_ID = :VWH_ID</if>
+      <if>and p.customer_id=:customer_id</if>
+      <if>and p.bucket_id=:bucket_id</if>
+      <if>AND PO.START_DATE &gt;= CAST(:FROM_START_DATE as DATE)</if>
+     <if>AND  PO.START_DATE &lt; CAST(:TO_START_DATE as DATE)+1</if>
+     <if>AND PO.CANCEL_DATE &gt;= CAST(:FROM_CANCEL_DATE as DATE)</if>
+     <if>AND PO.CANCEL_DATE &lt; CAST(:TO_CANCEL_DATE as DATE) +1</if>
+     AND PD.TRANSFER_DATE IS NULL
+     and pd.upc_code not in (select bksu.upc_code from bucketsku bksu where bksu.underpitch_flag = 'Y' and p.bucket_id=bksu.bucket_id )),
+ALL_GROUPED_SKU AS
+ (SELECT AO.sku_id AS sku_id,
+         AO.VWH_ID AS VWH_ID,
+         SUM(AO.QUANTITY_ORDERED) AS QUANTITY_ORDERED,
+         count(distinct Ao.bucket_id) as bucket_count
+    FROM ALL_ORDERED_SKU AO
+    GROUP BY sku_id, AO.VWH_ID),
+
+ALL_INVENTORY_SKU AS
+ (SELECT tia.inventory_storage_area AS INVENTORY_AREA,
+         tia.short_name as AREA_NAME,
+         scd.sku_id as sku_id,
+         SC.VWH_ID AS VWH_ID,
+         NVL(NVL(tia.warehouse_location_id, MSL.WAREHOUSE_LOCATION_ID),'Unknown') as building_id,
+         SCD.QUANTITY AS QUANTITY,
+         SC.quality_code as QUALITY,
+         tia.stores_what as area_type       
+    FROM SRC_CARTON_DETAIL SCD
+   INNER JOIN SRC_CARTON SC
+      ON SC.CARTON_ID = SCD.CARTON_ID
+    LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+      ON SC.LOCATION_ID = MSL.LOCATION_ID
+     and sc.carton_storage_area = msl.storage_area
+    left outer JOIN TAB_INVENTORY_AREA TIA
+      ON sc.carton_storage_area = TIA.INVENTORY_STORAGE_AREA
+   WHERE sc.suspense_date is null
+   <if>and SC.VWH_ID = :VWH_ID </if>
+   <if c="$quality_code">and sc.quality_code=:quality_code</if>    
+   and scd.req_process_id is null
+   
+  UNION ALL
+
+ SELECT  IL.IA_ID,
+         IL.IA_ID as area_name,
+         IL.sku_id,
+         IL.VWH_ID AS VWH_ID,
+         NVL(IL.WAREHOUSE_LOCATION_ID,'Unknowm'),
+         NVL(IL.NUMBER_OF_UNITS, 0) - NVL(R.RESERVED_UNITS, 0) AS NUMBER_OF_UNITS,
+         null as quality,
+         'SKU' as area_type
+    FROM (SELECT IAC.IA_ID      AS IA_ID,
+                 msku.sku_id as sku_id,
+                 I.VWH_ID AS VWH_ID,
+                 NVL(I.WAREHOUSE_LOCATION_ID,'Unknown') as WAREHOUSE_LOCATION_ID,
+                 SUM(IAC.NUMBER_OF_UNITS) AS NUMBER_OF_UNITS
+            FROM IALOC_CONTENT IAC
+           INNER JOIN IALOC I
+              ON I.IA_ID = IAC.IA_ID
+             AND I.LOCATION_ID = IAC.LOCATION_ID
+          
+           INNER JOIN MASTER_SKU MSKU
+              ON MSKU.UPC_CODE = IAC.IACONTENT_ID
+          
+           WHERE 1=1
+             
+             <if>AND I.VWH_ID = :VWH_ID</if>
+           GROUP BY IAC.IA_ID,
+                    msku.sku_id,
+                    I.VWH_ID,
+                    NVL(I.WAREHOUSE_LOCATION_ID,'Unknown')) IL
+    LEFT OUTER JOIN (SELECT RD.IA_ID AS IA_ID,
+                            msku.sku_id as sku_id,
+                            SUM(RD.PIECES_RESERVED) RESERVED_UNITS,
+                            RD.VWH_ID,
+                            NVL(iac.warehouse_location_id,'Unknown') as warehouse_location_id
+                            FROM RESVDET RD
+                            INNER JOIN MASTER_SKU MSKU
+                            ON RD.UPC_CODE = MSKU.UPC_CODE
+                             left outer join ialoc iac on
+                            iac.ia_id=rd.ia_id
+                            and iac.location_id=rd.location_id
+ GROUP BY msku.sku_id, RD.VWH_ID, RD.IA_ID,NVL(iac.warehouse_location_id,'Unknown')) R
+      ON IL.IA_ID = R.IA_ID
+     AND IL.Sku_id=R.sku_id
+     AND IL.VWH_ID = R.VWH_ID
+     and Il.warehouse_location_id=R.warehouse_location_id
+
+  UNION ALL
+  SELECT 'BOXES',
+         'BOXES' as area_name,
+         MS.sku_id               AS sku_id,
+         B.VWH_ID                AS VWH_ID,
+         NVL(P.WAREHOUSE_LOCATION_ID,'Unknown'),
+        (case
+           when b.carton_id is not null then
+                BD.expected_pieces 
+          
+          WHEN b.carton_id is null AND
+               b.ia_id is not null THEN
+ 
+          bd.expected_pieces end)  AS PICKED_QUANTITY,
+         null as QUALITY,
+         null as area_type
+    FROM BOX B
+   INNER JOIN BOXDET BD
+      ON B.PICKSLIP_ID = BD.PICKSLIP_ID
+     AND B.UCC128_ID = BD.UCC128_ID
+   INNER JOIN PS P
+      ON P.PICKSLIP_ID = B.PICKSLIP_ID
+   INNER JOIN MASTER_SKU MS
+      ON BD.UPC_CODE = MS.UPC_CODE
+   INNER JOIN PO ON
+      P.CUSTOMER_ID = PO.CUSTOMER_ID
+      AND P.PO_ID = PO.PO_ID
+      AND P.ITERATION = PO.ITERATION
+   WHERE P.TRANSFER_DATE IS NULL
+     AND B.STOP_PROCESS_DATE IS NULL
+     AND BD.STOP_PROCESS_DATE IS NULL
+     <if>and p.customer_id=:customer_id</if>
+     <if>AND p.VWH_ID = :VWH_ID</if>
+     <if>AND PO.START_DATE &gt;= CAST(:FROM_START_DATE as DATE)</if>
+     <if>AND  PO.START_DATE &lt; CAST(:TO_START_DATE as DATE)+1</if>
+     <if>AND PO.CANCEL_DATE &gt;= CAST(:FROM_CANCEL_DATE as DATE)</if>
+     <if>AND PO.CANCEL_DATE &lt; CAST(:TO_CANCEL_DATE as DATE) +1</if>
+     <%--<if>AND P.WAREHOUSE_LOCATION_ID = :warehouse_location_id</if>--%>
+     <if>AND <a pre="NVL(P.WAREHOUSE_LOCATION_ID,'Unknow') IN (" sep="," post=")">:warehouse_location_id</a></if>
+     <if>and p.bucket_id=:bucket_id</if>
+     ),
+GROUPED_INVENTORY_SKU AS
+ (SELECT AIS.sku_id AS sku_id,
+         AIS.INVENTORY_AREA AS INVENTORY_AREA,
+         max(AIS.AREA_NAME) AS AREA_NAME,
+         AIS.VWH_ID AS VWH_ID,
+         ais.building_id as building_id,
+         SUM(AIS.QUANTITY) AS QUANTITY,
+         <a pre="SUM(SUM(case
+                   when  ais.INVENTORY_AREA IN (" sep="," post=")">(:myInventoryArea)</a> THEN
+                    AIS.QUANTITY
+                 END)) OVER(partition by AIS.sku_id, AIS.VWH_ID)
+                  AS QUANTITY_my_areas,
+
+         <if c="$pullbaleInventoryArea"><a pre="
+                 SUM(SUM(case
+                   when  ais.INVENTORY_AREA in (" sep="," post=")">:pullbaleInventoryArea</a> THEN
+                    AIS.QUANTITY
+                 END)) OVER(partition by AIS.sku_id, AIS.VWH_ID) AS QUANTITY_other_areas,
+         </if>
+                 <else><a pre="SUM(SUM(case
+                   when ais.INVENTORY_AREA not in ('BOXES'," sep="," post=")">:myInventoryArea</a>THEN
+                    AIS.QUANTITY
+                 END)) OVER(partition by AIS.sku_id, AIS.VWH_ID) AS QUANTITY_other_areas,
+                 </else> 
+          AIS.QUALITY as QUALITY ,
+          SUM(SUM(case
+                   when ais.INVENTORY_AREA ='BOXES' THEN
+                    AIS.QUANTITY
+                 END)) OVER(partition by AIS.sku_id, AIS.VWH_ID) AS BOXQUANTITY ,
+                 max(ais.area_type) as area_type                   
+    FROM ALL_INVENTORY_SKU AIS
+   GROUP BY AIS.sku_id, AIS.VWH_ID, AIS.INVENTORY_AREA, ais.building_id, AIS.QUALITY),
+final_query as
+ (SELECT OS.sku_id AS sku_id,
+         OS.VWH_ID AS VWH_ID,
+         sty.label_id as label_id,
+         os.bucket_count as bucket_count,
+         msku.style as style ,
+         msku.color as color,
+         msku.dimension as dimension,
+         msku.sku_size as sku_size,
+         msku.upc_code as upc_code,
+         gis.building_id as inventory_building_id,
+         OS.QUANTITY_ORDERED AS ORDERED_QUANTITY,
+         GIS.INVENTORY_AREA AS INVENTORY_AREA,
+         GIS.AREA_NAME AS AREA_NAME,
+         GIS.QUANTITY AS PIECES_IN_AREA,
+         GIS.QUANTITY_my_areas as QUANTITY_my_areas,
+         gis.QUANTITY_other_areas as QUANTITY_other_areas,
+         OS.QUANTITY_ORDERED - NVL(BOXQUANTITY, 0) - NVL(GIS.QUANTITY_my_areas, 0)  AS SHORTAGE,
+         LEAST(OS.QUANTITY_ORDERED - NVL(BOXQUANTITY, 0) - NVL(GIS.QUANTITY_my_areas, 0), NVL(gis.QUANTITY_other_areas, 0)) AS MIN_PULLBACK_QUANTITY,
+         GIS.QUALITY as QUALITY,
+        gis.BOXQUANTITY  as BOXQUANTITY,
+        gis.area_type as area_type
+    FROM ALL_GROUPED_SKU OS
+   inner join master_sku msku
+      on msku.sku_id = os.sku_id
+    left outer join master_style sty
+      on sty.style = msku.style
+    LEFT OUTER JOIN GROUPED_INVENTORY_SKU GIS
+      ON GIS.sku_id = OS.sku_id
+     AND GIS.VWH_ID = OS.VWH_ID
+ WHERE 1=1 
+ and 
+ OS.QUANTITY_ORDERED - NVL(BOXQUANTITY, 0) - NVL(GIS.QUANTITY_my_areas, 0) &gt; 0
+ <if> and sty.label_id=:label_id</if>
+ <if c="$showPullabelSku">And gis.QUANTITY_other_areas &gt; 0</if>
+   )
+select *
+  from final_query
+   pivot XML(sum(PIECES_IN_AREA) as PIECES_IN_AREA for (INVENTORY_AREA, inventory_building_id,QUALITY,area_type,AREA_NAME) IN(ANY, ANY,ANY,ANY,ANY))
+
+</pre>
+
+    <h2>
+        Validation Queries</h2>
+    <pre>select ms.label_id from master_style ms where ms.style = :style;</pre>
+    <h3>
+        All Areas Quantity</h3>
+    <pre>SELECT CTN.VWH_ID AS VWH_ID,
+       T.SHORT_NAME AS AREA,
+       COALESCE(T.WAREHOUSE_LOCATION_ID, M.WAREHOUSE_LOCATION_ID, 'Unknown') AS WAREHOUSE_LOCATION_ID,
+       SUM(CTNDET.QUANTITY) AS QUANTITY
+  FROM SRC_CARTON CTN
+ INNER JOIN SRC_CARTON_DETAIL CTNDET
+    ON CTN.CARTON_ID = CTNDET.CARTON_ID
+  LEFT OUTER JOIN MASTER_STORAGE_LOCATION M
+    ON CTN.CARTON_STORAGE_AREA = M.STORAGE_AREA
+   AND CTN.LOCATION_ID = M.LOCATION_ID
+ INNER JOIN TAB_INVENTORY_AREA T
+    ON CTN.CARTON_STORAGE_AREA = T.INVENTORY_STORAGE_AREA
+ INNER JOIN MASTER_SKU MS
+    ON MS.sku_id = CTNDET.sku_id
+ WHERE MS.Style ='40728'
+ AND MS.COLOR ='MUM'
+ AND MS.DIMENSION ='.'
+ AND MS.SKU_SIZE ='1SZ'
+ AND CTN.QUALITY_CODE ='01'
+ AND CTNDET.req_process_id is null
+ AND CTN.SUSPENSE_DATE IS NULL
+ and COALESCE(T.WAREHOUSE_LOCATION_ID, M.WAREHOUSE_LOCATION_ID, 'Unknown') ='FDC'
+ GROUP BY CTN.VWH_ID,
+          COALESCE(T.WAREHOUSE_LOCATION_ID,
+                   M.WAREHOUSE_LOCATION_ID,
+                   'Unknown'),
+          T.SHORT_NAME
+  </pre>
+    <h3>
+        FPK Qauntity</h3>
+    <pre>select ialoc.number_of_units
+  from ialoc_content ialoc
+ INNER JOIN MASTER_SKU MSKU
+    ON MSKU.UPC_CODE = ialoc.IACONTENT_ID
+    INNER JOIN IALOC I
+              ON I.IA_ID = ialoc.IA_ID
+             AND I.LOCATION_ID = ialoc.LOCATION_ID
+ where msku.style =:style
+   and msku.color =:color
+   and msku.dimension =:dimension
+   and msku.sku_size =:sku_size
+   AND ialoc.IACONTENT_TYPE_ID = 'SKU'
+   and I.Vwh_Id=:vwh_id;
+  </pre>
+    <h3>
+        Quanity ordered from dempickslip</h3>
+    <pre>  
+select dpd.quantity_ordered
+  from dem_pickslip dps
+ inner join dem_pickslip_detail dpd
+    on dps.pickslip_id = dpd.pickslip_id
+ where dpd.style =:style
+   and dpd.color =:color
+   and dpd.dimension =:dimension
+   and dpd.sku_size =:sku_size
+   and dps.warehouse_location_id =:warehouse_location_id
+   and dps.vwh_id =:vwh_id
+   and DPs.PS_STATUS_ID = 1
+</pre>
+    <h3>
+        Ordered quantity from ps</h3>
+    <pre>
+select psd.pieces_ordered
+  from ps p
+ inner join psdet psd
+    on p.pickslip_id = psd.pickslip_id
+ inner join master_sku msku
+    on psd.upc_code = msku.upc_code
+ where 
+   P.TRANSFER_DATE IS NULL
+   and msku.style =:style
+   and msku.color =:color
+   and msku.dimension =:dimension
+   and msku.sku_size =:sku_size
+   and p.warehouse_location_id =:warehouse_location_id
+   and p.vwh_id =:vwh_id 
+   </pre>
+    <h3>
+        Picked Quantity from box</h3>
+    <pre>
+   select  (case
+           when b.carton_id is not null then
+                BD.expected_pieces 
+          
+          WHEN b.carton_id is null AND
+               b.ia_id is not null THEN
+ 
+          bd.expected_pieces 
+          else
+          bd.current_pieces end) 
+     from box B
+    INNER JOIN BOXDET BD
+       ON B.PICKSLIP_ID = BD.PICKSLIP_ID
+      AND B.UCC128_ID = BD.UCC128_ID
+    INNER JOIN PS P
+       ON P.PICKSLIP_ID = B.PICKSLIP_ID
+    INNER JOIN MASTER_SKU MS
+       ON BD.UPC_CODE = MS.UPC_CODE
+    where 
+      P.TRANSFER_DATE IS NULL
+      AND B.STOP_PROCESS_DATE IS NULL
+      AND BD.STOP_PROCESS_DATE IS NULL
+      and ms.style =:style
+      and ms.color =:color
+      and ms.dimension =dimension
+      and ms.sku_size =:sku_size
+      and p.warehouse_location_id =warehouse_location_id
+      and p.vwh_id=:vwh_id;
+</pre>
+</body>
+</html>

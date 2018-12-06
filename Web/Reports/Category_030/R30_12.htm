@@ -1,0 +1,591 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>30.12 Short Shipped SKUs</title>
+    <style type="text/css">
+        .auto-style1 {
+            width: 10%;
+        }
+        .auto-style2 {
+            width: 9%;
+        }
+        .auto-style3 {
+            width: 9%;
+            text-align: center;
+        }
+        .auto-style4 {
+            text-align: center;
+        }
+        .auto-style5 {
+            text-align: left;
+        }
+        .auto-style6 {
+            font-weight: normal;
+        }
+        </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        30.12 Short Shipped SKUs</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <ul style="list-style: none">
+        <li>Reviewed By: Hemant K. Varshney</li>
+        <li>$Revision: 6994 $</li>
+        <li>Status: Done</li>
+        <li>Tested By:&nbsp; Sanjeev Kumar</li>
+    </ul>
+    <p>Each customer/PO/VWH, lists those SKUs which were short shipped during the provided date or date range.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        This report helps to find out those SKUs which were short shipped. Report is also showing current inventory in all areas for the listed SKUs. 
+        </p>
+    <p>
+        <strong>Please note:</strong> It is nothing to do with the inventory picture, which was there at the time when this particular SKU was shipped
+    </p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        Retrieving UPC code, Customer, PO, VWH and ordered pieces from psdet and ps table.  Against each UPC retrieving style, color, dimension and size from master_sku. Retrieving shipped pieces from boxdet table. Retrieving inventory of carton areas from src_carton and src_carton_detail and SKU areas inventory from master_raw_inventory and ialoc and ialoc_content table. 
+    </p>
+     <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="text-align:center" class="auto-style1">
+                <b>Item</b>
+            </td>
+            <td style="text-align:center" class="auto-style2">
+                <b>Summary</b>
+            </td>
+            <td style="width:10%; text-align:center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td class="auto-style1" >
+                Customer</td>
+            <td class="auto-style3">
+                No</td>
+            <td class="auto-style4">
+                1</td>
+            <td>
+                Displaying Customer ID with name</td>
+        </tr>
+        <tr>
+            <td class="auto-style1" >
+                VWH</td>
+            <td class="auto-style3">
+                No</td>
+            <td class="auto-style4">
+                &nbsp;</td>
+            <td>
+                Virtual Warehouse of the SKU</td>
+        </tr>
+        <tr>
+            <td class="auto-style1" >
+                PO</td>
+            <td class="auto-style3">
+                No</td>
+            <td class="auto-style4">
+                2</td>
+            <td>
+                Purchase order number</td>
+        </tr>
+        <tr>
+            <td class="auto-style1" >
+                UPC</td>
+            <td class="auto-style3">
+                No</td>
+            <td class="auto-style4">
+                3</td>
+            <td>
+                UPC Code of the SKU</td>
+        </tr>
+        <tr>
+            <td class="auto-style1" >
+                Style</td>
+            <td class="auto-style3">
+                No</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Style of the SKU</td>
+        </tr>
+        <tr>
+            <td class="auto-style1" >
+                Color</td>
+            <td class="auto-style3">
+                No</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Color of the SKU</td>
+        </tr>
+        <tr>
+            <td class="auto-style1" >
+                Dim</td>
+            <td class="auto-style3">
+                No</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Dimension of the SKU</td>
+        </tr>
+        <tr>
+            <td class="auto-style1" >
+                Size</td>
+            <td class="auto-style3">
+                No</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Size of the SKU</td>
+        </tr>
+        <tr>
+            <td class="auto-style1" >
+                Pieces Ordered</td>
+            <td class="auto-style3">
+                Sum</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Number of pieces which were ordered for the SKU</td>
+        </tr>
+        <tr>
+            <td class="auto-style1" >
+                Pieces Shipped</td>
+            <td class="auto-style3">
+                Sum</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Number of pieces which were shipped for the SKU</td>
+        </tr>
+        <tr>
+            <td class="auto-style1" >
+                Pieces Shortage</td>
+            <td class="auto-style3">
+                Sum</td>
+            <td class="auto-style4">
+                &nbsp;</td>
+            <td>
+                Displaying shortage here, to calculate shortage using formula (ordered pieces – shipped pieces) </td>
+        </tr>
+        <tr>
+            <td class="auto-style1" >
+                Area&nbsp; Quantity</td>
+            <td class="auto-style3">
+                No</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                We are showing inventory of all areas(Carton Area and Sku Area).
+            </td>
+        </tr>
+        </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:20% ; text-align:center">
+                <b>Name</b>
+            </td>
+            <td style="width:15% ; text-align:center">
+                <b>Type</b>
+            </td>
+            <td style="width:20%; text-align:center">
+                <b>Default</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:20%; " class="auto-style5">
+                Transfer Date</td>
+            <td style="width:15%; " class="auto-style4">
+                Date</td>
+            <td style="width:20%; " class="auto-style5">
+                From Date : Current Date – 7 Days<br />
+               To Date : Current Date</td>
+            <td style="width:45%; " class="auto-style5">
+                Run the report for a date range or a particular date.  Pass same date in from and To to run the report for single date.</td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 12</i> seconds.</p>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li><em>This is a new report</em></li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>None</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+    
+                  
+                <h4>
+                Private synonyms required for the tables: </h4>
+            <code>
+PS,<br />
+PSDET,<br />
+BOX,<br />
+BOXDET,<br />
+IA,<br />
+IALOC,<br />
+IALOC_CONTENT,<br />
+MASTER_RAW_INVENTORY,<br />
+TAB_INVENTORY_AREA,<br />
+SRC_CARTON,<br />
+SRC_CARTON_DETAIL,<br />
+MASTER_SKU,<br />
+MASTER_STOARGE_LOCATION
+  </code>
+                
+            <h4>
+                Script to create the synonyms:</h4>
+                <pre>
+ <code>create or replace synonym PS for dcms8.PS;       
+create or replace synonym PSDET for dcms8.PSDET;
+create or replace synonym BOX for dcms8.BOX;     
+create or replace synonym BOXDET for dcms8.BOXDET;
+create or replace synonym IA for dcms8.IA; 
+create or replace synonym IALOC for dcms8.IALOC;
+create or replace synonym IALOC_CONTENT for dcms8.IALOC_CONTENT; 
+create or replace synonym MASTER_RAW_INVENTORY for dcms4.MASTER_RAW_INVENTORY;
+create or replace synonym TAB_INVENTORY_AREA for dcms4.TAB_INVENTORY_AREA;
+create or replace synonym src_carton for dcms4.Src_carton;
+create or replace synonym src_carton_detail for dcms4.src_carton_detail; 
+create or replace synonym master_sku for dcms4.master_sku;
+create or replace synonym MASTER_STOARGE_LOCATION for dcms4.MASTER_STOARGE_LOCATION;
+</code></pre>
+        
+         <h4>App-Settings required:</h4>
+           Not required 
+ 
+    <h2>
+        Query&#39;s documentation:</h2>
+     <p style="font-weight:bold">Query: Report Query</p>
+    <pre>
+ WITH ORDERED_QUANTITY AS
+ (SELECT PS.VWH_ID,
+         PS.PO_ID,
+         MS.SKU_ID,
+         PS.CUSTOMER_ID,
+         MAX(C.NAME) AS CUSTOMER_NAME,
+         MAX(MS.UPC_CODE) AS UPC_CODE,
+         MAX(MS.STYLE) AS STYLE,
+         MAX(MS.COLOR) AS COLOR,
+         MAX(MS.DIMENSION) AS DIMENSION,
+         MAX(MS.SKU_SIZE) AS SKU_SIZE,
+         SUM(PD.PIECES_ORDERED) AS PIECES_ORDERED
+    FROM PS
+   INNER JOIN PSDET PD
+      ON PS.PICKSLIP_ID = PD.PICKSLIP_ID
+   INNER JOIN MASTER_SKU MS
+      ON PD.UPC_CODE = MS.UPC_CODE
+    LEFT OUTER JOIN CUST C
+      ON C.CUSTOMER_ID = PS.CUSTOMER_ID
+   WHERE PS.PICKSLIP_CANCEL_DATE IS NULL
+     <if>AND PS.TRANSFER_DATE &gt;= CAST(:transfer_start_date AS DATE)</if>      
+     <if>AND PS.TRANSFER_DATE &lt; CAST(:transfer_end_date AS DATE) +1</if>
+         AND pd.transfer_date IS NOT NULL
+   GROUP BY PS.CUSTOMER_ID, PS.VWH_ID, PS.PO_ID, MS.SKU_ID),
+SHIPPED_QUANITY AS
+ (SELECT PS.VWH_ID,
+         PS.PO_ID,
+         BD.SKU_ID,
+         PS.CUSTOMER_ID,
+         SUM(BD.CURRENT_PIECES) AS PIECES_SHIPPED
+    FROM BOX B
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+   INNER JOIN PS
+      ON B.PICKSLIP_ID = PS.PICKSLIP_ID
+   WHERE B.STOP_PROCESS_REASON = '$XREF'
+     <if>AND B.STOP_PROCESS_DATE &gt;= CAST(:transfer_start_date AS DATE)</if>
+     <if>AND B.STOP_PROCESS_DATE &lt; CAST(:transfer_end_date AS DATE) +1</if>
+     AND PS.TRANSFER_DATE IS NOT NULL
+     AND BD.STOP_PROCESS_DATE IS NOT NULL
+   GROUP BY PS.CUSTOMER_ID, PS.VWH_ID, PS.PO_ID, BD.SKU_ID),
+INVENTORY_AREAS AS
+ (SELECT TIA.SHORT_NAME AS AREA,
+         CTN.VWH_ID AS VWH_ID,
+         SUM(NVL(CTNDET.QUANTITY, 0)) AS QUANTITY,
+         COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                  MSL.WAREHOUSE_LOCATION_ID,
+                  'Unknown') AS WAREHOUSE_LOCATION_ID,
+         CTNDET.SKU_ID
+    FROM SRC_CARTON CTN
+   INNER JOIN SRC_CARTON_DETAIL CTNDET
+      ON CTN.CARTON_ID = CTNDET.CARTON_ID
+    LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+      ON CTN.LOCATION_ID = MSL.LOCATION_ID
+    LEFT OUTER JOIN TAB_INVENTORY_AREA TIA
+      ON CTN.CARTON_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+   WHERE TIA.STORES_WHAT = 'CTN'
+     AND CTNDET.SKU_ID IN (SELECT OQ.SKU_ID FROM ORDERED_QUANTITY OQ)
+   GROUP BY CTNDET.SKU_ID,
+            TIA.SHORT_NAME,
+            CTN.VWH_ID,
+            COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                     MSL.WAREHOUSE_LOCATION_ID,
+                     'Unknown')
+  
+  UNION
+  
+  SELECT TIA.SHORT_NAME AS AREA,
+         MRI.VWH_ID AS VWH_ID,
+         SUM(NVL(MRI.QUANTITY, 0)) AS QUANTITY,
+         NVL(TIA.WAREHOUSE_LOCATION_ID, 'Unknown') AS WAREHOUSE_LOCATION_ID,
+         MRI.SKU_ID
+    FROM MASTER_RAW_INVENTORY MRI
+   INNER JOIN TAB_INVENTORY_AREA TIA
+      ON MRI.SKU_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+   WHERE TIA.STORES_WHAT = 'SKU'
+     AND TIA.UNUSABLE_INVENTORY IS NULL
+   GROUP BY MRI.SKU_ID,
+            TIA.SHORT_NAME,
+            MRI.VWH_ID,
+            NVL(TIA.WAREHOUSE_LOCATION_ID, 'Unknown')
+  
+  UNION
+  SELECT IA.SHORT_NAME AS SHORT_NAME,
+         I.VWH_ID AS VWH_ID,
+         SUM(NVL(IAC.NUMBER_OF_UNITS, 0)) AS NUMBER_OF_UNITS,
+         NVL(I.WAREHOUSE_LOCATION_ID, 'Unknown') AS WAREHOUSE_LOCATION_ID,
+         BS.SKU_ID
+    FROM IALOC_CONTENT IAC
+   INNER JOIN IALOC I
+      ON I.LOCATION_ID = IAC.LOCATION_ID
+   INNER JOIN IA IA
+      ON I.IA_ID = IA.IA_ID
+   INNER JOIN MASTER_SKU BS
+      ON BS.UPC_CODE = IAC.IACONTENT_ID
+   WHERE I.LOCATION_TYPE = 'RAIL'
+     AND I.CAN_ASSIGN_SKU = 1
+     AND IAC.IACONTENT_TYPE_ID = 'SKU'
+   GROUP BY BS.SKU_ID,
+            IA.SHORT_NAME,
+            I.VWH_ID,
+            NVL(I.WAREHOUSE_LOCATION_ID, 'Unknown'))
+SELECT BS.CUSTOMER_ID,
+       BS.CUSTOMER_NAME,
+       BS.VWH_ID AS VWH_ID,
+       BS.PO_ID,
+       BS.STYLE AS STYLE,
+       BS.COLOR AS COLOR,
+       BS.DIMENSION AS DIMENSION,
+       BS.SKU_SIZE AS SKU_SIZE,
+       BS.UPC_CODE AS UPC_CODE,
+       BS.PIECES_ORDERED,
+       OS.PIECES_SHIPPED,
+       (NVL(BS.PIECES_ORDERED, 0) - NVL(OS.PIECES_SHIPPED, 0)) AS DIFFERENCE,
+       NVL(IDS.AREA,&#39;NA&#39;) AS AREA,
+       IDS.QUANTITY  AS QUANTITY,
+       IDS.WAREHOUSE_LOCATION_ID
+  FROM ORDERED_QUANTITY BS
+  LEFT OUTER JOIN SHIPPED_QUANITY OS
+    ON OS.SKU_ID = BS.SKU_ID
+   AND OS.VWH_ID = BS.VWH_ID
+   AND OS.PO_ID = BS.PO_ID
+   AND OS.CUSTOMER_ID = BS.CUSTOMER_ID
+  LEFT OUTER JOIN INVENTORY_AREAS IDS
+    ON BS.SKU_ID = IDS.SKU_ID
+   AND BS.VWH_ID = IDS.VWH_ID
+   AND ids.quantity &lt;&gt; 0
+ WHERE (NVL(BS.PIECES_ORDERED, 0) &gt; NVL(OS.PIECES_SHIPPED, 0))       
+    </pre>
+    <h2>
+        Validation details</h2>
+    <p>
+        &nbsp;</p>
+        <p style="font-weight:bold">Query: <span class="auto-style6">Below query is displaying List of SKUs, Vwh, Customer, PO,&nbsp; Pieces&nbsp; Ordered , Pieces Shipped and shortage for the Specific date or date range. If you want&nbsp; to see information for Specific PO information then you can&nbsp; use PO as parameter in the validation query.&nbsp; </span> </p>
+    <pre>
+WITH ORDERED_QUANTITY AS
+ (SELECT PS.VWH_ID,
+         PS.CUSTOMER_ID,
+         PS.PO_ID,
+         MS.SKU_ID,
+         MAX(PD.UPC_CODE) AS UCP_CODE,
+         MAX(MS.STYLE) AS STYLE,
+         MAX(MS.COLOR) AS COLOR,
+         MAX(MS.DIMENSION) AS DIMENSIONS,
+         MAX(MS.SKU_SIZE) AS SKU_SIZE,
+         SUM(PD.PIECES_ORDERED) AS PIECES_ORDERED
+    FROM PS
+   INNER JOIN PSDET PD
+      ON PS.PICKSLIP_ID = PD.PICKSLIP_ID
+   INNER JOIN MASTER_SKU MS
+      ON PD.UPC_CODE = MS.UPC_CODE
+   WHERE PS.PICKSLIP_CANCEL_DATE IS NULL
+     AND PS.TRANSFER_DATE >= TO_DATE('6/6/2014', 'MM/DD/YYYY')
+     AND PS.TRANSFER_DATE < TO_DATE('6/13/2014', 'MM/DD/YYYY') + 1
+     AND PD.TRANSFER_DATE IS NOT NULL
+   GROUP BY PS.VWH_ID, PS.CUSTOMER_ID, PS.PO_ID, MS.SKU_ID),
+SHIPPED_QUANITY AS
+ (SELECT PS.VWH_ID,
+         PS.CUSTOMER_ID,
+         PS.PO_ID,
+         BD.SKU_ID,
+         SUM(BD.CURRENT_PIECES) AS PIECES_SHIPPED
+    FROM BOX B
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+   INNER JOIN PS
+      ON B.PICKSLIP_ID = PS.PICKSLIP_ID
+   WHERE B.STOP_PROCESS_REASON = '$XREF'
+     AND B.STOP_PROCESS_DATE >= TO_DATE('6/6/2014', 'MM/DD/YYYY')
+     AND B.STOP_PROCESS_DATE < TO_DATE('6/13/2014', 'MM/DD/YYYY') + 1
+     AND BD.STOP_PROCESS_DATE IS NOT NULL
+   GROUP BY PS.VWH_ID, PS.CUSTOMER_ID, PS.PO_ID, BD.SKU_ID)
+SELECT BS.VWH_ID,
+       BS.PO_ID,
+       BS.CUSTOMER_ID,
+       BS.UCP_CODE,
+       BS.STYLE,
+       BS.COLOR,
+       BS.DIMENSIONS,
+       BS.sku_SIZE,
+       BS.PIECES_ORDERED,
+       OS.PIECES_SHIPPED,
+       (NVL(BS.PIECES_ORDERED, 0) - NVL(OS.PIECES_SHIPPED, 0)) AS Shortage
+  FROM ORDERED_QUANTITY BS
+  LEFT OUTER JOIN SHIPPED_QUANITY OS
+    ON OS.VWH_ID = BS.VWH_ID
+   AND OS.CUSTOMER_ID = BS.CUSTOMER_ID
+   AND OS.PO_ID = BS.PO_ID
+   AND OS.sku_id = BS.sku_id
+ WHERE (NVL(BS.PIECES_ORDERED, 0) > NVL(OS.PIECES_SHIPPED, 0))
+</pre>
+    <p><b>Query : </b>Below query is showing Vwh, Customer, PO, UPC and Pieces order on the basis of PO and UPC.</p>
+    <pre>
+SELECT PS.VWH_ID AS "VWh",
+       PS.CUSTOMER_ID AS "Customer",
+       PS.PO_ID AS PO,
+       PD.UPC_CODE AS "UPC",
+       SUM(PD.PIECES_ORDERED) AS "Pieces Ordered"
+  FROM PS
+ INNER JOIN PSDET PD
+    ON PS.PICKSLIP_ID = PD.PICKSLIP_ID
+ WHERE PS.PICKSLIP_CANCEL_DATE IS NULL
+   AND ps.transfer_date IS NOT NULL
+   AND pd.transfer_date IS NOT NULL
+   AND ps.po_id ='920978270'
+   AND pd.upc_code ='014671805741'
+ GROUP BY PS.VWH_ID, PS.CUSTOMER_ID, PS.PO_ID, PD.UPC_CODE
+    </pre>
+    <p><b>Query: </b>Below query is showing VWh, customer, PO, UPC and Pieces Shipped on the basis of PO and UPC.</p>
+    <pre>
+        SELECT PS.VWH_ID,
+       PS.CUSTOMER_ID,
+       PS.PO_ID,
+       MS.UPC_CODE AS UPC,
+       BD.CURRENT_PIECES AS "Pieces Shipped"
+  FROM PS
+ INNER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+ INNER JOIN BOXDET BD
+    ON B.UCC128_ID = BD.UCC128_ID
+   AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+ INNER JOIN MASTER_SKU MS
+    ON BD.SKU_ID = MS.SKU_ID
+ WHERE B.STOP_PROCESS_REASON = '$XREF'
+   AND b.stop_process_date IS NOT NULL
+   AND bd.stop_process_date IS NOT NULL
+   AND PS.PO_ID ='80490319'
+   AND BD.UPC_CODE ='014671804874'
+    </pre>
+    <p style="font-weight:bold">Query: <span class="auto-style6">Below query is showing carton areas inventory and building along with style , color, dimension and size for specific UPC</span></p>
+    <pre>
+SELECT SUM(SCD.QUANTITY) AS "Pieces",
+       MAX(SCD.STYLE) AS "Style",
+       MAX(SCD.COLOR) AS "Color",
+       MAX(SCD.DIMENSION) AS "Dimension",
+       MAX(SCD.SKU_SIZE) AS "Size",
+       COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                MSL.WAREHOUSE_LOCATION_ID,
+                'Unknown') AS "Building",
+       TIA.SHORT_NAME AS "Area"
+  FROM SRC_CARTON SC
+ INNER JOIN SRC_CARTON_DETAIL SCD
+    ON SC.CARTON_ID = SCD.CARTON_ID
+ INNER JOIN TAB_INVENTORY_AREA TIA
+    ON SC.CARTON_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+  LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+    ON SC.CARTON_STORAGE_AREA = MSL.STORAGE_AREA
+   AND SC.LOCATION_ID = MSL.LOCATION_ID
+ WHERE SCD.SKU_ID IN (SELECT MS.SKU_ID
+                        FROM MASTER_SKU MS
+                       WHERE MS.UPC_CODE = '014671804874')
+ GROUP BY COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                   MSL.WAREHOUSE_LOCATION_ID,
+                   'Unknown'),
+          TIA.SHORT_NAME;
+    </pre>
+     <p style="font-weight:bold">Query: <span class="auto-style6">Below query is showing SKU areas inventory along with style, color, dimension and size for specific UPC</span></p>
+    <pre>
+        SELECT SUM(MRI.QUANTITY) AS "pieces",
+       MAX(MRI.STYLE) AS "Style",
+       MAX(MRI.COLOR) AS "Color",
+       MAX(MRI.DIMENSION) AS "Dimension",
+       MAX(MRI.SKU_SIZE) AS "Size",
+       TIA.SHORT_NAME AS "Area",
+       NVL(TIA.WAREHOUSE_LOCATION_ID, 'Unknown') AS "Building"
+  FROM MASTER_RAW_INVENTORY MRI
+ INNER JOIN TAB_INVENTORY_AREA TIA
+    ON MRI.SKU_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+ WHERE MRI.SKU_ID IN (SELECT MS.SKU_ID
+                        FROM MASTER_SKU MS
+                       WHERE MS.UPC_CODE = '014671804874')
+   AND TIA.STORES_WHAT = 'SKU'
+    AND MRI.QUANTITY <>0
+   AND TIA.UNUSABLE_INVENTORY IS NULL
+ GROUP BY NVL(TIA.WAREHOUSE_LOCATION_ID, 'Unknown'), TIA.SHORT_NAME;    </pre>
+
+      <p style="font-weight:bold">Query: <span class="auto-style6">Below query is showing forward pick areas inventory along with style, color, dimension, size and UPC for specific UPC</span></p>
+    <pre>
+SELECT MAX(MS.UPC_CODE) AS UPC,
+       MAX(MS.STYLE) AS "Style",
+       MAX(MS.COLOR) AS "Color",
+       MAX(MS.DIMENSION) AS "Dimension",
+       MAX(MS.SKU_SIZE) AS "Size",
+       SUM(IC.NUMBER_OF_UNITS) AS "Pieces",
+       IA.SHORT_NAME, 
+       I.WAREHOUSE_LOCATION_ID
+  FROM IALOC_CONTENT IC
+ INNER JOIN MASTER_SKU MS
+    ON IC.IACONTENT_ID = MS.UPC_CODE
+ INNER JOIN IALOC I
+    ON I.LOCATION_ID = IC.LOCATION_ID
+ INNER JOIN IA ON I.IA_ID = IA.IA_ID
+ WHERE MS.UPC_CODE = '014671196092'
+   AND I.CAN_ASSIGN_SKU = 1
+   AND I.LOCATION_TYPE = 'RAIL'
+   GROUP BY IA.SHORT_NAME, 
+       I.WAREHOUSE_LOCATION_ID;
+    </pre>
+    <p><b>Query: </b>Below Query is showing Style, Color, Dimension and SKU size for Specific UPC Code </p>
+    <pre>
+SELECT MS.STYLE     AS "Style",
+       MS.COLOR     AS "Color",
+       MS.DIMENSION AS "Dimension",
+       MS.SKU_SIZE  AS "Size"
+  FROM MASTER_SKU MS
+ WHERE MS.UPC_CODE = ''
+    </pre>
+</body>
+</html>

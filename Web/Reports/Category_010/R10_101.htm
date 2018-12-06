@@ -1,0 +1,426 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h1 align="center">
+        10<b>.</b>10<b>1 : </b>Detail Of Customer
+    </h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    $Revision: 19537
+    <br />
+    Reviewed By: Hemant K. Singh<br />
+    Status: Tested<br />
+    Tested By : Hemant K. Singh
+    <p>
+        For a specified pickslip upload date, based on the customer type the report will
+        get all the customer orders detail which have been shipped.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        This report gets all the customer's shipped orders detail for a customer type on
+        a specified date. For a specified pickslip upload date, based on the customer type
+        the report will get the customer information like Purchase order ID of customer,
+        pieces and dollars orders and shipped as well as the Status Identifier given to
+        the customer.
+    </p>
+    <h2>
+        Algorithm</h2>
+    Get the customer name from table master_customer. PO ID, ordered pieces, ordered
+    dollars, shipped pieces and shipped doallars are being retrieved from dem_pickslip
+    table.
+    <h3>
+        Output</h3>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td align="center">
+                    <b>Item</b>
+                </td>
+                <td align="center">
+                    <b>Summary</b>
+                </td>
+                <td align="center">
+                    <b>Default Sort Sequence</b>
+                </td>
+                <td align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Customer Name
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    1
+                </td>
+                <td>
+                    Name of the Customer for which orders detail are given.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    PO
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    &nbsp;</td>
+                <td>
+                    Purchase Order ID of Customer
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Status ID
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    &nbsp;</td>
+                <td>
+                    The status of the PO for the customer
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pieces Ordered
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="center">
+                    &nbsp;</td>
+                <td>
+                    The number of pieces ordered by the customer in 
+                    <span style="font-size:12.0pt;line-height:115%;
+font-family:&quot;Times New Roman&quot;,&quot;serif&quot;;mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR-SA">particular </span>PO
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pieces Shipped
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="center">
+                    &nbsp;</td>
+                <td>
+                    The number of pieces, which have been pitched and now exist in some box of a pickslip.
+                    (??) Shipped pieces should always be less than or equal to Ordered Pieces in 
+                    <span style="font-size:12.0pt;line-height:115%;
+font-family:&quot;Times New Roman&quot;,&quot;serif&quot;;mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR-SA">particular </span>PO
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    %age of Pieces Shipped
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="center">
+                    &nbsp;</td>
+                <td>
+                    The 
+                    <span style="font-size:12.0pt;line-height:115%;
+font-family:&quot;Times New Roman&quot;,&quot;serif&quot;;mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR-SA">percentage </span>of pieces shipped by the customer. It is calculated by dividing Pieces
+                    Shipped by Pieces Ordered and multiplying them with 100.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Dollars Ordered
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="center">
+                    &nbsp;</td>
+                <td>
+                    The amount in dollars ordered by the customer in 
+                    <span style="font-size:12.0pt;line-height:115%;
+font-family:&quot;Times New Roman&quot;,&quot;serif&quot;;mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR-SA">particular </span>PO
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Dollars Shipped
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="center">
+                    &nbsp;</td>
+                <td>
+                    The number of Dollars, which have been pitched and now exist in some box of a pickslip.
+                    (??) Shipped dollars should always be less than or equal to Ordered dollars in 
+                    <span style="font-size:12.0pt;line-height:115%;
+font-family:&quot;Times New Roman&quot;,&quot;serif&quot;;mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR-SA">particular </span>PO
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    %age of Dollars Shipped
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="center">
+                    &nbsp;</td>
+                <td>
+                    The 
+                    <span style="font-size:12.0pt;line-height:115%;
+font-family:&quot;Times New Roman&quot;,&quot;serif&quot;;mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR-SA">percentage </span>of dollars shipped by the customer. It is calculated by dividing Dollars
+                    Shipped by Dollars Ordered and multiplying them with 100.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td align="center">
+                    <b>Name</b>
+                </td>
+                <td align="center">
+                    <b>Default</b>
+                </td>
+                <td align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Label ID
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                    The pickslip type.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Customer Type
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                    The Customer type for whom details are provided.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    For Date
+                </td>
+                <td>
+                    Current Date
+                </td>
+                <td>
+                    The pickslip upload date.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Virtual Warehouse
+                </td>
+                <td>
+                    All
+                </td>
+                <td>
+                    This parameter allows you to focus only on those pickslips which belongs to a specific
+                    virtual warehouse.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>1 second</p>
+    The report exhibits linear performance with respect to the number of records in 
+    table Master_customer. There is index based
+    scan on table dem_pickslip and master_customer. Index PS_UPLDATE_I used on dem_pickslip table 
+    and Index CUST_PK used on master_customer table.
+    <br />
+    <br />
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>
+            <p>
+                Dividing by zero is now handled in the report.</p>
+        </li>
+    </ul>
+    <h2>
+        Issues</h2>
+    No Known Issue.
+    <br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are
+        <span style="font-size:11.0pt;line-height:115%;
+font-family:&quot;Calibri&quot;,&quot;sans-serif&quot;;mso-ascii-theme-font:minor-latin;mso-fareast-font-family:
+Calibri;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;
+mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;
+mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR-SA">required</span></p>
+    <p>
+        dem_pickslip,<br />
+        master_customer</p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>create or replace synonym dem_pickslip for dcms4.dem_pickslip;<br />
+            create or replace synonym master_customer for dcms4.master_customer;</code></p>
+    <p>
+        <br />
+        No AppSetting is required.</p>
+    <h2>
+        Parameter Technical Details</h2>
+    <ul>
+        <li>Label ID (Type = String): To see carton count of a specific Label please provide
+            Label Id</li>
+        <li>Customer Type (Type = String): Report Customer Type</li>
+        <li>For Date (Type =DateTime): Date on which the pieces shipped</li>
+        <li>Virtual Warehouse (Type = Sting): This is a list parameter control. By default,
+            inventory of all Warehouse is shown for each area. If your focus is on the inventory
+            in a particular Warehouse, Specify that Warehouse Id. Null value text is "All".</li>
+        <li>Query to fill list values = "select tab_virtual_warehouse.vwh_id, tab_virtual_warehouse.vwh_id
+            from tab_virtual_warehouse" </li>
+    </ul>
+    <h2>
+        Query's documentation:</h2>
+    <ul>
+        <li>This query will get all the customer details from tables master_customer and dem_pickslip.
+            <pre>             
+       WITH ORDER_STATUS AS
+ (SELECT ROW_NUMBER() OVER(PARTITION BY PS.PICKSLIP_ID ORDER BY 1) AS PS_SEQUENCE,
+         PS.PICKSLIP_ID,
+         PS.PO_ID,
+         DECODE(PS.CANCEL_REASON_CODE,NULL,8,10) AS status_id,
+         PS.TOTAL_QUANTITY_ORDERED,
+         PS.TOTAL_DOLLARS_ORDERED,
+         CUST.NAME,
+         SUM(BD.CURRENT_PIECES) OVER(PARTITION BY PS.PICKSLIP_ID) AS SHIPPED_PIECES_TODAY,
+         SUM(BD.CURRENT_PIECES * BD.EXTENDED_PRICE) OVER(PARTITION BY PS.PICKSLIP_ID) AS SHIPPED_DOLLARS_TODAY
+    FROM PS
+   LEFT OUTER JOIN BOX B
+      ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+   LEFT OUTER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+    LEFT OUTER JOIN MASTER_CUSTOMER CUST
+      ON PS.CUSTOMER_ID = CUST.CUSTOMER_ID
+   WHERE 1=1
+     <if>AND CUST.CUSTOMER_TYPE = cast(:customer_type as varchar2(255))</if>
+     AND PS.TRANSFER_DATE &gt;= CAST(:change_date as DATE)
+     AND PS.TRANSFER_DATE &lt; CAST(:change_date as DATE) + 1
+     <if>AND PS.VWH_ID = cast(:vwh_id as varchar2(255))</if> 
+     <if>AND PS.LABEL_ID = cast(:pickslip_type as varchar2(255))</if>   
+            )
+SELECT Q1.PO_ID,
+       Q1.status_id,
+       SUM(Q1.TOTAL_QUANTITY_ORDERED) AS ORDERED_PIECES_TODAY,
+       SUM(Q1.TOTAL_DOLLARS_ORDERED) AS ORDERED_DOLLARS_TODAY,
+       SUM(Q1.SHIPPED_PIECES_TODAY) AS SHIPPED_PIECES_TODAY,
+       SUM(Q1.SHIPPED_DOLLARS_TODAY) AS SHIPPED_DOLLARS_TODAY,
+       Q1.NAME AS CUSTOMER_NAME
+  FROM ORDER_STATUS Q1
+ WHERE Q1.PS_SEQUENCE = 1
+ GROUP BY Q1.PO_ID, Q1.status_id, Q1.NAME</pre>
+        </li>
+    </ul>
+    <h2>
+        Validation details</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.
+    <br />
+    <b>Query:</b><pre>
+        SELECT PS.PO_ID,
+       SUM(PS.TOTAL_QUANTITY_ORDERED) AS "Ordered Pieces",
+       SUM(PS.TOTAL_DOLLARS_ORDERED) AS "Ordered Dollars"
+  FROM PS
+ INNER JOIN MASTER_CUSTOMER MC
+    ON PS.CUSTOMER_ID = MC.CUSTOMER_ID
+ WHERE PS.TRANSFER_DATE >= TO_DATE('11/16/2011', 'MM/DD/YYYY')
+   AND PS.TRANSFER_DATE < TO_DATE('11/16/2011', 'MM/DD/YYYY') + 1
+   AND PS.LABEL_ID = 'MA'
+   AND PS.VWH_ID = '15'
+   AND MC.CUSTOMER_TYPE = 'DOM'
+ GROUP BY PS.PO_ID;
+                 </pre>
+    <b>Description:</b>Above query is showing orderd pieces and dollars All PO.
+     <b>Query:</b><pre>
+        SELECT PS.PO_ID,
+       SUM(BD.CURRENT_PIECES) AS "Shipped Pieces",
+       SUM(BD.CURRENT_PIECES * BD.EXTENDED_PRICE) AS "Shipped Dollars"
+  FROM PS
+ INNER JOIN MASTER_CUSTOMER MC
+    ON PS.CUSTOMER_ID = MC.CUSTOMER_ID
+  LEFT OUTER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+  LEFT OUTER JOIN BOXDET BD
+    ON B.UCC128_ID = BD.UCC128_ID
+   AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+ WHERE PS.TRANSFER_DATE >= TO_DATE('11/16/2011', 'MM/DD/YYYY')
+   AND PS.TRANSFER_DATE < TO_DATE('11/16/2011', 'MM/DD/YYYY') + 1
+   AND PS.LABEL_ID = 'MA'
+   AND PS.VWH_ID = '15'
+   AND MC.CUSTOMER_TYPE = 'DOM'
+ GROUP BY PS.PO_ID;</pre>
+    <b>Description:</b>Above query is showing Shipped&nbsp; pieces and dollars all PO.
+      <b>Query:</b><pre>
+       SELECT SUM(PS.TOTAL_QUANTITY_ORDERED) AS "Ordered Pieces",
+       SUM(PS.TOTAL_DOLLARS_ORDERED) AS "Ordered Dollars"
+  FROM PS
+ INNER JOIN MASTER_CUSTOMER MC
+    ON PS.CUSTOMER_ID = MC.CUSTOMER_ID
+ WHERE PS.TRANSFER_DATE >= TO_DATE('11/16/2011', 'MM/DD/YYYY')
+   AND PS.TRANSFER_DATE < TO_DATE('11/16/2011', 'MM/DD/YYYY') + 1
+   AND PS.LABEL_ID = 'MA'
+   AND PS.VWH_ID = '15'
+   AND MC.CUSTOMER_TYPE = 'DOM'
+   AND PS.PO_ID = '7364641';</pre>
+    <b>Description:</b>Above query is showing ordered&nbsp; pieces and dollars each PO.
+      <b>Query:</b><pre>
+        SELECT SUM(BD.CURRENT_PIECES) AS "Shipped Pieces",
+       SUM(BD.CURRENT_PIECES * BD.EXTENDED_PRICE) AS "Shipped Dollars"
+  FROM PS
+ INNER JOIN MASTER_CUSTOMER MC
+    ON PS.CUSTOMER_ID = MC.CUSTOMER_ID
+  LEFT OUTER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+  LEFT OUTER JOIN BOXDET BD
+    ON B.UCC128_ID = BD.UCC128_ID
+   AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+ WHERE PS.TRANSFER_DATE >= TO_DATE('11/16/2011', 'MM/DD/YYYY')
+   AND PS.TRANSFER_DATE < TO_DATE('11/16/2011', 'MM/DD/YYYY') + 1
+   AND PS.LABEL_ID = 'MA'
+   AND PS.VWH_ID = '15'
+   AND MC.CUSTOMER_TYPE = 'DOM'
+   AND PS.PO_ID = '7364641';</pre>
+    <b>Description:</b>Above query is showing Shipped&nbsp; pieces and dollars each PO.
+
+</body>
+</html>

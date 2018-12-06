@@ -1,0 +1,276 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h1>
+        130<b>.</b>11<b> : % Fill by Carton Area</b></h1>
+    <h3>
+        Author : Sanjeev kumar</h3>
+    <p>
+        $Revision: 5704 $
+        <br />
+        Status: Tested<br />
+        Reviewed By : Manmohan Bisht</p>
+    <p>
+        Count of cartons per area 
+        per virtual warehouse,quality and building. Also displays the percentage of 
+        occupied space of these areas which includes the suspense carton as well. </p>
+    <h2>Overview</h2>
+    <p>
+        Displays the total number of cartons in each carton storage area grouped by virtual
+        warehouse and warehouse location.
+    </p>
+    <p>
+        DCMS maintains a carton capacity of each warehouse location. A carton is presumed
+        to be in some ware house location depending on the label group of the SKU contained
+        in the carton. This allows us to calculate how many cartons are stored in each warehouse
+        location. By comparing this number with warehouse location capacity, we can estimate
+        how full the warehouse location is. The report displays % full information for each
+        carton storage area using the concepts just described. Cartons which belongs to 
+        such areas that are not yet assigned to any building then this report will show 
+        such cartons in Unknown building.</p>
+    <h3>
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="25%" align="center">
+                <b>Item</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Summary</b>
+            </td>
+            <td width="10%" align="center">
+                <b>Sort Sequence</b>
+            </td>
+            <td width="35%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Area
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2
+            </td>
+            <td>
+                DC
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Quality
+            </td>
+            <td>
+            </td>
+            <td align="center">
+            </td>
+            <td>
+                Quality Code
+            </td>
+        </tr>
+        <tr>
+            <td>
+                VWh
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Virtual Warehouse, to which the carton belongs.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No of Cartons
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total number of cartons in the area/virtual warehouse/warehouse location.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %Full
+            </td>
+            <td>
+                Calculated
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                The percentage 
+                of carton capacity being used by this carton area within this warehouse location. If the capacity of the warehouse location is not defined, 
+                the column displays empty.
+                <br />
+                <br />
+                The footer for this is evaluated as (Total No of Cartons / Total capacity of available
+                warehouse location) * 100
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                Building of area
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="20%" align="center">
+                <b>Name</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Type</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Default</b>
+            </td>
+            <td width="60%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Virtual Warehouse
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                &nbsp; Virtual Warehouse of cartons
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building</td>
+            <td>
+                String
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                &nbsp; 
+                building of Area
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        Expected time for report output is 0.42 seconds.</p>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Showing areas along with their building.</li>
+        <li>Replaced building filter dropdown with checkbox list.</li>
+     
+    </ul>
+    <h2>
+        Issues</h2>
+    <p>
+        No known issues till date.</p>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Synonims used in the report are</p>
+    <p>
+        src_carton,<br />
+        master_storage_location,<br />
+        tab_warehouse_location</p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        create or replace synonym src_carton for dcms4.src_carton;
+        <br />
+        create or replace synonym master_storage_location for dcms4.master_storage_location;
+        <br />
+        create or replace synonym tab_warehouse_location for dcms4.tab_warehouse_location;</p>
+    <p>
+        No appSettings is required.</p>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <pre>   WITH percent_fill AS ( 
+SELECT /*+index (MS STLOC_PK)*/
+ SRC_CARTON.VWH_ID AS VWH_ID,
+ SRC_CARTON.CARTON_STORAGE_AREA AS CARTON_STORAGE_AREA,
+ SRC_CARTON.QUALITY_CODE AS QUALITY_CODE,
+ MAX(TIA.SHORT_NAME) AS SHORT_NAME,
+ COUNT(DISTINCT SRC_CARTON.CARTON_ID) AS NUMBER_OF_CARTONS,
+ COALESCE(TIA.WAREHOUSE_LOCATION_ID, MS.WAREHOUSE_LOCATION_ID, 'Unknown') AS Warehouse_Location_Id,
+ MAX(W.QTY_WAREHOUSE_LOC) AS LOCATION_CAPACITY
+  FROM SRC_CARTON SRC_CARTON
+  LEFT OUTER JOIN MASTER_STORAGE_LOCATION MS ON SRC_CARTON.CARTON_STORAGE_AREA =
+                                                MS.STORAGE_AREA
+                                            AND SRC_CARTON.LOCATION_ID =
+                                                MS.LOCATION_ID
+   LEFT OUTER JOIN TAB_INVENTORY_AREA TIA  ON 
+    SRC_CARTON.CARTON_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+  LEFT OUTER JOIN TAB_WAREHOUSE_LOCATION W ON MS.Warehouse_Location_Id =
+                                              W.WAREHOUSE_LOCATION_ID
+ WHERE TIA.STORES_WHAT ='CTN'
+ <if>AND SRC_CARTON.VWH_ID = :vwh_id</if>
+      <%-- <if>AND MS.Warehouse_Location_Id = :Warehouse_Location_Id</if> --%> 
+               <if>AND <a pre="COALESCE(TIA.WAREHOUSE_LOCATION_ID, MS.WAREHOUSE_LOCATION_ID, 'Unknown') IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+       
+ GROUP BY SRC_CARTON.VWH_ID,
+          SRC_CARTON.CARTON_STORAGE_AREA,
+          SRC_CARTON.QUALITY_CODE,
+          COALESCE(TIA.WAREHOUSE_LOCATION_ID, MS.WAREHOUSE_LOCATION_ID, 'Unknown'))
+  SELECT PERCENT_FILL.*,
+         ROUND((SUM(PERCENT_FILL.NUMBER_OF_CARTONS)
+                OVER(PARTITION BY PERCENT_FILL.Warehouse_Location_Id,
+                     PERCENT_FILL.CARTON_STORAGE_AREA) /
+                PERCENT_FILL.LOCATION_CAPACITY) * 100,
+               2) AS PERCENTAGE_FILL,
+         ROUND(((SUM(PERCENT_FILL.NUMBER_OF_CARTONS) OVER()) /
+               (SELECT SUM(W.QTY_WAREHOUSE_LOC)
+                   FROM TAB_WAREHOUSE_LOCATION W
+                  WHERE W.WAREHOUSE_LOCATION_ID IN
+                        (SELECT PERCENT_FILL.Warehouse_Location_Id FROM PERCENT_FILL))) * 100,
+               2) AS PERCENT_AGGR
+    FROM PERCENT_FILL        
+            </pre>
+    <h2>Validation Query</h2>
+    <pre>
+        SELECT TIA.SHORT_NAME, S.QUALITY_CODE,COUNT(DISTINCT S.CARTON_ID) FROM SRC_CARTON S 
+INNER JOIN SRC_CARTON_DETAIL SCD ON 
+S.CARTON_ID = SCD.CARTON_ID
+INNER JOIN TAB_INVENTORY_AREA TIA ON 
+S.CARTON_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA 
+LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL ON 
+S.CARTON_STORAGE_AREA = MSL.STORAGE_AREA
+AND S.LOCATION_ID = MSL.LOCATION_ID
+WHERE COALESCE(TIA.WAREHOUSE_LOCATION_ID,MSL.WAREHOUSE_LOCATION_ID,'Unknown') ='ANX3'
+AND S.VWH_ID ='15'
+ GROUP BY TIA.SHORT_NAME, S.QUALITY_CODE
+    </pre>
+</body>
+</html>

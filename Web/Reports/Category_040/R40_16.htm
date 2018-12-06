@@ -1,0 +1,739 @@
+﻿<html>
+<head>
+    <title>40.16 Open Bucket Summary Report</title>
+    <style type="text/css">
+        .style1
+        {
+            text-align: left;
+        }
+        .style2
+        {
+            text-align: center;
+        }
+        .style3
+        {
+            width: 39%;
+        }
+        .style4
+        {
+            text-align: left;
+            width: 39%;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        40<b>.</b>16<b> : </b>Carton with details for Define Storage Area</h1>
+    <h3>
+        Author :Sanjeev Kumar</h3>
+    $Revision: 7114 $<br />
+    Status: Reviewed<br />
+    Reviewed By :Manmohan Bisht<br />
+    Tested By :Sanjeev Kumar 
+    <p>
+        This report display list of cartons with the SKU detail for specific storage area. This report also display FPK location of the SKU.&nbsp; User can futher filter information on the basis of label, style, modified date, virtual warehouse, quality, Price season code and building. It report able to see information sift wise.&nbsp;&nbsp;
+    </p>
+    <h2>
+        Overview</h2>
+    <p>
+        The main goal of this report is to display the comprehensive details of each carton
+        on a pallet or location for the various storage area like AWL,AWO,AWS,REW,RCV,RST,CFD.
+        For a specified storage area,the report displays the Cartons with there SKU details
+        of each carton lying on the pallet or on the location. It also provide the facility
+        to display the cartons for a specified label and if you would like to see pulls
+        generated for the pulls generated areas in a given time period just select pulls
+        generated area and choose the option pulls generated on specified date. This
+        is date when the cartons was modified for any request or changes has been done
+        in the carton. Following are some of the uses of this report</p>
+        <ul>
+            <li>At any given point of time exact position of all the cartons awaiting a process
+                can be found out. </li>
+            <li>Bottleneck process can be identified. </li>
+            <li>Efficiency of each department can be found out. </li>
+            <li>You can also see the pulls generated for the pulls generated areas in a given time
+                period. </li>
+        </ul>
+<h2>
+    Algorithm</h2>
+    For a specified storage area Pallet, Location id ,carton id&nbsp; are retrieved from the src_carton table. Retrieving style, color, dimension, sku_size and req_process_date from src_carton_detail. Retrieve the assigned location of the SKU from IALOC and building of the carton from master_storage_location and tab_inventory_area table.
+<h3>
+    Output</h3>
+<table width="100%" cellspacing="1" cellpadding="1" border="1">
+    <tr>
+        <td style="width:25%; align-items:center">
+            <b>Item</b>
+        </td>
+        <td width="20%" align="center">
+            <b>Summary</b>
+        </td>
+        <td width="10%" align="center">
+            <b>Sort Sequence</b>
+        </td>
+        <td width="35%" align="center">
+            <b>Detail</b>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Vwh
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center">
+            1</td>
+        <td>
+          The Warehouse ID to which the cartons belong.
+						
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Area
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center">
+            2</td>
+        <td>
+            Area of the cartons.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Building</td>
+        <td>
+            No</td>
+        <td align="center">
+            3</td>
+        <td>
+            The building to which the cartons belong.</td>
+    </tr>
+    <tr>
+        <td>
+            Pallet
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center">
+            4
+        </td>
+        <td>
+            
+							Pallet on which the cartons are placed.
+						
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Location</td>
+        <td>
+            No</td>
+        <td align="center">
+            &nbsp;</td>
+        <td>
+            Loation on which cartons are placed</td>
+    </tr>
+    <tr>
+        <td>
+            Carton</td>
+        <td>
+            No
+        </td>
+        <td align="center">
+            5</td>
+        <td>
+            
+							Cartons lying on a Pallet.
+						
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Label</td>
+        <td>
+            No
+        </td>
+        <td align="center">
+            &nbsp;
+        </td>
+        <td>
+            
+							Label of the style.
+						
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Modified_date
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center">
+            &nbsp;
+        </td>
+        <td>
+       
+							The date on which the changes has been done in the carton.
+						
+        </td>
+    </tr>
+    <tr>
+        <td>
+            UPC
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center">
+            &nbsp;
+        </td>
+        <td>
+            
+							UPC CODE of the SKU.</td>
+    </tr>
+    <tr>
+        <td>
+            Style
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center">
+            &nbsp;
+        </td>
+        <td>
+            
+							Style of the SKUs.
+						
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Color
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center">
+            &nbsp;
+        </td>
+        <td>
+           
+							Color of the SKUs .
+					
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Dimension
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center">
+            &nbsp;
+        </td>
+        <td>
+           
+							Dimension of the SKUs .
+					
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Size
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center">
+            &nbsp;
+        </td>
+        <td>
+            
+							Size of the SKUs
+						
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Quality
+        </td>
+        <td>
+            No</td>
+        <td align="center">
+            &nbsp;
+        </td>
+        <td>
+           
+			Quality
+						Of the SKU</td>
+    </tr>
+    <tr>
+        <td>
+            Price
+            Season Code</td>
+        <td>
+            No</td>
+        <td align="center">
+            &nbsp;</td>
+        <td>
+            Price Season Code of the SKU</td>
+    </tr>
+    <tr>
+        <td>
+            Pieces
+        </td>
+        <td>
+            Yes
+        </td>
+        <td align="center">
+            &nbsp;
+        </td>
+        <td>
+            
+						Pieces of SKU
+					
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Assign FPK Loc
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center">
+            &nbsp;
+        </td>
+        <td>
+            If a SKU is assigned in multiple locations then we will show all the locations.</td>
+    </tr>
+    <tr>
+        <td>
+            Ctn Assigned On
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center">
+            &nbsp;
+        </td>
+        <td>
+            The date on which carton was assigned against any request.
+						
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Carton in Suspense
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center">
+            &nbsp;
+        </td>
+        <td>
+           	This shows the Flag that whether the carton is in suspense or not. 
+							If it is checked then the carton is in suspense.
+						
+        </td>
+    </tr>
+    </table>
+<h2>
+    Parameters</h2>
+<table border="1" cellpadding="1" cellspacing="1" width="100%">
+    <tr>
+        <td align="middle" width="20%">
+            <b>Name
+                <td align="middle" width="20%">
+                    <b>Default</b>
+                </td>
+                <td align="middle" width="60%">
+                    <b>Detail</b>
+                </td>
+    </tr>
+    <tr>
+        <td>
+            Carton Storage Area
+        </td>
+        <td>
+            All
+        </td>
+        <td>
+            Storage area in which the cartons are stored.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Label</td>
+        <td>
+            All
+        </td>
+        <td>
+            Label for Style
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Style
+            <td>
+                None</td>
+            <td>
+                Style for SKU
+            </td>
+    </tr>
+    <tr>
+        <td>
+            Summarize Modified Date
+        </td>
+        <td>
+            Modified date
+        </td>
+        <td>
+            This is cartons modified date.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Shift
+            <td>
+                Both Shifts
+            </td>
+            <td>
+                Pulls generated for RST area in specific shifts
+            </td>
+    </tr>
+    <tr>
+        <td>
+            Virtual Warehouse
+        </td>
+        <td>
+            All
+        </td>
+        <td>
+            Virtual warehouse for the carton
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Quality Code</td>
+        <td>
+            All</td>
+        <td>
+            Quality of the SKU</td>
+    </tr>
+    <tr>
+        <td>
+            Price Season Code</td>
+        <td>
+            All</td>
+        <td>
+            Price season code of the SKU</td>
+    </tr>
+    <tr>
+        <td>
+            Building</td>
+        <td>
+            Checked all building check box</td>
+        <td>
+            Building of the carton.</td>
+    </tr>
+</table>
+<h2>
+    Performance Detail</h2>
+<p>
+    <i>Expected Time for the report output is </i>1 seconds</p>
+<h2>
+    Behavior Change</h2>
+<ul>
+   
+    <li> New filter for price season code is avalaible now. </li>
+    <li> A new column Price Season Code has been introduced in the report.</li>
+    <li> In Building filter provided option for selecting and unselecting all buildings.</li>
+   </ul>
+    <h2>
+    Issues.</h2>
+<br />
+<h2>
+    Prerequisites</h2>
+<p>
+    Private synonyms for the following tables are requried</p>
+<p>
+    ialoc,
+    <br />
+    src_carton,<br />
+    src_carton_detail,<br />
+    master_sku,<br />
+    master_style,<br />
+    master_storage_location,<br />
+    Tab_warehouse_location,<br />
+    Tab_Quality_Code,<br />
+    Tab_price_season,<br />
+    Tab_inventory_area</p>
+   
+    <P>Use the below script to create the synonyms</p>
+    <br />
+    <code>create or replace synonym ialoc for dcms8.ialoc;
+        <br />
+        create or replace synonym src_carton for dcms4.src_carton;
+        <br />
+        create or replace synonym src_carton_detail for dcms4.src_carton_detail;
+        <br />
+        create or replace synonym master_sku for dcms4.master_sku;
+        <br />
+        create or replace synonym master_style for dcms4.master_style;
+        <br />
+        create or replace synonym master_storage_locationfor dcms4.master_storage_location;
+        <br />
+        create or replace synonym Tab_warehouse_location for dcms4.Tab_warehouse_location;
+        <br />
+        create or replace synonym Tab_Quality_Code for dcms4.Tab_Quality_Code;
+        <br />
+        create or replace synonym Tab_price_season for dcms4.Tab_price_season;
+        <br />
+        create or replace synonym Tab_inventory_areafor dcms4.Tab_inventory_area; 
+    <br />
+    <br />
+    </code>
+Following appSettings is required:<br>
+&lt;add key="PageSize" value="200" /&gt;
+<h1>
+    Technical Documentation</h1>
+&nbsp;<div id="divTechnical">
+    <h2>
+        Parameter Technical Parameter Technical Details</h2>
+    <ul>
+        <li>Carton Storage Area: (Type = ID): This is a drop down list parameter control.
+            By default, inventory of all Warehouse id is shown for each area. If your focus
+            is on the inventory in a particular Warehouse, Specify that Virtual warehouse. default
+            value text is &quot;All&quot;.
+            <ul>
+                <li>
+                Query to fill list values = &quot; select distinct(inventory_storage_area) from
+                tab_inventory_area where tab_inventory_area.stores_what=&#39;CTN&#39; order by inventory_storage_area
+                &quot; li>
+            </ul>
+        </li>
+        <li>Label (Type = ID): Label assigned to the carton </li>
+        <li>Style(Type =ID):&nbsp; Style assigned to the carton </li>
+        <li>Summarize Modified Date (Type = Date): Pulls generated for RST area in a given time
+            period This is a date range control. </li>
+        <li>Shift (Type = ID): This is a drop down list parameter control. You can select shift
+            to see pulls generated for RST area in a specific shift. Default value &quot;All&quot;.
+            <ul>
+                <li>Value = 1, Text = First </li>
+                <li>Value = S, Text = Second</li>
+            </ul>
+        </li>
+        <li>Virtual Warehouse (Type = ID): This is a drop down list control. Virtual Warehouse
+            default value is &quot;All&quot;.
+            <ul>
+                <li>Query
+                    to fill list values = &quot;SELECT vwh_id AS vwh_id, vwh_id || &#39;: &#39; || description
+                    AS description FROM tab_virtual_warehouse ORDER BY vwh_id&quot; </li>
+            </ul>
+        </li>
+        <li>Quality (Type = ID): This is a drop down list control. Quality Code
+            default value is &quot;All&quot;.
+            <ul>
+                <li>Query to fill list values = &quot;select tqc.quality_code as qualitycode , tqc.description as qualitydescription from tab_quality_code tqc order by tqc.quality_rank asc&quot; </li>
+            </ul>
+        </li>
+        <li>Price Season Code(Type = ID): This is a drop down list control. Price Season Code
+            default value is &quot;All&quot;.
+            <ul>
+                <li>Query to fill list values = &quot;SELECT T.PRICE_SEASON_CODE AS PRICE_SEASON_CODE, T.DESCRIPTION AS DESCIPTION FROM TAB_PRICE_SEASON T order by PRICE_SEASON_CODE&quot; </li>
+            </ul>
+        </li>
+        <li>Building (Type = ID): This is a drop down list control. building
+            default value is &quot;All&quot;.
+            <ul>
+                <li>Query to fill list values = &quot;WITH Q1 AS (SELECT TWL.WAREHOUSE_LOCATION_ID, TWL.DESCRIPTION FROM TAB_WAREHOUSE_LOCATION TWL UNION SELECT &#39;Unknown&#39; AS WAREHOUSE_LOCATION_ID, &#39;Unknown&#39; AS DESCRIPTION FROM TAB_WAREHOUSE_LOCATION TWL) SELECT Q1.WAREHOUSE_LOCATION_ID, (Q1.WAREHOUSE_LOCATION_ID || &#39;:&#39; || Q1.DESCRIPTION) AS DESCRIPTION FROM Q1 ORDER BY 1&quot; </li>
+            </ul>
+        </li>
+    </ul>
+    <h2>
+        Parameter Validation</h2>
+        No special validations. <h2>
+        Query&#39;s documentation:</h2>
+    <ul>
+        <li>
+           This Query displays the comprehensive details of each 
+                    carton for a specified storage area for the date on which cartons were modified.
+                    <pre>              
+WITH CARTON_DETAIL AS
+ (SELECT SC.CARTON_ID,
+         MS.UPC_CODE,
+         SC.LOCATION_ID AS CARTON_LOCATION,
+         SC.PALLET_ID,
+         SC.MODIFIED_DATE,
+         NVL2(SC.SUSPENSE_DATE, 'TRUE', '') AS SUSPENSE_DATE,
+         COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                  MSL.WAREHOUSE_LOCATION_ID,
+                  'Unknown') AS WAREHOUSE_LOCATION_ID,
+         SC.CARTON_STORAGE_AREA,
+         tia.short_name,
+         SC.VWH_ID,
+         MS.STYLE,
+         MS.COLOR,
+         MS.DIMENSION,
+         MS.SKU_SIZE,
+         SCD.QUANTITY,
+         SCD.req_assign_date,
+         sc.quality_code,
+         SC.PRICE_SEASON_CODE
+    FROM SRC_CARTON SC
+   INNER JOIN SRC_CARTON_DETAIL SCD
+      ON SC.CARTON_ID = SCD.CARTON_ID
+    LEFT OUTER JOIN MASTER_SKU MS
+      ON SCD.SKU_ID = MS.SKU_ID
+    LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+      ON SC.CARTON_STORAGE_AREA = MSL.STORAGE_AREA
+     AND SC.LOCATION_ID = MSL.LOCATION_ID
+    LEFT OUTER JOIN TAB_INVENTORY_AREA TIA
+      ON SC.CARTON_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+    WHERE 1=1
+     <if>AND sc.carton_storage_area = :CARTON_STORAGE_AREA</if>
+     <if>AND ms.style = :style</if>
+     <if>AND sc.VWH_ID = :vwh_id</if>
+     <if>and sc.quality_code= :quality_code</if>
+     <if>and sc.price_season_code =:price_season_code</if>
+     <if>AND sc.modified_date &gt;= (:modified_date_from)</if>
+     <if>AND sc.modified_date &lt; (:modified_date_to)+1</if>
+     <if>AND <a pre="COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                  MSL.WAREHOUSE_LOCATION_ID,
+                  'Unknown')  IN (" sep="," post=")"> :WAREHOUSE_LOCATION_ID</a></if>
+     <![CDATA[
+            $ShiftNumberWhere$                     
+            ]]>
+),
+IALOC_DETAIL AS
+ (SELECT I.ASSIGNED_UPC_CODE,
+         I.VWH_ID,
+         SYS.STRAGG(UNIQUE(I.LOCATION_ID || ', ')) AS assigned_fpk_location
+    FROM IALOC I
+   WHERE I.ASSIGNED_UPC_CODE IS NOT NULL
+   <if>AND i.VWH_ID = :vwh_id</if>
+   <if>AND <a pre="NVL(I.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+   GROUP BY I.ASSIGNED_UPC_CODE, I.VWH_ID)
+SELECT CD.CARTON_ID,
+       CD.UPC_CODE,
+       CD.CARTON_LOCATION,
+       CD.PALLET_ID,
+       CD.MODIFIED_DATE,
+       CD.SUSPENSE_DATE,
+       CD.WAREHOUSE_LOCATION_ID,
+       CD.CARTON_STORAGE_AREA,
+       CD.VWH_ID,
+       CD.STYLE,
+       CD.COLOR,
+       CD.DIMENSION,
+       CD.SKU_SIZE,
+       CD.QUANTITY,
+       MST.LABEL_ID,
+       cd.short_name,
+       ICD.assigned_fpk_location,
+       CD.req_assign_date,
+       cd.quality_code,
+       CD.PRICE_SEASON_CODE
+  FROM CARTON_DETAIL CD
+  LEFT OUTER JOIN IALOC_DETAIL ICD
+    ON ICD.ASSIGNED_UPC_CODE = CD.UPC_CODE
+   AND ICD.VWH_ID = CD.VWH_ID
+  LEFT OUTER JOIN MASTER_STYLE MST ON 
+            CD.STYLE = MST.STYLE
+where 1=1
+<if>AND mst.Label_ID = :LABEL_ID</if>    
+            </pre>
+                   
+        </li>
+    </ul>
+    <h2>
+        Validation details</h2>
+    Below queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.
+    <br />
+    <br />
+    <b>Query:1</b>
+    <pre>
+SELECT SRC.PALLET_ID         AS "Pallet",
+       SRC.CARTON_ID         AS "Carton",
+       SRC.LOCATION_ID       AS "Location_id",
+       SRC.PRICE_SEASON_CODE AS "Season Code",
+       SRC.QUALITY_CODE      AS "Quality",
+       SRC.SUSPENSE_DATE     AS "Suspense Date",
+       SRC.MODIFIED_DATE     AS "Date Modified",
+       SRC.VWH_ID            AS "VWh",
+  FROM SRC_CARTON SRC
+ WHERE SRC.CARTON_ID = 'R1218437'
+					  </pre> 
+    <b>Description:</b> 
+     <pre>Execute the above query to get the Carton, Pallet, location, suspnese date, modified_date, quality, price season and vwh columns.</pre>
+         
+    <b>Query:2</b>
+    <pre>
+    SELECT SYS.STRAGG(UNIQUE(IO.LOCATION_ID || ', ')) AS ASSIGNED_FPK_LOCATION
+  FROM IALOC IO
+ WHERE IO.ASSIGNED_UPC_CODE = '014671917482'
+  </pre>
+    <b>Description:</b>
+    <pre>Execute the above query to display to get the sku and location details for the specified upc code.
+	</pre>
+    <b>Query:3</b>
+    <pre>
+SELECT MST.LABEL_ID        AS "Label",
+       SCD.STYLE           AS "Style",
+       SCD.COLOR           AS "Color",
+       SCD.DIMENSION       AS "Dimension",
+       SCD.SKU_SIZE        AS "Size",
+       SCD.QUANTITY        AS "Pieces",
+       SCD.REQ_ASSIGN_DATE AS "Request Assigned Date"
+  FROM SRC_CARTON_DETAIL SCD
+  LEFT OUTER JOIN MASTER_STYLE MST
+    ON SCD.STYLE = MST.STYLE
+ WHERE SCD.CARTON_ID = ''
+</pre>
+<b>Description:</b>
+<pre> Execute the query to check whether the carton is in suspense or not.
+					</pre>
+    <b>Query:4</b>
+    <pre>
+SELECT T.SHORT_NAME AS "Area",
+       COALESCE(T.WAREHOUSE_LOCATION_ID,
+                MSL.WAREHOUSE_LOCATION_ID,
+                'Unknown') AS "Building"
+  FROM SRC_CARTON SC
+ INNER JOIN TAB_INVENTORY_AREA T
+    ON SC.CARTON_STORAGE_AREA = T.INVENTORY_STORAGE_AREA
+  LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+    ON SC.CARTON_STORAGE_AREA = MSL.STORAGE_AREA
+   AND SC.LOCATION_ID = MSL.LOCATION_ID
+ WHERE SC.CARTON_ID = 'R1216622';
+    </pre>
+    <b>Description:</b>
+    <pre>Execute the above query to check Area and building of the carton.</pre>
+
+    <b>Query:5</b>
+    <pre>
+SELECT MS.STYLE     AS "Style",
+       MS.COLOR     AS "Color",
+       MS.DIMENSION AS "Dimension",
+       MS.SKU_SIZE  AS "Size"
+  FROM MASTER_SKU MS
+ WHERE MS.UPC_CODE = 'R1216622'
+    </pre>
+    <b>Description:</b>
+    <pre>
+        Execute above query to check Style, color, dimension and Size of the SKU.
+    </pre>
+    <!--End divTechnical-->
+</div>
+ </body>
+</html>

@@ -1,0 +1,362 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style type="text/css">
+        .style1
+        {
+            font-size: xx-large;
+            font-weight: bold;
+            text-align: center;
+        }
+        .style2
+        {
+            font-weight: normal;
+        }
+        .style3
+        {
+            font-weight: bold;
+        }
+        .style4
+        {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <p class="style1">
+        150.108 : Validation Productivity Report</p>
+    Author : <b>Sanjeev Kumar</b><br />
+    $Revision: 5214 $<br />
+    Status : Reviewed<br/>
+    Reviewed By :
+    Hemant K. Varshney     <br />
+    Tested By : Ritesh Verma
+    <br />
+    Shows details of the boxes scanned by a validator on a particular validation 
+    station on a particular day.&nbsp; This can also be filtered on shift.<h2>
+        Overview</h2>
+    <p>
+        Shows details of the boxes scanned by a validator on a particular validation 
+        station on a particular day.&nbsp; This can also be filtered on shift. This also displays the time taken to scan the cartons and give details whether
+        it is a Red, Green or UPS cartons.
+    </p>
+    <h2>
+        Algorithm</h2>
+    Get the scanned box details for given date, workstation and validator from table BOX_PRODUCTIVITY.
+    <h3>
+        Output</h3>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%" >
+        <tr>
+            <td align="middle" width="25%">
+                <b>Item</b>
+            </td>
+            <td align="middle" width="20%">
+                <b>Summary</b>
+            </td>
+            <td align="middle" width="10%">
+                <b>Sort Sequence</b>
+            </td>
+            <td align="middle" width="35%">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                MPC ID
+            </td>
+            <td>
+                No
+            </td>
+            <td class="style4">
+                1</td>
+            <td>
+                <r:item term="MPC ID">MPC ID for the validation. </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Box ID
+            </td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                2</td>
+            <td>
+                <r:item  term="Carton ID" sortsequence="1"
+                    key="true">Carton ID(ucc128 id) of the box. </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Scan Time
+            </td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="Scan Time">Total time taken to scan the 
+                cartons. </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                #UPS Boxes
+            </td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="#UPS Cartons" defaultsorting="false">Number of UPS 
+                Boxes where carrier id of box is &#39;0472&#39;. 
+</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                #Green Boxes
+            </td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="#Green Cartons" defaultsorting="false">NNumber of Green 
+                Boxes whose outcome is validated. 
+</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                #Red Boxes
+            </td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item  term="#Red Cartons" defaultsorting="false">NNumber of Red 
+                Boxes whose outcome is invalidated. 
+</r:item>
+            </td>
+        </tr>
+    </table>
+    <h3>
+        Parameters</h3>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%" >
+        <tr>
+            <td align="middle" width="20%">
+                <span class="style3">Name</span><span class="style2"> </span>
+            </td>
+            <td align="middle" width="20%">
+                <span class="style3">Default</span><span class="style2"> </span>
+            </td>
+            <td align="middle" width="60%">
+                <span class="style3">Detail</span><span class="style2"> </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="style2">
+                Work Station
+            </td>
+            <td class="style2">
+                None
+            </td>
+            <td class="style2">
+                System on which validation was done
+            </td>
+        </tr>
+        <tr>
+            <td class="style2">
+                Operator
+            </td>
+            <td class="style2">
+                None
+            </td>
+            <td class="style2">
+                Validator name.
+            </td>
+        </tr>
+        <tr>
+            <td class="style2">
+                Validation Date
+            </td>
+            <td class="style2">
+                None
+            </td>
+            <td class="style2">
+                Validation start date for the cartons.
+            </td>
+        </tr>
+        <tr>
+            <td class="style2">
+                Shift
+            </td>
+            <td class="style2">
+                Both
+            </td>
+            <td class="style2">
+                Operator can work in any shift. Operator can perform the validation operation in
+                multiple shifts. Specify a shift if you interested in a specific shift.
+            </td>
+        </tr>
+        <tr>
+            <td class="style2">
+                Building</td>
+            <td class="style2">
+                All</td>
+            <td class="style2">
+                &nbsp;</td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>1 second</p>
+    The report exhibits logarithmic performance with respect to the operation start
+    date and operation code in BOX_PRODUCTIVITY<br />
+    <h2>Behavior Change</h2>
+    <ol>
+        <li>
+            Replaced building filter dropdown with checkbox list.
+        </li>
+    </ol>
+    <h2>
+        Issues</h2>
+    No Known Issue.
+    <h2>
+        Parameter Technical Details</h2>
+    <ul>
+        <li>Work Station (Type = String): System on which validation was done. </li>
+        <li>Operator (Type = String): Validator name </li>
+        <li>Validation Date (Type = DateTime): Enter the date on which validation was done.
+        </li>
+        <li>Shift (Type =Number): This is a list parameter control. You can select shift to
+            see the validation productivity for the selected shift. Null value text is &quot;Both&quot;.
+            <ul>
+                <li>VValue = 1, Text = First (5am to 3:30pm-) </li>
+                <li>Value = 2, Text = Second (3:30pm to 4am-)</li>
+            </ul>
+        </li>
+    </ul>
+    <h2>Parameter Validation</h2> No special validations.
+        <br/>
+        <h2>
+            Query&#39;s documentation:</h2>
+        <ul>
+            <li>
+                <r:doc >This query retrieves the MPC count for each 
+            carton scanned and give the information whether the scanned carton is Red,Green 
+            or UPS.
+            <pre>WITH Q1 AS
+ (SELECT B.PROCESS_ID AS PROCESS_ID,
+         B.MPC_ID AS MPC_ID,
+         B.UCC128_ID AS UCC128_ID,
+         B.OPERATION_START_DATE AS OPERATION_START_DATE,
+         B.OUTCOME AS OUTCOME,
+         B.CARRIER_ID AS CARRIER_ID,
+         B.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID,
+         CASE
+           WHEN (LAG(DECODE(B.OUTCOME, 'INVALIDATED', B.UCC128_ID))
+                 OVER(PARTITION BY B.WORK_STATION,
+                      B.OPERATOR ORDER BY B.WORK_STATION,
+                      B.OPERATOR,
+                      B.OPERATION_START_DATE)) IS NULL OR
+                (LAG(DECODE(B.OUTCOME, 'INVALIDATED', B.UCC128_ID))
+                 OVER(PARTITION BY B.WORK_STATION,
+                      B.OPERATOR ORDER BY B.WORK_STATION,
+                      B.OPERATOR,
+                      B.OPERATION_START_DATE)) !=
+                DECODE(B.OUTCOME, 'INVALIDATED', B.UCC128_ID) THEN
+            DECODE(B.OUTCOME, 'INVALIDATED', B.UCC128_ID)
+         END AS RED_BOXES,
+         DECODE(B.OUTCOME, 'VALIDATED', B.UCC128_ID) AS GREEN_BOXES,
+         <![CDATA[
+               $ShiftDateSelectClause$
+               ]]>
+    FROM BOX_PRODUCTIVITY B
+   WHERE B.OPERATION_CODE = '$CTNVERIFY'
+     AND B.OUTCOME NOT IN ('INVALIDSCAN', 'VERIFIED')
+    <if>AND B.work_station = :work_station</if>
+	       <if>AND B.operator = :operator</if>
+      <if>AND <a pre="B.WAREHOUSE_LOCATION_ID IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+	       AND B.operation_start_date &gt;= CAST(:validation_start_date AS DATE)
+           AND B.operation_start_date &lt; CAST(:validation_start_date AS DATE) + 2
+           <![CDATA[
+           $ShiftNumberWhereClause$
+           ]]>)
+SELECT Q1.PROCESS_ID AS PROCESS_ID,
+       DECODE(Q1.RED_BOXES, NULL, Q1.GREEN_BOXES, Q1.RED_BOXES) AS BOX_ID,
+       DECODE(Q1.MPC_ID, NULL, 'Unknown', Q1.MPC_ID) AS MPC_ID,
+       MAX(Q1.WAREHOUSE_LOCATION_ID) AS WAREHOUSE_LOCATION_ID,
+       MIN(Q1.OPERATION_START_DATE) AS SCAN_TIME,
+       MIN(CASE
+             WHEN Q1.OUTCOME = 'INVALIDATED' THEN
+              'TRUE'
+           END) AS RED_CARTON_COUNT,
+       MIN(CASE
+             WHEN q1.CARRIER_ID = '0472' THEN
+              'TRUE'
+           END) AS UPS_CARTON_COUNT,
+       MIN(CASE
+             WHEN Q1.OUTCOME = 'VALIDATED' THEN
+              'TRUE'
+           END) AS GREEN_CARTON_COUNT
+  FROM Q1
+ WHERE (Q1.RED_BOXES IS NOT NULL OR Q1.GREEN_BOXES IS NOT NULL)
+   AND Q1.shift_start_date &gt;= CAST(:validation_start_date AS DATE)
+   AND Q1.shift_start_date &lt; CAST(:validation_start_date AS DATE) + 1
+ GROUP BY Q1.RED_BOXES, Q1.GREEN_BOXES,Q1.OPERATION_START_DATE,
+          DECODE(Q1.MPC_ID, NULL, 'Unknown', Q1.MPC_ID),
+          Q1.PROCESS_ID
+            </li>
+        </ul>
+        <h2>
+            Validation details</h2>
+        Bellow queries may have the where clause in the [] brackets. It means these are
+        the optional parameters. If you do not want to pass these parameters just remove
+        the [] section.
+        <br />
+        <br />
+        <b>Query:</b>
+        <pre> SELECT bp.process_id AS PROCESS_ID,
+       bp.mpc_id AS MPC_ID,
+       bp.ucc128_id AS CARTON_ID,
+       bp.operation_start_date AS VALIDATION_DATE,
+       bp.operation_start_date AS SCAN_TIME,
+       CASE
+	 WHEN bp.outcome = 'INVALIDATED' THEN
+	   'TRUE'
+	END AS RED_CARTON_COUNT,
+       CASE
+	 WHEN bp.carrier_id = '0472' THEN
+	   'TRUE'
+	END AS UPS_CARTON_COUNT,
+       CASE
+	 WHEN bp.outcome = 'VALIDATED' THEN
+	   'TRUE'
+	END AS GREEN_CARTON_COUNT
+   FROM box_productivity bp
+  WHERE bp.outcome NOT IN ('INVALIDSCAN', 'VERIFIED')
+    AND bp.work_station = :work_station
+    AND bp.operator = :operator
+    AND bp.operation_code = '$CTNVERIFY'
+    AND bp.operation_start_date BETWEEN :Validation_Date AND :Validation_Date + 1
+          </pre>
+        <b>Description:</b><pre>
+            This query retrieves the MPC count for each carton scanned and give the information whether
+            the scanned carton is Red,Green or UPS.
+</pre>
+</body>
+</html>

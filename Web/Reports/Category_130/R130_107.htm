@@ -1,0 +1,243 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+</head>
+<body>
+    <form>
+   
+
+    <h1 style="text-align:center">130<b>.</b>107<b> : </b>Inventory in Area SHL-A</h1>
+    <h3>Author : Gyaneshwar Lal</h3>
+    
+         <ul style="list-style: none">
+        <li>Mentor : Pravin Kr. Awasthi</li>
+        <li>$Revision: 518 $ </li>
+        <li>Reviewed By : Pravin Kr. Awasthi.</li>
+        <li>Status : Done</li>
+    </ul>  
+    <p>
+            This report displays the pickslip's detail for the passed SKU which is shipped within
+            last 30 days.
+        </p>
+    <h2>Overview</h2>
+      <p>The Report displays the pickslip ID, PO, Customer, DC, Store and Virtual warehouse for passed SKU which is shipped within last 30 days.</p>
+    <h2>Algorithm</h2>
+    <p>
+    Get the pickslip detail from table PS. The customer details are retrieved from table
+    CUST as well as the shipment date of SKUs is shecked from ship_date of table SHIP.</p>
+    <h3>Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:25%; text-align:center"><b>Item</b></td>
+            <td style="width:20%; text-align:center"><b>Summary</b></td>
+            <td style="width:10%; text-align:center"><b>Sort Sequence</b></td>
+            <td style="width:35%; text-align:center"><b>Detail</b></td>
+        </tr>
+        <tr>
+            <td>Pickslip</td>
+            <td>No</td>
+            <td style="text-align:center">1</td>
+            <td>Pickslip ID</td>
+        </tr>
+        <tr>
+            <td>PO</td>
+            <td>No</td>
+            <td style="text-align:center">&nbsp;</td>
+            <td>Purchase order of the pickslip.</td>
+        </tr>
+        <tr>
+            <td>Customer</td>
+            <td>No</td>
+            <td style="text-align:center">&nbsp;</td>
+            <td>Customer Name of the pickslip (Customer ID as tooltip)</td>
+        </tr>
+        <tr>
+            <td>DC </td>
+            <td>No</td>
+            <td style="text-align:center">&nbsp;</td>
+            <td>Distribution Center ID of pickslip.</td>
+        </tr>
+        <tr>
+            <td>Store</td>
+            <td>No</td>
+            <td style="text-align:center">&nbsp;</td>
+            <td>Customer Store ID of pickslip</td>
+        </tr>
+        <tr>
+            <td>VWh</td>
+            <td>No</td>
+            <td style="text-align:center">&nbsp;&nbsp;</td>
+            <td>Virtual warehouse ID of pickslip.</td>
+        </tr>
+        </table>
+    
+    <h2>Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:20%; text-align:center"><b>Name</b></td>
+            <td style="width:20%; text-align:center"><b>Default</b></td>
+            <td style="width:60%; text-align:center"><b>Detail</b></td>
+        </tr>
+        <tr>
+            <td>UPC Code</td>
+            <td>As passed from the parent report.</td>
+            <td>UPC Code of the pickslip.</td>
+        </tr>
+        <tr>
+            <td>Label</td>
+            <td>All or As passed from the parent report.</td>
+            <td>Label of the pickslip.</td>
+        </tr>
+        <tr>
+            <td>Virtual Warehouse</td>
+            <td>As passed from the parent report.</td>
+            <td>Virtual warehouse ID of the pickslip.</td>
+      </tr>
+        <tr>
+            <td>
+                <label accesskey="N" for="ctl00_ContentPlaceHolder1_tbDays">
+                <span style="TEXT-DECORATION: underline">N</span>o. Of Days Back</label></td>
+            <td>30</td>
+            <td>Number of days back from the current date.</td>
+      </tr>
+      </table>
+        
+    </table>
+    <h2>Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>1 second.
+    </p>
+    <p>
+    The query exhibits linear performance with respect to the number of records in ps.There
+    is index-unique scan on table CUST (index used is CUST_PK)and index-range scan on tables PS 
+        (index used PS_SHIPPING_ID_I),PSDET (index used PSDET_PK) and SHIP (index used 
+        SHIP_SHIP_DATE_I). </p>
+    <p>
+        The report is taking 0.06 seconds to execute for <b>&quot;017626415699&quot;</b> as 
+        UpcCode, <b>&quot;LY&quot;</b> as StyleLabel, <b>&quot;15&quot;</b> as Vwh and <b>&quot;999&quot;</b> as 
+        number of days.</p>
+    <h2>Behavior Change</h2>
+    <ul>
+        <li>The report now shows pickslip&#39;s detail for the passed SKU which is shipped 
+            within last 30 days.</li>
+    </ul>
+    <h2>Issues</h2>
+    <ul>
+        <li>No Known Issue.</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+        <p>
+        Private synonyms for the following tables are requried</p>
+        <pre>
+        PS,
+       PSDET,
+       CUST,
+       SHIP  </pre>
+        <p>
+        Use the below script to create the synonyms:<br />
+        <br />
+        <code>create or replace synonym ps for dcms8.ps;             <br />
+            create or replace synonym psdet for dcms8.psdet;
+            <br />
+            create or replace synonym cust for dcms8.cust;
+            <br />
+            create or replace synonym ship for dcms8.ship;
+            </code>&nbsp;</p>
+            <p>
+        Following AppSettings are required:</p>
+    <code>
+    &lt;add key="PickStatusTrnsfrd" value="TRANSFERED"/&gt;</code>
+    <br />
+    <h2>
+                Parameter Technical Details</h2>
+            <ul>
+                <li>UPC: The UPC Code of pickslip</li>
+                <li>Label: This is a list parameter control.
+                    Label_id of inventory. &quot;Show All&quot; for all label id<ul>
+                        <li>Query to fill list values : 
+                            <pre> select tsl.label_id as label_id, 
+    MAX(twl.warehouse_location_id)as max_warehouse_location_id, 
+    MAX(twl.description) as building_description, 
+    COUNT(DISTINCT twl.warehouse_location_id) as count_warehouse_location_id, 
+    MAX(tsl.description)as label_description 
+FROM tab_style_label tsl 
+LEFT OUTER JOIN tab_label_group tlg on tsl.label_id = tlg.label_id 
+LEFT OUTER JOIN tab_warehouse_location twl on tlg.label_group = twl.label_group 
+GROUP BY tsl.label_id 
+ORDER BY tsl.label_id </pre>
+                        </li>
+                    </ul>
+                </li>
+                    
+                    <li>VWh: This is a list parameter control. By default, inventory
+                        of all Warehouse is shown for each area. If your focus is on the inventory in a
+                        particular Warehouse, Specify that Warehouse Id. &quot;Show All&quot; for all VWh_Id.
+                        <ul>
+                            <li>Query to fill list values:
+                                <pre>SELECT vwh_id AS vwh_id, description AS description FROM tab_virtual_warehouse ORDER BY vwh_id</pre>
+                            </li>
+                        </ul>
+                    </li>
+                    
+            </ul>
+    <h2>Parameter Validation</h2>
+    No special validations.
+    <h2>Query's documentation:</h2>
+            <ul>
+                <li>
+                   This query will get the pickslip details of SKUs shipped within last 30 days from tables ps,psdet,cust and ship. 
+                   This query may have the where clause in the [] brackets. It means these are optional parameters.
+            <pre>
+   SELECT PS.PICKSLIP_ID AS PICKSLIP_ID,
+               PS.PO_ID AS PO_ID,
+               ps.vwh_id AS VWH_ID,
+               PS.CUSTOMER_ID AS CUSTOMER_ID,
+               PS.CUSTOMER_DC_ID AS DC_ID,
+               PS.CUSTOMER_STORE_ID AS STORE_ID,
+               CUST.NAME AS CUSTOMER_NAME
+         FROM ps ps 
+         INNER JOIN psdet psdet on psdet.pickslip_id = ps.pickslip_id
+         INNER JOIN cust cust on cust.customer_id = ps.customer_id
+         INNER JOIN ship ship on ship.shipping_id = ps.shipping_id
+         WHERE ps.picking_status = &#39;TRANSFERED&#39; 
+               AND PSDET.UPC_CODE = :upc_code
+               AND ps.vwh_id = :vwh_id
+               AND ps.label_id = :label_id
+               AND (SHIP.SHIP_DATE &gt;= (SYSDATE - :no_of_days))       </pre>
+            </li>
+            </ul>
+            <h2>
+                Validation details</h2>
+           <p>Following query will be used to validate the reports output records.</p>
+            
+            <pre><b>Query:</b>
+	Select ps.pickslip_id,
+       		ps.po_id,	
+          	cust.customer_id,
+          	cust.name,
+       		ps.label_id,
+       		psd.upc_code,
+          	ps.customer_dc_id,
+       		shp.ship_date,
+          	ps.picking_status,
+          	ps.vwh_id
+	FROM ps ps
+	INNER JOIN psdet psd on psd.pickslip_id = ps.pickslip_id
+  	INNER JOIN cust cust on cust.customer_id = ps.customer_id
+	INNER JOIN SHIP shp on shp.shipping_id = ps.shipping_id
+	WHERE ps.picking_status ='TRANSFERED'
+  		AND ps.label_id = :label_id
+  		AND psd.upc_code = :upc_code
+  		AND ps.vwh_id = :vwh_id
+  		AND(shp.ship_date >= (SYSDATE - 30))
+</pre>
+            <pre><b>Description:</b>
+            The above query will get the pickslip details of SKUs shipped within last 30 days,from tables ps,psdet and ship.
+          </pre>
+
+
+    </form>
+</body>
+</html>

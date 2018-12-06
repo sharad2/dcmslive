@@ -1,0 +1,151 @@
+﻿<%@ Page Title="Cube Estimation Report" Language="C#" MasterPageFile="~/MasterPage.master" %>
+<%--*
+ *  Programming: Eclipse Systems (P) Ltd., NOIDA, INDIA
+ *  E-mail: support@eclsys.com
+ *
+ *  $Revision: 28752 $
+ *  $Author: skumar $
+ *  $HeadURL: http://server/svn/dcmslive/Projects/DcmsLive/trunk/Web/Reports/Category_110/R110_20.aspxExclude $
+ *  $Id: R110_20.aspxExclude 5979 2013-08-12 11:20:58Z skumar $
+ * Version Control Template Added.
+--%>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <meta name="Description" content="For the passed customer ,start date range and building this report displays the cube estimation results. " />
+    <meta name="ReportId" content="110.20" />
+    <meta name="Browsable" content="true" />
+    <meta name="Version" content="$Id: R110_20.aspxExclude 5979 2013-08-12 11:20:58Z skumar $" />
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <jquery:Tabs runat="server" ID="tabs">
+        <jquery:JPanel ID="JPanel" runat="server" HeaderText="Filters">
+            <eclipse:TwoColumnPanel ID="TwoColumnPanel1" runat="server">
+                <eclipse:LeftLabel ID="LeftLabel1" runat="server" Text="Customer_id" />
+                <i:TextBoxEx ID="tbcustomer" runat="server" QueryString="customer_id" FriendlyName="Customer_id" >
+                    <Validators>
+                    <i:Required />
+                    </Validators>
+                </i:TextBoxEx>
+                <eclipse:LeftLabel ID="LeftLabel2" runat="server" Text="Start Date" />
+                From:
+                <d:BusinessDateTextBox ID="dtFrom" runat="server" QueryString="FromDate"  FriendlyName=" from Start Date"
+                    Text="-7">
+                    <Validators>
+                    <i:Required />
+                    </Validators>
+                </d:BusinessDateTextBox>
+                To:
+                <d:BusinessDateTextBox ID="dtTo" runat="server" QueryString="ToDate"  FriendlyName="To Start Date"
+                    Text="0" >
+                </d:BusinessDateTextBox>
+                <eclipse:LeftLabel ID="LeftLabel4" runat="server" Text="Building" />
+                <d:BuildingSelector ID="ctlWhLoc" runat="server" QueryString="Building" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+                    ShowAll="true" />
+            </eclipse:TwoColumnPanel>
+        </jquery:JPanel>
+        <jquery:JPanel ID="JPanel1" runat="server" HeaderText="Sorting">
+            <jquery:SortColumnsChooser ID="SortColumnsChooser1" runat="server" GridViewExId="gv"
+                EnableGroupBy="true" />
+        </jquery:JPanel>
+    </jquery:Tabs>
+    <uc2:ButtonBar2 ID="ButtonBar1" runat="server" />
+   <oracle:OracleDataSource ID="ds" runat="server" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+        ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>" 
+        CancelSelectOnNullParameter="true" >
+        <SelectSql>
+SELECT ce.PO_ID,
+       ce.DC_ID,
+       ce.LABEL_ID,
+       ce.CARRIER_ID,
+       ce.PICKUP_DATE,
+       ce.ROUTED,
+       ce.PS_STATUS_ID,
+       ce.START_DATE,
+       ce.DC_CANCEL_DATE,
+       ce.NO_OF_PICKSLIPS,
+       ce.NO_OF_ORDERED_PIECES,
+       ce.NO_OF_BOXES,
+       ce.TOTAL_VOLUME,
+       ce.TOTAL_WEIGHT,
+       ce.WAREHOUSE_LOCATION_ID,
+       ce.INSERT_DATE,
+       ce.INSERTED_BY
+  FROM CUBE_ESTIMATION CE
+ WHERE <if>CE.CUSTOMER_ID = :CUSTOMER_ID</if>
+        <if>AND CE.start_date &gt;= CAST(:delivery_start_date AS DATE)</if>      
+        <if>AND CE.start_date &lt; CAST(:delivery_end_date AS DATE) + 1</if> 
+   <if>AND CE.warehouse_location_id = :warehouse_location_id</if>
+        </SelectSql>
+        <SelectParameters>
+        <asp:ControlParameter ControlID="tbcustomer" Type="String" Direction="Input" Name="CUSTOMER_ID" />
+        <asp:ControlParameter ControlID="dtFrom" Type="DateTime" Direction="Input" Name="delivery_start_date" />
+        <asp:ControlParameter ControlID="dtTo" Type="DateTime" Direction="Input" Name="delivery_end_date" />    
+        <asp:ControlParameter ControlID="ctlWhLoc" Type="String" Direction="Input" Name="warehouse_location_id" />
+        </SelectParameters>
+    </oracle:OracleDataSource>
+    <jquery:GridViewEx ID="gv" runat="server" AutoGenerateColumns="false" AllowSorting="true"
+        ShowFooter="true" DataSourceID="ds" DefaultSortExpression="PO_ID;DC_ID;LABEL_ID">
+        <Columns>
+            <eclipse:SequenceField />
+            <eclipse:MultiBoundField DataFields="PO_ID" SortExpression="PO_ID" HeaderText="PO">
+            <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>            
+            <eclipse:MultiBoundField DataFields="DC_ID" SortExpression="DC_ID" HeaderText="DC Id">
+            <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="LABEL_ID" SortExpression="LABEL_ID" HeaderText="Label">
+            <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="CARRIER_ID" SortExpression="CARRIER_ID" HeaderText="Carrier Id">
+            <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="PICKUP_DATE" SortExpression="PICKUP_DATE" DataFormatString="{0:d}" HeaderText="Pickup Date">
+            <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="ROUTED" SortExpression="ROUTED" HeaderText="Routed">
+            <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="PS_STATUS_ID" SortExpression="PS_STATUS_ID" HeaderText="Status">
+            <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="START_DATE" SortExpression="START_DATE" DataFormatString="{0:d}" HeaderText="Start Date">
+            <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="DC_CANCEL_DATE" SortExpression="DC_CANCEL_DATE" DataFormatString="{0:d}" HeaderText="DC Cancel Date">
+            <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="NO_OF_PICKSLIPS" SortExpression="NO_OF_PICKSLIPS" HeaderText="No Of|Pickslip" DataFormatString ="{0:N0}" DataSummaryCalculation="ValueSummation">
+            <ItemStyle HorizontalAlign="Right" />
+            <FooterStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="NO_OF_ORDERED_PIECES" SortExpression="NO_OF_ORDERED_PIECES" HeaderText="No Of|Ordered Pieces"
+             DataFormatString ="{0:N0}" DataSummaryCalculation="ValueSummation">
+             <ItemStyle HorizontalAlign="Right" />
+             <FooterStyle HorizontalAlign="Right" />
+             </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="NO_OF_BOXES" SortExpression="NO_OF_BOXES" DataFormatString ="{0:N0}" DataSummaryCalculation="ValueSummation" HeaderText="No Of|Boxes">
+            <ItemStyle HorizontalAlign="Right" />
+            <FooterStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="TOTAL_VOLUME" SortExpression="TOTAL_VOLUME" HeaderText="Volume" DataSummaryCalculation="ValueSummation" DataFormatString="{0:N2}" DataFooterFormatString="{0:N2}">
+            <ItemStyle HorizontalAlign="Right" />
+            <FooterStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="TOTAL_WEIGHT" SortExpression="TOTAL_WEIGHT" HeaderText="Weight" DataSummaryCalculation="ValueSummation" DataFormatString="{0:N2}" DataFooterFormatString="{0:N2}">
+            <ItemStyle HorizontalAlign="Right" />
+            <FooterStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="WAREHOUSE_LOCATION_ID" SortExpression="WAREHOUSE_LOCATION_ID" HeaderText="Building">
+            <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="INSERT_DATE" SortExpression="INSERT_DATE" DataFormatString="{0:d}" HeaderText="Insert Date">
+            <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="INSERTED_BY" SortExpression="INSERTED_BY" HeaderText="Insert By">
+            <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            </Columns>
+    </jquery:GridViewEx>
+</asp:Content>
+
+

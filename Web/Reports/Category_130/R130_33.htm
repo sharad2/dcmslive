@@ -1,0 +1,506 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>130.33 Replenishment Exception Report</title>
+    <style type="text/css">
+        .style1
+        {
+            width: 24%;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        &nbsp;130.33 
+      Replenishment Exception Report </h1>
+    <h3>
+        Author : Dinesh Singh Panwar</h3>
+        <h3>Mentor : Hemant K. Varshney</h3>
+    <ul style="list-style: none">
+    
+        <li><strong>$Revision:</strong> 13715 $</li>
+        <li><strong>&nbsp;Status:</strong> Tested</li>
+        <li><strong>Tested By:</strong>Ritesh Verma</li>
+    </ul>
+    <p>
+       If replenishemnt has to be done from one inventory area to another area then few  exception  prevent replenishment of SKU's. The report list these exceptions which prevent SKU's from replenishment.</p>
+    <h2>
+        Overview</h2>
+        <p>If replenishemnt has to be done between inventory areas then few exception 
+            prevent replenishment of SKU&#39;s. The report list these exceptions which prevent 
+            SKU&#39;s from replenishment.Also you can see the ordered Sku&#39;s of Customer,Bucket for which replenishment has to be done.</p>
+        <p><strong>Exceptions could be following :-</strong></p>
+        <ul>
+        <li>Pieces on Impure Pallets:These are the pieces which are on those pallets which contains mix SKUs on single Pallet. That why these SKUs cannot be replenished.</li>
+        <li>SKU has no assigned location in picking area</li> 
+        <li>SKU has no pallet in replenishment area</li> 
+        <li>There are distinct skus on same pallet</li>
+        </ul>
+        further report also shows ordered quantity,and impure pallets with more than one sku
+    <h2>
+        Algorithm</h2>
+    <p>
+        Get all the information of the non 
+        Replenished Sku for the passed building, 
+        vwh, area where replenishemnt has to be done and area from where SKU can be replenished.</p>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 25%; text-align: center">
+                <b>Item</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Summary</b>
+            </td>
+            <td style="width: 10%; text-align: center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                VWh
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;</td>
+            <td style="width: 45%; text-align: left">
+                Virtual Warehouse of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Style</td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                1</td>
+            <td style="width: 45%; text-align: left">
+                Style of the SKU</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Color</td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                2</td>
+            <td style="width: 45%; text-align: left">
+                Color of the SKU</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Dim</td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                3</td>
+            <td style="width: 45%; text-align: left">
+                Dimension of the SKU</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Size</td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                4</td>
+            <td style="width: 45%; text-align: left">
+                Size of the SKU</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Ordered Pieces</td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;</td>
+            <td style="width: 45%; text-align: left">
+                Quantiy of the Ordered Sku.</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Location Assigned?</td>
+            <td style="width: 20%; text-align: center">
+                No</td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;</td>
+            <td style="width: 45%; text-align: left">
+                Report shows the if SKU has location assigned in Picking area</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Pieces on Impure Pallet </td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;</td>
+            <td style="width: 45%; text-align: left">
+                Pieces of mix Sku present on same pallet.</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Impure Pallet</td>
+            <td style="width: 20%; text-align: center">
+                No</td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;</td>
+            <td style="width: 45%; text-align: left">
+                Pallet having distinct Sku.</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Pieces in replenishment Area But|Not on Location</td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%; text-align: left">
+                Report shows the Pieces which are not on location of replenishment Area</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Pieces in replenishment Area But|Not on Pallet</td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;">
+                Report shows the Pieces which are not on Pallet&nbsp;of replenishment Area</td>
+        </tr>
+        </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="text-align: center" class="style1">
+                <b>Name</b>
+            </td>
+            <td style="width: 15%; text-align: center">
+                <b>Type</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Default</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: left" class="style1">
+                Building
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                (Please Select Building)</td>
+            <td style="width: 45%; text-align: left">
+                Open orders of building for which replenishment has to be done.
+            </td>
+        </tr>
+         <tr>
+            <td style="text-align: left" class="style1">
+                Virtual Warehouse</td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                All</td>
+            <td style="width: 45%; text-align: left">
+                Open ordrers of virtual warehouse for 
+                which Sku has to be replenished.
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: left" class="style1">
+                Customer</td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                (None)</td>
+            <td style="width: 45%; text-align: left">
+                Orders of customer 
+               for which replenishment has to be done.
+            </td>
+        </tr>
+         <tr>
+            <td style="text-align: left" class="style1">
+                Bucket</td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                (None)</td>
+            <td style="width: 45%; text-align: left">
+                Ordered Sku&#39;s of Bucket for which replenishment has to be done.
+            </td>
+        </tr>
+         <tr>
+            <td style="text-align: left" class="style1">
+                Location Are Assigned In
+                      </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                (Please Select Area)</td>
+            <td style="width: 45%; text-align: left">
+                Area where sku inventory is available.</td>
+        </tr>
+         <tr>
+            <td style="text-align: left" class="style1">
+                Replenishment Area</td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                (Please 
+                Select Area)</td>
+            <td style="width: 45%; text-align: left">
+                Area from where inventory can be Replenished. 
+            </td>
+        </tr>
+         </table>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No Known Issue</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+            <h4>
+                Private synonyms requried for the tables:
+            </h4>
+            <ul>
+   <li>Src_Carton</li>
+   <li>Src_Carton_Detail</li>
+   <li>Master_Sku</li>
+   <li>Dem_Pickslip</li>
+   <li>Dem_Pickslip_Detail</li>
+   <li>Master_Storage_Location</li>
+   <li>Ps</li>
+   <li>Psdet</li>
+   <li>Bucket</li>
+   </ul>
+  
+           
+ <h4>Script to create the synonyms:</h4> 
+ <ul>
+      <li>create or replace synonym SRC_CARTON for dcms4.SRC_CARTON</li>
+      <li>create or replace synonym SRC_CARTON_DETAIL for dcms8.SRC_CARTON_DETAIL</li>
+      <li>create or replace synonym MASTER_SKU for dcms4.MASTER_SKU</li>
+      <li>create or replace synonym DEM_PICKSLIP for dcms4.DEM_PICKSLIP</li>
+      <li>create or replace synonym DEM_PICKSLIP_DETAIL for dcms4.DEM_PICKSLIP_DETAIL</li>
+      <li>create or replace synonym PS for dcms8.PS</li>
+      <li>create or replace synonym PSDET for dcms8.PSDET</li>
+      <li>create or replace synonym Bucket for dcms8.Bucket</li>
+      <li>create or replace synonym MASTER_STORAGE_LOCATION for dcms4.MASTER_STORAGE_LOCATION</li></ul>
+   
+    
+    <h2>
+        Query&#39;s documentation:</h2>
+    <pre>
+                    
+     WITH ALL_ORDERED_SKU(SKU_ID,bucket_id,
+VWH_ID,
+QUANTITY_ORDERED) AS
+ (SELECT /*+ INDEX(dp ps_pdstat_fk_i) INDEX(dpd psdet_ps_fk_i) */
+   MSKU.SKU_ID,null as bucket_id, DP.VWH_ID, DPD.QUANTITY_ORDERED
+    FROM DEM_PICKSLIP DP
+   INNER JOIN DEM_PICKSLIP_DETAIL DPD
+      ON DPD.PICKSLIP_ID = DP.PICKSLIP_ID
+   INNER JOIN MASTER_SKU MSKU
+      ON MSKU.STYLE = DPD.STYLE
+     AND MSKU.COLOR = DPD.COLOR
+     AND MSKU.DIMENSION = DPD.DIMENSION
+     AND MSKU.SKU_SIZE = DPD.SKU_SIZE
+   WHERE DP.PS_STATUS_ID = 1
+     <if>AND DP.VWH_ID = :vwh_id</if>
+     <if>AND DP.WAREHOUSE_LOCATION_ID = :WAREHOUSE_LOCATION_ID</if>
+     <if>and Dp.customer_id=:customer_id</if>
+  UNION ALL
+  SELECT MS.SKU_ID,p.bucket_id as bucket_id,P.VWH_ID, PD.PIECES_ORDERED
+    FROM PS P
+   INNER JOIN PSDET PD
+      ON P.PICKSLIP_ID = PD.PICKSLIP_ID
+   INNER JOIN MASTER_SKU MS
+      ON MS.UPC_CODE = PD.UPC_CODE
+   WHERE P.TRANSFER_DATE IS NULL
+     <if>AND P.WAREHOUSE_LOCATION_ID = :WAREHOUSE_LOCATION_ID</if>
+     <if>AND P.VWH_ID = :vwh_id</if>
+     <if>and p.customer_id=:customer_id</if>
+     AND PD.TRANSFER_DATE IS NULL),
+GROUPED_ORDERED_SKU(SKU_ID,
+VWH_ID,
+QUANTITY_ORDERED) AS
+ (SELECT AO.SKU_ID, AO.VWH_ID, SUM(AO.QUANTITY_ORDERED)
+    FROM ALL_ORDERED_SKU AO
+    left outer join bucket bk
+    on bk.bucket_id=ao.bucket_id
+    where 1=1 
+    <if>and bk.bucket_id=:bucket_id</if> 
+   GROUP BY SKU_ID, AO.VWH_ID),
+ALL_ASSIGNED_SKUS(SKU_ID,
+VWH_ID,
+location_count) AS
+ (SELECT msl.assigned_sku_id, msl.assigned_vwh_id, COUNT(msl.location_id)
+    FROM MASTER_STORAGE_LOCATION MSL
+   WHERE msl.assigned_sku_id IS NOT NULL
+     <if>AND msl.storage_area = :STORAGE_AREA</if>
+     <if>AND msl.assigned_vwh_id = :vwh_id</if>
+    <if> AND msl.warehouse_location_id = :WAREHOUSE_LOCATION_ID</if>
+   group by msl.assigned_sku_id, msl.assigned_vwh_id),
+
+mix_SKU_pallet(pallet_id,
+sku_id,
+VWH_ID,
+count_sku_on_pallet,
+pieces_on_pallet,
+pieces_not_on_location) AS
+ (SELECT A.PALLET_ID AS pallet_id,
+         D.SKU_ID AS sku_id,
+         A.VWH_ID AS VWH_ID,
+         count(distinct 
+         case
+         when a.pallet_id is not null
+         then
+         d.sku_id
+         end) over(partition by A.PALLET_ID),
+         sum(d.quantity),
+         sum(case
+               when A.location_id is null then
+                d.quantity
+             end)
+    FROM SRC_CARTON A
+   INNER JOIN SRC_CARTON_DETAIL D
+      ON A.CARTON_ID = D.CARTON_ID
+ <if> WHERE A.CARTON_STORAGE_AREA = :CARTON_STORAGE_AREA</if>
+     AND A.SUSPENSE_DATE IS NULL
+   GROUP BY A.PALLET_ID, D.SKU_ID, A.VWH_ID),
+
+unreplenishable_sku AS
+ (SELECT msp.SKU_ID,
+         msp.VWH_ID,
+         count(distinct msp.pallet_id) as count_pallets,
+         sum(msp.pieces_on_pallet) as pieces_on_all_pallets,
+         MIN(msp.PALLET_ID) as min_pallet,
+         MAX(msp.PALLET_ID) as max_pallet,
+         count(distinct case
+                 when count_sku_on_pallet > 1 then
+                  msp.pallet_id
+               end) as count_impure_pallets,
+         sum(case
+               when count_sku_on_pallet > 1 then
+                msp.pieces_on_pallet
+             end) as pieces_on_impure_pallets,
+         MIN(case
+               when count_sku_on_pallet > 1 then
+                msp.PALLET_ID
+             end) as min_impure_pallet,
+         MAX(case
+               when count_sku_on_pallet > 1 then
+                msp.PALLET_ID
+             end) as max_impure_pallet,
+         
+         SUM(msp.pieces_not_on_location) as pieces_not_on_location,
+         SUM(case
+               when msp.pallet_id is null then
+                msp.pieces_on_pallet
+             end) as pieces_not_on_pallet
+    FROM mix_SKU_pallet msp
+   group by msp.SKU_ID, msp.VWH_ID
+  having sum(case when count_sku_on_pallet > 1 then msp.pieces_on_pallet end) > 0 OR SUM(case when msp.pallet_id is null then msp.pieces_on_pallet end) > 0 OR SUM(msp.pieces_not_on_location) is not null
+  
+  )
+
+SELECT ags.sku_id,
+       ags.vwh_id,
+       msk.style,
+       msk.color,
+       msk.dimension,
+       msk.sku_size,
+       ags.QUANTITY_ORDERED,
+       urs.pieces_on_impure_pallets as pieces_on_impure_pallets,
+       urs.min_impure_pallet||' '||urs.max_impure_pallet AS SOME_of_impure_pallets,
+       NVL2(aas.location_count, NULL, 1) as has_no_assigned_locations,
+       urs.pieces_not_on_location,
+       urs.pieces_not_on_pallet
+  FROM GROUPED_ORDERED_SKU AGS
+  LEFT OUTER JOIN master_sku msk
+  on ags.sku_id = msk.sku_id
+  LEFT OUTER JOIN ALL_ASSIGNED_SKUS AAS
+    ON ags.sku_id = aas.sku_id
+   AND ags.vwh_id = aas.vwh_id
+  LEFT OUTER JOIN unreplenishable_sku urs
+    ON ags.sku_id = urs.sku_id
+   AND ags.vwh_id = urs.vwh_id
+ where (aas.sku_id is null or urs.sku_id is not null)</pre>
+ <b>Discreption :-Show the 'Pieces on impure pallet' which not on Location.</b>
+ <pre>
+ select scd.sku_id,sum(scd.quantity) as Pieces_on_impure_pallet 
+ from src_carton sc
+inner join src_carton_detail scd
+on sc.carton_id = scd.carton_id
+where sc.pallet_id ='PD063522'
+and scd.style='00306'
+and scd.color='BK'
+and scd.dimension='.'
+and scd.sku_size='2XL' 
+AND SC.LOCATION_ID IS NOT NULL
+group by scd.sku_id
+ </pre>
+ <b>Discreption :-Show the Ordered SKU Quanity.</b>
+<pre>
+SELECT /*+ INDEX(dp ps_pdstat_fk_i) INDEX(dpd psdet_ps_fk_i) */
+ MSKU.SKU_ID, DP.VWH_ID, DPD.QUANTITY_ORDERED
+  FROM DEM_PICKSLIP DP
+ INNER JOIN DEM_PICKSLIP_DETAIL DPD
+    ON DPD.PICKSLIP_ID = DP.PICKSLIP_ID
+ INNER JOIN MASTER_SKU MSKU
+    ON MSKU.STYLE = DPD.STYLE
+   AND MSKU.COLOR = DPD.COLOR
+   AND MSKU.DIMENSION = DPD.DIMENSION
+   AND MSKU.SKU_SIZE = DPD.SKU_SIZE
+ WHERE DP.PS_STATUS_ID = 1
+   AND DP.VWH_ID = '15'
+   AND DP.WAREHOUSE_LOCATION_ID = 'FDC'
+   and MSKU.style = '00306'
+   and MSKU.color = 'BK'
+   and MSKU.dimension = '.'
+   and MSKU.sku_size = '2XL'
+   and dp.customer_id='10120'
+UNION ALL
+SELECT MS.SKU_ID, P.VWH_ID, PD.PIECES_ORDERED
+  FROM PS P
+ INNER JOIN PSDET PD
+    ON P.PICKSLIP_ID = PD.PICKSLIP_ID
+ INNER JOIN MASTER_SKU MS
+    ON MS.UPC_CODE = PD.UPC_CODE
+ WHERE P.TRANSFER_DATE IS NULL
+   AND P.WAREHOUSE_LOCATION_ID = 'FDC'
+   AND P.VWH_ID = '15'
+   AND PD.TRANSFER_DATE IS NULL
+   and MS.style = '00306'
+   and MS.color = 'BK'
+   and MS.dimension = '.'
+   and MS.sku_size = '2XL'
+   and p.customer_id='10120'
+</body>
+</html>

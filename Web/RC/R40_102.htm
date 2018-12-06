@@ -1,0 +1,455 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html>
+<head>
+    <title>Report Documentation</title>
+    <style type="text/css">
+
+        .style1
+        {
+            width: 81px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        40<b>.</b>102<b> : </b>Pulling and Locating detail Report</h1>
+    Author :<b> Dinesh Singh Panwar<br />
+    </b>$Revision: 4655 $<b><br />
+    </b>Mentor : Hemant K. Varshney<br />
+    Status: Tested<br />
+    Tested By: Sanjeev Kumar<p>
+        The report displays detail information of each process for a given employee, process
+        start date and module.
+    </p>
+    <h2>
+        Overview</h2>
+    <p>
+        For a given employee,module, 
+        activity and process start date report shows the detail
+        information for each process. Reports shows work done in each session when user started works
+        and when ended and also shows that between this time period how many aisles visited,
+        cartons processed and pallets used etc. Purpose of the report is:</p>
+    <ul>
+        <li>For monitoring the productivity of each employee.</li><li>For implementing productivity
+            based remuneration schemes.</li><li>For identifying the star performers and the black
+                sheep.
+                </li>
+                </ul>
+                 <h2>
+        Algorithm</h2>
+    Get all the information of each process from Carton_Productivity table.&nbsp;<h3>
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center">
+                <b>Item</b>
+            </td>
+            <td align="center">
+                <b>Summary</b>
+            </td>
+            <td align="center">
+                <b>Default Sort Sequence</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+         <tr>
+            <td>
+                Module Code</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2</td>
+            <td>
+                Module Code of the process.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Employee</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1</td>
+            <td>
+                Name of the Employee.
+            </td>
+        </tr>
+         <tr>
+            <td>
+               Building 
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                3&nbsp;</td>
+            <td>
+                Building on Which employee worked.
+            </td>
+        </tr>
+         <tr>
+            <td>
+                Session
+            </td>
+            <td>
+                All
+            </td>
+            <td align="center">
+                4</td>
+            <td>
+                Session ID of the process.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Process Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+               5</td>
+            <td>
+                Date on which user started work.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Start time
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+            6</td>
+            <td>
+                Start time of the user session in the picking carton action: 
+              <li>Start time for the pallet: When the first carton is scanned for a pallet.</li>
+                                                     
+            </td>
+        </tr>
+        <tr>
+            <td>
+                End time
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;&nbsp;</td>
+            <td>
+                Last carton scanned for a pallet or Scan location in case of palletlocating for a pallet.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                System Hours
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center" class="style1">
+                &nbsp;</td>
+            <td>
+                Total hours worked by employee 
+                on pallet.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                End time
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;&nbsp;</td>
+            <td>
+                Last carton scanned for a pallet or Scan location in case of palletlocating for a pallet.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pallet&nbsp;
+            </td>
+            <td>
+                No</td>
+            <td align="center" class="style1">
+                &nbsp;
+                &nbsp;</td>
+            <td>
+                Pallet 
+                used in each session</td>
+        </tr>
+        <tr>
+            <td>
+               Total Number of Aisles Visited             </td>
+            <td>
+               No
+            </td>
+            <td align="center" class="style1">
+                &nbsp;
+                &nbsp;</td>
+            <td>
+                Aisles visited in each session.</td>
+        </tr>
+        <tr>
+            <td>
+                Total Number of Cartons             </td>
+            <td>
+                Sum
+            </td>
+            <td align="center" class="style1">
+                &nbsp;
+                &nbsp;</td>
+            <td>
+                                Total no. of distinct cartons worked in each 
+                                session.
+                                <ul><li>In case of pallet locating,Now, report show *** in place of Total Numbers of Cartons due to multiple carton.</li></ul></td>
+        </tr>
+        <tr>
+            <td>
+                Quantity
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;&nbsp;</td>
+            <td>
+                Total no. of pieces.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Destination Location
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;&nbsp;</td>
+            <td>
+                The location for which the carton was pulled or located.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center">
+                <b>Name</b>
+            </td>
+            <td align="center">
+                <b>Default</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+          <tr>
+            <td>
+                Module Code
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                Module Code of the session.
+            </td>
+        </tr>
+                <tr>
+            <td>
+                Employee
+            </td>
+            <td>
+                                None
+            </td>
+            <td>
+                Name of the Employee.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Process Start Date
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                Date on which user started work.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Shift
+            </td>
+            <td>
+                All Shifts
+            </td>
+            <td>
+                An employee can work in all shift. If you want to see the employee productivity of a
+                particular shift of a given date/date range then this parameter will be used.             </td>
+        </tr>
+        <tr>
+            <td>
+                Building
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+            Show those employee productivity who are working on passed Building.
+        </td></tr>
+        <tr>
+            <td>
+                Activity</td>
+            <td>
+                All</td>
+            <td>
+                Activity of the module for which employee
+                    worked</td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>0.05 second.</p>
+    This report exhibits sub linear performance with respect to the records in Carton_productivity
+    table.
+    <h2>
+        Behavior Change</h2>
+        <ul>
+        <li>Changed Report Title to "Pulling and Locating detail Report".</li>
+ 	<li>“Total Number of Pallets” has been removed, instead we are showing individual Pallets under “Pallet” column.  This is a clickable column and opens report “40.23 Pallet History”.</li>
+	<li>Added a new filter for Activity.  User can run this report for a particular activity or for all activities.</li>
+	<li>If building information is not available we are showing "Unknown" as building.</li>
+	<li>Start time:-Set as default sort column.</li>
+        </ul>
+
+        
+
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        CARTON_PRODUCTIVITY</p>
+                <p>
+                    MASTER_ACTION_CODE</p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>create or replace synonym carton_prodctivity for dcms4.carton_prodctivity</code>
+    </p>
+     
+    <p>
+        No appSettings are required.</p>
+    <h2>
+        Parameter Technical Details</h2>
+    <ul>
+        <li>
+            Employee (Type = String): Enter the employee name for whom you want to get the productivity
+            details.</li><li>Process Start Date (Type = Date): Enter the date for which you want
+                to see the productivity.</li><li>Activity (Type = String): This is a list parameter control. You can select Activity to see the employee productivity for the selected 
+            Activity. </li>
+        <li>Shift (Type = Number): This is a list parameter control.
+                        You can select shift to see the employee productivity for the selected shift. Null
+                        value text is &quot;ALL&quot;. 
+            <ul>
+                <li>Value = 1, </li>
+                <li>Value = 2 </li>
+            </ul>
+        </li>
+         <li>Building (Type = String): This is a list parameter control. You can select 
+             building to see the employee&nbsp; productivity for the selected building.                     
+           
+        </li>
+    </ul>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.
+    <h2>
+        Query's documentation:</h2>
+    <ul>
+        <li>The query will get all details of each process for a given employee,module code
+            and Start date.</li></ul>
+            <pre>
+WITH Q1 AS
+ (SELECT nvl(CP.WAREHOUSE_LOCATION_ID,'Unknown') AS WAREHOUSE_LOCATION_ID,
+         CP.MODULE_CODE AS MODULE_CODE,
+         CP.ACTION_CODE AS ACTION_CODE,
+         CP.OPERATOR_ID AS EMPLOYEE,
+         CP.PROCESS_ID AS SESSION_ID,
+          <![CDATA[
+               $ShiftDateSelectClause$
+               ]]>,
+         TRUNC(MAX(CP.PROCESS_START_DATE)) AS PROCESS_START_DATE,
+         MIN(CP.PROCESS_START_DATE) AS START_TIME,
+         MAX(CP.PROCESS_END_DATE) AS END_TIME,
+         cp.pallet_id AS Pallet_id,
+         MAX(CP.AISLE) AS AISLE_COUNT,
+         CP.CARTON_ID AS CARTONS_COUNT,
+         CP.CARTON_DESTINATION_AREA AS DESTINATION_LOCATION,
+         MAX(CP.CARTON_QUANTITY) AS TOTAL_QUANTITY
+  
+    FROM CARTON_PRODUCTIVITY CP
+   WHERE CP.OPERATOR_ID = CAST(:operator AS VARCHAR2(255))
+     AND upper(CP.MODULE_CODE) = upper(CAST(:module_code AS VARCHAR2(255)))
+     AND CP.PROCESS_START_DATE &gt;= CAST(:shift_start_date AS DATE)
+     AND CP.PROCESS_START_DATE &lt; CAST(:shift_start_date AS DATE) + 2 
+     <if>AND CP.ACTION_CODE = :action_code</if>
+  <![CDATA[
+  $ShiftWhereClause$
+  $ShiftNumberWhereClause$
+  ]]>
+   <if c="$warehouse_location_id != 'Unknown'">AND CP.Warehouse_Location_Id = :warehouse_location_id</if>
+   <if c="$warehouse_location_id ='Unknown'">and CP.Warehouse_Location_Id is null</if> 
+GROUP BY CP.WAREHOUSE_LOCATION_ID,
+            <![CDATA[
+            $ShiftDateGroupClause$
+            ]]>,
+            CP.MODULE_CODE,
+            CP.OPERATOR_ID,
+            CP.PROCESS_ID,
+            CP.CARTON_ID,
+            cp.pallet_id,
+            CP.CARTON_DESTINATION_AREA,
+            CP.ACTION_CODE)
+SELECT Q1.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID,
+       Q1.MODULE_CODE AS MODULE_CODE,
+       Q1.ACTION_CODE AS ACTION_CODE,
+       Q1.EMPLOYEE AS EMPLOYEE,
+       Q1.SESSION_ID AS SESSION_ID,
+       MAX(Q1.PROCESS_START_DATE) AS PROCESS_START_DATE,
+       MIN(Q1.START_TIME) AS START_TIME,
+       MAX(Q1.END_TIME) AS END_TIME,
+       ROUND((MAX(Q1.END_TIME) - MIN(Q1.START_TIME)) * 24,
+             4) AS SYSTEM_HOURS,
+       Q1.Pallet_id AS Pallet_id,
+       COUNT(DISTINCT Q1.AISLE_COUNT) AISLE_COUNT,
+       decode(COUNT(distinct Q1.CARTONS_COUNT),
+              0,
+              null,
+              COUNT(distinct Q1.CARTONS_COUNT)) AS CARTONS_COUNT,
+       Q1.DESTINATION_LOCATION AS DESTINATION_LOCATION,
+       SUM(Q1.TOTAL_QUANTITY) AS TOTAL_QUANTITY
+  FROM Q1
+  where Q1.shift_start_date &gt;= CAST(:shift_start_date AS DATE)
+     AND q1.shift_start_date &lt; CAST(:shift_start_date AS DATE) + 1 
+ GROUP BY Q1.WAREHOUSE_LOCATION_ID,
+          Q1.MODULE_CODE,
+          Q1.EMPLOYEE,
+          Q1.Pallet_id,
+          Q1.SESSION_ID,
+          Q1.DESTINATION_LOCATION,
+          Q1.ACTION_CODE
+</pre>
+               
+</body>
+</html>

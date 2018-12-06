@@ -1,0 +1,184 @@
+﻿ 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+		<title>Report Documentation</title>
+  </head>
+	<body>
+		<form name="Form1" method="post" action="ReportDoc.aspx?_Report=C%3a%5cDCMSLive1%5cReports%5cR150.104.xsd" id="Form1">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+ 
+			<h1 align="center" xmlns="http://www.w3.org/1999/xhtml">150<b>.</b>104<b> : </b>
+                Kitter Productivity Report</h1>
+                <h3>
+    Author : Manmohan Bisht</h3>$Revision: 520 $<br xmlns="http://www.w3.org/1999/xhtml">
+ Status : Reviewed
+ <br />
+        Reviewed By : Pravin Awasthi<p Author="Gaurav Agarwal" Status="Completed" Reviewer="Silky Sehgal" xmlns="http://www.w3.org/1999/xhtml">
+          This report displays the productivity information of the kitter for specified date and shift. It displays the rework codes along with the scanned cartons, and pieces under these cartons.
+        </p><h2 xmlns="http://www.w3.org/1999/xhtml">Overview</h2><body xmlns="http://tempuri.org/R150.104.xsd" xmlns:mstns="http://tempuri.org/R150.104.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd"><p>
+              When the cartons are received in the warehouse, their contents are verified for quality and quantity.
+              If there is some packaging error in the content then the carton is marked yellow. Verifier will mark
+              rework codes against this carton as per the rework required. Carton will be marked done and system will
+              maintain carton in ‘MAT’ area. Now Kitter (K2P) will scan these yellow cartons from ‘MAT’ area and sort
+              these to pallet manually. Kitter marks pallet closed after scanning a maximum of 28 cartons per pallet.
+              However, kitter will not be forced to close a carton after putting 28 cartons on a pallet. Instead
+              Kitter will be warned/informed in some manner that 28 cartons have been placed on the pallet and it will
+              be confirmed from him/her if he/she wants to continue putting more cartons on pallet.</p><p>
+              Kitter will have option to un-scan a carton before a pallet is closed. This un-scan will not be captured
+              as productivity information; just the scan will be captured. K2P marks carton for ‘REW’ area, so that
+              the packaging errors can be reworked. This report displays the information of cartons scanned by a
+              specified Kitter on a specified date and shift.
+            </p><p>
+              The report can be helpful
+            </p><ul><li>
+                For monitoring the productivity of kitters.
+ 
+              </li><li>
+                For identifying the star performers and the inefficient workers.
+              </li></ul></body><h2 xmlns="http://www.w3.org/1999/xhtml">Algorithm</h2>
+            Get the kitter productivity information for specified Kitter and date and shift, from carton_productivity table.
+          <h3 xmlns="http://www.w3.org/1999/xhtml">Output</h3><Table width="100%" cellSpacing="1" cellPadding="1" border="1" xmlns="http://www.w3.org/1999/xhtml"><TR><TD width="25%" align="center"><b>Item</b></TD><TD width="20%" align="center"><b>Summary</b></TD><TD width="10%" align="center"><b>Sort Sequence</b></TD><TD width="35%" align="center"><b>Detail</b></TD></TR><TR><TD>Rework Codes</TD><TD>
+              No
+          </TD><TD align="center">1</TD><TD><r:Item Term="Rework Code" Key="true" SortSequence="1" xmlns="http://tempuri.org/R150.104.xsd" xmlns:mstns="http://tempuri.org/R150.104.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            The code of Rework to be done, on the carton, scanned by the Kitter.
+          </r:Item></TD></TR><TR><TD>Total Cartons</TD><TD>Sum</TD><TD align="center">
+                       
+          </TD><TD><r:Item Term="Total Cartons" Summary="Sum" xmlns="http://tempuri.org/R150.104.xsd" xmlns:mstns="http://tempuri.org/R150.104.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Total number of cartons scanned by the Kitter and which has the above rework code.
+          </r:Item></TD></TR><TR><TD>Total Pieces</TD><TD>Sum</TD><TD align="center">
+                       
+          </TD><TD><r:Item Term="Total Pieces" Summary="Sum" xmlns="http://tempuri.org/R150.104.xsd" xmlns:mstns="http://tempuri.org/R150.104.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Total number of pieces of the  carton.
+          </r:Item></TD></TR></Table><h2 xmlns="http://www.w3.org/1999/xhtml">Parameters</h2><Table width="100%" cellSpacing="1" cellPadding="1" border="1" xmlns="http://www.w3.org/1999/xhtml"><TR><TD width="20%" align="center"><b>Name</b></TD><TD width="20%" align="center"><b>Default</b></TD><TD width="60%" align="center"><b>Detail</b></TD></TR><TR><TD>Kitter</TD><TD>
+        None</TD><TD>
+          Specific Kitter, who performed the scan operation on the date and shift.
+        </TD></TR><TR><TD>Process date</TD><TD>None</TD><TD>
+          Date on which scan operation was performed by the kitter.
+        </TD></TR><TR><TD>Shift</TD><TD>None</TD><TD>
+          Each Kitter can work in any shift. A Kitter can perform the scan operation in multiple shifts.
+          Specify a shift if you interested in a specific shift.
+        </TD></TR></Table><h2 xmlns="http://www.w3.org/1999/xhtml">Performance Detail</h2><p xmlns="http://www.w3.org/1999/xhtml"><i>Expected Time for the report output is </i>1 seconds</p>
+          The query for this report will exhibit linear performance with respect to the
+          number of records in carton_productivity table for specified date range.           
+        <h2 xmlns="http://www.w3.org/1999/xhtml">Details</h2><H2 xmlns="http://tempuri.org/R150.104.xsd" xmlns:mstns="http://tempuri.org/R150.104.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">Report Format for the Example</H2><table id="table3" width="52%" border="1" cellpadding="3" xmlns="http://tempuri.org/R150.104.xsd" xmlns:mstns="http://tempuri.org/R150.104.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd"><tr><td align="middle" bgColor="#c0c0c0">
+        <b>Rework Codes</b></td><td align="middle" bgColor="#c0c0c0"><b>Cartons</b></td><td align="middle" width="150" bgColor="#c0c0c0"><b>
+                  Pieces
+                </b></td></tr><tr><td align="left" width="50px" wrap="true">PC</td><td align="middle" width="150">2</td><td align="middle" width="150">120</td></tr><tr><td align="left" width="245px" style="word-wrap:break-word">PC,OT,RH,RL,SB,OT,TT,AA,AB,AC</td><td align="middle" width="150">1</td><td align="middle" width="150">96</td></tr><tr><td align="left" width="50px" wrap="true">RH</td><td align="middle" width="150">2</td><td align="middle" width="150">72</td></tr><tr><td align="left" width="50px" wrap="true">OT</td><td align="middle" width="150">1</td><td align="middle" width="150">24</td></tr><tr><td align="left" width="245px" style="word-wrap:break-word">				PC,OT,RH,RL,SB,AT,RT,AS,AA,AB,AC,AD,AE,AF,AG,AH,AI,AJ,AK,AL,AM,AN,AO,WW,AQ,AR,AU,AV,AW,AX,AY,AZ,BB,BA,BC,BS</td><td align="middle" width="150">1</td><td align="middle" width="150">72</td></tr></table><h2 xmlns="http://www.w3.org/1999/xhtml">Behavior Change</h2><UL xmlns="http://www.w3.org/1999/xhtml"><li>
+        Report name has been changed.
+            </li></UL><h2 xmlns="http://www.w3.org/1999/xhtml">Issues</h2>
+		No Known Issue. <br xmlns="http://www.w3.org/1999/xhtml">
+        <h2>
+            Parameter Technical Details</h2>
+        <ul>
+            <li>Kitter (Type = String): Specific Kitter, who performed the scan operation on 
+                the date and shift. </li>
+            <li>Process Date (Type = Date): Date on which scan operation was performed by the 
+                kitter. </li>
+            <li>Shift (Type = Number): This is a drop down list parameter control. Each Kitter can 
+                work in any shift. A Kitter can perform the scan operation in multiple shifts. 
+                Specify a shift if you interested in a specific shift. Default value text is 
+                &quot;All&quot;.
+                <ul>
+                    <li>Value = 1, Text = First </li>
+                    <li>Value = 2, Text = Second</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>
+            Query&#39;s documentation:</h2>
+        <p>
+            Bellow queries may have the where clause in the [] brackets. It means these are 
+            the optional parameters. If you do not want to pass these parameters just remove 
+            the [] section.             </p>
+        <ul>
+            <li><r:doc xmlns="http://tempuri.org/R150.104.xsd" 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R150.104.xsd">This query retrieves the carton details for the 
+                specified operator and date on which operation was performed.                 
+           <pre>
+  WITH kitter_productivity AS   (         
+SELECT UPPER(C.WORK_CODES) AS WORK_CODES,
+       CASE
+         WHEN (C.process_start_date - TRUNC(C.process_start_date)) * 24 <= 5.1 THEN
+          TRUNC(C.process_start_date - 1)
+         ELSE
+          TRUNC(C.process_start_date)
+       END AS shift_start_date,
+       C.process_start_date,
+       C.carton_id AS carton_id,
+       C.carton_quantity AS carton_quantity
+  FROM CARTON_PRODUCTIVITY C
+ WHERE C.MODULE_CODE = :module_code
+   AND C.ACTION_CODE = :action_code
+   AND C.OPERATOR_ID = :operator_id
+   AND C.process_start_date >= :process_start_date
+   AND C.process_start_date < :process_start_date + 2
+   AND CASE
+ WHEN(C.process_start_date - TRUNC(C.process_start_date)) * 24 BETWEEN 5.1 AND 15.5 THEN 1 ELSE 2 END = :shift_number)
+SELECT kp.WORK_CODES AS work_codes,
+       count(kp.CARTON_ID) as carton_count,
+       sum(kp.CARTON_QUANTITY) AS carton_quantity
+  FROM kitter_productivity kp
+ WHERE kp.shift_start_date >= :process_start_date
+   AND kp.shift_start_date < :process_start_date + 1
+ GROUP BY work_codes
+ ORDER BY work_codes ASC
+           </pre>
+            </li>
+        </ul>
+        <h2>
+            Validation details</h2>
+        Bellow queries may have the where clause in the [] brackets. It means these are 
+        the optional parameters. If you do not want to pass these parameters just remove 
+        the [] section.         <br />
+        <br />
+        <b>Query:</b><pre><r:query xmlns="http://tempuri.org/R150.104.xsd" 
+            xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            xmlns:mstns="http://tempuri.org/R150.104.xsd">
+             WITH with_cp AS 
+             (    
+                 SELECT UPPER(C.WORK_CODES) AS WORK_CODES,
+                  CASE
+                     WHEN (c.process_start_date - TRUNC(c.process_start_date)) * 24 BETWEEN 5.1 AND 15.5 THEN
+                      1
+                     ELSE
+                      2
+                   END AS shift_number,
+                   CASE
+                     WHEN (c.process_start_date - TRUNC(c.process_start_date)) * 24 <= 5.1 THEN
+                      TRUNC(c.process_start_date - 1)
+                     ELSE
+                      TRUNC(c.process_start_date)
+                   END AS shift_start_date,
+                        C.process_start_date,
+                        C.carton_id AS carton_id,
+                        C.carton_quantity AS carton_quantity
+                   FROM CARTON_PRODUCTIVITY C
+                  WHERE C.MODULE_CODE = 'K2P'
+                    AND C.ACTION_CODE = 'K2P'
+                    AND C.OPERATOR_ID = 'K2P'
+                    AND C.process_start_date >= (:process_start_date_from) 
+                    AND C.process_start_date < (::process_start_date_to) + 1 
+                )
+             SELECT WITH_CP.WORK_CODES AS work_codes,
+                    count(WITH_CP.CARTON_ID) as carton_count,
+                    sum(WITH_CP.CARTON_QUANTITY) AS carton_quantity
+              FROM WITH_CP          
+              WHERE 1=1
+              [AND with_cp.shift_number = :shift_number] 
+              GROUP BY work_codes 
+          </R:QUERY></pre>
+        <b>Description:</b><pre><r:description xmlns="http://tempuri.org/R150.104.xsd" 
+            xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            xmlns:mstns="http://tempuri.org/R150.104.xsd">
+           The above query validates the report data..
+</pre>
+        <br xmlns="http://www.w3.org/1999/xhtml">
+		</form>
+	</body>
+</html>
+

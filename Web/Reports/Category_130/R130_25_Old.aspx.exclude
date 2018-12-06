@@ -1,0 +1,381 @@
+﻿<%@ Page Language="C#" MasterPageFile="~/MasterPage.master" Title="SKUs In Shortage And Min Pullback Quantity" %>
+
+<%@ Import Namespace="System.Linq" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%--*
+ *  Programming: Eclipse Systems (P) Ltd., NOIDA, INDIA
+ *  E-mail: support@eclsys.com
+ *
+ *  $Revision: 39507 $
+ *  $Author: glal $
+ *  $HeadURL: http://vcs/svn/net35/Projects/XTremeReporter3/trunk/Website/Reports/Category_130/R130_25_Old.aspx $
+ *  $Id: R130_25_Old.aspx 39507 2011-01-17 05:16:56Z glal $
+ * Version Control Template Added.
+--%>
+<script runat="server">
+    /// <summary>
+    /// To show the CFD/OUT columns on the basis of filter choses.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void gv_PreRender(object sender, EventArgs e)
+    {
+        DataControlField dcfCfd = (from DataControlField dcf in gv.Columns.OfType<MultiBoundField>()
+                                   where dcf.AccessibleHeaderText.Equals("CfdPullBackQuantity")
+                                   select dcf).First();
+        DataControlField dcfOut = (from DataControlField dcf in gv.Columns.OfType<MultiBoundField>()
+                                   where dcf.AccessibleHeaderText.Equals("OutPullBackQuantity")
+                                   select dcf).First();
+
+        switch (rbCO.Value)
+        {
+            case "CFD":
+                dcfCfd.Visible = true;
+                break;
+            case "OUT":
+                dcfOut.Visible = true;
+                break;
+            default:
+                break;
+        }
+    }
+</script>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <meta name="Description" content="The Report displays the Warehouse ID wise ordered 
+                                        SKUs and for those SKUs the inventory area along 
+                                        with the min pull back quantity details." />
+    <meta name="ReportId" content="130.251" />
+    <meta name="Browsable" content="false" />
+    <meta name="Version" content="$Id: R130_25_Old.aspx 39507 2011-01-17 05:16:56Z glal $" />
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <jquery:Tabs runat="server" ID="tabs">
+        <jquery:JPanel runat="server" HeaderText="Filters">
+            <eclipse:TwoColumnPanel runat="server">
+                <eclipse:LeftLabel runat="server" Text="CFD or OUT ?" />
+                <i:RadioButtonListEx ID="rbCO" runat="server" Value="CFD" ToolTip="Choose to retrieve the Min Pull Back Quantity"
+                    WidthItem="8em">
+                    <Items>
+                        <i:RadioItem Text="CFD" Value="CFD" />
+                        <i:RadioItem Text="OUT" Value="OUT" />
+                    </Items>
+                </i:RadioButtonListEx>
+                <eclipse:LeftLabel runat="server" />
+                <d:VirtualWarehouseSelector ID="ctlVwh" runat="server" ShowAll="true" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+                    ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>" ToolTip="Click to choose Virtual Warehouse" />
+                <eclipse:LeftLabel runat="server" />
+                <d:BuildingSelector ID="ctlWhLoc" runat="server" ShowAll="true" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+                    ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>" ToolTip="Click to choose Warehouse Location" />
+            </eclipse:TwoColumnPanel>
+        </jquery:JPanel>
+        <jquery:JPanel runat="server" HeaderText="Sorting">
+            <jquery:SortColumnsChooser runat="server" GridViewExId="gv" EnableGroupBy="true" />
+        </jquery:JPanel>
+    </jquery:Tabs>
+    <uc2:ButtonBar2 runat="server" />
+    <oracle:OracleDataSource ID="ds" runat="server" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+        ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>" DisplayExecutionTime="true"
+        CancelSelectOnNullParameter="true" SelectCommand="
+            WITH ORDERED_SKUS AS
+ (SELECT /*+ INDEX(dpd PSDET_PS_FK_I)*/ 
+   DPD.STYLE                AS STYLE,
+   DPD.COLOR                AS COLOR,
+   DPD.DIMENSION            AS DIM,
+   DPD.SKU_SIZE             AS SKU_SIZE,
+   DPD.QUANTITY_ORDERED     AS ORDERED_QTY,
+   DP.VWH_ID                AS VWH_ID,
+   DP.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID
+    FROM DEM_PICKSLIP DP
+    JOIN DEM_PICKSLIP_DETAIL DPD
+      ON DPD.PICKSLIP_ID = DP.PICKSLIP_ID
+   WHERE DP.PS_STATUS_ID = '1'
+        [$:vwh_id$AND dp.vwh_id = :vwh_id$]
+        [$:Whloc$AND dp.warehouse_location_id=:Whloc$]
+    /* AND DP.VWH_ID = '15'
+     AND DP.WAREHOUSE_LOCATION_ID = 'FDC'*/
+  UNION
+  SELECT /*+ INDEX(bd BOXDET_P_PK)*/
+   MS.STYLE                 AS STYLE,
+   MS.COLOR                 AS COLOR,
+   MS.DIMENSION             AS DIM,
+   MS.SKU_SIZE              AS SKU_SIZE,
+   BD.EXPECTED_PIECES       AS ORDERED_QTY,
+   B.VWH_ID                 AS VWH_ID,
+   PS.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID
+    FROM PS
+    JOIN BOX B
+      ON B.PICKSLIP_ID = PS.PICKSLIP_ID
+    JOIN BOXDET BD
+      ON BD.UCC128_ID = B.UCC128_ID
+     AND BD.PICKSLIP_ID = B.PICKSLIP_ID
+    JOIN MASTER_SKU MS
+      ON MS.UPC_CODE = BD.UPC_CODE
+   WHERE BD.STOP_PROCESS_DATE IS NULL
+     AND B.IA_ID IS NULL
+     AND B.STOP_PROCESS_DATE IS NULL
+     AND PS.REPORTING_STATUS = 'UNDER PROCESS'
+     AND PS.TRANSFER_DATE IS NULL
+           [$:vwh_id$AND ps.vwh_id = :vwh_id$]
+        [$:Whloc$AND ps.warehouse_location_id=:Whloc$]
+    /* AND PS.VWH_ID = '15'
+     AND PS.WAREHOUSE_LOCATION_ID = 'FDC'*/),
+ORDERED_SKU AS
+ (SELECT OS.STYLE,
+         OS.COLOR,
+         OS.DIM,
+         OS.SKU_SIZE,
+         OS.VWH_ID,
+         OS.WAREHOUSE_LOCATION_ID,
+         SUM(OS.ORDERED_QTY) ORDERED_QTY
+    FROM ORDERED_SKUS OS
+   GROUP BY OS.STYLE,
+            OS.COLOR,
+            OS.DIM,
+            OS.SKU_SIZE,
+            OS.VWH_ID,
+            OS.WAREHOUSE_LOCATION_ID),
+AREA_WISE AS
+ (SELECT SC.CARTON_STORAGE_AREA AS AREA,
+         SCD.STYLE              AS STYLE,
+         SCD.COLOR              AS COLOR,
+         SCD.DIMENSION          AS DIM,
+         SCD.SKU_SIZE           AS SKU_SIZE,
+         SCD.QUANTITY           AS BIR_QTY,
+         NULL                   AS RST_QTY,
+         NULL                   AS FPK_QTY,
+         SCD.QUANTITY           AS QTY,
+         NULL                   AS CFD_QTY,
+         NULL                   AS OUT_QTY,
+         SC.VWH_ID              AS VWH_ID
+    FROM SRC_CARTON_DETAIL SCD
+    JOIN SRC_CARTON SC
+      ON SC.CARTON_ID = SCD.CARTON_ID
+    JOIN MASTER_STYLE S
+      ON SCD.STYLE = S.STYLE
+    JOIN TAB_LABEL_GROUP TLG
+      ON S.LABEL_ID = TLG.LABEL_ID
+    JOIN TAB_WAREHOUSE_LOCATION TWL
+      ON TLG.LABEL_GROUP = TWL.LABEL_GROUP
+   WHERE SC.CARTON_STORAGE_AREA IN
+         (SELECT TIA.INVENTORY_STORAGE_AREA
+            FROM TAB_INVENTORY_AREA TIA
+           WHERE TIA.STORES_WHAT = 'CTN')
+     AND SCD.REQ_PROCESS_ID IS NULL
+     AND SC.SUSPENSE_DATE IS NULL
+     AND SC.CARTON_STORAGE_AREA = 'BIR'
+             [$:vwh_id$AND sc.vwh_id = :vwh_id$]
+        [$:Whloc$AND TWL.warehouse_location_id=:Whloc$]
+     /*AND SC.VWH_ID = '15'
+     AND TWL.WAREHOUSE_LOCATION_ID = 'FDC'*/
+  UNION ALL
+  SELECT SC.CARTON_STORAGE_AREA AS AREA,
+         SCD.STYLE AS STYLE,
+         SCD.COLOR AS COLOR,
+         SCD.DIMENSION AS DIM,
+         SCD.SKU_SIZE AS SKU_SIZE,
+         NULL AS BIR_QTY,
+         CASE
+           WHEN SC.CARTON_STORAGE_AREA = 'RST' THEN
+            SCD.QUANTITY
+         END AS RST_QTY,
+         
+         NULL AS FPK_QTY,
+         SCD.QUANTITY AS QTY,
+         CASE
+           WHEN SC.CARTON_STORAGE_AREA = 'CFD' THEN
+            SCD.QUANTITY
+         END AS CFD_QTY,
+         CASE
+           WHEN SC.CARTON_STORAGE_AREA = 'OUT' THEN
+            SCD.QUANTITY
+         END AS OUT_QTY,
+         SC.VWH_ID AS VWH_ID
+    FROM SRC_CARTON_DETAIL SCD
+    JOIN SRC_CARTON SC
+      ON SC.CARTON_ID = SCD.CARTON_ID
+    JOIN MASTER_STYLE S
+      ON SCD.STYLE = S.STYLE
+    JOIN TAB_LABEL_GROUP TLG
+      ON S.LABEL_ID = TLG.LABEL_ID
+    JOIN TAB_WAREHOUSE_LOCATION TWL
+      ON TLG.LABEL_GROUP = TWL.LABEL_GROUP
+   WHERE SC.CARTON_STORAGE_AREA IN
+         (SELECT TIA.INVENTORY_STORAGE_AREA
+            FROM TAB_INVENTORY_AREA TIA
+           WHERE TIA.STORES_WHAT = 'CTN')
+     AND SC.SUSPENSE_DATE IS NULL
+     AND SC.CARTON_STORAGE_AREA != 'BIR'
+         [$:vwh_id$AND sc.vwh_id = :vwh_id$]
+        [$:Whloc$AND TWL.warehouse_location_id=:Whloc$]
+     /*AND SC.VWH_ID = '15'
+     AND TWL.WAREHOUSE_LOCATION_ID = 'FDC'*/
+  UNION ALL
+  
+  SELECT IAC.IA_ID           AS AREA,
+         MS.STYLE            AS STYLE,
+         MS.COLOR            AS COLOR,
+         MS.DIMENSION        AS DIM,
+         MS.SKU_SIZE         AS SKU_SIZE,
+         NULL                AS BIR_QTY,
+         NULL                AS RST_QTY,
+         IAC.NUMBER_OF_UNITS AS FPK_QTY,
+         IAC.NUMBER_OF_UNITS AS QTY,
+         NULL                AS CFD_QTY,
+         NULL                AS OUT_QTY,
+         I.VWH_ID            AS VWH_ID
+    FROM IALOC_CONTENT IAC
+    JOIN MASTER_SKU MS
+      ON MS.UPC_CODE = IAC.IACONTENT_ID
+    JOIN IALOC I
+      ON I.IA_ID = IAC.IA_ID
+     AND I.LOCATION_ID = IAC.LOCATION_ID
+     AND I.ASSIGNED_UPC_CODE = IAC.IACONTENT_ID
+  
+   WHERE I.IA_ID IN
+         (SELECT IA.IA_ID FROM IA WHERE IA.PICKING_AREA_FLAG = 'Y')
+              [$:vwh_id$AND i.vwh_id = :vwh_id$]
+        [$:Whloc$AND i.warehouse_location_id=:Whloc$]
+/*     AND I.VWH_ID = '15'
+     AND I.WAREHOUSE_LOCATION_ID = 'FDC'*/),
+AREA_QUANTITY AS
+ (SELECT AW.AREA,
+         AW.STYLE,
+         AW.COLOR,
+         AW.DIM,
+         AW.SKU_SIZE,
+         AW.VWH_ID,
+         SUM(AW.BIR_QTY) BIR_QTY,
+         SUM(AW.RST_QTY) RST_QTY,
+         SUM(AW.FPK_QTY) FPK_QTY,
+         SUM(AW.QTY) QTY,
+         SUM(AW.CFD_QTY) CFD_QTY,
+         SUM(AW.OUT_QTY) OUT_QTY
+    FROM AREA_WISE AW
+   GROUP BY AW.AREA, AW.STYLE, AW.COLOR, AW.DIM, AW.SKU_SIZE, AW.VWH_ID),
+FINAL_QRY AS
+ (SELECT OS.VWH_ID AS VWH_ID,
+         OS.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID,
+         OS.STYLE AS STYLE,
+         OS.COLOR AS COLOR,
+         OS.DIM AS DIM,
+         OS.SKU_SIZE AS SKU_SIZE,
+         AQ.AREA AS AREA,
+         OS.ORDERED_QTY AS DEMANDED_QTY,
+         AQ.BIR_QTY AS BIR_QTY,
+         AQ.RST_QTY AS RST_QTY,
+         AQ.FPK_QTY AS FPK_QTY,
+         AQ.QTY AS QTY,
+         CASE WHEN AQ.AREA IN('FPK','BIR','RST')
+           THEN
+         NVL(OS.ORDERED_QTY, 0) -
+         SUM(NVL(AQ.BIR_QTY, 0) + NVL(AQ.RST_QTY, 0) + NVL(AQ.FPK_QTY, 0))
+         OVER (PARTITION BY OS.STYLE,OS.COLOR,OS.DIM,OS.SKU_SIZE,OS.VWH_ID,OS.WAREHOUSE_LOCATION_ID) 
+         ELSE
+          OS.ORDERED_QTY  
+         END 
+         AS SHORTAGE,
+         
+         AQ.CFD_QTY AS CFD_QTY,
+         AQ.OUT_QTY AS OUT_QTY
+    FROM ORDERED_SKU OS, AREA_QUANTITY AQ
+   WHERE OS.STYLE = AQ.STYLE
+     AND OS.COLOR = AQ.COLOR
+     AND OS.DIM = AQ.DIM
+     AND OS.SKU_SIZE = AQ.SKU_SIZE
+     AND OS.VWH_ID = AQ.VWH_ID
+     
+     
+  )
+SELECT FQ.VWH_ID AS VWH_ID,
+       FQ.STYLE AS STYLE,
+       FQ.COLOR AS COLOR,
+       FQ.DIM AS DIM,
+       FQ.SKU_SIZE AS SKU_SIZE,
+       FQ.AREA AS AREA,
+       FQ.DEMANDED_QTY AS DEMANDED_QTY,
+      SUM(NVL(FQ.BIR_QTY,0)+NVL(FQ.RST_QTY,0)+NVL(FQ.FPK_QTY,0))
+      OVER (PARTITION BY FQ.STYLE,FQ.COLOR,FQ.DIM,FQ.SKU_SIZE,FQ.VWH_ID,FQ.WAREHOUSE_LOCATION_ID)AS AVQ,
+
+       FQ.QTY AS QTY,
+       FQ.SHORTAGE AS SHORTAGE,
+       CASE
+         WHEN FQ.SHORTAGE  &gt; 0 
+          THEN
+          LEAST(NVL(CFD_QTY, 0), NVL(FQ.SHORTAGE, 0))
+       END AS CFD_QTY,
+       CASE
+         WHEN FQ.SHORTAGE  &gt; 0
+          THEN
+          LEAST(NVL(OUT_QTY, 0), NVL(FQ.SHORTAGE, 0))
+       END AS OUT_QTY,
+       S.LABEL_ID AS LABEL_ID,
+       FQ.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID
+  FROM FINAL_QRY FQ, MASTER_STYLE S
+ WHERE FQ.STYLE = S.STYLE
+ AND FQ.SHORTAGE &gt; 0
+ 
+
+ 
+">
+        <SelectParameters>
+            <asp:ControlParameter ControlID="rbCO" Type="String" Name="area" Direction="Input" />
+            <asp:ControlParameter ControlID="ctlVwh" Type="String" Name="vwh_id" Direction="Input" />
+            <asp:ControlParameter ControlID="ctlWhLoc" Type="String" Name="Whloc" Direction="Input" />
+            <asp:Parameter Name="store_what" Type="String" DbType="String" DefaultValue="<%$ AppSettings:StoreWhatForCarton %>" />
+            <asp:Parameter Name="CartonReserveArea" Type="String" DbType="String" DefaultValue="<%$ AppSettings:CartonReserveArea %>" />
+            <asp:Parameter Name="RestockingArea" Type="String" DbType="String" DefaultValue="<%$ AppSettings:RestockingArea %>" />
+            <asp:Parameter Name="AreaForCFDOperation" Type="String" DbType="String" DefaultValue="<%$ AppSettings:AreaForCFDOperation %>" />
+            <asp:Parameter Name="OutArea" Type="String" DbType="String" DefaultValue="<%$ AppSettings:OutArea %>" />
+        </SelectParameters>
+    </oracle:OracleDataSource>
+    <jquery:GridViewEx ID="gv" runat="server" AutoGenerateColumns="false" AllowSorting="true"
+        ShowFooter="true" DataSourceID="ds" DefaultSortExpression="warehouse_location_id;$;cfd_qty {0:I};out_qty {0:I};style;color;dim;sku_size;vwh_id"
+        OnPreRender="gv_PreRender">
+        <Columns>
+            <eclipse:SequenceField />
+            <eclipse:MultiBoundField HeaderText="Warehouse Location" DataFields="warehouse_location_id"
+                SortExpression="warehouse_location_id">
+                <ItemStyle HorizontalAlign="Right" />
+                <FooterStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="VWH_ID" SortExpression="VWH_ID" HeaderText="VWh"
+                HeaderToolTip="Virtual Warehouse" />
+            <eclipse:MultiBoundField DataFields="style" SortExpression="style" HeaderText="STYLE"
+                HeaderToolTip="SKU Style" />
+            <eclipse:MultiBoundField DataFields="COLOR" SortExpression="COLOR" HeaderText="COLOR"
+                HeaderToolTip="SKU Color" />
+            <eclipse:MultiBoundField DataFields="dim" SortExpression="dim" HeaderText="DIM."
+                HeaderToolTip="SKU Dimension" />
+            <eclipse:MultiBoundField DataFields="SKU_SIZE" SortExpression="SKU_SIZE" HeaderText="SIZE"
+                HeaderToolTip="SKU Size" />
+            <eclipse:MultiBoundField DataFields="label_id" SortExpression="label_id" HeaderText="Label"
+                HeaderToolTip="Style Label" />
+            <eclipse:MultiBoundField DataFields="demanded_qty" SortExpression="demanded_qty"
+                HeaderText="Demand <br />Qty" DataFormatString="{0:N0}" AccessibleHeaderText="demands"
+                DataSummaryCalculation="ValueSummation" DataFooterFormatString="{0:N0}" HeaderToolTip="Total Orders">
+                <ItemStyle HorizontalAlign="Right" />
+                <FooterStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <jquery:MatrixField DataValueFields="qty" DataHeaderFields="area" DataMergeFields="STYLE,COLOR,DIM,SKU_SIZE,VWH_ID,warehouse_location_id"
+                DisplayColumnTotals="true" DataValueFormatString="{0:N0}" DataHeaderFormatString="Quantity Available In|{0}"/>
+            <eclipse:MultiBoundField HeaderText="Shortage" DataFields="shortage" DataFormatString="{0:N0}"
+                DataFooterFormatString="{0:N0}" AccessibleHeaderText="shortage" DataSummaryCalculation="ValueSummation"
+                HeaderToolTip="Demand Qty - (Quantity In BIR + Quantity In RST + Quantity In FPK)">
+                <ItemStyle HorizontalAlign="Right" />
+                <FooterStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField HeaderText="Min Pull Back Quantity|CFD" DataFields="cfd_qty"
+                DataFormatString="{0:N0}" DataFooterFormatString="{0:N0}" AccessibleHeaderText="CfdPullBackQuantity"
+                Visible="false" HeaderToolTip="Min Pullback Quantity" SortExpression="cfd_qty">
+                <ItemStyle HorizontalAlign="Right" />
+                <FooterStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField HeaderText="Min Pull Back Quantity|OUT" DataFields="out_qty"
+                DataFormatString="{0:N0}" DataFooterFormatString="{0:N0}" AccessibleHeaderText="OutPullBackQuantity"
+                Visible="false" HeaderToolTip="Min Pullback Quantity" SortExpression="out_qty">
+                <ItemStyle HorizontalAlign="Right" />
+                <FooterStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+        </Columns>
+    </jquery:GridViewEx>
+</asp:Content>

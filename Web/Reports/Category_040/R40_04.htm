@@ -1,0 +1,302 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+    <meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1" />
+    <meta name="CODE_LANGUAGE" content="C#" />
+    <meta name="vs_defaultClientScript" content="JavaScript" />
+    <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5" />
+    <script type="text/javascript">
+        /*
+        Toggles the visibility of the passed divToToggle object.
+        */
+        function toggleVisibility(oVisibilityToggle, oInnerTextToggle) {
+            if (oVisibilityToggle.style.display == 'none') {
+                oVisibilityToggle.style.display = '';
+                oInnerTextToggle.innerText = "Hide Technical Documentaion";
+            }
+            else {
+                oVisibilityToggle.style.display = 'none';
+                oInnerTextToggle.innerText = "View Technical Documentaion"
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <form name="Form1" method="post" action="ReportDoc.aspx?_Report=C%3a%5cDCMSLive%5cReports%5cR40.04.xsd"
+    id="Form1">
+    <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+    <h1 align="center" xmlns="http://www.w3.org/1999/xhtml">
+        40<b>.</b>04<b> : </b>Pallets on a given Carton Storage Area</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    $Revision: 5656 $<br />
+        Reviewed By: Manmohan Bisht<br />
+        Tested By : Hemant K. Singh <p>
+        This Report provides the information of all the pallets lying in storage area which
+        you will select from the drop down list. The report provides insight about the pallets
+        and the cartons awaiting some process.
+    </p>
+    <h2>
+        Overview</h2>
+    <body xmlns:mstns="http://tempuri.org/R40.04.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" xmlns="http://www.w3.org/1999/xhtml">
+        <p>
+            Report provides the information of all the pallets lying in storage area which you
+            will select from the drop down list. For each Pallet lying in the selected carton
+            storage area the report shows the Pallet ID, Pallet Created Date(Modified Date)
+            i.e. the date when the pallet was last modified /created and number of cartons lying
+            on it.
+        </p>
+    </body>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Algorithm</h2>
+    The report query get all the pallet related information from src_carton table.
+    <h3 xmlns="http://www.w3.org/1999/xhtml">
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1" xmlns="http://www.w3.org/1999/xhtml">
+        <tr>
+            <td width="25%" align="center">
+                <b>Item</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Summary</b>
+            </td>
+            <td width="10%" align="center">
+                <b>Default Sort Sequence</b>
+            </td>
+            <td width="35%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building</td>
+            <td>
+                No</td>
+            <td>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1</td>
+            <td>
+                Building of the area</td>
+        </tr>
+        <tr>
+            <td>
+                Area</td>
+            <td>
+                No</td>
+            <td>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                Pallet
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                3</td>
+            <td>
+                <r:item term="Pallet ID" key="true" sortsequence="1" xmlns:mstns="http://tempuri.org/R40.04.xsd"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Pallet ID.
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Location
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+            Location where pallet is located.
+            </td>
+        </tr>
+        <tr>
+            <td>
+               Quality code
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;&nbsp;</td>
+            <td>
+               Quality code
+            </td>
+        </tr>
+        <tr>
+            <td style="font-weight: 700; font-style: italic">
+                Created Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;&nbsp;
+            </td>
+            <td>
+                <r:item term="Pallet Created Date(Modified Date)" xmlns:mstns="http://tempuri.org/R40.04.xsd"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            The date when pallet was last modified.
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                #Cartons
+            </td>
+            <td>
+                Sum</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                <r:item term="#Cartons" xmlns:mstns="http://tempuri.org/R40.04.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Total number of cartons for a given Pallet.
+          </r:item>
+            </td>
+        </tr>
+        </table>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1" xmlns="http://www.w3.org/1999/xhtml">
+        <tr>
+            <td width="20%" align="center">
+                <b>Name</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Default</b>
+            </td>
+            <td width="60%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Specify Area:
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                This parameter is used to select the area.
+            </td>
+        </tr>
+    </table>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Performance Detail</h2>
+    <p xmlns="http://www.w3.org/1999/xhtml">
+        <i>Expected Time for the report output is </i>1 Sec.</p>
+    The report query is performing linear performance w.r.t. table src_carton. There
+    is only one table used in report src_carton and there is full scan on the src_carton
+    table.&nbsp;
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Behavior Change</h2>
+    <ol>
+        <li>Provided building column in the output. </li>
+        <li>Using building and area column as master column. </li>
+    </ol>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Issues</h2>
+    No Known Issue.<br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following table is requried</p>
+    <p>
+        src_carton<br />
+        <br />
+        Use the below script to create the synonyms<br />
+        <br />
+        create or replace synonym src_carton for dcms4.src_carton;<code>
+            <br />
+        </code>
+    </p>
+    <br xmlns="http://www.w3.org/1999/xhtml">
+    <br xmlns="http://www.w3.org/1999/xhtml">
+    <div id="divTechnical" xmlns="http://www.w3.org/1999/xhtml">
+        <h2>
+            Parameter Technical Details</h2>
+        <ul>
+            <li>Specify Area: (Type = ID): This is a drop down list parameter control. By default,
+                inventory of all Warehouse id is shown for each area. If your focus is on the inventory
+                in a particular Warehouse, Specify that Warehouse Id. default value text is &quot;All&quot;.
+                <ul>
+                    <li>Query to fill list values = &quot; select distinct(inventory_storage_area) from
+                        tab_inventory_area where tab_inventory_area.stores_what=&#39;CTN&#39; order by inventory_storage_area
+                        &quot; </li>
+                </ul>
+            </li>
+        </ul>
+        <h2>
+            Parameter Validation</h2>
+        No special validations.
+        <h2>
+            Query&#39;s documentation:</h2>
+        <ul>
+            <li>
+                <r:doc xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    xmlns:mstns="http://tempuri.org/R40.04.xsd">The query will get all the pallet related information 
+                    from src_carton table.
+                    <pre>               SELECT ctn.pallet_id AS pallet_id,
+        ctn.quality_code AS quality_code,
+        MAX(ctn.location_id) AS location_id,
+        COUNT(ctn.carton_id) AS cartons_count,
+        MIN(ctn.modified_date) AS modified_date,
+        CTN.CARTON_STORAGE_AREA,
+        MAX(TIA.SHORT_NAME) AS AREAS,
+        COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                MSL.WAREHOUSE_LOCATION_ID,
+                'Unknown') AS WAREHOUSE_LOCATION_ID
+        FROM src_carton ctn
+        LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+        ON CTN.CARTON_STORAGE_AREA = MSL.STORAGE_AREA
+        AND CTN.LOCATION_ID = MSL.LOCATION_ID
+        INNER JOIN TAB_INVENTORY_AREA TIA
+        ON CTN.CARTON_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+        WHERE ctn.pallet_id IS NOT NULL
+        <if>AND ctn.carton_storage_area = :carton_storage_area</if>
+        GROUP BY ctn.pallet_id, ctn.quality_code,
+          CTN.CARTON_STORAGE_AREA,
+          COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                   MSL.WAREHOUSE_LOCATION_ID,
+                   'Unknown');
+               </pre>
+                    </r:doc></li>
+        </ul>
+        <h2>
+            Validation details</h2>
+        Bellow queries may have the where clause in the [] brackets. It means these are
+        the optional parameters. If you do not want to pass these parameters just remove
+        the [] section.
+        <br />
+        <br />
+        <b>Query:</b><pre>              SELECT ctn.PALLET_ID AS &quot;Pallet ID&quot;,
+              ctn.CARTON_ID AS &quot;Cartons&quot;,
+              ctn.location_id AS location_id,
+              ctn.modified_date As &quot;Modified Date&quot;
+              FROM src_carton ctn
+              WHERE CTN.CARTON_STORAGE_AREA = :AREA
+              AND ctn.pallet_id = :PALLET_ID
+              AND CTN.PALLET_ID IS NOT NULL;
+            </pre>
+
+        <b>Description:</b><pre><r:description xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd"
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mstns="http://tempuri.org/R40.04.xsd">
+            This query will give cartons and modified date for a given pallet id and area. Please
+            validiate this with the help of report&#39;s data.
+          </r:description></pre>
+        <!--End divTechnical-->
+    </div>
+    </form>
+</body>
+</html>

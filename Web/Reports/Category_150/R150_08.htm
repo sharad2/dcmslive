@@ -1,0 +1,248 @@
+﻿ 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+		<title>Report Documentation</title>
+		<meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1"/>
+		<meta name="CODE_LANGUAGE" content="C#"/>
+		<meta name="vs_defaultClientScript" content="JavaScript"/>
+		<meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5"/>
+		<script type="text/javascript">
+		    /*
+		      Toggles the visibility of the passed divToToggle object.
+		    */
+			function toggleVisibility(oVisibilityToggle, oInnerTextToggle)
+			{
+                if (oVisibilityToggle.style.display=='none')
+ 
+                {
+                  oVisibilityToggle.style.display='';
+                  oInnerTextToggle.innerText = "Hide Technical Documentaion";
+                }
+                else
+                {
+                  oVisibilityToggle.style.display='none';
+                  oInnerTextToggle.innerText = "View Technical Documentaion" 
+                }
+            }
+ 
+		</script>
+  </head>
+	<body>
+		<form name="Form1" method="post" action="ReportDoc.aspx?_Report=C%3a%5cDCMSLive1%5cReports%5cR150.08.xsd" id="Form1">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+ 
+			<h1 align="center" xmlns="http://www.w3.org/1999/xhtml">150<b>.</b>08<b> : </b>Rework Productivity Report<h3>
+    Author : Manmohan Bisht</h3></h1>$Revision: 520 $<br xmlns="http://www.w3.org/1999/xhtml">
+    Status : Reviewed <br />
+ 
+Reviewed By : Pravin Awasthi<p Author="Laxman Singh" Status="Completed" Reviewer="Silky Sehgal" xmlns="http://www.w3.org/1999/xhtml">
+          This report displays the productivity information of reworkers for specified period of
+          time and shift. This will help in deciding the rework bonus for reworkers.
+          This report can be drilled down on reworker field to see the carton details.
+        </p><h2 xmlns="http://www.w3.org/1999/xhtml">Overview</h2><body xmlns:mstns="http://tempuri.org/R150.08.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" xmlns="http://www.w3.org/1999/xhtml"><p>
+              When the cartons are received in the warehouse, their contents are verified for quality and quantity.
+              If there is some packaging error then the carton is marked yellow and rework codes are assigned as per
+              the rework required. These cartons are scanned by K2P and then sent to be reworked, so that the packaging
+              errors can be corrected. Reworker works on cartons depending upon the rework code assigned to the cartons.
+              Also reworker has the option not to perform any rework on a carton for reasons like rework not required,
+              components not available, etc. Such cartons are captured for productivity also. This report displays the
+              productivity  of the reworkers. This means, during a given period of time, how many cartons were reworked 
+              by the reworkers.
+            </p><p>
+              The report can be helpful
+            </p><ul><li>
+                  for monitoring the productivity of reworkers.
+              </li><li>
+                  for monitoring the count of cartons not reworked.
+              </li><li>
+                  for calculating rework bonus.
+               </li><li>
+                  for identifying the star performers and the inefficient workers.
+              </li></ul></body><h2 xmlns="http://www.w3.org/1999/xhtml">Algorithm</h2>
+            Get the productivity information for specified time period from CARTON_PRODUCTIVITY table.
+            Read SKU Unit(one SKU unit can have two or more SKU pieces) information from MASTER_SKU table.
+          <h3 xmlns="http://www.w3.org/1999/xhtml">Output</h3><Table width="100%" cellSpacing="1" cellPadding="1" border="1" xmlns="http://www.w3.org/1999/xhtml"><TR><TD width="25%" align="center"><b>Item</b></TD><TD width="20%" align="center"><b>Summary</b></TD><TD width="10%" align="center"><b>Sort Sequence</b></TD><TD width="35%" align="center"><b>Detail</b></TD></TR><TR><TD><I><b>Reworker</b></I></TD><TD>
+              No
+          </TD><TD align="center">1</TD><TD><r:Item Term="Reworker" Key="true" SortSequence="1" xmlns:mstns="http://tempuri.org/R150.08.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Name of the reworker.
+          </r:Item></TD></TR><TR><TD><I><b>Process Date</b></I></TD><TD>
+              No
+          </TD><TD align="center">
+                       
+            2</TD><TD><r:Item Term="Process Date" Key="true" xmlns:mstns="http://tempuri.org/R150.08.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Date when rework was performed.
+          </r:Item></TD></TR><TR><TD>Cartons </TD><TD>Sum</TD><TD align="center">
+                       
+          </TD><TD><r:Item Term="Cartons " Summary="Sum" xmlns:mstns="http://tempuri.org/R150.08.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Total number of cartons on which rework was performed.
+          </r:Item></TD></TR><TR><TD>Units </TD><TD>
+              Sum</TD><TD align="center">
+                       
+          </TD><TD><r:Item Term="Units " xmlns:mstns="http://tempuri.org/R150.08.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Total number of units of cartons reworked.
+          </r:Item></TD></TR><TR><TD>Pieces</TD><TD>Sum</TD><TD align="center">
+                       
+          </TD><TD><r:Item Term="Pieces" Summary="Sum" xmlns:mstns="http://tempuri.org/R150.08.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Total number of pieces of cartons reworked.
+          </r:Item></TD></TR><TR><TD>No Rework Cartons</TD><TD>Sum</TD><TD align="center">
+                       
+          </TD><TD><r:Item Term="No Rework Cartons" Summary="Sum" xmlns:mstns="http://tempuri.org/R150.08.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Total number of cartons where no rework was performed.
+          </r:Item></TD></TR>
+        <tr>
+            <td>
+                User Setup Date</td>
+            <td>
+                None</td>
+            <td align="middle">
+                &nbsp;</td>
+            <td>
+                Date on which the User or
+                <span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-ansi-language:EN-US;mso-fareast-language:
+EN-US;mso-bidi-language:AR-SA">operator </span>had been created.</td>
+        </tr>
+        </Table><h2 xmlns="http://www.w3.org/1999/xhtml">Parameters</h2><Table width="100%" cellSpacing="1" cellPadding="1" border="1" xmlns="http://www.w3.org/1999/xhtml"><TR><TD width="20%" align="center"><b>Name</b></TD><TD width="20%" align="center"><b>Default</b></TD><TD width="60%" align="center"><b>Detail</b></TD></TR><TR><TD>
+        Process Start Date</TD><TD>Last seven days</TD><TD>
+          The date range for which, you wish to view the rework productivity information.
+        </TD></TR><TR><TD>Shift</TD><TD>All</TD><TD>
+          The shift for which, you wish to view the rework productivity information. 
+          There are two shifts and each reworker can work in any shift or both the shifts.
+          Specify a shift if you interested in a particular shift.
+        </TD></TR></Table><h2 xmlns="http://www.w3.org/1999/xhtml">Performance Detail</h2><p xmlns="http://www.w3.org/1999/xhtml"><i>Expected Time for the report output is </i>1 seconds</p>
+                  The query of this report will exhibit linear performance with respect to the 
+        number of records in carton_productivity table qualified for specified date 
+        range.
+          
+        <h2 xmlns="http://www.w3.org/1999/xhtml">Details</h2>
+                  This report displays the records according to shift timings.&nbsp;
+            <h2 xmlns="http://www.w3.org/1999/xhtml">Behavior Change</h2><UL xmlns="http://www.w3.org/1999/xhtml">
+           <li>
+          Now we are also showing the sum of units, this was not in old report.
+          </li>
+           <li>
+               Add the new column User Setup Date in the last of report for showing date on 
+               which the User or operator had been created. By NM 13th July 2009 email subject 
+               &quot;Add the User created Date in all production reports&quot;</li>
+          
+        </UL><h2 xmlns="http://www.w3.org/1999/xhtml">Issues</h2>
+		No Known Issue. <br xmlns="http://www.w3.org/1999/xhtml">
+        <div id="divTechnical" xmlns="http://www.w3.org/1999/xhtml">
+            <h2>
+                Parameter Technical Details</h2>
+            <ul>
+                <li>Process Start Date (Type = Date): This is a date range control. </li>
+                </li>
+                <li>Shift (Type = NUMBER): This is a drop down list parameter control.Specify a shift if 
+                    you are interested in a particular shift. Default value text is &quot;All&quot;.
+                    <ul>
+                        <li>Value = 1, Text = First </li>
+                        <li>Value = 2, Text = Second</li>
+                    </ul>
+                </li>
+            </ul>
+            &nbsp;<h2>
+                Query&#39;s documentation:</h2>
+            <ul>
+                <li><r:doc xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R150.08.xsd">This query will get rework productiviy information for 
+                    specified date range from carton_productivity table
+                    <pre>
+WITH rework_prod as ( 
+SELECT CP.OPERATOR_ID AS OPERATOR_ID,
+       CASE
+         WHEN (cp.process_start_date - TRUNC(cp.process_start_date)) * 24 <= 5.1 THEN
+          TRUNC(cp.process_start_date - 1)
+         ELSE
+          TRUNC(cp.process_start_date)
+       END AS shift_start_date,
+       cp.process_start_date AS process_start_date,
+       DECODE(CP.WORK_CODES, NULL, NULL, CP.CARTON_ID) AS CARTONS,
+       DECODE(CP.WORK_CODES, NULL, CP.CARTON_ID) AS NO_REWORK_CARTONS,
+       DECODE(CP.WORK_CODES, NULL, NULL, CP.CARTON_QUANTITY) AS PIECES,
+       DECODE(CP.WORK_CODES,
+              NULL,
+              NULL,
+              CP.CARTON_QUANTITY / MS.PIECES_PER_PACKAGE) AS UNITS
+  FROM carton_productivity cp
+  left outer join MASTER_SKU MS on cp.upc_code = MS.UPC_CODE
+ WHERE cp.module_code = :module_code
+   AND cp.work_type = 'REWORK'
+   AND cp.process_start_date >= :process_start_date_from
+   AND cp.process_start_date < :process_start_date_to + 2
+   AND CASE
+ WHEN(cp.process_start_date - TRUNC(cp.process_start_date)) * 24 BETWEEN 5.1 AND 15.5 THEN 1 ELSE 2 END = :shift_number)
+SELECT rp.operator_id,
+       count(rp.cartons) AS carton_count,
+       count(rp.no_rework_cartons) AS no_rework_cartons_count,
+       NVL(sum(rp.pieces), 0) AS carton_quantity,
+       NVL(sum(rp.units), 0) AS units,
+       rp.shift_start_date as shift_start_date,
+       max(au.created) as user_setup_date
+  FROM rework_prod rp
+  LEFT OUTER JOIN all_users au on au.username = rp.operator_id
+ WHERE rp.shift_start_date >= :process_start_date_from
+   AND rp.shift_start_date < :process_start_date_to + 1
+ Group BY rp.operator_id, rp.shift_start_date
+ ORDER BY operator_id ASC, shift_start_date ASC                                
+            </pre>
+                    </R:DOC></li>
+            </ul>
+            <h2>
+                Validation details</h2>
+            Bellow queries may have the where clause in the [] brackets. It means these are 
+            the optional parameters. If you do not want to pass these parameters just remove 
+            the [] section.
+            <br />
+            <br />
+            <b>Query:</b><pre><r:query 
+                xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+                xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+                xmlns:mstns="http://tempuri.org/R150.08.xsd">
+            SELECT cp.operator_id AS &quot;OPERATOR_NAME&quot;,
+            trunc(cp.process_start_date) AS &quot;PROCESS_DATE&quot;,
+            cp.carton_id AS &quot;CARTONS&quot;,
+            cp.carton_quantity AS &quot;PIECES&quot;,
+            cp.carton_quantity / ms.pieces_per_package AS &quot;UNITS&quot;
+            FROM carton_productivity cp, dcms8a.master_sku ms
+            WHERE cp.upc_code = ms.upc_code(+)
+            AND work_codes is not null
+            AND cp.module_code = &#39;REW&#39;
+            AND cp.work_type = &#39;REWORK&#39;
+            and cp.operator_id = :OPERATOR_ID
+            AND cp.process_start_date &gt; :MIN_PROCESS_DATE 
+            AND cp.process_start_date &lt; :MAX_PROCESS_DATE + 1;
+          </R:QUERY></pre>
+            <b>Description:</b><pre><r:description 
+                xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+                xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+                xmlns:mstns="http://tempuri.org/R150.08.xsd">
+            Run the above query to get rework productiviy information for specified date range from carton_productivity table.
+          </R:DESCRIPTION></pre>
+            <b>Query:</b><pre><r:query 
+                xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+                xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+                xmlns:mstns="http://tempuri.org/R150.08.xsd"></pre>
+            <pre>              SELECT cp.operator_id AS &quot;OPERATOR_NAME&quot;,
+              trunc(cp.process_start_date) AS &quot;PROCESS_DATE&quot;,
+              cp.carton_id AS &quot;NO_REWORK_CARTONS&quot;
+              FROM carton_productivity cp
+              WHERE work_codes is null
+              AND cp.module_code = &#39;REW&#39;
+              AND cp.work_type = &#39;REWORK&#39;
+              AND cp.process_start_date &gt; :MIN_PROCESS_DATE 
+              AND cp.process_start_date &lt; :MAX_PROCESS_DATE + 1
+            </pre>
+            </R:QUERY>
+            <pre></pre>
+            <b>Description:</b><pre><r:description 
+                xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+                xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+                xmlns:mstns="http://tempuri.org/R150.08.xsd">Run the above query to get the number of cartons on which no rework performed.</pre>
+        </div>
+		</form>
+	</body>
+</html>
+

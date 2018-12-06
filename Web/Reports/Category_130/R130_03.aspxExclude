@@ -1,0 +1,129 @@
+﻿<%@ Page Title="Picking Area Inventory Report" Language="C#" MasterPageFile="~/MasterPage.master" %>
+
+<%--*
+ *  Programming: Eclipse Systems (P) Ltd., NOIDA, INDIA
+ *  E-mail: support@eclsys.com
+ *
+ *  $Revision: 5979 $
+ *  $Author: skumar $
+ *  $HeadURL: http://server/svn/dcmslive/Projects/DcmsLive/trunk/Web/Reports/Category_130/R130_03.aspxExclude $
+ *  $Id: R130_03.aspxExclude 5979 2013-08-12 11:20:58Z skumar $
+ * Version Control Template Added.
+--%>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <meta name="Description" content="The report serves as a template for following the basic design to be used by all the reports" />
+    <meta name="ReportId" content="130.03" />
+    <meta name="Browsable" content="true" />
+    <meta name="Version" content="$Id: R130_03.aspxExclude 5979 2013-08-12 11:20:58Z skumar $" />
+    <meta name="ChangeLog" content="Now, report is ready for separate picking area for each Building." />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ($('#ctlWhLoc').find('input:checkbox').is(':checked')) {
+
+                //Do nothing if any of checkbox is checked
+            }
+            else {
+                $('#ctlWhLoc').find('input:checkbox').attr('checked', 'checked');
+            }
+        });
+    </script>
+
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <jquery:Tabs runat="server" ID="tabs">
+        <jquery:JPanel ID="JPanel" runat="server" HeaderText="Filters">
+            <eclipse:TwoColumnPanel ID="TwoColumnPanel1" runat="server">
+                <eclipse:LeftLabel ID="LeftLabel2" runat="server" />
+                <d:StyleLabelSelector ID="ls" runat="server" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+                    ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>" ShowAll="true"
+                    FriendlyName="Label" QueryString="label_id" ToolTip="Select any label to see the order.">
+                    <Validators>
+                        <i:Required />
+                    </Validators>
+                </d:StyleLabelSelector>
+                <eclipse:LeftLabel ID="LeftLabel1" runat="server" Text="Vwh" />
+                <d:VirtualWarehouseSelector ID="ctlVwh" runat="server" ShowAll="true" QueryString="vwh_id"
+                    ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>" />
+                <eclipse:LeftLabel runat="server" Text="Building" />
+                <oracle:OracleDataSource ID="dsBuilding" runat="server" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+                    ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>" CancelSelectOnNullParameter="true">
+                    <SelectSql>
+                            WITH Q1 AS
+                                    (SELECT TWL.WAREHOUSE_LOCATION_ID, TWL.DESCRIPTION
+                                     FROM TAB_WAREHOUSE_LOCATION TWL
+   
+                                     UNION
+                                     SELECT 'Unknown' AS WAREHOUSE_LOCATION_ID, 'Unknown' AS DESCRIPTION
+                                     FROM TAB_WAREHOUSE_LOCATION TWL)
+                                     SELECT Q1.WAREHOUSE_LOCATION_ID,
+                                     (Q1.WAREHOUSE_LOCATION_ID || ':' || Q1.DESCRIPTION) AS DESCRIPTION
+                                      FROM Q1
+                            ORDER BY 1
+                    </SelectSql>
+                </oracle:OracleDataSource>
+                <i:CheckBoxListEx ID="ctlWhLoc" runat="server" DataTextField="DESCRIPTION"
+                    DataValueField="WAREHOUSE_LOCATION_ID" DataSourceID="dsBuilding" FriendlyName="Building"
+                    QueryString="building" >
+                </i:CheckBoxListEx>
+            </eclipse:TwoColumnPanel>
+        </jquery:JPanel>
+        <jquery:JPanel ID="JPanel1" runat="server" HeaderText="Sorting">
+            <jquery:SortColumnsChooser ID="SortColumnsChooser1" runat="server" GridViewExId="gv"
+                EnableGroupBy="true" />
+        </jquery:JPanel>
+    </jquery:Tabs>
+    <uc2:ButtonBar2 ID="ButtonBar1" runat="server" />
+    <oracle:OracleDataSource ID="ds" runat="server" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+        ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>"
+        CancelSelectOnNullParameter="true">
+        <SelectSql>
+       SELECT I.VWH_ID AS VWH_ID,
+       I.IA_ID as IA_ID,
+       max(nvl(IA.SHORT_NAME,I.IA_ID)) as area_name,
+       SUM(IC.NUMBER_OF_UNITS) AS QUANTITY,
+       NVL(I.WAREHOUSE_LOCATION_ID,'Unknown') AS WAREHOUSE_LOCATION_ID,
+       MAX(IA.short_name ||' : '||IA.SHORT_DESCRIPTION) AS DESCRIPTION,
+       MAX(ms.label_id) as Label_Id
+  FROM IALOC I
+  LEFT OUTER JOIN IALOC_CONTENT IC
+    ON I.IA_ID = IC.IA_ID
+   AND I.LOCATION_ID = IC.LOCATION_ID
+  LEFT OUTER JOIN IA
+    ON I.IA_ID = IA.IA_ID
+  LEFT OUTER JOIN MASTER_SKU MSKU
+    ON IC.IACONTENT_ID = MSKU.UPC_CODE
+  LEFT OUTER JOIN MASTER_STYLE MS
+    ON MSKU.STYLE = MS.STYLE
+ WHERE IC.IACONTENT_TYPE_ID = 'SKU'
+    <if>AND I.VWH_ID = :vwh_id</if>
+   <if>AND MS.LABEL_ID = :label_id</if>
+  <if>AND <a pre="NVL(I.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+   AND IC.IA_ID &lt;&gt; 'SSS'
+   AND IC.NUMBER_OF_UNITS &gt;0
+ GROUP BY I.VWH_ID, I.IA_ID, NVL(I.WAREHOUSE_LOCATION_ID,'Unknown')
+        </SelectSql>
+        <SelectParameters>
+            <asp:ControlParameter ControlID="ls" Name="label_id" Type="String" Direction="Input" />
+            <asp:ControlParameter ControlID="ctlVwh" Name="vwh_id" Type="String" Direction="Input" />
+            <asp:ControlParameter ControlID="ctlWhLoc" Type="String" Direction="Input" Name="warehouse_location_id" />
+        </SelectParameters>
+    </oracle:OracleDataSource>
+   
+    <jquery:GridViewEx ID="gv" runat="server" AutoGenerateColumns="false" AllowSorting="true"
+        ShowFooter="true" DataSourceID="ds" DefaultSortExpression="WAREHOUSE_LOCATION_ID;$;VWH_ID">
+        <Columns>
+            <eclipse:SequenceField />
+            <eclipse:MultiBoundField DataFields="VWH_ID" HeaderText="VWh" SortExpression="VWH_ID" />
+            <eclipse:SiteHyperLinkField DataTextField="DESCRIPTION" DataNavigateUrlFormatString="R130_103.aspx?ia_id={0}&vwh_id={1}&WAREHOUSE_LOCATION_ID={2}&label_id={3}&area_name={4}"
+               DataNavigateUrlFields="ia_id,VWH_ID,WAREHOUSE_LOCATION_ID,Label_Id,area_name" 
+                 HeaderText="Area" SortExpression="DESCRIPTION" />
+            <eclipse:MultiBoundField DataFields="QUANTITY" HeaderText="Quanity" SortExpression="QUANTITY" DataSummaryCalculation="ValueSummation">
+                <HeaderStyle HorizontalAlign="Right" />
+                <ItemStyle HorizontalAlign="Right" />
+                <FooterStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="WAREHOUSE_LOCATION_ID" HeaderText="Building" SortExpression="WAREHOUSE_LOCATION_ID" />
+        </Columns>
+    </jquery:GridViewEx>
+</asp:Content>
+ 

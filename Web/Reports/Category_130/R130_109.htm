@@ -1,0 +1,437 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>00.00 Title of the Report</title>
+</head>
+<body>
+    <h1 id="ctlReportHeading" style="TEXT-ALIGN: center">
+        130.109 Picking Area Quantity against Buckets&nbsp;</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <ul style="list-style: none">
+        <li>Reviewed By: Manmohan Bisht</li>
+        <li>$Revision: 14918 $</li>
+        <li>Status: Done</li>
+        <li>Tested By:Anil Panwar</li>
+    </ul>
+    <p>
+        The Report lists the Buckets with availabel pieces against them in picking area.Buckets with shortage in picking area are shown in red color</p>
+    <h2>
+        Overview</h2>
+   
+    <p>
+        This report list all the Buckets which contains the specified SKU.A bucket
+        for which the total required quantity is more than the 
+        quantity available at Picking Locations is shown in red color.
+    </p>
+  
+    <h2>
+        Algorithm</h2>
+    <p>
+        Identify all the Buckets, which will be affected due to the shortage for the 
+        specified SKUs. The information 
+        regarding each bucket will be displayed in the report. </p>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:25%; text-align:center">
+                <b>Item</b>
+            </td>
+            <td style="width:20%; text-align:center">
+                <b>Summary</b>
+            </td>
+            <td style="width:10%; text-align:center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:25%">
+                <i><b>Bucket </b></i></td>
+            <td style="width:20%">
+                No</td>
+            <td style="width:10%">
+                1</td>
+            <td style="width:45%">
+                The Bucket Id, which may create problem during CreateMPC. This will be fetched 
+                from bucket table.</td>
+        </tr>
+        <tr>
+            <td style="width:25%">
+                Required Quantity</td>
+            <td style="width:20%">
+                Sum</td>
+            <td style="width:10%">
+                &nbsp;</td>
+            <td style="width:45%">
+                Required Quantity of the specified SKU in the Bucket. This will be fetched from 
+                psdet table</td>
+        </tr>
+         <tr>
+            <td style="width:25%">
+                Picking Area Quantity</td>
+            <td style="width:20%">
+                No</td>
+            <td style="width:10%">
+                &nbsp;</td>
+            <td style="width:45%">
+                The total number of unreserved pieces of SKU, which are lying at Picking Area. This 
+                will be fetched from the ialoc_content and src_carton table.</td>
+        </tr>
+         <tr>
+            <td style="width:25%">
+                Picked Quantity</td>
+            <td style="width:20%">
+                No</td>
+            <td style="width:10%">
+                &nbsp;</td>
+            <td style="width:45%">
+                The total number of pieces picked.</td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:20% ; text-align:center">
+                <b>Name</b>
+            </td>
+            <td style="width:15% ; text-align:center">
+                <b>Type</b>
+            </td>
+            <td style="width:20%; text-align:center">
+                <b>Default</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:20%">
+                Building</td>
+            <td style="width:15%">
+                string</td>
+            <td style="width:20%">
+                (All)</td>
+            <td style="width:45%">
+                The Building for the SKU.</td>
+        </tr>
+        <tr>
+            <td style="width:20%">
+                Virtual Warehouse</td>
+            <td style="width:15%">
+                string</td>
+            <td style="width:20%">
+                (All)</td>
+            <td style="width:45%">
+                The Virtual Warehouse for the SKU.</td>
+        </tr>
+        <tr>
+            <td style="width:20%">
+                Customer</td>
+            <td style="width:15%">
+                string</td>
+            <td style="width:20%">
+                No default</td>
+            <td style="width:45%">
+                The customer for which you want to see the Buckets</td>
+        </tr>
+        <tr>
+            <td style="width:20%">
+                Bucket</td>
+            <td style="width:15%">
+                string</td>
+            <td style="width:20%">
+                No default</td>
+            <td style="width:45%">
+                The bucket for Sku.</td>
+        </tr>
+        <tr>
+            <td style="width:20%">
+                UPC Code</td>
+            <td style="width:15%">
+                string</td>
+            <td style="width:20%">
+                No default</td>
+            <td style="width:45%">
+                The UPC Code for the Shortage SKU.</td>
+        </tr>
+         <tr>
+            <td style="width:20%">
+                Check for inventory In</td>
+            <td style="width:15%">
+                Check box</td>
+            <td style="width:20%">
+                No default</td>
+            <td style="width:45%">
+                Area where sku inventory is available .This area is highlited in grid view in green color </td>
+        </tr>
+          <tr>
+            <td style="width:20%">
+                Quality 
+                Code</td>
+            <td style="width:15%">
+                String</td>
+            <td style="width:20%">
+                No default</td>
+            <td style="width:45%">
+                Inventory Quality.  </td>
+        </tr>
+          <tr>
+            <td style="width:20%">
+                Start Date</td>
+            <td style="width:15%">
+                Date range from date = current date, To date = current date&nbsp; next seven days</td>
+            <td style="width:20%">
+                &nbsp; Unchecked&nbsp;</td>
+            <td style="width:45%">
+                This parameter is for selecting the Start Date range for which user wants to
+                see the report. There is a checkbox which is near to this date parameter. For applying
+                this date filter this checkbox must be checked.  </td>
+        </tr>
+          <tr>
+            <td style="width:20%">
+                Cancel Date</td>
+            <td style="width:15%">
+                Date range from date = current date, To date = current date&nbsp; next seven days</td>
+            <td style="width:20%">
+                &nbsp; Unchecked&nbsp;</td>
+            <td style="width:45%">
+                This parameter is for selecting the Cancel Date range for which user wants to
+                see the report. There is a checkbox which is near to this date parameter. For applying
+                this date filter this checkbox must be checked.  </td>
+        </tr>
+    </table>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Now, report is ready for separate picking area for each Building.</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No Known Issue.</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+        <ul>
+                <li>
+                <h4>
+                Private synonyms requried for the tables: </h4>
+            <pre>
+<code>ps,
+psdet,
+bucket,
+ialoc,
+ialoc_content,
+resvdet,
+Cust,
+tab_quality_code,
+tab_inventory_area,
+dem_pickslip,
+dem_pickslip_detail,
+bucketsku,
+ia
+</code>&nbsp;</pre>
+                    <ul>
+                        <li>
+                            <h4>
+                Script to create the synonyms:</h4>
+                <pre>
+create or replace synonym ps FOR DCMS8.ps;<code>       
+create or replace synonym psdet FOR dcms8.psdet;
+create or replace synonym bucket for dcms8.bucket;
+create or replace synonym ialoc for dcms8.ialoc;
+create or replace synonym ialoc_content for dcms8.ialoc_content;
+create or replace synonym resvdet for dcms8.resvdet;
+create or replace synonym box for dcms8.box
+create or replace synonym boxdet FOR DCMS8.Boxdet;
+create or replace synonym dem_pickslip for dcms4.dem_pickslip;
+create or replace synonym dem_pickslip_detail for dcms4.dem_pickslip_detail;
+create or replace synonym master_sku for dcms4.master_sku;
+create or replace synonym ia for dcms8.ia;
+create or replace synonym tab_inventory_area for dcms4.tab_inventory_area;
+create or replace synonym tab_quality_code for dcms4.tab_quality_code;
+create or replace synonym cust for dcms8.cust;
+create or replace synonym bucketsku for dcms8.bucketsku;<br />
+
+        </li>
+                </ul>
+                </li>
+   </ul>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <p style="font-weight:bold">Query:</p>
+    <pre>with bucket_sku_info as 
+(
+SELECT bucket.bucket_id AS BUCKET_ID,
+       sum(psdet.pieces_ordered) AS REQUIRED_QUANTITY,
+       max(psdet.upc_code) as upc_code
+  FROM ps ps left outer join bucket bucket on ps.bucket_id = bucket.bucket_id
+  left outer join psdet psdet on ps.pickslip_id = psdet.pickslip_id
+  left outer join bucketsku bs on bs.bucket_id = bucket.bucket_id
+                              and bs.upc_code = psdet.upc_code
+  INNER JOIN PO ON
+      Ps.CUSTOMER_ID = PO.CUSTOMER_ID
+      AND Ps.PO_ID = PO.PO_ID
+      AND Ps.ITERATION = PO.ITERATION
+ WHERE 1=1
+  AND PS.TRANSFER_DATE is null
+  AND psdet.TRANSFER_DATE is null
+ and psdet.upc_code not in (select bksu.upc_code from bucketsku bksu where bksu.underpitch_flag = 'Y' and ps.bucket_id=bksu.bucket_id )
+   <if>AND ps.vwh_id =:vwh_id</if>
+   <if>AND <a pre="NVL(ps.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+   <if>AND psdet.upc_code = :upc_code</if>
+   <if>and ps.customer_id=:customer_id</if>
+   <if>and ps.bucket_id=:bucket_id</if>
+   <if>AND PO.START_DATE &gt;= CAST(:FROM_START_DATE as DATE)</if>
+   <if>AND PO.START_DATE &lt; CAST(:TO_START_DATE as DATE)+1</if>
+   <if>AND PO.CANCEL_DATE &gt;= CAST(:FROM_CANCEL_DATE as DATE)</if>
+   <if>AND PO.CANCEL_DATE &lt; CAST(:TO_CANCEL_DATE as DATE) +1</if>
+ GROUP BY bucket.bucket_id,ps.vwh_id
+), 
+ialoc_sku as 
+(
+  SELECT IL.UPC_CODE,
+         IL.VWH_ID,
+         IL.LOCATION_ID ,
+         IL.LOCATION_COUNT,
+         NVL(IL.FPK_QUANTITY, 0) - NVL(R.NUMBER_OF_UNITS, 0) AS FPK_QUANTITY,
+         IL.Inventory_area
+         
+    FROM (SELECT iac.assigned_upc_code AS UPC_CODE,
+                iac.vwh_id AS VWH_ID,
+      case
+         when count(distinct iac.location_id) &gt; 1 then
+          '*****'
+         else
+          max(iac.location_id)
+       end AS LOCATION_ID,
+       count(distinct iac.location_id) AS LOCATION_COUNT,
+       sum(ialc.number_of_units)  AS FPK_QUANTITY,
+       ia.ia_id as Inventory_area,
+       max(msku.sku_id) as sku_id
+       FROM  ialoc iac 
+  inner join ialoc_content ialc 
+  on iac.ia_id = ialc.ia_id
+  AND  iac.location_id = ialc.location_id
+  inner join ia ia on
+  ia.ia_id=iac.ia_id
+  INNER JOIN MASTER_SKU MSKU
+      ON MSKU.UPC_CODE = IALC.IACONTENT_ID
+ WHERE 1=1<if>and iac.assigned_upc_code = :upc_code</if>
+   <if>AND iac.vwh_id = :vwh_id</if>
+            <if>AND <a pre="NVL(IAC.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+   <if>and <a pre="ia.ia_id IN (" sep="," post=")">(:inventory_area)</a></if>
+  and ia.picking_area_flag='Y'
+  and IAlC.IACONTENT_TYPE_ID = 'SKU'
+ GROUP BY iac.assigned_upc_code, iac.vwh_id,ia.ia_id
+       ) IL
+    LEFT OUTER JOIN (SELECT RD.IA_ID AS IA_ID,
+                            msku.sku_id as sku_id,
+                            SUM(RD.PIECES_RESERVED) NUMBER_OF_UNITS,
+                            RD.VWH_ID
+                       FROM RESVDET RD
+                      INNER JOIN MASTER_SKU MSKU
+                         ON RD.UPC_CODE = MSKU.UPC_CODE
+                      GROUP BY msku.sku_id,
+                               RD.VWH_ID,
+                               RD.IA_ID) R
+      ON IL.Inventory_area = R.IA_ID
+     AND IL.Sku_id=R.sku_id
+     AND IL.VWH_ID = R.VWH_ID
+
+union all
+      
+SELECT   msku.upc_code as upc_code,
+         SC.VWH_ID AS VWH_ID, 
+         null as location_id,
+         null as location_count,       
+         sum(SCD.QUANTITY) AS FPK_QUANTITY, 
+         sc.carton_storage_area as Inventory_area   
+    FROM SRC_CARTON_DETAIL SCD
+   INNER JOIN SRC_CARTON SC
+      ON SC.CARTON_ID = SCD.CARTON_ID
+      inner join master_sku msku on
+      msku.sku_id=scd.sku_id
+    LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+      ON SC.LOCATION_ID = MSL.LOCATION_ID
+     and sc.carton_storage_area = msl.storage_area
+    left outer JOIN TAB_INVENTORY_AREA TIA
+      ON sc.carton_storage_area = TIA.INVENTORY_STORAGE_AREA
+   WHERE sc.suspense_date is null
+   and scd.req_process_id is null
+   <if>and SC.VWH_ID = :VWH_ID </if>
+    <if> and sc.quality_code=:quality_code</if> 
+   <if> and  msku.upc_code=:upc_code</if>
+   <if>and  <a pre="sc.carton_storage_area IN (" sep="," post=")">(:inventory_area)</a> </if>
+   group by msku.upc_code,sc.vwh_id,sc.carton_storage_area
+),
+All_Inventory_SKU as
+(
+select ias.upc_code as upc_code,
+ias.vwh_id as vwh_id,
+max(ias.location_id) as location_id,
+sum(ias.FPK_QUANTITY) as FPK_QUANTITY,
+ias.Inventory_area as Inventory_area,
+ <a pre="SUM(SUM(case
+                   when  ias.INVENTORY_AREA IN (" sep="," post=")">(:inventory_area)</a> THEN
+                    ias.FPK_QUANTITY
+                 END)) OVER(partition by ias.upc_code, ias.VWH_ID)
+                  AS QUANTITY_picking_areas
+ from ialoc_sku  ias
+
+ group by ias.upc_code,ias.vwh_id,ias.Inventory_area
+), 
+ Picked_sku as
+ (
+   SELECT 
+         max(BD.upc_code)             AS upc_code,
+         B.VWH_ID                AS VWH_ID,
+         sum (case
+         when b.carton_id is not null then
+          BD.expected_pieces
+          when b.carton_id is null
+          and b.ia_id is not null then
+          bd.expected_pieces end) as picked_pieces,
+         p.bucket_id as bucket_id
+    FROM BOX B
+   INNER JOIN BOXDET BD
+      ON B.PICKSLIP_ID = BD.PICKSLIP_ID
+     AND B.UCC128_ID = BD.UCC128_ID
+   INNER JOIN PS P
+      ON P.PICKSLIP_ID = B.PICKSLIP_ID
+   INNER JOIN MASTER_SKU MS
+      ON BD.UPC_CODE = MS.UPC_CODE
+   WHERE P.TRANSFER_DATE IS NULL
+     AND B.STOP_PROCESS_DATE IS NULL
+     AND BD.STOP_PROCESS_DATE IS NULL
+     <if>AND p.VWH_ID = :VWH_ID</if>
+     <if>and bd.upc_code=:upc_code</if>
+     group by b.vwh_id,p.bucket_id
+ ), 
+ final_query as
+ (
+select bsi.bucket_id as bucket_id,
+       bsi.REQUIRED_QUANTITY as REQUIRED_QUANTITY,
+       nvl(ias.FPK_QUANTITY,0) as PickingArea_QUANTITY,
+       pksu.picked_pieces as picked_pieces,      
+       ias.Inventory_area as Inventory_area ,
+       IAS.LOCATION_ID AS FPK_LOCATION,
+       ias.QUANTITY_picking_areas as QUANTITY_picking_areas   
+  from bucket_sku_info bsi
+  left outer join All_Inventory_SKU ias on bsi.upc_code = ias.upc_code
+  left outer join picked_sku  pksu on pksu.bucket_id=bsi.bucket_id
+  )
+  select *
+  from final_query
+   pivot XML(sum(PickingArea_QUANTITY) as PIECES_IN_AREA for (Inventory_area,FPK_LOCATION) IN(ANY,ANY))</pre>
+    <h2>
+        Validation details</h2>
+    <p>
+        No special validations.</p>
+</body>
+</html>

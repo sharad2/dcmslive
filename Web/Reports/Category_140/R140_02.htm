@@ -1,0 +1,646 @@
+﻿<html>
+<head>
+    <title>140.02 Open Bucket Summary Report</title>
+    <style type="text/css">
+        .style1
+        {
+            text-align: left;
+        }
+        .style2
+        {
+            text-align: center;
+        }
+        .style3
+        {
+            width: 39%;
+        }
+        .style4
+        {
+            text-align: left;
+            width: 39%;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        140.02 Open Bucket Summary Report</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <ul style="list-style: none">
+        <li>Reviewed By: ManMohan Bisht</li>
+        <li>$Revision: 7130 $</li>
+        <li>Status: Done</li>
+        <li>Tested By:-Hemant K. Singh</li>
+    </ul>
+    <p>
+        This report is for showing details of buckets which are opened for processing. As per the need this report can be executed with different combination of available filters like Bucket, Label, Customer, Pick Mode etc.. Report helps in tracking unprocessed pieces.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        For the specified Bucket(optional), Label(optional) and Customer(optional) this report shows information of those Buckets which opened. Open buckets are those buckets in which at least one pickslip is under process. Report user can exclude old buckets by specifying number of days against filter &quot;Exclude Buckets Older Than&quot;. To see the desired information report user can also specify the desired virtual warehouse. By default report will run for all virtual warehouses. In the same way user can also specify following filters as well Building, Pick Mode, Bucket Status and Label. Report is helpful to find out number of unprocessed pickslips and related boxes for each open bucket. Report also helps in tracking un-processed pieces for each open bucket.</p>
+&nbsp;<ul>
+        <li>Total under process picklips in bucket</li>
+        <li>Total red boxes in bucket </li>
+        <li>Total non physical boxes in the under process picklips of bucket </li>
+        <li>Total unprocessed boxes in bucket </li>
+        <li>Total pullable boxes in bucket </li>
+        <li>Total about to pull boxes in bucket</li>
+        <li>Total unprocessed pieces in bucket </li>
+        <li>Bucket unfrozen status</li>
+        <li>Checking bucket indicator</li>
+        <li>Start date and cancel date of the orders being processed against the bucket</li>
+    </ul>
+    <h2>
+        Algorithm</h2>
+    <p>
+        Retreiving open bucket details from Bucket table.&nbsp; We are retreiving only those
+        buckets which have non transferred pickslips with reporting status 'UNDER PROCESS'.
+        For the retreived buckets, details are retreived from ps, box and boxdet tables.
+        Min DC_Cancel_Date, Min Start dates are retereived from PO table.</p>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 25%; text-align: center">
+                <b>Item</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Summary</b>
+            </td>
+            <td style="width: 10%; text-align: center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Building
+            </td>
+            <td style="width: 20%;" class="style1">
+                No
+            </td>
+            <td style="width: 10%;" class="style2">
+            </td>
+            <td style="width: 45%;" class="style1">
+                Building of Bucket.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Bucket Id
+            </td>
+            <td style="width: 20%;" class="style1">
+                No
+            </td>
+            <td style="width: 10%;" class="style2">
+                1</td>
+            <td style="width: 45%;" class="style1">
+                Id of the bucket.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Bucket Name
+            </td>
+            <td style="width: 20%;" class="style1">
+                No
+            </td>
+            <td style="width: 10%;" class="style2">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                Name of the bucket
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                VWh
+            </td>
+            <td style="width: 20%;" class="style1">
+                No
+            </td>
+            <td style="width: 10%;" class="style2">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                Virtual Warehouse of the pickslips contains by the bucket
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Number of Pickslips
+            </td>
+            <td style="width: 20%;" class="style1">
+                Sum
+            </td>
+            <td style="width: 10%;" class="style2">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                Number of under process pickslips of the bucket</td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Number of Total Boxes
+            </td>
+            <td style="width: 20%;" class="style1">
+                Sum
+            </td>
+            <td style="width: 10%;" class="style2">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                Total number of boxes which belongs to under process pickslips of the bucket</td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Number of Red Boxes
+            </td>
+            <td style="width: 20%;" class="style1">
+                Sum
+            </td>
+            <td style="width: 10%;" class="style2">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                Total number of boxes in RED area which belongs to under process pickslips.</td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Number of Non-Physical Boxes
+            </td>
+            <td style="width: 20%;" class="style1">
+                Sum</td>
+            <td style="width: 10%;" class="style2">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                Total number of boxes waiting to expedite which belongs to the under process pickslips</td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Number of Pullable Boxes
+            </td>
+            <td style="width: 20%;" class="style1">
+                Sum</td>
+            <td style="width: 10%;" class="style2">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                Number of boxes which can be directly pulled from carton area
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Number of About to Pull Boxes
+            </td>
+            <td style="width: 20%;" class="style1">
+                Sum
+            </td>
+            <td style="width: 10%;" class="style2">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                Number of boxes which are waiting to pull from carton area</td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Number of Unprocessed Pieces
+            </td>
+            <td style="width: 20%;" class="style1">
+                Sum</td>
+            <td style="width: 10%;" class="style2">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                Total no. of pieces which are not picked yet.</td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Start Date
+            </td>
+            <td style="width: 20%;" class="style1">
+                No
+            </td>
+            <td style="width: 10%;" class="style2">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                Minimum Start date of the pickslips contains by the bucket
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                DC Cancel Date
+            </td>
+            <td style="width: 20%;" class="style1">
+                No
+            </td>
+            <td style="width: 10%;" class="style2">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                Orders must be shipped from the DC till this date</td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Status Available
+            </td>
+            <td style="width: 20%;" class="style1">
+                No
+            </td>
+            <td style="width: 10%;" class="style2">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                If Check sign is visible, it means that boxes have been created for the bucket</td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Status UnFrozen
+            </td>
+            <td style="width: 20%;" class="style1">
+                No
+            </td>
+            <td style="width: 10%;" class="style2">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                Indicates that bucket is not in freeze statet.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Status Checking
+            </td>
+            <td style="width: 20%;" class="style1">
+                No
+            </td>
+            <td style="width: 10%;" class="style2">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                If Check sign is visible, it means this bucket will be processed thru checking path.</td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 20%; text-align: center">
+                <b>Name</b>
+            </td>
+            <td style="width: 15%; text-align: center">
+                <b>Type</b>
+            </td>
+            <td style="text-align: center" class="style3">
+                <b>Default</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%;" class="style1">
+                Bucket
+            </td>
+            <td style="width: 15%;" class="style1">
+                Number
+            </td>
+            <td class="style4">
+                None
+            </td>
+            <td style="width: 45%;" class="style1">
+                Bucket id for which you would like to run the report
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%;" class="style1">
+                Label
+            </td>
+            <td style="width: 15%;" class="style1">
+                Choice
+            </td>
+            <td class="style4">
+                All
+            </td>
+            <td style="width: 45%;" class="style1">
+                Label Id for which you would like to run the report.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%;" class="style1">
+                Customer
+            </td>
+            <td style="width: 15%;" class="style1">
+                String</td>
+            <td class="style4">
+                None
+            </td>
+            <td style="width: 45%;" class="style1">
+                Customer id for which you would like to run the report
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%;" class="style1">
+                Exclude Buckets Older Than
+            </td>
+            <td style="width: 15%;" class="style1">
+                Number
+            </td>
+            <td class="style4">
+                None
+            </td>
+            <td style="width: 45%;" class="style1">
+                Exclude those buckets which are older than the passed number of days
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%;" class="style1">
+                Pick Mode
+            </td>
+            <td style="width: 15%;" class="style1">
+                Choice</td>
+            <td class="style4">
+                Both
+            </td>
+            <td style="width: 45%;" class="style1">
+                User can filter out buckets which were created for Pitching or Checking.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%;" class="style1">
+                Bucket Status
+            </td>
+            <td style="width: 15%;" class="style1">
+                Choice</td>
+            <td class="style4">
+                Both
+            </td>
+            <td style="width: 45%;" class="style1">
+                User can filter out buckets which are currently marked as Frozen or Unfrozen
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%;" class="style1">
+                Start Date
+            </td>
+            <td style="width: 15%;" class="style1">
+                Choice
+            </td>
+            <td class="style4">
+                From Date : 30 Days back from today’s date<br />
+                To Date : Current Fiscal Month end date</td>
+            <td style="width: 45%;" class="style1">
+                User can filter out list of buckets on the basis of start date.</td>
+        </tr>
+        <tr>
+            <td style="width: 20%;" class="style1">
+                DC Cancel Date
+            </td>
+            <td style="width: 15%;" class="style1">
+                Choice
+            </td>
+            <td class="style4">
+                From Date : 30 Days back from today’s date<br />
+                To Date : Current Fiscal Month end date</td>
+            <td style="width: 45%;" class="style1">
+                User can filter out&nbsp; list of buckets on the basis of Dc cancel date.</td>
+        </tr>
+        <tr>
+            <td style="width: 20%;" class="style1">
+                Virtual Warehouse
+            </td>
+            <td style="width: 15%;" class="style1">
+                Choice</td>
+            <td class="style4">
+                All
+            </td>
+            <td style="width: 45%;" class="style1">
+                Show only those buckets which contains the pickslips of passed virtual warehouse
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%;" class="style1">
+                Building
+            </td>
+            <td style="width: 15%;" class="style1">
+                Choice
+            </td>
+            <td class="style4">
+                All Checkbox checked of the building</td>
+            <td style="width: 45%;" class="style1">
+                Show only those buckets which contains the pickslips of passed Building
+            </td>
+        </tr>
+    </table>
+    <h2>Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 2</i> second for the specific label.</p>
+
+    <h2>
+        Behavior Change</h2>
+    <p>
+        Canceled pieces were also included in the Unprocessed Pieces, which are now excluded.</p>
+&nbsp;<h2>
+        Issues </h2>
+    <ul>
+        <li>No Known issue</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+    <ul>
+        <li>
+            <h4>
+                Private synonyms requried for the tables:
+            </h4>
+            <pre>
+<code>bucket, ps, box, boxdet, po</code></pre>
+            <ul>
+                <li>
+                    <h4>
+                        Script to create the synonyms:</h4>
+                    <code>create or replace synonym bucket for dcms8.bucket;<br />
+                          create or replace synonym ps for dcms8.ps; <br />
+                          create or replace synonym box for dcms8.box; <br />
+                          create or replace synonym boxdet for dcms8.boxdet; <br />
+                          create or replace synonym po for dcms8.po;</code>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <h4>
+                App-Settings required:</h4>
+            <pre>No appSetting is required</pre>
+        </li>
+    </ul>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <pre>
+                WITH  PICKSLIP_INFO AS
+ (SELECT MAX(PS.WAREHOUSE_LOCATION_ID) AS WAREHOUSE_LOCATION_ID,
+         MAX(PS.VWH_ID) AS VWH_ID,
+         MAX(PS.BUCKET_ID) AS BUCKET_ID,
+         MAX(PS.TOTAL_QUANTITY_ORDERED) AS TOTAL_QUANTITY_ORDERED,
+         PS.PICKSLIP_ID,
+         MAX(BKT.NAME) AS BUCKET_NAME,
+         MAX(DECODE(BKT.FREEZE, '', 'Y', '')) AS UNFREEZE,
+         MAX(BKT.PICK_MODE) AS PICK_MODE,
+         MIN(PO.DC_CANCEL_DATE) AS MIN_DC_CANCEL_DATE,
+         MIN(PO.START_DATE) AS MIN_START_DATE,
+         COUNT(DISTINCT B.UCC128_ID) AS COUNT_OF_BOX,
+         COUNT(DISTINCT(CASE
+                          WHEN B.IA_ID = CAST(:RedBoxArea AS VARCHAR2(3)) THEN
+                           B.UCC128_ID
+                        END)) AS COUNT_OF_RED_BOX,
+         COUNT(DISTINCT(CASE
+                          WHEN B.IA_ID_COPY = 'NOA' THEN
+                           B.UCC128_ID
+                        END)) AS COUNT_OF_UNAVAILABLE_BOX,
+         COUNT(DISTINCT B.CARTON_ID) AS COUNT_OF_PULLABLE_BOX,
+         COUNT(DISTINCT(CASE
+                          WHEN B.IA_ID_COPY = 'NOA' THEN
+                           B.CARTON_ID
+                        END)) AS ABOUT_TO_PULL_CARTONS,
+         SUM(BD.CURRENT_PIECES) AS PICKED_PIECES
+    FROM PS
+    LEFT OUTER JOIN BUCKET BKT
+      ON PS.BUCKET_ID = BKT.BUCKET_ID
+    LEFT OUTER JOIN PO
+      ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+     AND PS.PO_ID = PO.PO_ID
+     AND PS.ITERATION = PO.ITERATION
+    LEFT OUTER JOIN BOX B
+      ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+     AND B.STOP_PROCESS_DATE IS NULL
+    LEFT OUTER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+          AND BD.STOP_PROCESS_DATE IS NULL
+   WHERE PS.REPORTING_STATUS = 'UNDER PROCESS'
+     <if>AND bKT.date_created &gt;= SYSDATE - cast(:days as number(5))</if>
+     <if>AND ps.bucket_id=cast(:bucket_id as number(5))</if>
+     <if>AND <a pre="NVL(PS.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+     <if>AND BKT.pick_mode = CAST(:pick_mode as varchar2(255))</if>
+     <if c="$bucket_status='F'">AND BKT.freeze IS NOT NULL</if>
+     <if c="$bucket_status='U'">AND BKT.freeze IS NULL</if>
+     <if>AND ps.label_id=cast(:label_id as varchar2(255))</if>  
+     <if>AND ps.customer_id=CAST(:customer_id as varchar2(255))</if>
+     <if>and ps.vwh_id=:vwh_id</if>
+     <if>AND po.start_date &gt;= CAST(:delivery_start_date AS DATE)</if>      
+     <if>AND po.start_date &lt; CAST(:delivery_end_date AS DATE) +1</if>       
+     <if>AND po.dc_cancel_date &gt;=CAST(:dc_cancel_start_date AS DATE) </if>
+     <if>AND po.dc_cancel_date &lt;CAST(:dc_cancel_end_date AS DATE) +1</if> 
+     AND PS.TRANSFER_DATE IS NULL    
+   GROUP BY PS.PICKSLIP_ID),
+CANCEL_PIECES AS
+ (SELECT B.PICKSLIP_ID, SUM(BD.EXPECTED_PIECES) AS CANCELLED_PIECES
+    FROM BOX B
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+   WHERE B.STOP_PROCESS_REASON = '$BOXCANCEL'
+     AND B.PICKSLIP_ID IN (SELECT PI.PICKSLIP_ID FROM PICKSLIP_INFO PI)
+   GROUP BY B.PICKSLIP_ID)
+SELECT COUNT(DISTINCT Q1.PICKSLIP_ID) AS COUNT_OF_PICKSLIP,
+       Q1.BUCKET_ID AS BUCKET_ID,
+       MAX(Q1.BUCKET_NAME) AS BUCKET_NAME,
+       MAX(Q1.WAREHOUSE_LOCATION_ID) AS WAREHOUSE_LOCATION_ID,
+       MAX(Q1.VWH_ID) AS VWH_ID,
+       SUM(Q1.TOTAL_QUANTITY_ORDERED) AS TOTAL_QUANTITY_ORDERED,
+       CASE WHEN SUM(Q1.COUNT_OF_BOX) &gt; 0
+            THEN 'Y' ELSE '' END  AS AVAILABLE_FOR_PITCHING,
+       MIN(Q1.UNFREEZE) AS UNFREEZE,
+       MIN(Q1.PICK_MODE) AS PICK_MODE,
+       MIN(Q1.MIN_DC_CANCEL_DATE) AS MIN_DC_CANCEL_DATE,
+       MIN(Q1.MIN_START_DATE) AS MIN_START_DATE, 
+       SUM(Q1.COUNT_OF_BOX) AS COUNT_OF_BOX,
+       SUM(Q1.COUNT_OF_RED_BOX) AS COUNT_OF_RED_BOX,
+       SUM(Q1.COUNT_OF_UNAVAILABLE_BOX) AS COUNT_OF_UNAVAILABLE_BOX,
+       SUM(Q1.COUNT_OF_PULLABLE_BOX) AS COUNT_OF_PULLABLE_BOX,
+       SUM(Q1.ABOUT_TO_PULL_CARTONS) AS ABOUT_TO_PULL_CARTONS,
+       SUM((NVL(Q1.TOTAL_QUANTITY_ORDERED, 0) - NVL(CANCELLED_PIECES, 0)) -
+           NVL(Q1.PICKED_PIECES, 0)) AS UNPROCESSEDPIECES
+  FROM PICKSLIP_INFO Q1
+  LEFT OUTER JOIN CANCEL_PIECES CP
+    ON Q1.PICKSLIP_ID = CP.PICKSLIP_ID
+ GROUP BY Q1.BUCKET_ID    
+        </pre>
+    <h2>
+        Validation details</h2>
+    <p>
+        <b>Below query will show the candidate buckets of the report.&nbsp; You need to pass
+            number of days as per your requirement</b></p>
+    <p style="font-weight: bold">
+        Query:</p>
+    <pre>
+SELECT BKT.BUCKET_ID,
+       MIN(BKT.NAME) AS BUCKET_NAME,
+       MAX(P.VWH_ID) AS VWH_ID,
+       MIN(BKT.PICK_MODE) AS PICK_MODE,
+       MAX(DECODE(BKT.FREEZE, '', 'Y', '')) AS UNFREEZE,
+       COUNT(P.PICKSLIP_ID) AS NUMBER_OF_PICKSLIP,
+       MIN(p.warehouse_location_id) AS building
+  FROM PS P
+ INNER JOIN BUCKET BKT
+    ON P.BUCKET_ID = BKT.BUCKET_ID
+ WHERE P.TRANSFER_DATE IS NULL
+   AND P.REPORTING_STATUS = 'UNDER PROCESS'
+   AND BKT.DATE_CREATED >= SYSDATE - 20
+ GROUP BY BKT.BUCKET_ID
+    </pre>
+    <p>
+        <b>Below query will give the number of Total Boxes and also pullable boxes for a given bucket.&nbsp; You need to pass a bucket to the query </b>
+    </p>
+    <p style="font-weight: bold">
+        Query:</p>
+    <pre>
+SELECT COUNT(DISTINCT BOX.UCC128_ID) AS COUNT_OF_BOX,
+       COUNT(DISTINCT BOX.CARTON_ID) AS COUNT_OF_PULLABLE_BOX
+  FROM PS PS
+  LEFT OUTER JOIN BOX BOX
+    ON PS.PICKSLIP_ID = BOX.PICKSLIP_ID
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND PS.BUCKET_ID = :BUCKET_ID
+   AND BOX.STOP_PROCESS_DATE IS NULL
+   AND PS.REPORTING_STATUS = 'UNDER PROCESS' 
+</pre>
+
+    <p>
+        <b>Below query will give the red boxes for a given bucket.&nbsp; You need to pass a bucket to the query </b>
+    </p>
+    <p style="font-weight: bold">
+        Query:</p>
+        <pre>
+        SELECT COUNT(DISTINCT BOX.UCC128_ID) AS COUNT_OF_RED_BOX
+          FROM PS PS
+          LEFT OUTER JOIN BOX BOX
+            ON PS.PICKSLIP_ID = BOX.PICKSLIP_ID
+         WHERE PS.TRANSFER_DATE IS NULL
+           AND PS.BUCKET_ID = :BUCKET_ID
+           AND BOX.STOP_PROCESS_DATE IS NULL
+           AND PS.REPORTING_STATUS = 'UNDER PROCESS'
+           AND BOX.IA_ID = 'RED';
+        </pre>
+        <p>
+        <b>Below query will give the non- physical and &#39;about to pull&#39; boxes for a given bucket.&nbsp; You need to pass a bucket to the query </b>
+    </p>
+    <p style="font-weight: bold">
+        Query:</p>
+        <pre>
+        SELECT COUNT(DISTINCT BOX.UCC128_ID) AS Non_physical_boxes,
+       COUNT(DISTINCT BOX.CARTON_ID) AS ABOUT_TO_PULL_CARTONS
+  FROM PS PS
+  LEFT OUTER JOIN BOX BOX
+    ON PS.PICKSLIP_ID = BOX.PICKSLIP_ID
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND PS.BUCKET_ID = :BUCKET_ID
+   AND BOX.STOP_PROCESS_DATE IS NULL
+   AND PS.REPORTING_STATUS = 'UNDER PROCESS'
+   AND BOX.IA_ID_COPY = 'NOA'
+        </pre>
+    
+</body>
+</html>

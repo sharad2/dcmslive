@@ -1,0 +1,633 @@
+﻿<html>
+<head>
+    <title>In Process Report - Customer PO Detail</title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        110<b>.113:In Process Report - Customer PO Detail</b></h1>
+    <h3>
+        Author: Sanjeev Kumar</h3>
+    $Revision: 7061 $<br />
+    Status:
+    Done<br />
+    Reviewed By: ManMohan Bisht<br />
+    Tested By: Sanjeev Kumar 
+    <p>
+        This report displays the number of boxes in different areas for different PO&#39;s 
+        for passed customer and virtual warehouse. It shows the un-started pieces, expected pieces, packed 
+        pieces, and cancelled pieces of all un-transferred and un-cancelled customer orders for passed customer and 
+        virtual warehouse. It also shows progress of order (% packed pieces verses 
+        ordered pieces) for passed customer and virtual warehouse. The user has 
+        option&nbsp;to filter out the data on the basis of specified PO , Pickslip, Label and 
+        Bucket. </p>
+    <h2>
+        Overview</h2>
+    <ul>
+        <li>For the specified Customer this report is showing the number of boxes in each area
+            for different PO&#39;s. Also showing the progress of each PO.</li>
+        <li>It can be drilldown on PO to show the number of boxes in each area for different
+            customer DC of that particular PO and customer.</li>
+        <li>This page is showing number of boxes in different areas. It can further drilldown
+            to show the box detail for customer in that area.</li>
+        <li>For the sake of performance we are considering those pickslips whose import date
+            is less than two months from today by default but user can change the days as he
+            want.</li>
+    </ul>
+    <h2>
+        Algorithm
+    </h2>
+    <p>
+        For finding the no. of boxes in each area per PO for passed customer_id and virtual
+        warehouse using the table PS, BOX, BOXDET, IA, IACONFIG and BUCKET where the available
+        for pitching flag is not null of bucket&nbsp; and&nbsp; pickslip reporting status is not null of those customer.</p>
+    <p>
+        For calculating the un-strated pieces we are using the view rep_active_ps and bucket
+        table that have the pickslips of status 1 and pickslips whose bucket is made but
+        available for pitching flag is null.</p>
+    <h2>
+        Definition</h2>
+    <ul>
+        <li><b><i>Expediter Bucket. </i></b>Those boxes which have not been assigned to an MPC
+            yet.</li>
+        <li><b><i>Packed Pieces: </i></b>Total no. of Current Pieces in boxes which are lying
+            in shipping area means ready to ship. We get the shipping area on the basis of shipping_area_flag
+            which is set as Y in IA table.</li>
+        <li><b><i>Unstarted Pieces :</i></b>Total quantity ordered for those pickslips for whom
+            buckets are not created or if created then still not available for pitching.</li>
+        <li><b><i>Expected Pieces: </i></b>Total no. of ordered Pieces in boxes which
+            are in process and which are not shipped yet.</li>
+        <li><b><i>Cancelled Pieces:</i></b>Total no. of current pieces of boxes which are cancelled.</li>
+        <li><b><i>%Completed:</i></b>% complete is calulated as follows:<br />
+            Packed pieces * 100 / ((Unstarted Pieces + Started&nbsp; Pieces) - Cancelled Pieces)</li>
+    </ul>
+    <h2>
+        Output</h2>
+    <table border="1" cellpadding="0" cellspacing="1">
+        <tr>
+            <td>
+                <b>Item</b>
+            </td>
+            <td>
+                <p>
+                    <b>Summary</b></p>
+            </td>
+            <td>
+                <b>Default Sort Sequence</b>
+            </td>
+            <td>
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Customer</td>
+            <td>
+                No
+            </td>
+            <td>
+                1
+            </td>
+            <td>
+                Now report will show custome name along with its id</td>
+        </tr>
+        <tr>
+            <td>
+                PO
+            </td>
+            <td>
+                No
+            </td>
+            <td>
+                2
+            </td>
+            <td>
+                The Customer Purchase Order.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No. of Boxes
+            </td>
+            <td>
+                Yes
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+                No. of boxes each box area wise. If box area is null then we shows the no. of boxes
+                under the &#39;Expeditor Bucket&#39; otherwise we are showing no. of boxes according to
+                the area. The sequence of area is showing according to the process_flow_sequence.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Unstarted Pieces
+            </td>
+            <td>
+                Yes
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Pieces of those pickslips whose bucket are not created or if created then still
+                unavailable for pitching
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Expected Pieces
+            </td>
+            <td>
+                Yes
+            </td>
+            <td>
+                
+                &nbsp;</td>
+            <td>
+                Total no. of expected Pieces of order in boxes for passed customer and virtual Warehouse
+                which are in process and which are not shipped yet.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Packed Pieces
+            </td>
+            <td>
+                Yes
+            </td>
+            <td>
+                
+                &nbsp;</td>
+            <td>
+                Total No. of Current Pieces in shipping area’s box for passed customer and virtual Warehouse
+            </td>
+        </tr>
+        <tr>
+            <td>
+                In VAS<br />
+                Pieces</td>
+            <td>
+                Yes
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Showing VAS area pieces</td>
+        </tr>
+        <tr>
+            <td>
+                Cancelled Pieces
+            </td>
+            <td>
+                Yes
+            </td>
+            <td>
+                
+                &nbsp;</td>
+            <td>
+                Total no. of cancelled pieces passed customer and virtual Warehouse which boxes is
+                cancelled.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    %Completed</p>
+            </td>
+            <td>
+                <p>
+                    No
+                </p>
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+                <p>
+                    Calculate the percentage of total no. of packed pieces / (total no. of Unstarted
+                    Pieces + Total no. of Started Pieces in box –Total no. of cancel pieces)
+                </p>
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td align="center">
+                    <b>Name</b>
+                </td>
+                <td align="center">
+                    <b>Default</b>
+                </td>
+                <td align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Customer ID</p>
+                </td>
+                <td>
+                    <p>
+                        None</p>
+                </td>
+                <td>
+                    <p>
+                        Customer ID for which you want to see the data.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        PO</p>
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                    <p>
+                        PO for which you want to display information</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Pickslip</p>
+                </td>
+                <td>
+                    <p>
+                        None</p>
+                </td>
+                <td>
+                    <p>
+                        Pickslip for which you want to display information.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Label
+                    </p>
+                </td>
+                <td>
+                    <p>
+                        ALL</p>
+                </td>
+                <td>
+                    <p>
+                        Label for which you want to display information</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Bucket
+                    </p>
+                </td>
+                <td>
+                    <p>
+                        None</p>
+                </td>
+                <td>
+                    <p>
+                        Bucket for which you want to display information.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Pickslip import date from today (In Days)</p>
+                </td>
+                <td>
+                    <p>
+                        60</p>
+                </td>
+                <td>
+                    <p>
+                        The no of days back from today for which you want to display information.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Virtual Warehouse</p>
+                </td>
+                <td>
+                    <p>
+                        ALL</p>
+                </td>
+                <td>
+                    <p>
+                        The virtual warehouse from which you want to display information.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Only VAS boxes</td>
+                <td>
+                    Checked&nbsp;</td>
+                <td>
+                    &nbsp;This parameter helps to find out&nbsp; VAS boxes in different area. &nbsp;</td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>10 Sec.</p>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>
+            Now report will show VAS area boxes along with number of pieces in VAS area.</li>
+        <li>
+            Added VAS filter.</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    No Known Issue.
+    <br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        rep_active_ps,<br />
+        box,<br />
+        ps,<br />
+        ia,<br />
+        bucket,<br />
+        iaconfig,<br />
+        boxdet,<br />
+        cust</p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>create or replace synonym rep_active_ps for dcms8.rep_active_ps;<br />
+            create or replace synonym box for dcms8.box;<br />
+            create or replace synonym ps for dcms8.ps;<br />
+            create or replace synonym ia for dcms8.ia;<br />
+            create or replace synonym boxdet for dcms8.boxdet;<br />
+            create or replace synonym bucket for dcms8.bucket;<br />
+            create or replace synonym cust for dcms8.cust;<br />
+            create or replace synonym iaconfig for dcms8.iaconfig;</code></p>
+    <p>
+        No appSettings are required.</p>
+    <h2>
+        Technical Documentaion</h2>
+    <h2>
+        Parameter Technical Detail</h2>
+    <ul>
+        <li>Customer Id (Type = String): Customer ID</li>
+        <li>PO (Type =String): Customer Purchase Order Id</li>
+        <li>Pickslip (Type=Int32): Pickslip ID</li><li>Label(Type=String): Label Id of Pickslip</li><li>
+            Bucket(Type=Int32): Bucket Id for customer purchase order.</li><li>Pickslip Import Date
+                from Today(Type = Int32): The no of days back from today from which you not want
+                to display information.</li>
+        <li>Virtual Warehouse(Type = String): This is a list parameter control. By default,
+            inventory of all Warehouse is shown for each area. If your focus is on the inventory
+            in a particular virtual Warehouse, Specify that Virtual Warehouse.<ul>
+                <li>Query to fill list values = "select tab_virtual_warehouse.vwh_id, tab_virtual_warehouse.vwh_id
+                    from tab_virtual_warehouse" </li>
+            </ul>
+        </li>
+    </ul>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.<br />
+    <h2>
+        Query's documentation:</h2>
+    <ul>
+        <li>For each customer each virtual warehouse with in the no. of pickslip import date
+            from today, gets all required information: </li>
+        <li>
+            <pre>
+    WITH order_info AS
+        (
+        SELECT ps1.customer_id AS customer_id,
+               ps1.vwh_id AS vwh_id,
+               ps1.po_id as po_id,
+               NULL AS ia_id,
+               NULL AS VAS_PIECES,
+               NULL AS no_of_box,
+               NULL AS current_pieces,
+               NULL AS can_pieces,
+               NULL AS process_flow_sequence,
+               SUM(CASE
+                     WHEN bkt.available_for_pitching = 'Y' THEN
+                      ps1.Total_Quantity_Ordered
+                   END) AS started_pieces,
+               SUM(CASE
+                     WHEN bkt.available_for_pitching IS NULL THEN
+                      ps1.Total_Quantity_Ordered
+                   END) AS unstarted_pieces
+          FROM rep_active_ps ps1
+          LEFT OUTER JOIN bucket bkt ON ps1.bucket_id = bkt.bucket_id
+         WHERE ps1.pickslip_import_date &gt;= SYSDATE - cast(:no_of_days as number)
+           AND ps1.pickslip_import_date &lt; SYSDATE + 1
+           <if>AND ps1.customer_id= cast(:customer_id as varchar2(255))</if>
+           <if>AND ps1.po_id= cast(:po_id as varchar2(255))</if>
+           <if>AND ps1.pickslip_id= :pickslip_id</if>
+           <if>AND ps1.label_id= cast(:label_id as varchar2(255))</if>
+           <if>AND ps1.bucket_id= cast(:bucket_id as number)</if>
+           <if>AND ps1.vwh_id= cast(:vwh_id as varchar2(255))</if>
+           <if c="$VASID" >AND PS1.PICKSLIP_ID IN (
+               SELECT PV.PICKSLIP_ID FROM PS_VAS PV 
+               )</if>
+         GROUP BY ps1.customer_id,
+                  ps1.vwh_id,
+                  ps1.po_id
+        UNION
+        SELECT p.customer_id AS customer_id,
+               p.vwh_id AS vwh_id,
+               p.po_id as po_id,
+               CASE
+              WHEN B.PITCHING_END_DATE IS NOT NULL AND B.VERIFY_DATE IS NULL AND
+                   P.PICKSLIP_ID IN (SELECT PV.PICKSLIP_ID FROM PS_VAS PV) AND
+                   B.PALLET_ID IS NOT NULL THEN
+               'VAS'
+              ELSE
+               B.IA_ID
+              END AS IA_ID,
+              SUM(CASE
+               WHEN B.PITCHING_END_DATE IS NOT NULL AND B.VERIFY_DATE IS NULL AND
+                    P.PICKSLIP_ID IN (SELECT PV.PICKSLIP_ID FROM PS_VAS PV) AND
+                    B.PALLET_ID IS NOT NULL THEN
+                BD.CURRENT_PIECES
+               END) AS VAS_PIECES,
+               COUNT(DISTINCT b.ucc128_id) AS no_of_box,
+               SUM(CASE
+                     WHEN i.shipping_area_flag = 'Y' THEN
+                      bd.current_pieces
+                   END) AS current_pieces,
+               SUM(CASE
+                     WHEN i.ia_id = (SELECT icg.ia_id
+                                     FROM iaconfig icg
+                                    WHERE icg.iaconfig_id = '$CANCEL') THEN
+                      bd.current_pieces
+                   END) AS can_pieces,
+               MAX(i.process_flow_sequence) AS process_flow_sequence,
+               NULL AS started_pieces,
+               NULL AS UNSTARTED_PIECES
+          FROM ps p
+         INNER JOIN box b ON p.pickslip_id = b.pickslip_id
+         INNER JOIN boxdet bd ON b.pickslip_id = bd.pickslip_id
+                          AND b.ucc128_id = bd.ucc128_id
+           LEFT OUTER JOIN ia i ON i.ia_id = b.ia_id
+         WHERE p.transfer_date is null
+           AND p.PICKSLIP_IMPORT_DATE &gt;= SYSDATE - cast(:no_of_days as number)
+           AND p.PICKSLIP_IMPORT_DATE &lt; SYSDATE + 1
+           <if>AND p.customer_id= cast(:customer_id as varchar2(255))</if>
+           <if>AND p.po_id= cast(:po_id as varchar2(255))</if>
+           <if>AND p.pickslip_id= :pickslip_id</if>
+           <if>AND p.label_id= cast(:label_id as varchar2(255))</if>
+           <if>AND p.bucket_id= cast(:bucket_id as number)</if>
+           <if>AND p.vwh_id= cast(:vwh_id as varchar2(255))</if>
+             <if c="$VASID" >AND P.PICKSLIP_ID IN (
+               SELECT PV.PICKSLIP_ID FROM PS_VAS PV 
+               )</if>
+         GROUP BY p.customer_id,
+                  p.vwh_id,
+                  CASE
+              WHEN B.PITCHING_END_DATE IS NOT NULL AND B.VERIFY_DATE IS NULL AND
+                   P.PICKSLIP_ID IN (SELECT PV.PICKSLIP_ID FROM PS_VAS PV) AND
+                   B.PALLET_ID IS NOT NULL THEN
+               'VAS'
+              ELSE
+               B.IA_ID
+            END,
+                  p.po_id                  
+        )
+        SELECT DISTINCT oi.customer_id AS customer_id,
+                        oi.vwh_id AS vwh_id,
+                        oi.po_id as po_id,
+                        CASE
+                          WHEN oi.ia_id IS NULL THEN
+                           'EB'
+                          ELSE
+                           oi.IA_ID
+                        END AS box_ia_id,
+                        CASE
+                          WHEN oi.IA_ID IS NULL THEN
+                           'Expeditor Bucket'
+                          ELSE
+                           oi.IA_ID
+                        END AS SHORT_DESCRIPTION,
+                        SUM(oi.no_of_box) over(PARTITION BY oi.customer_id, oi.vwh_id, oi.IA_ID,oi.po_id) AS no_of_box,
+                        SUM(oi.current_pieces) over(PARTITION BY oi.customer_id, oi.vwh_id,oi.po_id) AS current_pieces,
+                        SUM(oi.can_pieces) over(PARTITION BY oi.customer_id, oi.vwh_id,oi.po_id) AS can_pieces,
+                        SUM(OI.VAS_PIECES) OVER(PARTITION BY OI.CUSTOMER_ID, OI.VWH_ID, OI.PO_ID) AS VAS_PIECES,
+                        CASE
+                          WHEN oi.ia_id IS NULL THEN
+                           -100
+                          ELSE
+                           oi.process_flow_sequence
+                        END AS process_flow_sequence,
+                        SUM(oi.started_pieces) over(PARTITION BY oi.customer_id, oi.vwh_id,oi.po_id) AS started_pieces,
+                        SUM(oi.unstarted_pieces) over(PARTITION BY oi.customer_id, oi.vwh_id,oi.po_id) AS unstarted_pieces,
+                        cust1.NAME AS CUSTOMER_NAME
+          FROM order_info oi
+          LEFT OUTER JOIN cust cust1 ON cust1.customer_id = oi.customer_id                                 </pre>
+        </li>
+    </ul>
+    <h2>
+        Validation detail</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.<br />
+    <b>
+        <br />
+        Query1:</b>
+    <pre>SELECT SUM(I.TOTAL_QUANTITY_ORDERED) AS UNSTARTED_PIECES
+  FROM REP_ACTIVE_PS I
+  LEFT OUTER JOIN BUCKET U ON U.BUCKET_ID = I.BUCKET_ID
+ WHERE U.AVAILABLE_FOR_PITCHING IS NULL  
+   AND I.PICKSLIP_IMPORT_DATE &gt;= (SYSDATE - :no_of_days) 
+   AND I.PICKSLIP_IMPORT_DATE &lt; SYSDATE + 1
+   AND I.CUSTOMER_ID = :CUSTOMER_ID
+   AND I.PO_ID = :PO_ID
+   AND I.PICKSLIP_ID = :PICKSLIP_ID
+   AND I.LABEL_ID = :LABEL_ID
+   AND I.BUCKET_ID = :BUCKET_ID
+   AND I.VWH_ID = :VWH_ID;        </pre>
+    <b>Description:</b><p>
+        Enter the Customer_id, vwh_id and no of days(default 60) or provide po_id, pickslip_id,
+        bucket_id, label_id (all these are optional) and validiate the result same for unstarted
+        pieces.</p>
+    <b>Query2:</b>
+    <pre>SELECT BOX.IA_ID, COUNT(DISTINCT BOX.UCC128_ID)
+  FROM BOX
+ WHERE BOX.PICKSLIP_ID IN
+       (SELECT PS.PICKSLIP_ID
+          FROM PS
+         WHERE PS.BUCKET_ID IN
+               (SELECT T.BUCKET_ID
+                  FROM BUCKET T
+                 WHERE T.CUSTOMER_ID = :CUSTOMER_ID
+                   AND T.AVAILABLE_FOR_PITCHING = 'Y')
+           AND PS.PICKSLIP_IMPORT_DATE >= (SYSDATE - :NO_OF_DAYS)
+           AND PS.PICKSLIP_IMPORT_DATE < (SYSDATE + 1)
+           AND PS.PO_ID = :PO_ID
+           AND PS.PICKSLIP_ID = :PICKSLIP_ID
+           AND PS.LABEL_ID = :LABEL_ID
+           AND PS.BUCKET_ID = :BUCKET_ID
+           AND PS.VWH_ID = :VWH_ID)
+ GROUP BY BOX.IA_ID;
+            </pre>
+    <b>Description:</b><p>
+        Enter the Customer_id, po_id, pickslip_id, bucket_id, label_id and vwh_id or not
+        Enter any paarmeter except no of days(default 60) and validiate the result same
+        for no of boxes in each area.</p>
+    <b>Query3:</b>
+    <pre>SELECT SUM(BOX.EXPECTED_PIECES)
+  FROM BOXDET BOX
+ WHERE BOX.PICKSLIP_ID IN (SELECT PS.PICKSLIP_ID
+                             FROM PS
+                            WHERE PS.BUCKET_ID IN
+                                  (SELECT T.BUCKET_ID
+                                     FROM BUCKET T
+                                    WHERE T.CUSTOMER_ID = :CUSTOMER_ID
+                                      AND T.AVAILABLE_FOR_PITCHING = 'Y')
+                              AND PS.PICKSLIP_IMPORT_DATE >= (SYSDATE - :NO_OF_DAYS)
+                              AND PS.PICKSLIP_IMPORT_DATE < (SYSDATE + 1)
+                              AND PS.PO_ID = :PO_ID
+                              AND PS.PICKSLIP_ID = :PICKSLIP_ID
+                              AND PS.LABEL_ID = :LABEL_ID
+                              AND PS.BUCKET_ID = :BUCKET_ID
+                              AND PS.VWH_ID = :VWH_ID);
+            </pre>
+    <b>Description:</b><p>
+        Enter the Customer_id, po_id, pickslip_id, bucket_id, label_id and vwh_id or not
+        Enter any paarmeter except no of days(default 60) and validiate the result same
+        for total started pieces.</p>
+    <b>Query4:</b>
+    <pre>SELECT SUM(BOXDET.CURRENT_PIECES)
+  FROM BOXDET
+ WHERE BOXDET.UCC128_ID IN
+       (SELECT BOX.UCC128_ID
+          FROM BOX BOX
+         WHERE BOX.PICKSLIP_ID IN
+               (SELECT PS.PICKSLIP_ID
+                  FROM PS
+                 WHERE PS.BUCKET_ID IN
+                       (SELECT T.BUCKET_ID
+                          FROM BUCKET T
+                         WHERE T.CUSTOMER_ID = :CUSTOMER_ID
+                           AND T.AVAILABLE_FOR_PITCHING = 'Y')
+                   AND PS.PICKSLIP_IMPORT_DATE >= (SYSDATE - :NO_OF_DAYS)
+                   AND PS.PICKSLIP_IMPORT_DATE < (SYSDATE + 1)
+                   AND PS.PO_ID = :PO_ID
+                   AND PS.PICKSLIP_ID = :PICKSLIP_ID
+                   AND PS.LABEL_ID = :LABEL_ID
+                   AND PS.BUCKET_ID = :BUCKET_ID
+                   AND PS.VWH_ID = :VWH_ID)
+           AND BOX.IA_ID = :area);
+            </pre>
+    <b>Description:</b><p>
+        Enter the Customer_id, po_id, pickslip_id, bucket_id, label_id and vwh_id or not
+        Enter any paarmeter except no of days(default 60) and validiate the result same
+        for total current pieces.</p>
+</body>
+</html>

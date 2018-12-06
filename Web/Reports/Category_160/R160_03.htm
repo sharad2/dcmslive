@@ -1,0 +1,411 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+
+    <form id="Form1" 
+    action="http://w3chile/XTremeReporter/ReportDoc.aspx?_Report=C%3a%5cDCMSLive%5cReports%5cR160.03.xsd" 
+    method="post" name="Form1">
+    <div>
+        <input id="__VIEWSTATE" name="__VIEWSTATE" type="hidden" 
+            value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+    </div>
+    <h1 align="center" style="height: 39px" xmlns="http://www.w3.org/1999/xhtml">
+        160<b>.</b>03<b> : </b>Lane Load Report
+    </h1>
+    <h3>
+        Author : Nilesh</h3>
+    $Revision: 519 $<br/>
+    Reviewed By : Pravin Awasthi
+    <p author="Nilesh" reviewer="Pravin Awasthi" status="Completed" 
+        >
+        The report will show the list of all the lanes along with all open unfrozen 
+        buckets and the boxes for each bucket which have not passed Sortation..
+    </p>
+    <h2 >
+        Overview</h2>
+    <p>
+        The report will show the list of all the lanes along with all open unfrozen 
+        buckets and the boxes for each bucket which have not passed Sortation. This 
+        report does not include cancel boxes. This report shows the data for open 
+        pickslip only.
+    </p>
+    <h2 >
+        Algorithm</h2>
+    We are showing the list of all the lanes along with all open unfrozen buckets 
+    and the nocancelled, unverfid boxes for each bucket which have not passed 
+    Sortation from using the table box, ps, cust and bucket. Get the lane for passed 
+    boxes we have passed the two parameter ucc128_id and &#39;Y&#39;(report parameter) to 
+    package PKG_LANE.GET_LANE(ucc128_id, Areport_flag).
+    <h3 >
+        Output</h3>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%" 
+        xmlns="http://www.w3.org/1999/xhtml">
+        <tr>
+            <td align="middle" width="25%">
+                <b>Item</b></td>
+            <td align="middle" width="20%">
+                <b>Summary</b></td>
+            <td align="middle" width="10%">
+                <b>Sort Sequence</b></td>
+            <td align="middle" width="35%">
+                <b>Detail</b></td>
+        </tr>
+        <tr>
+            <td>
+                <i><b>Lane</b></i></td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                1</td>
+            <td>
+                <r:item  SortSequence="1" Key="true" Term="Lane">Lane where the cartons being processed. </R:ITEM>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Bucket Number</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item  Term="Bucket Number">Bucket Id for customer. </R:ITEM>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Customer Name</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item 
+                Term="Customer Name">Name of customer. </R:ITEM>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No of Boxes (not passed Sortation)</td>
+            <td>
+                True</td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item >
+                 Term="No of Boxes (not passed Sortation)" Summary="True">No. Of boxes that doesn&#39;t pass the 
+                sortation process. </R:ITEM>
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%" >
+        <tr>
+            <td align="middle" width="20%">
+                <b>Name</b></td>
+            <td align="middle" width="20%">
+                <b>Default</b></td>
+            <td align="middle" width="60%">
+                <b>Detail</b></td>
+        </tr>
+        <tr>
+            <td>
+                From Date</td>
+            <td>
+                Current Date.</td>
+            <td>
+                The bucket creation date from which you want to display information.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                To Date</td>
+            <td>
+                Current Date.</td>
+            <td>
+                The bucket creation date to which you want to display information.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Warehouse Location</td>
+            <td>
+                All</td>
+            <td>
+                Location in Warehouse</td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>5 sec</p>
+    The query perform linear performance w.r.t. table box, ps, cust and bucket. 
+    There is index range scan on the table ps, box and bucket. Index 
+    bkt_date_created_i used in the table bucket, Index ps_bkt_fk_i used in the table 
+    ps and index box_ps_fk_i used in the table box. There is full scan on table 
+    cust.
+    <h2 >
+        Behavior Change</h2>
+    <ul >
+        <li>In current report we are showing all the recodrs which have not passed 
+            Sortation. Now this report will not shows the records which are in SHP and ADR 
+            area. Also add the new parameter warehouse location in this report. </li>
+    </ul>
+    <h2 >
+        Issues</h2>
+    No Known Issue.<br />
+    <br />
+    <h2>Prerequisites</h2>
+    <p>Private synonyms for the following tables are requried</p>
+    <p>box,
+    <br />
+    ps,<br />
+    ia,
+    <br />
+    bucket,
+    <br />
+    cust<br />
+    <br />
+    Use the below script to create the synonyms<br />
+    <br />
+    <code>
+    create or replace synonym box for dcms8.box;
+    <br />
+    create or replace synonym ps for dcms8.ps;
+    <br />
+    create or replace synonym ia for dcms8.ia;
+    <br />
+    create or replace synonym bucket for dcms8.bucket;
+    <br />
+    create or replace synonym cust for dcms8.cust;</code></p>
+    
+    
+        <br />
+
+        <h2>
+            List of report views:</h2>
+        <ul>
+            <li><b>Classic View</b> : This view is used to show the output of this report.</li>
+        </ul>
+        <ul>
+            <b>Child Table Selector is </b><i>LANE_RECORD</i>
+            <ul>
+                <li><b>Lane : </b>Lane where boxes being processed..
+                    <ul>
+                        <b>Xpath Expression:</b>
+                        <ul>
+                            <li>LANE</li>
+                        </ul>
+                    </ul>
+                </li>
+            </ul>
+            <ul>
+                <li><b>Bucket Number : </b>Bucket ID..
+                    <ul>
+                        <b>Xpath Expression:</b>
+                        <ul>
+                            <li>BUCKET</li>
+                        </ul>
+                    </ul>
+                </li>
+            </ul>
+            <ul>
+                <li><b>Customer Name : </b>Customer Name..
+                    <ul>
+                        <b>Xpath Expression:</b>
+                        <ul>
+                            <li>NAME</li>
+                        </ul>
+                    </ul>
+                </li>
+            </ul>
+            <ul>
+                <li><b>No of Boxes (not passed Sortation) : </b>Total No. of Boxes which are not 
+                    passed sortation..
+                    <ul>
+                        <b>Xpath Expression:</b>
+                        <ul>
+                            <li>BOXES</li>
+                        </ul>
+                    </ul>
+                </li>
+            </ul>
+        </ul>
+        <h2>
+            Parameter Technical Details</h2>
+        <ul>
+            <li>Bucket Creation Date (Type = Date): Please specify the Date range for which you 
+                wish to see details of lane. This is a date range control. </li>
+            <li>Warehouse Location (Type = ID): This is a list parameter control. Warehouse 
+                Location Null value text is &quot;All&quot;.
+                <ul>
+                    <li>Query to fill list values = &quot;select 
+                        warehouseloc.warehouse_location_id,warehouseloc.warehouse_location_id from 
+                        :+DefaultSchemaName+:.warehouseloc&quot; </li>
+                </ul>
+            </li>
+        </ul>
+        <h2>
+            Parameter Validation</h2>
+        No special validations.
+        <h2>
+            Sub-Query&#39;s documentation:</h2>
+        <ul>
+            <li><b>LANE_INFO: </b>
+
+        <pre> SELECT DISTINCT (box.ucc128_id) AS &quot;BOX_ID&quot;,
+              bkt.bucket_id AS &quot;BUCKET&quot;,
+              cust.NAME AS &quot;NAME&quot;
+              FROM dcms8.box    box,
+              dcms8.ps     ps,
+              dcms8.bucket bkt,
+              dcms8.cust   cust
+              WHERE ps.pickslip_id = box.pickslip_id
+              AND ps.bucket_id = bkt.bucket_id
+              AND ps.customer_id = cust.customer_id
+              AND (box.ia_id NOT IN (&#39;SHP&#39;, &#39;ADR&#39;)or box.ia_id is null)
+              AND box.sortscan_date IS NULL
+              AND (box.stop_process_date IS NULL OR
+              (box.stop_process_date IS NOT NULL AND
+              box.stop_process_reason NOT IN (&#39;$BOXCANCEL&#39;, &#39;$PSCANCEL&#39;)))
+              AND bkt.freeze IS NULL
+              AND bkt.date_created BETWEEN (:from_date) AND (:to_date) + 1 - 1 / (86400)
+              AND ps.warehouse_location = :warehouse_loc
+            </pre>
+            </li>
+        </ul>
+        <h2>
+            Query&#39;s documentation:</h2>
+        <ul>
+            <li>
+                <pre>WITH lane_info AS 
+        (
+                SELECT box.ucc128_id AS ucc128_id,
+                bkt.bucket_id AS bucket,
+                cust.NAME AS customer_name,
+                pkg_lane.get_lane(box.ucc128_id, 'Y') as lane_id
+                FROM box box
+                INNER JOIN ps ON box.pickslip_id = ps.pickslip_id
+                LEFT OUTER JOIN ia ON box.ia_id = ia.ia_id
+                INNER JOIN bucket bkt ON ps.bucket_id = bkt.bucket_id
+                INNER JOIN cust cust ON ps.customer_id = cust.customer_id
+                WHERE box.stop_process_date IS NULL
+                AND ps.transfer_date IS NULL
+                AND bkt.freeze IS NULL
+                AND bkt.date_created &gt;= CAST(:FromDate AS DATE)
+                [$:ToDate$AND bkt.date_created &lt; CAST(:ToDate AS DATE)+ 1$]   
+                [$:warehouse_location_id$AND ps.warehouse_location =:warehouse_location_id$]
+                AND ia.shipping_area_flag IS NULL
+        )
+                SELECT lane_info.lane_id,
+                lane_info.bucket AS bucket_id,
+                lane_info.customer_name AS customer_name,
+                COUNT(distinct lane_info.ucc128_id) AS count_of_box,
+                SUM(COUNT(distinct lane_info.ucc128_id)) over() as   footer_sum_count_of_box
+                FROM lane_info
+                GROUP BY lane_info.lane_id,
+                      lane_info.bucket,
+                      lane_info.customer_name
+            </pre>
+            </li>
+        </ul>
+        <h2>
+            Data Tables used in this report are:</h2>
+        <ul>
+            <li><b>LANE_RECORD: </b>
+                <ul>
+                    <br />
+                    <li><b>LANE: </b>( Type = xs:ID )
+                        <ul>
+                            <li>Filled by the query (1) by the select clause <i><b>
+                                pkg_lane.get_lane(lane_info.box_id, &#39;Y&#39;)</b></i></li>
+                        </ul>
+                        <br />
+                        <br />
+                    </li>
+                    <li><b>BUCKET: </b>( Type = xs:ID )
+                        <ul>
+                            <li>Filled by the query (1) by the select clause <i><b>lane_info.bucket</b></i></li>
+                        </ul>
+                        <br />
+                        <br />
+                    </li>
+                    <li><b>NAME: </b>( Type = xs:string )
+                        <ul>
+                            <li>Filled by the query (1) by the select clause <i><b>max(lane_info.name)</b></i></li>
+                        </ul>
+                        <br />
+                        <br />
+                    </li>
+                    <li><b>BOXES: </b>( Type = xs:int )
+                        <ul>
+                            <li>Filled by the query (1) by the select clause <i><b>count(lane_info.box_id)</b></i></li>
+                        </ul>
+                        <br />
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h2>
+            Validation details</h2>
+        Bellow queries may have the where clause in the [] brackets. It means these are 
+        the optional parameters. If you do not want to pass these parameters just remove 
+        the [] section.
+        <br />
+        <br />
+        <b>Query:</b><pre><r:query ></pre>
+        <pre> SELECT DISTINCT (bkt.bucket_id) AS &quot;BUCKET&quot; ,
+              ps.warehouse_location as &quot;Warehouse location&quot;
+              FROM dcms8.ps ps, dcms8.box box, dcms8.bucket bkt
+              WHERE ps.pickslip_id = box.pickslip_id
+              AND ps.bucket_id = bkt.bucket_id
+              AND box.sortscan_date IS NULL
+              AND (box.stop_process_date IS NULL OR
+              (box.stop_process_date IS NOT NULL AND
+              box.stop_process_reason NOT IN (&#39;$BOXCANCEL&#39;, &#39;$PSCANCEL&#39;)))
+              AND box.ia_id NOT IN (&#39;SHP&#39;, &#39;ADR&#39;)
+              AND bkt.freeze IS NULL
+              AND ps.reporting_status =&#39;UNDER PROCESS&#39;
+              AND bkt.date_created BETWEEN (:from_date) AND (:to_date) + 1 - 1 / (86400);
+            </pre>       
+        <pre></pre>
+        <b>Description:</b><pre><r:description>
+            Enter the bucket creation date. You will get the bucket ids and corresponding warehouse location. You will choose one bucket_id and warehouse location for which you want to validiate the data
+          </R:DESCRIPTION></pre>
+        <b>Query:</b><pre><r:query ></pre>
+        <pre> SELECT pkg_lane.get_lane(b.ucc128_id, &#39;Y&#39;) AS lane_id,
+              COUNT(DISTINCT b.ucc128_id) AS no_of_boxes
+              FROM dcms8.box b
+              WHERE b.sortscan_date IS NULL
+              AND (b.stop_process_date IS NULL OR
+              (b.stop_process_date IS NOT NULL AND
+              b.stop_process_reason NOT IN (&#39;$BOXCANCEL&#39;, &#39;$PSCANCEL&#39;)))
+              AND b.pickslip_id IN
+              (SELECT pickslip_id
+              FROM dcms8.ps
+              WHERE ps.bucket_id = :bucket_id
+              AND ps.warehouse_location = :warehouse_location
+              AND ps.reporting_status =&#39;UNDER PROCESS&#39;)
+              GROUP BY pkg_lane.get_lane(b.ucc128_id, &#39;Y&#39;);
+            </pre>       
+        <pre></pre>
+        <b>Description:</b><pre><r:description >
+            Enter the Bucket ID and warehouse location retrieves from validiation query 1. You will get laneId and No of Boxes (not passed Sortation).
+          </R:DESCRIPTION></pre>
+        <!--End divTechnical-->
+    </div>
+    </form>
+
+</body>
+</html>

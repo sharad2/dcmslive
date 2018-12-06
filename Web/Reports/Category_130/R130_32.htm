@@ -1,0 +1,223 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+   
+</head>
+<body>
+     <h1 style="text-align: center">
+         130.32: Weight and Cube Exaption Report </span>
+    </h1>
+    <h3 class="style3">
+        Author : Sanjeev Kumar</h3>
+    <ul>
+        <li>Mentor : Hemant k.Varshney</li>
+        <li>$Revision: 2295 $ </li>
+        <li>Reviewed by : Sanjeev Kumar</li>
+        <li>Status : Done</li>
+    </ul>
+     <p>
+         </p>
+    <h2>
+        Overview</h2>
+        This report shows  All sku irrespective of Area,Virtual Warehouse,Warehouse location whose inventory is greater than Zero and who have weight or Voluem set to zero or null
+   
+    <h2>
+        Algorithm</h2>
+        Report use V_SKU_INVENTORY to list all those SKUs who have inventory greater than 0 .Label and Description are fetched from tabel Master Style.Weight ,Volume and UPC_code from table Master_Sku.
+        Condtion of Weight or Volume set to null or zero is checked in table Master_Sku.
+    &nbsp;
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center">
+                <b>Item</b>
+            </td>
+            <td align="center">
+                <b>Summary</b>
+            </td>
+            <td align="center">
+                <b>Default Sort Sequence</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Style
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                Color</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                Dimension
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;3
+            </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                SKU_Size
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+                4</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                Label 
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+               &nbsp;
+            </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                UPC_Code</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+               &nbsp;
+            </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                Description</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+               &nbsp;
+            </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                Weight</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+               &nbsp;
+            </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                Cube</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+               &nbsp;
+            </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+    </table>
+     <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>2 Sec.</p>
+         <h2>
+        Behavior Change</h2>
+        <h2>
+        Issues</h2>
+    No Known Issue.
+    <br />
+    <h2>
+        Prequisites</h2>
+    <p>
+        Private synonym for the following tables are required.</p>
+        <code>create or replace synonym  V_SKU_INVENTORY for dcms4.v_sku_inventory</code><br />
+        <code>create or replace synonym master_style for dcms4.master_style</code><br />
+        <code>create or replace synonym master_sku for dcms4.master_sku</code><br />
+         <h2>
+            Query Documentation
+        </h2>
+        <pre>
+     SELECT  MRI.STYLE AS STYLE, 
+             MRI.COLOR AS COLOR,
+             MRI.DIMENSION AS DIMENSION,
+             MRI.SKU_SIZE AS SKU_SIZE,
+             MAX(MS.LABEL_ID) AS LABEL_ID,
+             MAX(MS.DESCRIPTION) AS DESCR,
+             MAX(MSKU.UPC_CODE) AS UPC_CODE,
+             MAX(MSKU.WEIGHT_PER_DOZEN) AS WEIGHT, 
+             MAX(MSKU.VOLUME_PER_DOZEN) AS VOLUME 
+             FROM V_SKU_INVENTORY MRI 
+             LEFT OUTER JOIN MASTER_STYLE MS 
+             ON MRI.STYLE = MS.STYLE 
+             LEFT OUTER JOIN MASTER_SKU MSKU ON
+             MRI.STYLE = MSKU.STYLE AND MRI.COLOR = MSKU.COLOR
+             AND MRI.DIMENSION = MSKU.DIMENSION 
+             AND MRI.SKU_SIZE = MSKU.SKU_SIZE
+             WHERE NVL(MRI.inventory_quantity, 0) &gt; 0 
+             AND (NVL(MSKU.WEIGHT_PER_DOZEN, 0) = 0 or NVL(MSKU.VOLUME_PER_DOZEN, 0) = 0)
+             GROUP BY MRI.STYLE, MRI.COLOR, MRI.DIMENSION, MRI.SKU_SIZE
+     </pre>
+      <h2>
+            Validation details</h2>
+        <br />
+        <b>Query:</b>
+        <pre>
+SELECT MSKU.STYLE AS STYLE,
+       MSKU.COLOR AS COLOR,
+       MSKU.DIMENSION AS DIMENSION,
+       MSKU.SKU_SIZE AS SKUSIZE,
+       MS.LABEL_ID AS LABEL_ID,
+       MS.DESCRIPTION AS DESCRIPTION,
+       MSKU.UPC_CODE AS UPC_CODE,
+       MSKU.WEIGHT_PER_DOZEN AS WEIGHT,
+       MSKU.VOLUME_PER_DOZEN AS VOLUME
+FROM MASTER_SKU MSKU
+LEFT OUTER JOIN MASTER_STYLE MS
+       ON MSKU.STYLE = MS.STYLE
+WHERE  MS.LABEL_ID = :LABEL_ID
+       AND MSKU.Upc_Code = :Upc_Code
+         </pre>
+              <b>Description:</b>
+        <!--End divTechnical-->
+    </body>
+</html>

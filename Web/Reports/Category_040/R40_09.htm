@@ -1,0 +1,260 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+    
+    <style type="text/css">
+        .style1
+        {
+            height: 19px;
+        }
+    </style>
+    
+</head>
+<body>
+    <form action="R40_09.htm" >
+    <h1>
+        40.09<b> : </b>Cartons on a Pallet</h1>
+    <h4>
+        Author : Sanjeev Kumar</h4>
+    $Revision: 840 $<br />
+    Reviewed By : Ritesh Verma<p>
+        For user specified pallet id, report displays the Carton ID, its pull priority (priority
+        at which the request to be processed), SKU level information, whether they are assigned
+        on any FPK location or not for each carton lying on the pallet.
+    </p>
+    <h3>
+        Overview</h3>
+    <p>
+   Important: The report
+        is helpful in displaying the information about the cartons on a specified pallet
+        so that DC personnel know which carton is on which pallet and if the carton goes
+        missing it could be tracked back as well. .
+    </p>
+    <h3>
+        Algorithm</h3>
+    <h3>
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center">
+               <b>Item</b>
+            </td>
+            <td align="center">
+               <b>Summary</b>
+            </td>
+            <td align="center">
+                <b>Sort Sequence</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pallet
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+               &nbsp;</td>
+            <td>
+            &nbsp;
+            </td>
+        </tr>
+          <tr>
+            <td>
+                Box</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+         <tr>
+            <td class="style1">
+             Carton
+            </td>
+            <td class="style1">
+                No
+            </td>
+            <td align="center" class="style1">
+            &nbsp;
+                </td>
+            <td class="style1">
+              &nbsp; 
+            </td>
+        </tr>
+         <tr>
+            <td>
+                Pickslip_ID
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+            &nbsp;
+            </td>
+        </tr>
+         <tr>
+            <td>
+                Area
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+            &nbsp;
+            </td>
+        </tr>
+         <tr>
+            <td>
+                Expacted_Warehouse_Location
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+            &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td>
+               Bucket_Id
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+            &nbsp;
+            </td>
+        </tr>
+          <tr>
+            <td>
+               Customer_Id
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+            &nbsp;
+            </td>
+        </tr>
+          <tr>
+            <td>
+               Last_Pull_date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+            &nbsp;
+            </td>
+        </tr>
+    </table>
+    <h3>
+        Parameters</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center">
+                <b>Name</b>
+            </td>
+            <td align="center">
+                <b>Default</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pallet
+            </td>
+            <td>
+                No Default
+            </td>
+            <td>
+                Pallet on which the cartons are placed.
+            </td>
+        </tr>
+    </table>
+    <h3>
+        Performance Detail</h3>
+    <p>
+        <i>Expected Time for the report output is </i>1 second</p>
+    <h3>
+        Details</h3>
+    <h3>
+        Behavior Change</h3>
+    <ul>
+        <li>The parameter &quot;Pallet Id&quot; made required.</li>
+    </ul>
+    <h3>
+        Issues</h3>
+    <p>
+        No known issue</p>
+    <h3>
+        Prerequisites</h3>
+    <p>
+        Private synonyms for the following tables are requried</p> 
+    <div>
+        <h3>
+            Parameter Technical Details</h3>
+        <h3>
+            Parameter Validation</h3>
+        No special validations.
+        <h3>
+            Query&#39;s documentation:</h3>
+        <ul>
+            <li>The query displays the Carton ID its pull priority,SKU level information,assigned
+                FPK location for each carton lying on the pallet.
+                <br />
+                <pre>
+            </pre>
+            </li>
+        </ul>
+        <h3>
+            Validation details</h3>
+        <b>Query:</b>
+        <pre> 
+        select
+       b.carton_id           as carton_id,
+       b.ucc128_id           as box_id,
+       b.pallet_id           as pallet_id,
+       b.pickslip_id         as pickslip_id,
+       b.ia_id               as area 
+       from box b 
+       where b.pallet_id=:pallet_id             
+            </pre>
+        <b>Query:</b>
+        <pre> 
+          select sc.pallet_id as pallet_id,
+              sc.carton_id as caron_id,
+              sc.last_pulled_date as last_pulled_date,
+              SC.CARTON_STORAGE_AREA AS AREA
+           from src_carton sc
+       where sc.pallet_id=:pallet_id             
+            </pre>
+        <b>Description:</b><pre>
+The above query display the Pallet Detail specified for the carton lying on the pallet.
+					</pre>
+        <!--End divTechnical-->
+    </div>
+    </form>
+</body>
+</html>

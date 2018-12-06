@@ -1,0 +1,441 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0064)http://w3chile/xtremereporter/reportdoc.aspx?_Report=R130.08.xsd -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+</head>
+<body>
+    
+    <h1>
+        130.08 : Carton Suspense Report</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    $Revision: 6332 $<br />
+    Status: Reviewed<br>
+    Reviewed By : Manmohan Bisht<br />
+    Tested By : Hemant Singh<br />
+    <br />
+    Displays a list of cartons, which are in suspense 
+    in the specified area and Building. Report 
+    displays the cartons along with their SKU, quantity, suspense date. It also shows 
+    the operator name who last work on this carton.     User can also see the 
+    suspense carton&nbsp; for the Specified passed building.     <h2>
+        Overview</h2>
+    This report displays cartons in suspense, which were marked in suspense because
+    of some reason. It may be possible that a carton, which was already in suspense,
+    is scanned and marked in suspense again. In this case, report will show the date
+    when the carton was last marked in suspense. By default this report is sorted on 
+    Building, area&nbsp; and SKU in ascending order.
+    <h2>
+        Algorithm</h2>
+    Get the suspense carton information from src_carton and src_carton_detail tables 
+    which includes carton, suspense_date , pallet, 
+    carton location, vwh, area , quality,style ,color,dimension, size, quanity and operator name. 
+    It retrieves the label of the SKU from the master_style table. It retrieves the 
+    assigned location of the SKU from ialoc table.&nbsp;<h3>
+        Output</h3>
+    <table cellspacing="1" cellpadding="1" width="100%" border="1">
+        <tbody>
+            <tr>
+                <td align="middle" width="25%">
+                    <b>Item</b>
+                </td>
+                <td align="middle" width="20%">
+                    <b>Summary</b>
+                </td>
+                <td align="middle" width="10%">
+                    <b>Sort Sequence</b>
+                </td>
+                <td align="middle" width="35%">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Building</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                    1</td>
+                <td>
+                    Building of the carton
+                </td>
+            </tr>
+            <tr>
+                <td class="style1">
+                    Area
+                </td>
+                <td class="style1">
+                    No
+                </td>
+                <td align="middle" class="style1">
+                    &nbsp;
+                    2</td>
+                <td class="style1">
+                    Area of the carton
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Loaction</td>
+                <td>
+                    No</td>
+                <td align="middle">
+                    &nbsp;</td>
+                <td>
+                    Loaction where carton was lying</td>
+            </tr>
+            <tr>
+                <td>
+                    Carton
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    Carton Id of the suspense</R:ITEM> carton
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pallet</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    Pallet where carton was lying</td>
+            </tr>
+            <tr>
+                <td>
+                    Label
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    Style label of the SKU in the carton
+                </td>
+            </tr>
+            <tr>
+                <td class="style2">
+                    Suspense Date
+                </td>
+                <td class="style2">
+                    No
+                </td>
+                <td align="middle" class="style2">
+                    &nbsp;
+                </td>
+                <td class="style2">
+                    The date when carton was last sent in suspense
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Operator
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    The operator, who last work on it.&nbsp; In most of 
+                    the cases this is the operator who send this carton in suspense but there might 
+                    be some cases when system records some activities on the carton after sending 
+                    them to suspense in that case the operator who last work on that carton will be 
+                    shown in this column.</td>
+            </tr>
+            <tr>
+                <td>
+                    Style
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    3</td>
+                <td>
+                    Style of the SKU in the carton
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Color
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    4</td>
+                <td>
+                    Color of the SKU in the carton
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Dimension
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    5
+                </td>
+                <td>
+                    Dimension of the SKU in the carton
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Size
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    6
+                </td>
+                <td>
+                    Size of the SKU in the carton
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    Quality</td>
+                <td>
+                    No</td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    Quality of the SKU</td>
+            </tr>
+            <tr>
+                <td>
+                    Quantity
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    Quantity of the SKU in the carton
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Assigned FPK Location
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    Location, where the SKU of the carton is 
+        assigned. There may be more than one location assigned for a SKU.If 
+                    SKU is
+<strong>assigned </strong>on 2 
+                    locations both the location will be displayed and if there are more than 2 
+                    locations than it shows the first location and last location and also show the 
+                    count of locations in tooltip.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                  VWh</td>
+                <td>
+                    No&nbsp;
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    The virtual warehouse of carton
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table cellspacing="1" cellpadding="1" width="100%" border="1">
+        <tbody>
+            <tr>
+                <td align="middle" class="style6">
+                    <b>Name</b>
+                </td>
+                <td align="middle" class="style5">
+                    <b>Type</b>
+                </td>
+                <td align="middle">
+                    <b>Default</b>
+                </td>
+                <td align="middle">
+                    <b>Description</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="style6">
+                    Area
+                </td>
+                <td class="style5">
+                    String
+                </td>
+                <td class="style4">
+                    All</td>
+                <td>
+                    Area, where the Carton is last lying 
+                </td>
+            </tr>
+            <tr>
+                <td class="style6">
+                    Building</td>
+                <td class="style5">
+                    String
+                </td>
+                <td class="style4">
+                    All
+                </td>
+                <td>
+                    Building of Area
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>0.17 Seconds</p>
+    <h2>
+       Behavior Change</h2>
+    <ul>
+        <li>Fixed bug, report will not crash while performing sorting on the column &#39;carton_id&#39;.</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Synonims used in the report aree</p>
+    <p>
+        src_carton, 
+        <br />
+        src_carton_detail, 
+        <br />
+        master_sku, 
+        <br />
+        master_style, 
+        <br />
+        tab_inventory_area,<br />
+        master_storage_area<br />
+        ialoc, 
+        </p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        create or replace synonym src_carton for dcms4.src_carton;
+        <br />
+        create or replace synonym src_carton_detail for dcms4.src_carton_detail;
+        <br />
+        create or replace synonym master_sku for dcms4.master_sku;
+        <br />
+        create or replace synonym TAB_INVENTORY_AREA for dcms4.TAB_INVENTORY_AREA; <br />
+        create or replace synonym MASTER_STORAGE_LOCATION for dcms4.MASTER_STORAGE_LOCATION; <br />
+        create or replace synonym master_style for dcms4.master_style;
+        <br />
+        create or replace synonym ialoc for dcms8.ialoc;
+        <br />
+    </p>
+    <p>
+Following appSettings are required:</p>
+    <p>
+       Report is not using AppSetting</p>
+    <h2>
+        Query&#39;s documentation</h2>
+<pre>
+SELECT   CTN.CARTON_ID AS CARTON_ID,
+         MAX(CTN.CARTON_STORAGE_AREA) AS CARTON_STORAGE_AREA,
+         MAX(MST.LABEL_ID) AS LABEL_ID,
+         MAX(CTN.SUSPENSE_DATE) AS SUSPENSE_DATE,
+         MAX(CTN.PALLET_ID) AS PALLET_ID,
+         MAX(CTN.LOCATION_ID) AS carton_location,
+         MAX(MSKU.STYLE) AS STYLE,
+         MAX(MSKU.COLOR) AS COLOR,
+         MAX(MSKU.DIMENSION) AS DIMENSION,
+         MAX(MSKU.SKU_SIZE) AS SKU_SIZE,
+         MAX(CTN.QUALITY_CODE) AS QUALITY_CODE,
+         MAX(CTNDET.QUANTITY) AS QUANTITY,
+         MIN(IFO.LOCATION_ID) AS MIN_FPK_LOCATION,
+         MAX(IFO.LOCATION_ID) AS MAX_FPK_LOCATION,
+         COUNT(DISTINCT IFO.LOCATION_ID) AS COUNT_FPK_LOCATION,
+         MAX(CTN.VWH_ID) AS VWH_ID,
+         MAX(CTN.MODIFIED_BY)AS operator_name,
+         MAX(NVL(TIA.WAREHOUSE_LOCATION_ID,MSL.WAREHOUSE_LOCATION_ID)) AS WAREHOUSE_LOCATION_ID
+    FROM SRC_CARTON CTN
+    LEFT OUTER JOIN SRC_CARTON_DETAIL CTNDET
+      ON CTN.CARTON_ID = CTNDET.CARTON_ID
+    LEFT OUTER JOIN MASTER_SKU MSKU
+      ON MSKU.SKU_ID = CTNDET.SKU_ID
+    LEFT OUTER JOIN MASTER_STYLE MST
+      ON MST.STYLE = MSKU.STYLE
+    LEFT OUTER JOIN TAB_INVENTORY_AREA TIA ON
+    CTN.CARTON_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+    LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL ON
+    CTN.CARTON_STORAGE_AREA = MSL.STORAGE_AREA
+    AND CTN.LOCATION_ID = MSL.LOCATION_ID
+    LEFT OUTER JOIN IALOC IFO
+      ON MSKU.UPC_CODE = IFO.ASSIGNED_UPC_CODE
+    AND CTN.VWH_ID = IFO.VWH_ID   
+    WHERE CTN.SUSPENSE_DATE IS NOT NULL
+    <if>AND CTN.CARTON_STORAGE_AREA = :carton_storage_area</if>
+     <if c="$warehouse_location_id != 'Unknown'">AND (TIA.WAREHOUSE_LOCATION_ID = :warehouse_location_id or MSL.WAREHOUSE_LOCATION_ID = :warehouse_location_id) </if>
+   <if c="$warehouse_location_id ='Unknown'">and (TIA.WAREHOUSE_LOCATION_ID is null and MSL.Warehouse_Location_Id is null)</if> 
+    GROUP BY CTN.CARTON_ID            
+  </pre>
+    <h2>
+        Validation Query: </h2>
+    <br>
+    <b>Query:&nbsp; Below Query&nbsp; displays the carton detail </b><pre>
+select scd.style,
+       scd.color,
+       scd.dimension,
+       scd.sku_size,
+       scd.quantity,
+       sc.pallet_id,
+       sc.quality_code
+  from src_carton_detail scd
+ inner join src_carton sc
+    on scd.carton_id = sc.carton_id
+ where scd.carton_id = 'R1208579'
+
+            </pre>
+            <h2>Validation Query: </h2>
+           <b>Query: Below query displays location, label_id and vwh_id. </b>
+            <pre>
+select i.location_id, mst.label_id, i.vwh_id
+  from ialoc i
+ inner join master_sku ms
+    on i.assigned_upc_code = ms.upc_code
+ inner join master_style mst
+    on ms.style = mst.style
+ where ms.style = '00011'
+   and ms.color = 'FF'
+   and ms.dimension = '.'
+   and ms.sku_size = '32'
+</pre>
+</body>
+</html>

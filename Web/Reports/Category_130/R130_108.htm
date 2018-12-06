@@ -1,0 +1,533 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html>
+<head>
+    <title>Report Documentation</title>
+    <!--<script type="text/javascript">
+		    /*
+		      Toggles the visibility of the passed divToToggle object.
+		    */
+			function toggleVisibility(oVisibilityToggle, oInnerTextToggle)
+			{
+                if (oVisibilityToggle.style.display=='none')
+ 
+                {
+                  oVisibilityToggle.style.display='';
+                  oInnerTextToggle.innerText = "Hide Technical Documentaion";
+                }
+                else
+                {
+                  oVisibilityToggle.style.display='none';
+                  oInnerTextToggle.innerText = "View Technical Documentaion" 
+                }
+            }
+ 
+    </script>-->
+</head>
+<body>
+    <form name="Form1" method="post" id="Form1">
+    <div>
+        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTEzNDA3MDMyNjVkZPEvTwECqjV0POB+FxLkh0ryqz4e" />
+    </div>
+    <h1 align="center">
+        130<b>.</b>108<b> : </b>Numbered Area Carton Details Report</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    Mentor: Hemant K. Varshney<br />
+    $Revision:35676&nbsp; $<br />
+    Status: Tested<br />
+    Tested By : Shivani Bist<br />
+    <h2>
+        Overview</h2>
+    <body>
+        <p>
+            This report will display the carton details along with building and virtual warehouse
+            for numbered area for a each&nbsp; label.</p>
+    </body>
+    <h2>
+        Algorithm</h2>
+    The carton details along with virtual warehouse are retrieved from src_carton and
+    src_carton_detail tables. The warehouse location for carton is retrieved on the
+    basis of carton location in master_storage_location.<h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="20%" align="center">
+                <b>Name</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Type</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Default</b>
+            </td>
+            <td width="60%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Virtual Warehouse
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                The virtual warehouse Id.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                The warehouse location of cartons.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Style Label
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                The label assigned to the carton.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Quality
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Quality Code
+            </td>
+        </tr>
+    </table>
+    &nbsp;<h3>
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="25%" align="center">
+                <b>Item</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Summary</b>
+            </td>
+            <td width="10%" align="center">
+                <b>Sort Sequence</b>
+            </td>
+            <td width="35%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Carton
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2
+            </td>
+            <td>
+                <r:item term="Carton Id" key="true" sortsequence="2">
+            The Carton Id assigned
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Location
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                <r:item term="Location Id" key="true" sortsequence="1">
+            The location Id assigned.
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pallet
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                The Pallet Id assigned
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Suspense Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="Suspense Date">The date on which cartons were put in suspense.</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Req Process Id
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Request Process&nbsp; Id&nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Req Module
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Request Module code
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Style
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="Style">
+            Style of SKU.
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Color
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="Color">
+            Color of SKU.
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Dimension
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="Dimension">
+            Dimension of SKU.
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                SKU Size
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="SKU Size">
+            Size of SKU.
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Quality
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Quality Code
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Quantity
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="Total Quantity" summary="Sum">
+            Total quantity of the SKU.
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                WLoc
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="Warehouse Loc" xmlns:mstns="http://tempuri.org/R130.108.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">Warehouse location assigned to the SKUs.</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                VWh
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="VWH ID" xmlns:mstns="http://tempuri.org/R130.108.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">Virtual Warehouse Id</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Label
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="Label Id" xmlns:mstns="http://tempuri.org/R130.108.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">Label 
+                Id assigned to carton</r:item>
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 2</i> second</p>
+    The report exhibits linear performance with respect to the number of records in
+    src_carton_detail. There is full scan on tables src_carton_detail,master_style,
+    tab_inventory_area, master_storage_location and index based scan on src_carton.<br />
+    Index CTN_STOREAREA_I in src_carton table.
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Changed name of column&nbsp; from Wloc to Building.</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    No Known Issue.
+    <br />
+    <br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        <b>Synonyms</b> used in the report are</p>
+    <p>
+        SRC_CARTON,
+        <br />
+        SRC_CARTON_DETAIL,<br />
+        MASTER_STYLE,<br />
+        MASTER_STORAGE_LOCATION,<br />
+        TAB_INVENTORY_AREA</p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        create or replace synonym SRC_CARTON for dcms4.SRC_CARTON;
+        <br />
+        create or replace synonym SRC_CARTON_DETAIL for dcms4.SRC_CARTON_DETAIL;
+        <br />
+        create or replace synonym MASTER_STYLE for dcms4.MASTER_STYLE;
+        <br />
+        create or replace synonym MASTER_STORAGE_LOCATION for dcms4.MASTER_STORAGE_LOCATION;<br />
+        create or replace synonym TAB_INVENTORY_AREA for dcms4.TAB_INVENTORY_AREA;
+    </p>
+    <p>
+        <b>AppSettings</b> used in the report.</p>
+    <code>&lt;add key="PageSize" value="200" /&gt;</code>
+    <!--<a href="javascript:void(0)" onclick="toggleVisibility(divTechnical, this)">
+        View Technical Documentation</a><div id="divTechnical" style="display: inline">-->
+    <h2>
+        Parameter Validation</h2>
+    No special validations.
+    <h2>
+        Query's documentation:</h2>
+    <ul>
+        <li>
+            <r:doc>
+            The query will get all the carton details along with warehouse Id from tables src_carton and src_carton_detail.
+            The label assigned to carton is retrieved from master_style. The warehouse location for carton is retrieved on the basis of location in master_storage_location.
+          </r:doc>
+        </li>
+    </ul>
+    <b>Query:</b><pre><r:query>
+       SELECT MAX(CTN.VWH_ID) AS VWH_ID,
+       CTN.CARTON_ID AS CARTON_ID,
+       MAX(CTN.PALLET_ID) AS PALLET_ID,
+       MAX(CTN.LOCATION_ID) AS LOCATION_ID,
+       MAX(CTN.SUSPENSE_DATE) AS SUSPENSE_DATE,
+       MAX(CTNDET.REQ_PROCESS_ID) AS REQ_PROCESS_ID,
+       MAX(CTNDET.REQ_MODULE_CODE) AS REQ_MODULE_CODE,
+       SUM(CTNDET.QUANTITY) AS QUANTITY,
+       MAX(MSKU.STYLE) AS STYLE,
+       MAX(MSKU.COLOR) AS COLOR,
+       MAX(MSKU.DIMENSION) AS DIMENSION,
+       MAX(MSKU.SKU_SIZE) AS SKU_SIZE,
+       MAX(CTN.QUALITY_CODE) AS QUALITY_CODE,
+       MAX(MS.LABEL_ID) AS LABEL_ID,
+       MAX(COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                    MSLOC.WAREHOUSE_LOCATION_ID,
+                    'Unknown')) AS WAREHOUSE_LOCATION_ID
+  FROM SRC_CARTON CTN
+ INNER JOIN SRC_CARTON_DETAIL CTNDET
+    ON CTN.CARTON_ID = CTNDET.CARTON_ID
+ INNER JOIN MASTER_STYLE MS
+    ON CTNDET.STYLE = MS.STYLE
+ INNER JOIN MASTER_SKU MSKU
+    ON CTNDET.SKU_ID = MSKU.SKU_ID
+  LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSLOC
+    ON CTN.CARTON_STORAGE_AREA = MSLOC.STORAGE_AREA
+   AND CTN.LOCATION_ID = MSLOC.LOCATION_ID
+ INNER JOIN TAB_INVENTORY_AREA TIA
+    ON CTN.CARTON_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+ WHERE TIA.LOCATION_NUMBERING_FLAG = 'Y'
+   <if c="$warehouse_location_id != 'Unknown'"> AND NVL(TIA.WAREHOUSE_LOCATION_ID, MSLOC.WAREHOUSE_LOCATION_ID) =
+       :WAREHOUSE_LOCATION_ID</if>
+   <if c="$warehouse_location_id ='Unknown'">AND TIA.WAREHOUSE_LOCATION_ID IS NULL
+   AND MSLOC.WAREHOUSE_LOCATION_ID IS NULL</if>
+   <if>AND CTN.VWH_ID = cast(:vwh_id as varchar2(255))</if>
+   <if>AND MS.LABEL_ID = cast(:style_label as varchar2(255))</if>
+   <if>AND ctn.quality_code = cast(:quality_code as varchar2(255))</if>
+ GROUP BY CTN.CARTON_ID
+          </r:query></pre>
+    <h2>
+        Validation details</h2>
+    <b>Query1: Below query shows the style,color,dim,size,suspense date,req module code
+        and req process id for specific carton.</b>
+    <pre>
+    SELECT 
+       SC.STYLE,
+       SC.COLOR,
+       SC.DIMENSION,
+       SC.SKU_SIZE,
+       S.SUSPENSE_DATE,
+       SC.REQ_PROCESS_ID,
+       SC.REQ_MODULE_CODE,
+       SC.QUANTITY,
+       S.VWH_ID
+  FROM SRC_CARTON S
+ INNER JOIN SRC_CARTON_DETAIL SC
+    ON S.CARTON_ID = SC.CARTON_ID
+ WHERE S.CARTON_ID = 'R1162972'
+    </pre>
+    <b>Query2: Below query shows suspense date, vwh and building for the pass carton.</b>
+    <pre>
+SELECT S.SUSPENSE_DATE,
+       S.VWH_ID,
+       COALESCE(T.WAREHOUSE_LOCATION_ID, M.WAREHOUSE_LOCATION_ID, 'Unknown')
+  FROM SRC_CARTON S
+ INNER JOIN TAB_INVENTORY_AREA T
+    ON S.CARTON_STORAGE_AREA = T.INVENTORY_STORAGE_AREA
+  LEFT OUTER JOIN MASTER_STORAGE_LOCATION M
+    ON S.CARTON_STORAGE_AREA = M.STORAGE_AREA
+   AND S.LOCATION_ID = M.LOCATION_ID
+ WHERE S.CARTON_ID = 'R1162972'
+    </pre>
+    <b>Query 3 : Below query shows label for pass carton.</b>
+    <pre>
+    SELECT M.LABEL_ID
+  FROM SRC_CARTON S
+ INNER JOIN SRC_CARTON_DETAIL D
+    ON S.CARTON_ID = D.CARTON_ID
+  LEFT OUTER JOIN MASTER_STYLE M
+    ON D.STYLE = M.STYLE
+ WHERE S.CARTON_ID = 'R1162972'
+    </pre>
+    <b>Query 4: Below query shows total carton</b>
+    <pre>
+    SELECT COUNT(DISTINCT S.CARTON_ID)
+  FROM SRC_CARTON S
+ INNER JOIN SRC_CARTON_DETAIL D
+    ON S.CARTON_ID = D.CARTON_ID
+  LEFT OUTER JOIN MASTER_STYLE MS
+    ON D.STYLE = MS.STYLE
+ INNER JOIN TAB_INVENTORY_AREA T
+    ON S.CARTON_STORAGE_AREA = T.INVENTORY_STORAGE_AREA
+  LEFT OUTER JOIN MASTER_STORAGE_LOCATION M
+    ON S.CARTON_STORAGE_AREA = M.STORAGE_AREA
+   AND S.LOCATION_ID = M.LOCATION_ID
+ WHERE S.QUALITY_CODE = '01'
+   AND S.VWH_ID = '15'
+   AND MS.LABEL_ID = 'NS'
+   AND NVL(T.WAREHOUSE_LOCATION_ID, M.WAREHOUSE_LOCATION_ID) = 'ANX1'
+    </pre>
+    <!--End divTechnical-->
+    </form>
+</body>
+</html>

@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="32370cb5-7504-45ad-9c91-7c79c958c718" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <summary>
+      <para>
+        EclipseLibrary.NET places great emphasis on making it convenient to develop pages which can load
+        AJAX content. The AJAX capabilities available today are impressive, but they will further mature as the
+        library evolves.
+      </para>
+    </summary>
+    <introduction>
+      <autoOutline xmlns="" />
+      <para>
+        The <codeEntityReference>T:EclipseLibrary.Web.JQuery.Dialog</codeEntityReference> class makes it possible to show the
+        contents of a remote page within a dialog.
+      </para>
+      <para>
+        All <codeEntityReference>T:EclipseLibrary.Web.JQuery.Input.InputControlBase</codeEntityReference>
+        derived controls support the concept of cascading. This means that they can update their content via AJAX
+        whenever the contents of some other control changes.
+      </para>
+      <para>
+        <codeEntityReference>T:EclipseLibrary.Web.JQuery.Input.AjaxDropDown</codeEntityReference>
+        has the ability to load its entries via AJAX when it is first clicked. This helps in minimizing the page
+        markup when you have drop downs which the user will likely not access.
+      </para>
+    </introduction>
+    <section address="AjaxDialog">
+      <title>The AJAX Dialog</title>
+      <content>
+        <para>
+          <codeEntityReference>T:EclipseLibrary.Web.JQuery.Dialog</codeEntityReference> is the flagship class which
+          makes it possible to load a remote page into a primary page. The <codeInline>Dialog</codeInline> class can act
+          as a pseudo browser in the sense that the remotely loaded page need not interact with the calling page in any way.
+          This is very useful for loading help pages on demand.
+        </para>
+        <para>
+          The real power of the <codeInline>Dialog</codeInline> class lies in the fact that it raises various client side events
+          which during the load process which you can hook into and customize the loading process. For example, you can
+          pass some query string to the page to be loaded depending on what the user has selected in your UI. When the page posts
+          back, you can update the query string which will be received by the posted page.
+        </para>
+        <para>
+          The remote page can also communicate to the calling page that it has finished performing the work it wanted to perform
+          and return any javascript object to the calling page indicating what work was performed. The calling page can then
+          use the information in this object to update its UI and close the dialog.
+        </para>
+      </content>
+    </section>
+    <section address="Cascading">
+      <title>Cascading Input Controls</title>
+      <content>
+        <para>
+          The classical example of cascading controls is the case where the list of states in the states drop down
+          updates itself each time the user selects a country in a different drop down. 
+          <codeEntityReference qualifyHint="true">P:EclipseLibrary.Web.JQuery.Input.InputControlBase.Cascade</codeEntityReference>
+          property of <codeEntityReference>T:EclipseLibrary.Web.JQuery.Input.InputControlBase</codeEntityReference> is inherited
+          by all derived controls, thus making it possible for them to participate in a cascading chain. The chain can be as
+          long as you like but circular chains are not permitted.
+        </para>
+        <para>
+          We now provide a complete working example of a Customer Picker. In this picker, the user must first select a customer
+          type. Based on the customer type selected, the customer drop down fills up with customers of that type.
+          The following is the markup of this page and it is discussed immediately afterwards.
+        </para>
+        <code language="c#">
+          <![CDATA[
+<d:CustomerTypeSelector runat="server" ID="ddlCustomerType" />
+<br />
+<i:AjaxDropDown ID="ddlCustomers" runat="server" OnClientChange="ddlCustomers_change"
+    Width="22em">
+    <Validators>
+        <i:Required />
+    </Validators>
+    <Cascadable CascadeParentId="ddlCustomerType" WebMethod="GetCustomers" WebServicePath="../Services/ShippingMasters.asmx"
+        InitializeAtStartup="true" />
+</i:AjaxDropDown>          
+          ]]>
+        </code>
+        <list class="ordered">
+          <listItem>
+            <para>
+              <codeInline>CustomerTypeSelector</codeInline> is a custom control derived from 
+              <codeEntityReference>T:EclipseLibrary.Web.JQuery.Input.DropDownListEx</codeEntityReference> which displays
+              all customer types in a drop down list.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              <codeInline>ddlCustomers</codeInline> is an
+              <codeEntityReference>T:EclipseLibrary.Web.JQuery.Input.AjaxDropDown</codeEntityReference>
+              which fills its item via an AJAX call to the web method <codeInline>GetCustomers</codeInline>
+              whose code is shown later. The 
+              <codeEntityReference>P:EclipseLibrary.Web.JQuery.Input.CascadableHelper.InitializeAtStartup</codeEntityReference>
+              property specifies that this web method should be called as soon as the page is loaded to fill the customers
+              of the initially selected customer type.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              The <codeEntityReference>P:EclipseLibrary.Web.JQuery.Input.CascadableHelper.CascadeParentId</codeEntityReference>
+              sets up the relationship that <codeInline>ddlCustomers</codeInline> needs to be repopulated each time the contents
+              of <codeInline>ddlCustomerType</codeInline> change.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              This simple markup is sufficient to ensure that the list of customers will always display the list corresponding
+              to the selected customer type. No code is required in the code behind file. The only missing link is the web method which is
+              as follows. It simply executes a query and returns an array of objects containing <codeInline>Text</codeInline>
+              and <codeInline>Value</codeInline>. The passed <codeInline>parentKeys</codeInline> contains 
+              only a single element which is the customer type selected by the user.
+            </para>
+            <code language="c#">
+              <![CDATA[
+[WebMethod]
+public object[] GetCustomers(string[] parentKeys)
+{
+    var settings = ConfigurationManager.ConnectionStrings["dcms4"];
+    using (OracleDataSource ds = new OracleDataSource())
+    {
+        ds.SelectCommand = @"
+select cust.customer_id as customer_id, cust.name as customer_name
+from cust cust
+where cust.account_type = :customer_type
+order by cust.name            
+";
+        ds.ConnectionString = settings.ConnectionString;
+        ds.ProviderName = settings.ProviderName;
+        ds.SelectParameters.Add("customer_type", System.Data.DbType.String, parentKeys[0]);
+        ds.SysContext.ModuleName = "GetCustomers Web Method";
+        return ds.Select(DataSourceSelectArguments.Empty).Cast<object>()
+            .Select(p => new
+            {
+                Text = DataBinder.Eval(p, "customer_name", "{0}"),
+                Value = DataBinder.Eval(p, "customer_id", "{0}"),
+            }).ToArray();
+    }
+}
+              ]]>
+            </code>
+          </listItem>
+        </list>
+      </content>
+    </section>
+    <relatedTopics>
+      <codeEntityReference>T:EclipseLibrary.Web.JQuery.Input.AjaxDropDown</codeEntityReference>
+      <codeEntityReference>T:EclipseLibrary.Web.JQuery.Dialog</codeEntityReference>
+      <codeEntityReference>T:EclipseLibrary.Web.JQuery.Input.CascadableHelper</codeEntityReference>
+      <codeEntityReference>T:EclipseLibrary.Web.JQuery.AjaxDialogSettings</codeEntityReference>
+    </relatedTopics>
+  </developerConceptualDocument>
+
+
+</topic>

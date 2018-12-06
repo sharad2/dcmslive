@@ -1,0 +1,360 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>R110_20 Cube Estimation Report</title>
+</head>
+<body>
+<h1 style="text-align: center">
+        110.20 Cube Estimation Report</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <ul style="list-style: none">
+        <li>Mentor: Manmohan Bisht</li>
+        <li>$Revision: 2141 $</li>
+        <li>Status: Done</li>
+        <li>Tested By: DPanwar</li>
+    </ul>
+    <p>For the passed customer ,start date range and building this report displays the cube estimation results.</p>
+    <h2>
+        Overview</h2>
+        
+        <p>The report displays the estimated boxes for a passed customer and specified start date 
+            range.The report is also displaying on the basis of building. 
+
+</p>
+         <h2>
+        Algorithm</h2>
+        The report query get all the 
+    estimated result for a passed customer id and building from cube_estimate table.
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:25%; text-align:center">
+                <b>Item</b>
+            </td>
+            <td style="width:20%; text-align:center">
+                <b>Summary</b>
+            </td>
+            <td style="width:10%; text-align:center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+        <td>
+        PO ID
+        </td>
+         <td>
+        </td>
+         <td>
+         1
+        </td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        DC_ID
+        </td>
+         <td>
+        </td>
+         <td>
+             2</td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        LABEL
+        </td>
+         <td>
+        </td>
+         <td>
+             3</td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+       CARRIER_ID
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+            PICKUP_DATE</td>
+         <td>
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        ROUTED
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+            STATUS
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        START_DATE
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        DC_CANCEL_DATE
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        NO_OF_PICKSLIPS
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        NO_OF_ORDERED_PIECES
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        NO_OF_BOXES
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+            VOLUME
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+            WEIGHT
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+            BUILDING
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        INSERT_DATE
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        INSERT_BY 
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+         <td>
+        </td>
+        </tr>
+        </table>
+        <h2>Parameter</h2>
+        <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:20% ; text-align:center">
+                <b>Name</b>
+            </td>
+            <td style="width:15% ; text-align:center">
+                <b>Type</b>
+            </td>
+            <td style="width:20%; text-align:center">
+                <b>Default</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+        <td>
+        Customer_ID
+        </td>
+         <td>
+             String</td>
+         <td>
+             Null</td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        Start Date
+        </td>
+         <td>
+             date</td>
+         <td>
+             From 
+             start date is equal to sysdate - 7 and to start date&nbsp;is equal to current date.
+        </td>
+         <td>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        Building
+        </td>
+         <td>
+             &nbsp;drop down&nbsp;</td>
+         <td>
+             All
+        </td>
+         <td>
+        </td>
+        </tr>
+        </table>
+         <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 10</i> Sec.</p>
+         <h2>
+        Behavior Change</h2>
+        <ul>
+        <li>None</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>None</li>
+    </ul>
+        <h2>
+        Prerequisites</h2>
+        <p>
+        Private synonyms for the following tables are requried</p>
+        <p>
+        <b>Use the below script to create the synonyms</b></p>
+        <p>create or replace synonym CUBE_ESTIMATION for dcms8.CUBE_ESTIMATION;</p>
+        <h2>
+        Parameter Technical Details</h2>
+        <ul>
+        <li>Start_Date (Type = Date): Restrict output of customer put in start date, customer id and building within 
+            the date range. This is a date range control. </li>
+        <li>Customer ID (Type = ID): Customer details about the customer </li>
+        <li>Building (Type = drop down): it is show the building wise data from table cube_estimate.</li>
+    </ul>
+        <h2>
+        Parameter Validation</h2>
+    No special validations.
+
+    <h2>Query documentation:</h2>
+    <pre>
+    SELECT ce.PO_ID,
+       ce.DC_ID,
+       ce.ITERATION,
+       ce.LABEL_ID,
+       ce.CARRIER_ID,
+       ce.PICKUP_DATE,
+       ce.ROUTED,
+       ce.PS_STATUS_ID,
+       ce.START_DATE,
+       ce.DC_CANCEL_DATE,
+       ce.NO_OF_PICKSLIPS,
+       ce.NO_OF_ORDERED_PIECES,
+       ce.NO_OF_BOXES,
+       ce.TOTAL_VOLUME,
+       ce.TOTAL_WEIGHT,
+       ce.WAREHOUSE_LOCATION_ID,
+       ce.INSERT_DATE,
+       ce.INSERTED_BY
+  FROM CUBE_ESTIMATION CE
+ WHERE <if>CE.CUSTOMER_ID = :CUSTOMER_ID</if>
+        <if>AND CE.start_date &gt;= CAST(:delivery_start_date AS DATE)</if>      
+        <if>AND CE.start_date &lt; CAST(:delivery_end_date AS DATE) + 1</if> 
+   <if>AND CE.warehouse_location_id = :warehouse_location_id</if>
+    </pre>
+    <h2>Validation Detail</h2>
+    <p>Bellow queries may have the where clause. It means these are the optional parameters. If you do not want to pass these parameters just remove the 
+        condition section. 
+</p>
+<b>Query :</b>
+<pre>
+select * from CUBE_ESTIMATION CE
+WHERE CE.CUSTOMER_ID = :CUSTOMER_ID
+AND CE.start_date >= CAST(:delivery_start_date AS DATE)      
+ AND CE.start_date < CAST(:delivery_end_date AS DATE) + 1 
+  AND CE.warehouse_location_id = :warehouse_location_id
+</pre>
+</body>
+</html>

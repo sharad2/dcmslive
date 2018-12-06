@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="a91c2ce7-8118-4bcf-ab6f-4f00a86cfd8d" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <summary>
+      <para>
+        Provides many useful javascript functions to access rows,columns and cells easily.
+      </para>
+    </summary>
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+      <para>Required introduction</para>
+    </introduction>
+    <!-- Add one or more top-level section elements.  These are collapsible.
+         If using <autoOutline />, add an address attribute to identify it
+         and specify a title so that it can be jumped to with a hyperlink. -->
+    <section address="CodeExamples">
+      <title>Public Functions</title>
+      <content>
+        <!-- Uncomment this to create a sub-section outline
+        <autoOutline /> -->
+        <para>Add one or more sections with content</para>
+      </content>
+      <sections>
+        <section address="SubSection1">
+          <title>selectedKeys</title>
+          <content>
+            <para>
+              Returns an array of data key values. The first array is the values of the first data key and so on.
+              The length of the returned array is always equal to the number of data keys.
+              If there are no data keys, the length of the array would be 0
+              If there are no rows, the length of each inner array would be 0.
+              Example: DataKeyNames=customer_id,po_id. Suppose three rows are selected. The return value would be
+              [[customer_id1,customer_id2,customer_id3] [po_id1,po_id2,po_id3]]
+            </para>
+            <code language="js">
+              var keys = $('#gvBoxes').gridViewEx('selectedKeys'); // gvBoxes is the ID of the grid.
+            </code>
+          </content>
+        </section>
+        <section address="SubSection2">
+          <title>selectedRows</title>
+          <content>
+            <para>
+              Returns a jquery object containing all tr elements which are currently selected. In the below mentioned example
+              we are disabling the selected rows which we find using selectedRows function.
+
+            </para>
+            <code language="js">
+              $('#gvPickSlip').gridViewEx('selectedRows').attr('disabled','true'); // gvPickSlip is the ID of the grid
+            </code>
+            <para>
+              The example below shows how you can disable selected rows of a grid.
+
+            </para>
+          </content>
+        </section>
+        <section address="SubSection3">
+          <title>sum</title>
+          <content>
+            <para>
+              Calculates the sum of the passed column name or index.
+            </para>
+            <code language="js">
+              var sum = $grid.gridViewEx('sum', colIndex); // See colIndex function documentation to find out how to use colIndex.
+            </code>
+          </content>
+        </section>
+        <section address="SubSection4">
+
+          <title>rowIndex</title>
+          <content>
+            <para>
+              Pass a jquery object containing the tr element. Get back the index of the row
+            </para>
+            <code language="js">
+              TODO: Provide an example.
+            </code>
+          </content>
+        </section>
+        <section address="rows">
+
+          <title>colIndex</title>
+          <content>
+            <para>
+              Pass a string representing column name or a jquery object representing td. Returns integer. -1 if index not found.
+            </para>
+            <code language="js">
+              var colIndex = $grid.gridViewEx('colIndex', $(this).closest('td'));
+            </code>
+          </content>
+        </section>
+        <section address="SubSection5">
+
+          <title>footerCell</title>
+          <content>
+            <para>
+              It returns a jquery object containing the td of the row in the footer.
+              you can pass it column index or column name. You can also pass a jquery object representing a single td.
+            </para>
+            <code language="js">
+              $('input', $grid.gridViewEx('footerCell', colIndex)).val(sum);
+            </code>
+          </content>
+        </section>
+        <section address="SubSection6">
+          <title>columnCells</title>
+          <content>
+            <para>
+              Returns a jquery object containing all td of the rows in the passed column.
+              You can pass column name as well as column index. Pass column name as string, or column index as integer.
+            </para>
+            <code language="js">
+              var $grid = $('form#frmSolidSize #gvSolidSize'); // Some code to find the grid.
+              $('input:text', $grid.gridViewEx('columnCells', ['Pieces', 'Cartons'])).change(function(e) {
+              alert('You have just hooked the change event to the columns Pieces and Cartons of grid');
+              });
+            </code>  
+          </content>
+        </section>
+        <section address="SubSection7">
+          <title>rows</title>
+          <content>
+            <para>
+              Returns a jquery object containing a single tr element corresponding to the passed keys.
+              Keys is an array of values to match, e.g. ['customer_id1']. 
+            </para>
+            <code language="js">
+              var $tr = $(this).gridViewEx('rows', keys);
+              });
+            </code>
+          </content>
+        </section>
+        <section address="SubSection8">
+          <title>cells</title>
+          <content>
+            <para>
+              Given the rows and a column name, returns specific TD elements of that column in the passed 
+              rows(a jquery object representing one or more tr elements).
+
+            </para>
+            <para>
+              For example, suppose we have GridViewEx containing a column named PackType. You want to set text PACK on it using
+              javascript on selcted row.
+            </para>
+            <code language="js">
+              var $grid = $('#gvCartonList'); // find grid using ID
+              var $selectedRow = $('tr.ui-selected',$grid); // find selected row in the grid
+              var $cellPackType = $grid.gridViewEx('cells',$selectedRow,'PackType');
+              $cellPackType.latestText(PACK);
+            </code>
+          </content>
+        </section>
+        
+       
+      </sections>
+    </section>
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

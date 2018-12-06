@@ -1,0 +1,30 @@
+﻿Report Development Patterns:
+
+1) Single data source, single query
+2) Multiple data sources and grids. We decide which one to show based on parameter entered.[Multi-View pattern]
+3) Master Detail Reports.
+4) Matrix reports.
+5) Reports which are based on shifts.
+7) Reports without parameters.
+8) Reports with mutually exclusive parameters.
+9) Displaying *** or similar when cell has multiple values.
+10) Adding custom columns to the matrix field.
+11) Displaying multiple grids
+12) Hyperlink in Matrix field
+13) Show\Hide columns on the basis of passsed parameter value
+
+New Patterns (25 Aug 2009)
+- Calculating cumulative totals and averages (150.06)
+- Displaying summaries at the top of the report. 110.03
+
+TODO:
+Command parsring should allow using clauses when parameter equals a specific value.
+Calculated column field, e.g. 40.30
+
+SiteHyperlink Control?
+Option to show or hide grand total in the master detail report
+
+Goal:
+Custom validation should not be necessary.
+
+

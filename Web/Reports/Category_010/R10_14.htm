@@ -1,0 +1,536 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html>
+<head>
+    <title>Report Documentation</title>
+    <style type="text/css">
+        .ui-widget {
+            font-family: segoe ui, Arial, sans-serif;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <h1 align="center">10<b>.</b>1<b>4 : </b>Weekly Shipping Report</h1>
+    <h3>Author : Sanjeev Kumar</h3>
+    <p>
+        $Revision: 6164 $<br />
+        Reviewed By: Hemant K. Varshney<br />
+        Status: Tested<br />
+        Tested By: Hemant K. Singh
+    </p>
+    <p>
+        This report displays the shipped pieces and dollars for the passed day, current
+        week till passed day and current month till passed day. Report also displays the
+        order processed, pieces cancelled and progress for particular customer types per
+        virtual warehouse.
+    </p>
+    <h2>Overview</h2>
+    <p>
+        This report shows the customer order's detail for the particular week day on the
+        basis of provided shipping date. It shows the shipped pieces and dollars on the
+        passed ship date, current week till passed day and current month till passed day.
+        Also shows the total no of pickslip processed, cancelled pieces and dollars and
+        progress of orders for a passed ship day. It shows the pickslips which is having
+        the status 8 and 10.
+    </p>
+    <h2>Algorithm</h2>
+    Get all the shipment detail from table dem_pickslip. Get customer type from table
+    tab_customer_type and label description from tab_style_label and customer information
+    from master_customer.
+    <h2>Output</h2>
+    <p>
+        Showing the summary of pieces and dollars cancelled on the above of grid.
+    </p>
+    Total Pieces Cancelled: Total no. of cancelled pieces from week start date to previous
+    day of pass ship date and total no. of cancelled pieces on pass ship date.<br />
+    <br />
+    Total Dollars Cancelled: $Total of cancelled dollars from week start date to previous
+    day of pass ship date and total of cancelled dollars on pass ship date.<br />
+    <br />
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center" width="25%">
+                <b>Item</b>
+            </td>
+            <td align="center" width="20%">
+                <b>Summary</b>
+            </td>
+            <td align="center" width="10%">
+                <b>Default Sort Sequence</b>
+            </td>
+            <td align="center" width="35%">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>Customer Type
+            </td>
+            <td>No
+            </td>
+            <td align="center">1
+            </td>
+            <td>The customer type which is calculated as tab_customer_type.description||Decode((tab_customer_type.subgroup_flag,
+                &#39;Y&#39;, (&#39;-&#39; || tab_style_label.description)). If subgroup flag is
+                Y than report will show the label wise records for that customer type.
+            </td>
+        </tr>
+        <tr>
+            <td>Pieces/Price Shipped Today
+            </td>
+            <td>Sum
+            </td>
+            <td align="center"></td>
+            <td>These are the pieces &amp; dollars shipped on passed ship date i.e. total number
+                of pieces on today.
+            </td>
+        </tr>
+        <tr>
+            <td>Pieces/Price Shipped Week To Date
+            </td>
+            <td>Sum
+            </td>
+            <td align="center"></td>
+            <td>These are the pieces &amp; dollars shipped from week start date to passed ship date.
+            </td>
+        </tr>
+        <tr>
+            <td>Pieces/Price Shipped Month To Date
+            </td>
+            <td>Sum
+            </td>
+            <td align="center"></td>
+            <td>These are the pieces &amp; dollars shipped from Month start date to passed ship
+                date.
+            </td>
+        </tr>
+        <tr>
+            <td>Orders Processed
+            </td>
+            <td>Sum
+            </td>
+            <td align="center"></td>
+            <td>Distinct number of pickslips.
+            </td>
+        </tr>
+        <tr>
+            <td>Pieces/Price Cancelled
+                Today</td>
+            <td>Sum
+            </td>
+            <td align="center"></td>
+            <td>These are the Pieces and dollars cancelled
+            </td>
+        </tr>
+        <tr>
+            <td>Pieces/Price Cancelled
+                Week To Date</td>
+            <td>Sum</td>
+            <td align="center">&nbsp;</td>
+            <td>These are the pieces &amp; dollars cancelled from week start date to passed ship date.
+            </td>
+        </tr>
+        <tr>
+            <td>Pieces/Price Cancelled
+                Month To Date</td>
+            <td>Sum</td>
+            <td align="center">&nbsp;</td>
+            <td>These are the pieces &amp; dollars cancelled from month&nbsp; start date to passed ship date.
+            </td>
+        </tr>
+        <tr>
+            <td>Percent Complete
+            </td>
+            <td>Sum
+            </td>
+            <td align="center"></td>
+            <td>The percentage complete which is calculated as pieces_shipped(on ship_date) / pieces_ordered
+                (on ship_date)
+            </td>
+        </tr>
+        <tr>
+            <td>Average Days To Upload After Import
+            </td>
+            <td>Average
+            </td>
+            <td align="center"></td>
+            <td>The average of days to upload the orders after import which is calculated as (upload_date
+                - pickslip_import_date) * total_pieces_shipped / total_pieces_shipped (on ship date)
+            </td>
+        </tr>
+        <tr>
+            <td>Average Days To Upload After Delivery
+            </td>
+            <td>Average
+            </td>
+            <td align="center"></td>
+            <td>The average of days to upload the orders after delivery which is calculated as (upload_date
+                - delivery_date) * total_pieces_shipped/ total_pieces_shipped (on ship date)
+            </td>
+        </tr>
+        <tr>
+            <td>Average Days To Upload After Minimum
+            </td>
+            <td>Average
+            </td>
+            <td align="center"></td>
+            <td>Least from Average Days To Upload After Import or Average Days To Upload After Import.
+            </td>
+        </tr>
+        <tr>
+            <td>VWh
+            </td>
+            <td>No
+            </td>
+            <td align="center"></td>
+            <td>Virtual warehouse ID for the orders.
+            </td>
+        </tr>
+    </table>
+    <h2>Parameters</h2>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center" width="20%">
+                <b>Name</b>
+            </td>
+            <td align="center" width="20%">
+                <b>Default</b>
+            </td>
+            <td align="center" width="60%">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>Shipped Date
+            </td>
+            <td>Current date
+            </td>
+            <td>List all weekly shipped orders for the given date.
+            </td>
+        </tr>
+        <tr>
+            <td>Virtual Warehouse
+            </td>
+            <td>All
+            </td>
+            <td>Virtual Warehouse ID.
+            </td>
+        </tr>
+    </table>
+    <h2>Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>50 seconds
+    </p>
+    The query exhibits linear performance w.r.t. table dem_pickslip. There in index
+    based scan on tables dem_pickslip .There is full scan on table master_customer,
+    table tab_customer_type and table tab_style_label. Index PS_UPLDATE_I and PS_PDSTAT_FK_I
+    used for the table dem_pickslip.<h2>Behavior Change</h2>
+    <ol>
+        <li>Dividing by zero is now handled in the report.</li>
+        <li>Now, user can see cancelled pieces/dollars in week and month.</li>
+    </ol>
+    <h2>Issues</h2>
+    No Known Issue.<h2>Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are required
+    </p>
+    <p>
+        tab_customer_type,<br />
+        dem_pickslip,<br />
+        master_customer,<br />
+        tab_style_label
+    </p>
+    <p>
+        Use the below script to create the synonyms
+    </p>
+    <p>
+        <code>create or replace synonym tab_customer_type for dcms4.tab_customer_type;<br />
+            create or replace synonym dem_pickslip for dcms4.dem_pickslip;<br />
+            create or replace synonym master_customer for dcms4.master_customer;<br />
+            create or replace synonym tab_style_label for dcms4.tab_style_label;</code>
+    </p>
+    <p>
+        Following appSettings are required:&lt;!--For R10.14 specified the cancel reason
+        code the Pickslip import days--&gt;<br />
+        &lt;add key="CancelReasonCode" value="MFC"/&gt;<br />
+    </p>
+    <h2>Parameter Technical Details</h2>
+    <ul>
+        <li>Shipped Date (Type = DateTime): Weekly shipment is displayed on the basis of provided
+            date.</li>
+        <li>Virtual Warehouse (Type = String): This is a list parameter control. By default,
+            inventory of all Warehouse is shown for each area. If your focus is on the inventory
+            in a particular Warehouse, Specify that Warehouse Id. Null value text is "All".
+            <ul>
+                <li>Query to fill list values = "select tab_virtual_warehouse.vwh_id, tab_virtual_warehouse.vwh_id
+                    from tab_virtual_warehouse"</li>
+            </ul>
+        </li>
+    </ul>
+    <h2>Parameter Validation</h2>
+    No special validations.
+    <h2>Query's documentation:</h2>
+    <ul>
+        <li>The query will get all the shipment details from dem_pickslip table.<pre>    with shipped_orders as
+(select TCT.DESCRIPTION || CASE
+           WHEN TCT.SUBGROUP_FLAG = 'Y' THEN
+            ('-' || TSL.DESCRIPTION)
+         END AS CUSTOMER_TYPE,
+         P.VWH_ID AS VWH_ID,
+         max(case when tct.subgroup_flag = 'Y' THEN p.label_id end) as label_id,
+         SUM(case
+               when trunc(p.transfer_date) = trunc(:ship_date) then
+                bd.current_pieces
+             end) AS PIECES_TODAY,
+         SUM(case
+               when trunc(p.transfer_date) = trunc(:ship_date) then
+                bd.current_pieces * bd.extended_price
+             end) as DOLLARS_TODAY,
+         SUM(case
+               when TRUNC(p.transfer_date) BETWEEN :week_start_date AND :ship_date then 
+                bd.current_pieces
+             end) AS PIECES_WTD,
+         SUM(case
+               when TRUNC(p.transfer_date) BETWEEN :week_start_date AND :ship_date then 
+                bd.current_pieces * bd.extended_price
+             end) AS DOLLARS_WTD,
+         SUM(case
+               when TRUNC(p.transfer_date) BETWEEN :month_start_date AND :ship_date then 
+                bd.current_pieces
+             end) AS PIECES_MTD,
+         SUM(case
+               when TRUNC(p.transfer_date) BETWEEN :month_start_date AND :ship_date then 
+                bd.current_pieces * bd.extended_price
+             end) AS DOLLARS_MTD,
+            SUM(case
+               when trunc(p.transfer_date) = trunc(:ship_date) then
+                round(p.transfer_date - p.pickslip_import_date, 2) * bd.current_pieces
+             end) as weighted_import_days_today,
+             SUM(case
+               when trunc(p.transfer_date) = trunc(:ship_date) then
+                round(p.transfer_date - po.start_date, 2) * bd.current_pieces
+             end) as  weighted_delivery_days_today,
+          max(tct.customer_type) as cust_type,
+        max(case when trunc(p.transfer_date) = trunc(:ship_date) then
+          p.transfer_date
+         end ) as ship_date
+    from ps p
+    LEFT OUTER JOIN MASTER_CUSTOMER MC
+      ON P.CUSTOMER_ID = MC.CUSTOMER_ID
+    LEFT OUTER JOIN TAB_CUSTOMER_TYPE TCT
+      ON MC.CUSTOMER_TYPE = TCT.CUSTOMER_TYPE
+    LEFT OUTER JOIN tab_style_label tsl ON tsl.label_id = p.label_id
+   INNER JOIN BOX B
+      ON P.PICKSLIP_ID = B.PICKSLIP_ID
+   INNER JOIN BOXDET BD
+      ON b.PICKSLIP_ID = BD.PICKSLIP_ID
+     and b.ucc128_id = bd.ucc128_id
+    left outer JOIN PO
+      ON P.CUSTOMER_ID = PO.CUSTOMER_ID
+     AND P.PO_ID = PO.PO_ID
+     AND P.ITERATION = PO.ITERATION
+   where p.cancel_reason_code is null
+     AND P.TRANSFER_DATE BETWEEN :month_start_date AND :ship_date + 1
+     and bd.stop_process_date BETWEEN :month_start_date AND :ship_date + 1
+     and b.stop_process_reason = '$XREF'
+     and b.stop_process_date BETWEEN :month_start_date AND :ship_date + 1       
+   group by TCT.DESCRIPTION || CASE
+              WHEN TCT.SUBGROUP_FLAG = 'Y' THEN
+               ('-' || TSL.DESCRIPTION)
+            END,
+            P.VWH_ID),
+all_orders as
+(select  TCT.DESCRIPTION || CASE
+           WHEN TCT.SUBGROUP_FLAG = 'Y' THEN
+            ('-' || TSL.DESCRIPTION)
+         END AS CUSTOMER_TYPE,
+         P.VWH_ID AS VWH_ID,
+         max(case when tct.subgroup_flag = 'Y' THEN p.label_id end) as label_id,
+         MAX(tct.description) as customer_type_description,
+         max(case when tct.subgroup_flag = 'Y' THEN tsl.description end) as label_description,
+         SUM(case
+               when trunc(p.transfer_date) = trunc(:ship_date) and p.cancel_reason_code is null then
+                p.total_quantity_ordered
+             end) as ordered_PIECES_TODAY,
+         SUM(case
+               when trunc(p.transfer_date) = trunc(:ship_date) and p.cancel_reason_code is not null then
+                p.total_quantity_ordered
+             end) as CAN_PIECES_TODAY,
+         SUM(case
+               when trunc(p.transfer_date) = trunc(:ship_date) and p.cancel_reason_code is not null
+          then
+                p.total_dollars_ordered
+             end) as CAN_DOLLARS_TODAY,
+         SUM(case
+               when TRUNC(p.transfer_date) BETWEEN :week_start_date AND :ship_date and p.cancel_reason_code is not null then 
+                p.total_quantity_ordered
+             end) as CAN_PIECES_WEEK,
+         SUM(case
+               when TRUNC(p.transfer_date) BETWEEN :week_start_date AND :ship_date
+          and p.cancel_reason_code is not null
+           then 
+                p.total_dollars_ordered
+             end) as CAN_DOLLARS_WEEK,
+         count(unique case
+                 when trunc(p.transfer_date) = trunc(:ship_date)
+          then
+                  p.pickslip_id
+               end) as no_of_pickslip
+              from ps p
+    LEFT OUTER JOIN MASTER_CUSTOMER MC
+      ON P.CUSTOMER_ID = MC.CUSTOMER_ID
+    LEFT OUTER JOIN TAB_CUSTOMER_TYPE TCT
+      ON MC.CUSTOMER_TYPE = TCT.CUSTOMER_TYPE
+    LEFT OUTER JOIN tab_style_label tsl ON tsl.label_id = p.label_id
+   where P.TRANSFER_DATE BETWEEN :month_start_date AND :ship_date + 1 
+   group by TCT.DESCRIPTION || CASE
+              WHEN TCT.SUBGROUP_FLAG = 'Y' THEN
+               ('-' || TSL.DESCRIPTION)
+            END,
+            P.VWH_ID)
+SELECT C.CUSTOMER_TYPE AS CUSTOMER_TYPE,
+       C.VWH_ID AS VWH_ID,
+       C.label_id AS label_id,
+       S.PIECES_TODAY AS PIECES_TODAY,
+       S.DOLLARS_TODAY AS DOLLARS_TODAY,
+       S.PIECES_WTD AS PIECES_WTD,
+       S.DOLLARS_WTD AS DOLLARS_WTD,
+       S.PIECES_MTD AS PIECES_MTD,
+       S.DOLLARS_MTD AS DOLLARS_MTD,
+       C.CAN_PIECES_TODAY AS CAN_PIECES_TODAY,
+       C.CAN_DOLLARS_TODAY AS CAN_DOLLARS_TODAY,
+       C.CAN_PIECES_WEEK AS CAN_PIECES_WEEK,
+       C.CAN_DOLLARS_WEEK AS CAN_DOLLARS_WEEK,
+       C.NO_OF_PICKSLIP AS NO_OF_PICKSLIP,
+       C.ORDERED_PIECES_TODAY,
+       S.WEIGHTED_IMPORT_DAYS_TODAY,
+       S.WEIGHTED_DELIVERY_DAYS_TODAY,
+       S.CUST_TYPE,
+       S.SHIP_DATE
+  FROM ALL_ORDERS C
+  LEFT OUTER JOIN SHIPPED_ORDERS S
+    ON C.CUSTOMER_TYPE = S.CUSTOMER_TYPE
+   AND C.VWH_ID = S.VWH_ID
+ ORDER BY 1, 3, 2
+             </pre>
+        </li>
+    </ul>
+    <h2>Validation details</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section
+    <br />
+    <b>Query:</b>
+    <pre>  
+
+SELECT SUM(CASE
+             WHEN TRUNC(PS.TRANSFER_DATE) = /*ShipDate*/
+                  TO_DATE('2/1/2012', 'MM/DD/YYYY') THEN
+              BD.CURRENT_PIECES
+           END) "Shipped Pieces Today",
+       SUM(CASE
+             WHEN TRUNC(PS.TRANSFER_DATE) = /*ShipDate*/
+                  TO_DATE('2/1/2012', 'MM/DD/YYYY') THEN
+              BD.CURRENT_PIECES * BD.EXTENDED_PRICE
+           END) "Shipped Dollars Today",
+       SUM(CASE
+             WHEN TRUNC(PS.TRANSFER_DATE) BETWEEN /* WeekStartDate and ShipDate)*/
+                  TO_DATE('1/29/2012', 'MM/DD/YYYY') AND
+                  TO_DATE('2/1/2012', 'MM/DD/YYYY') THEN
+              BD.CURRENT_PIECES
+           END) "Shipped Pieces Today",
+       SUM(CASE
+             WHEN TRUNC(PS.TRANSFER_DATE) BETWEEN /* WeekStartDate and ShipDate)*/
+                  TO_DATE('1/29/2012', 'MM/DD/YYYY') AND
+                  TO_DATE('2/1/2012', 'MM/DD/YYYY') THEN
+              BD.CURRENT_PIECES * BD.EXTENDED_PRICE
+           END) "Shipped Dollars Today",
+       SUM(CASE
+             WHEN TRUNC(PS.TRANSFER_DATE) BETWEEN /* MonthStartDate and ShipDate)*/
+                  TO_DATE('1/1/2012', 'MM/DD/YYYY') AND
+                  TO_DATE('2/1/2012', 'MM/DD/YYYY') THEN
+              BD.CURRENT_PIECES
+           END) "Shipped Pieces Today",
+       SUM(CASE
+             WHEN TRUNC(PS.TRANSFER_DATE) BETWEEN /* MonthStartDate and ShipDate)*/
+                  TO_DATE('1/1/2012', 'MM/DD/YYYY') AND
+                  TO_DATE('2/1/2012', 'MM/DD/YYYY') THEN
+              BD.CURRENT_PIECES * BD.EXTENDED_PRICE
+           END) "Shipped Dollars Today"
+  FROM PS
+ INNER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+ INNER JOIN BOXDET BD
+    ON B.UCC128_ID = BD.UCC128_ID
+   AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+ INNER JOIN MASTER_CUSTOMER MC
+    ON PS.CUSTOMER_ID = MC.CUSTOMER_ID
+ WHERE Ps.CANCEL_REASON_CODE IS NULL
+   AND Ps.TRANSFER_DATE BETWEEN TO_DATE('1/1/2012', 'MM/DD/YYYY') AND
+       TO_DATE('2/1/2012', 'MM/DD/YYYY') + 1
+   AND BD.STOP_PROCESS_DATE BETWEEN TO_DATE('1/1/2012', 'MM/DD/YYYY') AND
+       TO_DATE('2/1/2012', 'MM/DD/YYYY') + 1
+   AND B.STOP_PROCESS_REASON = '$XREF'
+   AND B.STOP_PROCESS_DATE BETWEEN TO_DATE('1/1/2012', 'MM/DD/YYYY') AND
+       TO_DATE('2/1/2012', 'MM/DD/YYYY') + 1</pre>
+    <b>Description:</b><pre>
+  Above Query is showing Total of Today Pieces and Dollars, Week to day pieces and Dolars and Month to day Pieces and Dollars.</pre>
+    <b>Query:</b><pre>
+SELECT SUM(CASE
+             WHEN TRUNC(PS.TRANSFER_DATE) = /*ShipDate*/
+                  TO_DATE('2/1/2012', 'MM/DD/YYYY') THEN
+              BD.CURRENT_PIECES
+           END) "Shipped Pieces Today",
+       SUM(CASE
+             WHEN TRUNC(PS.TRANSFER_DATE) = /*ShipDate*/
+                  TO_DATE('2/1/2012', 'MM/DD/YYYY') THEN
+              BD.CURRENT_PIECES * BD.EXTENDED_PRICE
+           END) "Shipped Dollars Today",
+       SUM(CASE
+             WHEN TRUNC(PS.TRANSFER_DATE) BETWEEN /* WeekStartDate and ShipDate)*/
+                  TO_DATE('1/29/2012', 'MM/DD/YYYY') AND
+                  TO_DATE('2/1/2012', 'MM/DD/YYYY') THEN
+              BD.CURRENT_PIECES
+           END) "Shipped Pieces Today",
+       SUM(CASE
+             WHEN TRUNC(PS.TRANSFER_DATE) BETWEEN /* WeekStartDate and ShipDate)*/
+                  TO_DATE('1/29/2012', 'MM/DD/YYYY') AND
+                  TO_DATE('2/1/2012', 'MM/DD/YYYY') THEN
+              BD.CURRENT_PIECES * BD.EXTENDED_PRICE
+           END) "Shipped Dollars Today",
+       SUM(CASE
+             WHEN TRUNC(PS.TRANSFER_DATE) BETWEEN /* MonthStartDate and ShipDate)*/
+                  TO_DATE('1/1/2012', 'MM/DD/YYYY') AND
+                  TO_DATE('2/1/2012', 'MM/DD/YYYY') THEN
+              BD.CURRENT_PIECES
+           END) "Shipped Pieces Today",
+       SUM(CASE
+             WHEN TRUNC(PS.TRANSFER_DATE) BETWEEN /* MonthStartDate and ShipDate)*/
+                  TO_DATE('1/1/2012', 'MM/DD/YYYY') AND
+                  TO_DATE('2/1/2012', 'MM/DD/YYYY') THEN
+              BD.CURRENT_PIECES * BD.EXTENDED_PRICE
+           END) "Shipped Dollars Today"
+  FROM PS
+ INNER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+ INNER JOIN BOXDET BD
+    ON B.UCC128_ID = BD.UCC128_ID
+   AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+ INNER JOIN MASTER_CUSTOMER MC
+    ON PS.CUSTOMER_ID = MC.CUSTOMER_ID
+ WHERE PS.CANCEL_REASON_CODE IS NULL
+   AND PS.TRANSFER_DATE BETWEEN TO_DATE('1/1/2012', 'MM/DD/YYYY') AND
+       TO_DATE('2/1/2012', 'MM/DD/YYYY') + 1
+   AND BD.STOP_PROCESS_DATE BETWEEN TO_DATE('1/1/2012', 'MM/DD/YYYY') AND
+       TO_DATE('2/1/2012', 'MM/DD/YYYY') + 1
+   AND B.STOP_PROCESS_REASON = '$XREF'
+   AND MC.CUSTOMER_TYPE = 'DOM'
+   AND PS.LABEL_ID = 'DX'
+   AND B.STOP_PROCESS_DATE BETWEEN TO_DATE('1/1/2012', 'MM/DD/YYYY') AND
+       TO_DATE('2/1/2012', 'MM/DD/YYYY') + 1          </pre>
+    <b>Description:</b><pre>
+Above Query is showing Total of Today Pieces and Dollars, Week to day pieces and Dolars and Month to day Pieces and Dollars for specific customer type and label with Shipped date.</pre>
+    <b>Query:</b><pre></pre>
+    <b>Description:</b><pre>
+Enter the Passed Shipped Date and this query will give the total pieces and dollars  Cancelled Today. </pre>
+</body>
+</html>

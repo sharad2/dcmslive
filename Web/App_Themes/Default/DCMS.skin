@@ -1,0 +1,32 @@
+﻿<%--
+Default skin template. The following skins are provided as examples only.
+
+1. Named control skin. The SkinId should be uniquely defined because
+   duplicate SkinId's per control type are not allowed in the same theme.
+
+<asp:GridView runat="server" SkinId="gridviewSkin" BackColor="White" >
+   <AlternatingRowStyle BackColor="Blue" />
+</asp:GridView>
+
+2. Default skin. The SkinId is not defined. Only one default 
+   control skin per control type is allowed in the same theme.
+
+<asp:Image runat="server" ImageUrl="~/images/image1.jpg" />
+--%>
+
+<asp:Button runat="server" CssClass="fg-button ui-state-default ui-corner-all" />
+
+
+<oracle:OracleDataSource runat="server" CancelSelectOnNullParameter="true"  />
+
+<jquery:Tabs runat="server" Collapsible="true" />
+
+<i:TextBoxEx runat="server"  CaseConversion="UpperCase"  />
+<i:TextBoxEx SkinID="PO" runat="server" QueryString="po_id" MaxLength="25" Size="14" CaseConversion="UpperCase"  />
+<i:TextBoxEx SkinID="PickslipId" runat="server" QueryString="pickslip_id" MaxLength="9"  >
+    <Validators>
+        <i:Value ValueType="Integer" 
+        Min="0" />
+    </Validators>
+</i:TextBoxEx>
+<i:TextBoxEx SkinID="CustomerId" runat="server" QueryString="customer_id" MaxLength="10" CaseConversion="UpperCase" />

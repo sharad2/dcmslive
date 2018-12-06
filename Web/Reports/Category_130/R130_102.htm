@@ -1,0 +1,285 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+		<title>Report Documentation</title>	
+        <style type="text/css">
+            .auto-style1 {
+                height: 24px;
+            }
+        </style>
+  </head>
+	<body>
+			
+			<h1 style="text-align:center" >130<b>.</b>102<b> : </b>Inventory Summary Report</h1> 
+			<ul style="list-style:none">
+			<li>
+			<h3>
+                <em>Author : Sanjeev kumar</em></h3></li>
+    <li>
+        <em>$Revision: 6209 $</em></li>
+    <li><em>Status: Tested</em></li>
+                <li><em>Reviewed By: Manmohan Bisht</em></li>
+    <li><em>Tested By: Hemant k. Singh</em></li>
+        </ul>
+            <h2 ><em>Overview</em></h2>
+                  <p>
+                      <em>This report helps to repack the carton from Examinig area as well as clear picture of the inventory that in this time how many pieces lying per SKU in this area. Now you can find out specific SKU with use SKU parameter(Style, color, dimension and SKU size)  as well as you can see all SKU of specific label and VWH.
+</em>
+            </p>
+         <h2><em>Algorithm</em></h2>
+            <p>
+                <em>Get all the inventory 
+details in examining area from master table master_raw_inventory.Retrieving UPC and pieces per package from master_sku and style, color, dimension, size , pieces and quality of the SKU from master_raw_inventory table.</em></p>
+          <h3><em>Output</em></h3>
+          <Table width="100%" cellSpacing="1" cellPadding="1" border="1">
+          <tr>
+              <td width="25%" align="center"><b><em>Item</em></b></td>
+              <td width="20%" align="center"><b><em>Summary</em></b></td>
+              <td width="10%" align="center"><b><em>Sort Sequence</em></b></td>
+              <td width="35%" align="center"><b style="font-style: italic">Detail</b></td>
+          </tr>
+              <tr>
+                  <td><em>Building</em></td><td>
+                  <i>No</i></td><td align="center">
+                      <em>1</em></td><td>
+                      <i>building of the SKU. 
+                      Visible when report is used as drill down to report 30.08</i></td>
+              </tr>
+          <tr>
+              <td><i>VWh</i></td>
+              <td><i>No</i></td>
+              <td align="center"><em>2&nbsp;</em></td>
+              <td><em>The virtual warehouse ID for the SKU. </em></td>
+          </tr>
+          <tr>
+              <td><i>Style</i></td>
+              <td><i>No</i></td>
+              <td align="center">3</td>
+              <td><i>Style of the SKU </i></td>
+          </tr>
+          <tr>
+          <td><I>Color</I></td>
+          <td><i>No</i></td>
+          <td align="center"><em>4</em></td>
+          <td><i>Color of the SKU </i></td>
+          </tr>
+          <tr>
+          <td><I>Dim</I></td><td>
+              <i>No
+          </i>
+          </td><td align="center"><em>5</em></td><td><i>Dimension of the SKU </i></td></tr><tr><td><I>Sizes</I></td><td>
+              <i>No
+          </i>
+          </td><td align="center"> <em>6</em></td><td><i>SKU Sizes of the SKU </i></td></tr><tr><td><em>Quality</em></td><td>
+              <i>No</i></td><td align="center"> <i></i></td><td><i>Quality of the SKU</i></td></tr><tr><td><em>Total</em></td><td><i>Sum of quantity</i></td><td align="center">
+              <i></i></td><td>
+                  <i>Total quantity in pieces, for the corresponding SKU.</i></td></tr></Table>
+          <h2><em>Parameters</em></h2>
+          <Table width="100%" cellSpacing="1" cellPadding="1" border="1" >
+          <tr>
+          <td width="20%" align="center"><b><em>Name</em></b></td>
+          <td width="20%" align="center"><b><em>Default</em></b></td>
+          <td width="60%" align="center"><b><em>Detail</em></b></td>
+          </tr>
+          <tr>
+          <td><em>Style</em></td>
+          <td><i>None</i></td>
+                    <td><i>Style of the SKU</i></td>
+          </tr>
+          <tr>
+          <td><em>Color</em></td>
+          <td><i>None</i></td>
+                    <td><i>Color Of the SKU</i></td>
+          </tr>
+          <tr>
+          <td><em>Dimension</em></td>
+          <td><i>None</i></td>
+                    <td><i>Dimension Of the SKU </i> </td>
+          </tr>
+          <tr>
+          <td>Size</td>
+          <td><i>None</i></td>
+                    <td><i>Size of the SKU</i></td>
+          </tr>
+          <tr>
+          <td><em>VWh</em></td>
+          <td><i>All</i></td>
+          <td><i>Virtual warehouse</i></td>
+          </tr>
+          <tr>
+          <td class="auto-style1"><i>Building</i></td>
+          <td class="auto-style1"><i>All</i></td>
+          <td class="auto-style1"><i>Building of the SKU</i></td>
+          </tr>
+              <tr>
+          <td><em>Label</em></td>
+          <td><i>All</i></td>
+          <td><i>Label of the SKU</i></td>
+              </tr>
+          <tr>
+          <td><em>Area</em></td>
+          <td><i>All</i></td>
+          <td><i>The area of which the inventory will be fetched</i></td>
+          </tr>
+          </Table>
+          <h2><em>Performance Detail</em></h2><p><i>Expected Time for the report output is<strong> </strong> </i><em><strong>0.375</strong> seconds</em></p>
+&nbsp;<h2><em>Behavior Change</em></h2>
+        <ol>
+            <li><em>SKU parameter will help to find out specific SKU pieces in the examinig area as well as you can see all SKU for specific label.</em></li>
+            <li><em>Now you can pass multiple value separated by comma in the style, color, dimension and Size parameter.</em></li>
+            <li><em>Day parameter has been removed.</em></li>
+            <li><em>Now you can check quality of the SKU.</em></li>
+            <li><em>Report name changed &#39;Carton in examining area&#39; to &#39;Inventory in examining area&#39;.</em></li>
+        </ol>
+            <h2><em>Issues</em></h2>
+        <ul><li>
+		    <em>No Known Issue.</em></li>
+        </ul>
+        <h2><em>Prerequisites</em></h2>
+        <h4><em>App Settings</em></h4>
+        <add key="CancelArea" value="CAN"/>
+        <add key="ScrapArea" value="SSS"/>
+        <add key="SkuTypeStorageArea" value="SKU"/>
+        <p>
+            <em>Private synonyms for the following tables are required</em></p>
+        <p>
+            <em>ialoc,<br />
+        ialoc_content,<br />
+        ps,<br />
+        box,<br />
+        boxdet,<br />
+        master_raw_inventory,<br />
+        master_sku,<br />
+        Master_Style
+        </em>
+        </p>
+         <p><em>Use the below script to create the synonyms</em></p>
+            <ol><li><em>create or replace synonym ialoc for dcms8.ialoc;</em></li>
+            <li><em>create or replace synonym ialoc_content for dcms8.ialoc_content;</em></li>
+            <li><em>create or replace synonym box for dcms8.box;</em></li>
+            <li><em>create or replace synonym boxdet for dcms8.boxdet;</em></li>
+            <li><em>create or replace synonym master_raw_inventory for dcms4.master_raw_inventory;</em></li>
+            <li><em>create or replace synonym master_sku for dcms4.master_sku;</em></li>
+             </ol>
+        <div id="divTechnical" style="display:block">
+        <h2><em>Parameter Technical Details</em></h2>
+        <ul><li><em>VWh (Datatype =String):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a string&nbsp; type parameter and its report is using to&nbsp; display SKU and pieces virtual warehouse wise.</em></li>
+		<li><em>Area (Datatype =String):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a string type parameter and its report is using to&nbsp; display SKU and pieces Inventory Area wise.</em></li>
+            <li><em>Style (Datatype =String):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a string type&nbsp; parameter. User can use this parameter for specific Style.</em></li>
+            <li><em>Color (Datatype =String):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a string type&nbsp; parameter.User can use this parameter for specific Color.</em></li>
+            <li><em>Dim (Datatype =String):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a string type&nbsp; parameter.User can use this parameter for specific Dimension.</em></li>
+            <li><em>Size (Datatype =String) :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a string type&nbsp; parameter.User can use this parameter for specific SKU Size.</em></li>
+            <li><em>Label (Datatype =String):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a string type&nbsp; parameter User can use this parameter for see all inventory of the&nbsp; specific Label.</em></li>
+            <li><em>Building (Datatype =String): This is a string type&nbsp; parameter and its report is using to&nbsp; display SKU and pieces Warehouse location wise.</em> </li></ul>
+		<h2><em>Parameter Validation</em></h2>
+		    <em>No special validations.
+		</em>
+		<h2><em>Query's documentation:</em></h2>
+     <pre xmlns="">
+           WITH Q1 AS
+            (
+              SELECT /*+ INDEX(box box_ia_id_copy_i)*/
+             ms.style AS STYLE,
+             ms.color AS COLOR,
+             ms.dimension AS DIMENSION,
+             ms.sku_size AS SKU_SIZE,
+             sum(bd.current_pieces) AS TOTAL_QUANTITY,
+             null as quality,
+             null as building
+              FROM BOX box 
+              LEFT OUTER JOIN boxdet bd ON box.ucc128_id = bd.ucc128_id  
+                                        AND box.pickslip_id = bd.pickslip_id
+              LEFT OUTER JOIN master_sku ms ON bd.upc_code = ms.upc_code
+             WHERE 
+               bd.current_pieces &gt; 0
+               AND box.ia_id is not null
+               AND box.ia_id &lt;&gt; :CancelArea
+               AND box.stop_process_date IS NULL
+               <if>AND box.ia_id = :area</if>
+               <if>AND box.vwh_id = :vwh_id</if>              
+               AND box.ia_id_copy is not null
+             GROUP BY /*+ INDEX(box box_ia_id_copy_i)*/ ms.style,
+                      ms.color,
+                      ms.dimension,
+                      ms.sku_size
+            UNION
+            SELECT ms.style AS STYLE,
+                   ms.color AS COLOR,
+                   ms.dimension AS DIMENSION,
+                   ms.sku_size AS SKU_SIZE,
+                   sum(iac.number_of_units) AS TOTAL_QUANTITY,
+                   null as quality,
+                   null as building
+              FROM ialoc ia 
+              LEFT OUTER JOIN ialoc_content iac ON ia.ia_id = iac.ia_id 
+                                                 AND ia.location_id = iac.location_id
+              LEFT OUTER JOIN master_sku ms  ON iac.iacontent_id = ms.upc_code
+             WHERE 1=1
+             <if c="$show_all_pieces">and iac.ia_id !=:scraparea</if>
+              and iac.iacontent_type_id = :SkuTypeStorageArea
+              <if>AND iac.ia_id = :area</if>
+              <if>AND ia.vwh_id = :vwh_id</if>             
+             GROUP BY ms.style, ms.color, ms.dimension, ms.sku_size
+            ),
+            Q2 AS
+            (
+            SELECT rawinv.style AS STYLE,
+                   rawinv.color AS COLOR,
+                   rawinv.dimension AS DIMENSION,
+                   rawinv.sku_size AS SKU_SIZE,
+                   sum(rawinv.quantity) AS TOTAL_QUANTITY,
+                   max(rawinv.quality_code) as quality,
+                   nvl(tia.warehouse_location_id,'Unknown') as building
+              FROM master_raw_inventory rawinv
+              left outer join tab_inventory_area tia on
+              rawinv.sku_storage_area=tia.inventory_storage_area
+             WHERE 1=1
+             <if>AND rawinv.sku_storage_area = :area</if>
+             <if>AND rawinv.vwh_id = :vwh_id</if>
+             <if>and rawinv.quality_code=:quality_code</if>
+             <if c="$warehouse_location_id != 'Unknown'">AND TIA.WAREHOUSE_LOCATION_ID = :warehouse_location_id</if>
+             <if c="$warehouse_location_id ='Unknown'">and  TIA.WAREHOUSE_LOCATION_ID is null</if> 
+             GROUP BY rawinv.style, rawinv.color, rawinv.dimension, rawinv.sku_size, nvl(tia.warehouse_location_id,'Unknown')
+             having(sum(rawinv.quantity)) &lt;&gt; 0
+            )
+            select q1.STYLE,q1.COLOR,q1.DIMENSION,q1.SKU_SIZE,q1.TOTAL_QUANTITY,q1.quality,q1.building
+              from Q1 q1
+            UNION
+            SELECT q2.STYLE,q2.COLOR,q2.DIMENSION,q2.SKU_SIZE,q2.TOTAL_QUANTITY,q2.quality,q2.building from Q2 q2
+          </pre>
+           
+        <h2>
+            <em>Validation details</em></h2>
+            <em>Bellow queries may have the where clause in the [] brackets. It means these are
+        the optional parameters. If you do not want to pass these parameters just remove
+        the [] section.
+        </em>
+        <br />
+        <br />
+        <b>Query:</b><pre>
+                SELECT MS.STYLE AS "STYLE",
+              MS.COLOR AS "COLOR",
+              MS.DIMENSION AS "DIMENSION",
+              MS.SKU_SIZE AS "SKU_SIZE",
+              SUM(BD.CURRENT_PIECES) AS "TOTAL_QUANTITY"
+              FROM MASTER_SKU MS 
+              RIGHT OUTER JOIN BOXDET BD ON MS.upc_code = BD.UPC_CODE                                         
+              RIGHT OUTER JOIN BOX BOX ON BOX.UCC128_ID = BD.UCC128_ID
+                                       AND BOX.Pickslip_Id = BD.Pickslip_Id
+              WHERE 
+              BD.CURRENT_PIECES > 0
+              AND BOX.IA_ID IS NOT NULL
+              AND BOX.IA_ID <> 'CAN'
+              AND BOX.IA_ID = 'RST'
+              AND BOX.VWH_ID = '15'
+              AND BOX.IA_ID_COPY IS NOT NULL
+              GROUP BY MS.STYLE, MS.COLOR, MS.DIMENSION, MS.SKU_SIZE
+            </pre>
+        <b>Description:</b><pre>
+           <em> Run the above query to validate the inventory quantity in RST area. </em>
+          </pre>
+        <!--End divTechnical-->
+    </div>
+</body>
+</html>

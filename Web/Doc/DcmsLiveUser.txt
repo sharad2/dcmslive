@@ -1,0 +1,259 @@
+﻿The purpose of the dcoument to have all the backend scripts to run the reports.
+Here we have the script for dcmslive user creation and the object required for dcmslive user.
+When there is any changes in backend for running the report, You need to add that script 
+with date and changes for which report.
+
+1.	First Create user name which you want to run the dcmslive 2009.
+
+--Create the user 
+create user DCMSLIVE
+  identified by dcmslive
+  default tablespace DCMS4_TEMP_TABLES
+  temporary tablespace TEMP
+  quota unlimited on dcms4_temp_tables;
+
+
+-- Grant/Revoke system privileges 
+grant create any synonym to DCMSLIVE;
+grant create procedure to DCMSLIVE;
+grant create session to DCMSLIVE;
+grant create table to DCMSLIVE;
+grant execute any type to DCMSLIVE;
+grant select any table to DCMSLIVE;
+
+-- Privileges needed for ODP.NET Profile provider setup
+grant create public synonym to DCMSLIVE;
+grant create role to DCMSLIVE;
+grant create view to DCMSLIVE;
+
+--login as sys dba
+grant execute on dbms_lob to dcmslive with grant option;
+
+
+2.	Privilege gives to dcmslive user.
+ 
+Login as dcms8 then run the following scripts:
+GRANT EXECUTE ON DCMS8.pkg_lane TO dcmslive;
+
+
+3.	Create the private synonym for reports by running the following script in any Oracle tool.
+
+
+create or replace synonym dem_pickslip for dcms4.dem_pickslip;
+create or replace synonym dem_returns for dcms4.dem_returns;
+create or replace synonym dem_returns_detail for dcms4.dem_returns_detail;
+create or replace synonym LOAD_ISI_WM_CHRONO for dcms4.LOAD_ISI_WM_CHRONO;
+create or replace synonym LOAD_ISI_WM_CHRONO_POC for dcms4.LOAD_ISI_WM_CHRONO_POC;
+create or replace synonym master_carrier for dcms4.master_carrier;
+create or replace synonym master_customer for dcms4.master_customer;
+create or replace synonym master_raw_inventory for dcms4.master_raw_inventory;
+create or replace synonym master_storage_location for dcms4.master_storage_location;
+create or replace synonym master_style for dcms4.master_style;
+create or replace synonym src_bundle_inventory for dcms4.src_bundle_inventory;
+create or replace synonym src_carton for dcms4.src_carton;
+create or replace synonym src_carton_detail for dcms4.src_carton_detail;
+create or replace synonym src_carton_intransit for dcms4.src_carton_intransit;
+create or replace synonym src_carton_process for dcms4.src_carton_process;
+create or replace synonym src_carton_process_detail for dcms4.src_carton_process_detail;
+create or replace synonym src_req_detail for dcms4.src_req_detail;
+create or replace synonym tab_customer_type for dcms4.tab_customer_type;
+create or replace synonym tab_fdc_calendar for dcms4.tab_fdc_calendar;
+create or replace synonym tab_inventory_area for dcms4.tab_inventory_area;
+create or replace synonym tab_label_group for dcms4.tab_label_group;
+create or replace synonym tab_style_label for dcms4.tab_style_label;
+create or replace synonym tab_virtual_warehouse for dcms4.tab_virtual_warehouse;
+create or replace synonym tab_warehouse_location for dcms4.tab_warehouse_location;
+CREATE OR REPLACE SYNONYM dem_pickslip_detail FOR dcms4.dem_pickslip_detail;
+CREATE OR REPLACE SYNONYM master_sku FOR dcms4.master_sku;
+CREATE OR REPLACE SYNONYM carton_productivity FOR dcms4.carton_productivity;
+CREATE OR REPLACE SYNONYM TAB_PRICE_SEASON FOR DCMS4.TAB_PRICE_SEASON;
+create or replace synonym warehouseloc for dcms8.warehouseloc;
+CREATE OR REPLACE SYNONYM box_productivity  FOR DCMS8.box_productivity;
+CREATE OR REPLACE SYNONYM mpc_productivity  FOR DCMS8.mpc_productivity;
+CREATE OR REPLACE SYNONYM box FOR DCMS8.box;
+CREATE OR REPLACE SYNONYM ps FOR DCMS8.ps;
+create or replace synonym cust for DCMS8.cust;
+create or replace synonym ia for DCMS8.ia;
+create or replace synonym ialoc for DCMS8.ialoc;
+CREATE OR REPLACE SYNONYM ialoc_content  FOR dcms8.ialoc_content;
+CREATE OR REPLACE SYNONYM mpcloc FOR dcms8.mpcloc;
+CREATE OR REPLACE SYNONYM mpc FOR dcms8.mpc;
+CREATE OR REPLACE SYNONYM ship FOR dcms8.ship;
+CREATE OR REPLACE SYNONYM psdet FOR dcms8.psdet;
+CREATE OR REPLACE SYNONYM boxdet FOR dcms8.boxdet;
+CREATE OR REPLACE synonym rep_active_ps FOR dcms8.rep_active_ps;
+CREATE OR REPLACE synonym po FOR dcms8.po;
+create or replace synonym skucase for dcms8.skucase;
+create or replace synonym IACONFIG for dcms8.IACONFIG;
+CREATE OR REPLACE synonym BUCKETSKU FOR DCMS8.BUCKETSKU;
+CREATE OR REPLACE SYNONYM CUSTOMER_GROUP FOR DCMS8.Customer_Group;
+CREATE OR REPLACE SYNONYM mpcialoc FOR DCMS8.mpcialoc;
+CREATE OR REPLACE SYNONYM psdet FOR DCMS8.psdet;
+create or replace synonym box for dcms8.box; 
+create or replace synonym boxdet for dcms8.boxdet; 
+create or replace synonym ialoc_content for dcms8.ialoc_content; 
+create or replace synonym ia for dcms8.ia; 
+create or replace synonym ialoc for dcms8.ialoc; 
+create or replace synonym master_sku for dcms4.master_sku; 
+create or replace synonym master_raw_inventory for dcms4.master_raw_inventory;
+create or replace synonym master_style for dcms4.master_style;
+create or replace synonym box for dcms8.ps; 
+create or replace synonym boxdet for dcms8.psdet; 
+create or replace synonym ialoc_content for dcms8.cust; 
+create or replace synonym ia for dcms8.ship;
+
+create or replace synonym ialoc for dcms8.ialoc; 
+create or replace synonym ialoc_content for dcms8.ialoc_content; 
+create or replace synonym box for dcms8.box; 
+create or replace synonym boxdet for dcms8.boxdet;  
+create or replace synonym master_raw_inventory for dcms4.master_raw_inventory;
+create or replace synonym master_sku for dcms4.master_sku;
+
+--For report 10.15
+
+create or replace synonym tab_customer_type for dcms4.tab_customer_type;
+create or replace synonym tab_fdc_calendar for dcms4.tab_fdc_calendar;
+create or replace synonym dem_pickslip for dcms4.dem_pickslip;
+create or replace synonym master_customer for dcms4.master_customer;
+create or replace synonym tab_style_label for dcms4.tab_style_label;
+
+--For report 110.10
+
+create or replace synonym REP_ACTIVE_PS for DCMS8A.REP_ACTIVE_PS;
+create or replace synonym ship FOR dcms8.ship;
+create or replace synonym cust for DCMS8.cust;
+
+--For report 130.18 and 130.104
+create or replace synonym src_transaction for dcms4.src_transaction;
+create or replace synonym src_transaction_detail for dcms4.src_transaction_detail;
+
+--For report 30.06
+create or replace synonym src_transaction for dcms4.src_carton;
+create or replace synonym src_transaction_detail for dcms4.src_carton_detail;
+create or replace synonym src_transaction_detail for dcms4.master_style;
+create or replace synonym src_transaction_detail for dcms4.src_req_detail;
+create or replace synonym src_transaction_detail for dcms4.master_storage_location;
+
+--For report 30.08 
+create or replace synonym v_sku_inventory for dcms4.v_sku_inventory;
+create or replace synonym master_style for dcms4.master_style;
+create or replace synonym master_style for dcms4.master_style;
+create or replace synonym tab_label_group for dcms4.tab_label_group;
+create or replace synonym warehouseloc for dcms4.warehouseloc;
+create or replace synonym src_carton_detail for dcms4.src_carton_detail;
+create or replace synonym src_carton for dcms4.src_carton;
+
+--For report 30.101
+create or replace synonym SRC_CARTON for dcms4.SRC_CARTON;
+create or replace synonym SRC_CARTON_DETAIL for dcms4.SRC_CARTON_DETAIL;
+create or replace synonym WAREHOUSELOC for dcms8.WAREHOUSELOC;
+create or replace synonym MASTER_STORAGE_LOCATION for dcms4.MASTER_STORAGE_LOCATION;
+create or replace synonym MASTER_STYLE for dcms4.MASTER_STYLE;
+create or replace synonym MASTER_RAW_INVENTORY for dcms4.MASTER_RAW_INVENTORY;
+create or replace synonym TAB_INVENTORY_AREA for dcms4.TAB_INVENTORY_AREA ;
+create or replace synonym TAB_LABEL_GROUP for dcms4.TAB_LABEL_GROUP;
+create or replace synonym V_SKU_INVENTORY for dcms4.V_SKU_INVENTORY;
+
+--For report 170.04
+create or replace synonym edi_753_754_ps for dcms8.edi_753_754_ps;
+create or replace synonym v_carrier for dcms4.v_carrier;
+CREATE OR REPLACE SYNONYM box FOR DCMS8.box;
+CREATE OR REPLACE SYNONYM ps FOR DCMS8.ps;
+
+--For report 110.07
+create or replace synonym bucket for dcms8.bucket;
+
+--For Report 130.17
+create or replace synonym src_carton for dcms4.src_carton;
+create or replace synonym src_carton_detail for dcms4.src_carton_detail;
+create or replace synonym master_sku for dcms4.master_sku;
+create or replace synonym ialoc for dcms8.ialoc;
+create or replace synonym ialoc_content for dcms8.ialoc_content;
+
+--For Report 130.16
+create or replace synonym src_carton for dcms8.ps;
+create or replace synonym src_carton for dcms8.psdet;
+create or replace synonym src_carton for dcms8.po;
+create or replace synonym src_carton for dcms4.master_style;
+create or replace synonym src_carton for dcms8.box;
+create or replace synonym src_carton for dcms8.boxdet;
+create or replace synonym src_carton for dcms4.dem_pickslip;
+create or replace synonym src_carton for dcms4.dem_pickslip_detail;
+create or replace synonym src_carton for dcms4.tab_inventory_area;
+create or replace synonym src_carton for dcms8.ia;
+create or replace synonym src_carton for dcms4.src_carton;
+create or replace synonym src_carton_detail for dcms4.src_carton_detail;
+create or replace synonym master_sku for dcms4.master_sku;
+create or replace synonym ialoc for dcms8.ialoc;
+create or replace synonym ialoc_content for dcms8.ialoc_content;
+
+--For Report 130.13
+create or replace synonym box for dcms8.box; 
+create or replace synonym boxdet for dcms8.boxdet; 
+create or replace synonym ialoc_content for dcms8.ialoc_content; 
+create or replace synonym ia for dcms8.ia; 
+create or replace synonym ialoc for dcms8.ialoc; 
+create or replace synonym master_sku for dcms4.master_sku; 
+create or replace synonym master_raw_inventory for dcms4.master_raw_inventory;
+create or replace synonym master_style for dcms4.master_style;
+
+--For Report 30.11
+create or replace synonym DEM_RETURNS for dcms4.DEM_RETURNS;       
+create or replace synonym DEM_RETURNS_DETAIL for dcms4.DEM_RETURNS_DETAIL;
+create or replace synonym MASTER_STYLE for dcms4.MASTER_STYLE;
+create or replace synonym CUST for dcms8.CUST;
+
+--For Report 170.04
+create or replace synonym edi_753_754_ps for dcms8.edi_753_754_ps;
+create or replace synonym ps for dcms8.ps;
+create or replace synonym v_carrier for dcms4.v_carrier;
+create or replace synonym box for dcms8.box;
+
+--For Report 110.11
+create or replace synonym rep_active_ps for dcms8.rep_active_ps; 
+create or replace synonym cust for dcms8.cust; 
+create or replace synonym customer_group for dcms8.customer_group;
+
+--For Report 140.107
+create or replace synonym ps FOR DCMS8.ps;       
+create or replace synonym psdet FOR dcms8.psdet;
+create or replace synonym bucket for dcms8.bucket;
+create or replace synonym Box for dcms8.box;
+create or replace synonym Boxdet for dcms8.boxdet;
+create or replace synonym ialoc for dcms8.ialoc;
+create or replace synonym ialoc_content for dcms8.ialoc_content;
+create or replace synonym resvdet for dcms8.resvdet; 
+
+
+--For Report 140.08
+create or replace synonym BUCKET for dcms8.BUCKET;
+create or replace synonym PS for dcms8.PS;
+create or replace synonym BUCKETSKU for dcms8.BUCKETSKU;
+create or replace synonym PSDET for dcms8.PSDET;
+create or replace synonym BOX for dcms8.BOX;
+create or replace synonym BOXDET for dcms8.BOXDET;
+create or replace synonym SRC_CARTON for dcms4.SRC_CARTON;
+create or replace synonym SRC_CARTON_DETAIL for dcms4.SRC_CARTON_DETAIL;
+create or replace synonym MASTER_STYLE for dcms4.MASTER_STYLE;
+create or replace synonym SRC_REQ_DETAIL for dcms4.SRC_REQ_DETAIL;
+create or replace synonym MASTER_SKU for dcms4.MASTER_SKU;
+create or replace synonym IALOC for dcms8.IALOC;
+create or replace synonym IALOC_CONTENT for dcms8.IALOC_CONTENT;
+create or replace synonym RESVDET for dcms8.RESVDET;
+
+--For Report 130.16
+create or replace synonym src_carton for dcms8.ps;
+create or replace synonym src_carton for dcms8.psdet;
+create or replace synonym src_carton for dcms8.po;
+create or replace synonym src_carton for dcms4.master_style;
+create or replace synonym src_carton for dcms8.box;
+create or replace synonym src_carton for dcms8.boxdet;
+create or replace synonym src_carton for dcms4.dem_pickslip;
+create or replace synonym src_carton for dcms4.dem_pickslip_detail;
+create or replace synonym src_carton for dcms4.tab_inventory_area;
+create or replace synonym src_carton for dcms8.ia;
+create or replace synonym src_carton for dcms4.src_carton;
+create or replace synonym src_carton_detail for dcms4.src_carton_detail;
+create or replace synonym master_sku for dcms4.master_sku;
+create or replace synonym ialoc for dcms8.ialoc;
+create or replace synonym ialoc_content for dcms8.ialoc_content;

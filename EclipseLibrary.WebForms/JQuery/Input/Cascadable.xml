@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Cascadable>
+  <doc name="WebMethod">
+    <remarks>
+      <para>
+        The signature of the web method should be <c>TReturn MethodName(string[] parentKeys)</c>.
+        The array passed to it contains one value for each parent in the hierarchy.
+        The value of the parent is defined by <see cref="P:EclipseLibrary.Web.JQuery.Input.InputControlBase.Value" />
+        property of the parent control.
+        
+        The first element in the array is the value of the top most visible parent.
+      </para>
+      <para>
+        The return value <c>TReturn</c> of the web method depends on the type of the input control which needs to be filled.
+      </para>
+      <list type="table">
+        <listheader>
+          <term>
+            Control
+          </term>
+          <description>
+            Return value of the Web Method
+          </description>
+        </listheader>
+        <item>
+          <term>
+            <see cref="CheckBoxEx" />
+          </term>
+          <description>
+            <c>boolean</c>. Strings and numbers are also accepted but javascript boolean rules apply.
+            Empty strings and 0 numbers evaluate to false.
+          </description>
+        </item>
+        <item>
+          <term>
+            <see cref="CheckBoxListEx" />
+          </term>
+          <description>
+            An array of objects. Each object must have <c>Text</c> and <c>Value</c> property.
+            Each element in the array becomes a checkbox.
+          </description>
+        </item>
+        <item>
+          <term>
+            <see cref="RadioButtonListEx" />
+          </term>
+          <description>
+            An array of objects. Each object must have <c>Text</c> and <c>Value</c> property.
+            Each element in the array becomes a radio button.
+          </description>
+        </item>
+        <item>
+          <term>
+            <see cref="TextBoxEx" /> and <see cref="TextArea" />
+          </term>
+          <description>
+            <c>string</c>. The string is displayed in the textbox.
+          </description>
+        </item>
+      </list>
+    </remarks>
+  </doc>
+</Cascadable>

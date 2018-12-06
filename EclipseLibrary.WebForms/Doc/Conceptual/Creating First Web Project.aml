@@ -1,0 +1,530 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="66bb4dc0-646f-431d-9f5d-005e3a3925bb" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <summary>
+      <para>
+        This document describes how to create an ASP.NET Web Application project which is able to
+        take advantage of EclipseLibrary .NET controls.
+      </para>
+    </summary>
+    <introduction>
+      <para>
+        For this documentation we will consider one example of a new ASP.NET Web Application and a website within that.
+        "DcmsMF" is the new Web Application and will have all the modules placed inside the web project
+        "DcmsWebMF". We will place all the libraries required inside the "DcmsMF" Web Application.
+        The library being rich with all the development tools can be used with any project by following the simple steps
+        mentioned in this document.
+      </para>
+      <para>
+        Follow the following steps to achieve the above stated scenario -
+      </para>
+
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+    <procedure>
+      <title>Set up a New Web Application</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>Create a new blank solution</para>
+          </content>
+          <steps class="ordered">
+            <step>
+              <content>
+                <para>
+                  Click on File-&gt;New Project
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Select "Visual Studio Solution" in the Project Type tree view of "New Project" dialog.
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Choose "Blank Solution".
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Specify the solution name, for example we will take "DcmsMF".
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Specify or browse to the location where you want to place the entire project.
+                </para>
+              </content>
+            </step>
+          </steps>
+        </step>
+        <step>
+          <content>
+            <para>Add a new Web Application Project to the solution you have just created.</para>
+          </content>
+          <steps class="ordered">
+            <step>
+              <content>
+                <para>
+                  Right click the newly created solution in the solution explorer.
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Specify the name, in our case we will choose it to be "DcmsWebMF".
+                </para>
+              </content>
+            </step>
+          </steps>
+        </step>
+        <step>
+          <content>
+            <para>Open windows explorer and open the solution folder you've just created.</para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>Check out Eclipse Library from your version control system</para>
+            <alert class="note">
+              <para>
+                Make sure All the library folder should be placed in the same folder level as of your web project folder, which in our
+                case is inside DcmsMF solution folder). In our case:
+              </para>
+              <list class="bullet">
+                <listItem>
+                  <para>
+                    Solution folder is
+                    <localUri type="absolutePath">C:\Work\DcmsMF</localUri>
+                  </para>
+                </listItem>
+                <listItem>
+                  <para>
+                    Web project folder is
+                    <localUri type="absolutePath">C:\Work\DcmsMF\DcmsWebMF</localUri>
+                  </para>
+                </listItem>
+              </list>
+            </alert>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>
+              After checking out Eclipse library add it to the solution.
+            </para>
+            <para>
+              Right click the solution and choose <system>Add -> Existing Project...</system>
+              from the context menu.
+            </para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>Add the reference to Eclipse library to the web project</para>
+            <para>The libaries we will be refering to are -</para>
+          </content>
+          <steps class="ordered">
+            <step>
+              <content>
+                <para>
+                  Right click on the <system>References</system> node of the Web Project sub-tree in the solution explorer.
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Click on <system>Add Reference...</system>
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Click on <system>Projects </system> tab of the "Add Reference"
+                  dialog box.
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Select the Eclipse Library project and click on <system>Ok</system>.
+                </para>
+              </content>
+            </step>
+          </steps>
+        </step>
+        <step>
+          <content>
+            <para>
+              Set Library references in the Web.Config file.
+              In order to use the library in your web project make the following entries in the Web.Config file -
+            </para>
+            <code language="xml">
+              <![CDATA[
+        <add tagPrefix="ecl" namespace="EclipseLibrary.Web.UI" assembly="EclipseLibrary"/>
+        <add tagPrefix="jq" namespace="EclipseLibrary.Web.JQuery" assembly="EclipseLibrary"/>
+        <add tagPrefix="inp" namespace="EclipseLibrary.Web.JQuery.Input" assembly="EclipseLibrary"/>
+              ]]>
+            </code>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>Adding Master Page</para>
+          </content>
+
+          <steps class="ordered">
+            <step>
+              <content>
+                <para>Right Click on the Web Project</para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Click on <system>Add -&gt; New Item</system>
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Choose <system>Master Page</system> from left pane (Visual Studio Installed Templates
+                  ) of the <system>Add New Item</system> dialog box.
+                </para>
+              </content>
+            </step>
+
+          </steps>
+        </step>
+        <step>
+          <content>
+            <para>Designing a master page.</para>
+            <para>
+              If you just need a master page with a header area and a left navigation area,
+              you can overwrite the contents of your master page with this markup:
+            </para>
+            <code language="c#">
+              <![CDATA[
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link type="text/css" rel="Stylesheet" media="screen" href="/DcmsShared/Styles/Default/jquery-ui-1.7.2.custom.css" />
+    <jq:JQueryScriptManager runat="server" />
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <div class="mp-outermost">
+        <div id="inside" class="ui-widget">
+            <div id="header" class="ui-widget-header">
+                <h1>
+                    Print Application</h1>
+            </div>
+            <div id="nav" class="ui-widget-content">
+                <h3>
+                    Navigation</h3>
+            </div>
+            <div id="main">
+                <div class="mp-page-title ui-priority-primary">
+                    <%= this.Page.Title %>
+                </div>
+                <asp:ContentPlaceHolder ID="cph" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+            <div class="ui-helper-clearfix">
+            </div>
+            <div>
+                Your Footer goes here....
+                <asp:ContentPlaceHolder ID="footer" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+        </div>
+        <div class="ui-helper-clearfix">
+        </div>
+    </div>
+</body>
+</html>
+
+]]>
+            </code>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>
+              Adding ASP.NET theme to the Web Application. We need this to contain basic styles of the master page
+            </para>
+          </content>
+
+          <steps class="ordered">
+            <step>
+              <content>
+                <para>Right Click on the Web Project</para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Click on <system>Add  -&gt; ASP.NET Folder -&gt; Theme</system>
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Rename the Theme folder just added to Default. You can choose any other name which
+                  you need to set as the reference in the Web.config file as below:
+                </para>
+                <code language="xml">
+                  <![CDATA[
+                     <pages styleSheetTheme="Default">
+                  ]]>
+                </code>
+              </content>
+            </step>
+
+            <step>
+              <content>
+                <para>
+                  Add Stylesheet document to specify the styles for the mater page.
+                  Follow the specified steps to add the stylesheet document.
+                </para>
+              </content>
+              <steps class="ordered">
+                <step>
+                  <content>
+                    <para>Right click on new created theme folder.</para>
+                  </content>
+                </step>
+                <step>
+                  <content>
+                    <para>Click on Add -&gt; New Item.</para>
+                  </content>
+                </step>
+                <step>
+                  <content>
+                    <para>Rename the stylesheet document if needed.</para>
+                  </content>
+                </step>
+
+                <step>
+                  <content>
+                    <para>Copy the following styles in the new stylesheet document created.</para>
+                    <code language="c#">
+                      <![CDATA[
+body
+{
+	margin: 0;
+	padding: 0;
+	min-width: 100%;
+	font-size: 64%;
+}
+
+/* Outermost div in the body */
+.mp-outermost
+{
+    min-width: 780px;
+    margin: 10px auto;
+}
+
+/* The div within the outermost div */
+.mp-outermost > div:first-child
+{
+    margin: 10px 10px 0px 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 1200px;
+}
+
+/* First div is header */
+.mp-outermost > div:first-child > div:first-child
+{
+    text-align: center;
+    height: 64px;
+}
+
+/* Second div is left side bar */
+.mp-outermost > div:first-child > div:first-child + div
+{
+    width: 150px;
+    float: left;
+    padding-left: 15px;
+    padding-top: 20px;
+}
+
+/* Third div is main content */
+.mp-outermost > div:first-child > div:first-child + div + div
+{
+    padding-left: 230px;
+    float: left;
+    padding-left: 2mm;
+    width: 1020px;
+}
+
+/* Fourth div clears float. This is style for fifth and last div which is footer */
+.mp-outermost > div:first-child > div:first-child + div + div + div + div
+{
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+/* Class to apply to page title */
+.mp-page-title
+{
+    font-size: x-large;
+    font-style: italic;
+    text-align: center;
+    padding-bottom: .5em;
+}
+
+                      ]]>
+                    </code>
+                  </content>
+
+                </step>
+
+                <step>
+                  <content>
+                    <para>
+                      You need to download at least one theme from
+                      <externalLink>
+                        <linkText>Theme Rollers</linkText>
+                        <linkUri>http://jqueryui.com/themeroller/</linkUri>
+                      </externalLink>
+                    </para>
+                  </content>
+                </step>
+                <step>
+                  <content>
+                    <para>
+                      The downloaded theme should be placed ins a different folder, say <system>Styles</system> in the same Web Application.
+                    </para>
+                  </content>
+                </step>
+                <step>
+                  <content>
+                    <para>
+                      If you already have the theme file placed elsewhere in any different project and you want to use that, then
+                      you can specify the link to that theme file in your master page as follows:
+                    </para>
+                    <code language="c#">
+                      <![CDATA[
+                      <link type="text/css" rel="Stylesheet" media="screen" href="/DcmsShared/Styles/Default/jquery-ui-1.7.2.custom.css" />
+                      ]]>
+                    </code>
+                  </content>
+                </step>
+              </steps>
+            </step>
+          </steps>
+        </step>
+        <step>
+          <content>
+            <para>Add content page.</para>
+          </content>
+          <steps class="ordered">
+            <step>
+              <content>
+                <para>Right click on the Web Project Node on the Solution explorer.</para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>Click on Add-&gt; New Item.</para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>Choose "Web Content Form" from the left pane (Visual Studio Installed Templates) of the New Item dialog box.</para>
+              </content>
+            </step>
+
+          </steps>
+        </step>
+      </steps>
+      <conclusion>
+        <content>
+          <para>
+            Now that you have a basic web application up and running, you can make several enhancements to it.
+          </para>
+          <list class="ordered">
+            <listItem>
+              <para>
+                Add a
+                <codeEntityReference>T:EclipseLibrary.Web.SiteStructure.AutoSiteMapProvider</codeEntityReference> to automatically display links in your project on your home page.
+              </para>
+            </listItem>
+            <listItem>
+              <para>
+                Add a drop down list to you master page to enable users to change the theme.
+                <link xlink:href="d1456bfd-ec4f-4ed1-9c8f-08921ce01943">Adding Theme Selector</link>
+              </para>
+            </listItem>
+            <listItem>
+              <para>
+                Enable authentication so that some content is visible to logged in users only.
+                <link xlink:href="b929aad6-15fe-477c-9cb0-9df5ba638dca">Enabling Authentication</link>
+              </para>
+            </listItem>
+          </list>
+        </content>
+      </conclusion>
+    </procedure>
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

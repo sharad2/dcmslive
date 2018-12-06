@@ -1,0 +1,301 @@
+﻿<%@ Master Language="C#" ClassName="DcmsLiveMasterPage" %>
+
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Linq" %>
+<%@ Import Namespace="EclipseLibrary.Web.JQuery.Scripts" %>
+<%@ Register src="ReleaseCandidate.ascx" tagname="ReleaseCandidate" tagprefix="uc1" %>
+
+<%--*
+ *  Programming: Eclipse Systems (P) Ltd., NOIDA, INDIA
+ *  E-mail: support@eclsys.com
+ *
+ *  $Revision: 39652 $
+ *  $Author: rverma $
+ *  $HeadURL: http://vcs.eclipse.com/svn/net35/Projects/XTremeReporter3/trunk/Website/MasterPage.master$
+ *  $Id: MasterPage.master 39652 2011-01-24 09:10:07Z rverma $
+ * Version Control Template Added.
+ *
+--%>
+<script runat="server">
+    
+    /// <summary>
+    /// Generate the javascript function SetJQueryStyleSheet
+    /// </summary>
+    /// <param name="e"></param>
+    protected override void OnPreRender(EventArgs e)
+    {
+        hlViewTrace.Visible = this.Page.Trace.IsEnabled;
+
+        PageBase pb = (PageBase)this.Page;
+        if (pb.IsPdfEnabled)
+        {
+            phSideBar.Visible = false;
+            main_content.CssClass = "";
+        }
+
+        base.OnPreRender(e);
+    }
+
+    protected override void OnLoad(EventArgs e)
+    {
+        repRecentReports.DataSource = from recent in this.Profile.RecentReports
+                                      let node = SiteMap.Provider.FindSiteMapNodeFromKey(recent)
+                                      where node != null
+                                      let tokens = node["ReportId"].Split('.')
+                                      orderby tokens[0].PadLeft(6), tokens[1].PadLeft(6)
+                                      select node;
+        repRecentReports.DataBind();
+        if (SiteMap.CurrentNode != null)
+        {
+            dsStats.SelectParameters["report_id"].DefaultValue = SiteMap.CurrentNode.Key;
+            if (SiteMap.CurrentNode["Browsable"] != "false" && !string.IsNullOrEmpty(SiteMap.CurrentNode["ReportId"]))
+            {
+                // Non Browsable reports are never considered to be a favorite. Max 10 reports are saved
+                if (this.Profile.RecentReports.Add(SiteMap.CurrentNode.Key, 10))
+                {
+                    // Save if a new recent report is added
+                    this.Profile.Save();
+                }
+            }
+        }
+        base.OnLoad(e);
+    }
+
+
+    /// <summary>
+    /// Set the selected item based on the theme saved for the user in his profile and fill combo with choices.
+    /// If user's choice no longer exists, set it to default.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void ddlThemes_Load(object sender, EventArgs e)
+    {
+        EclipseLibrary.Web.JQuery.Input.DropDownAjax ddlThemes = (EclipseLibrary.Web.JQuery.Input.DropDownAjax)sender;
+        if (this.Profile == null || string.IsNullOrEmpty(this.Profile.Theme))
+        {
+            Trace.Warn("Theme will initialize at startup");
+            ddlThemes.Cascadable.InitializeAtStartup = true;
+        }
+        else
+        {
+            Trace.Write("Setting theme to: " + this.Profile.Theme);
+            if (ddlThemes.Items.Count == 0)
+            {
+                ddlThemes.Items.Add(new DropDownItem()
+                {
+                    Text = this.Profile.Theme,
+                    Value = this.Profile.Theme,
+                    Persistent = DropDownPersistenceType.WhenEmpty
+                });
+            }
+            ddlThemes.Value = ddlThemes.Items[0].Value;
+            linkJqueryCss.Href = string.Format("~/Styles/{0}/jquery-ui-1.8.8.custom.css", ddlThemes.Value);
+        }
+        return;
+    }
+
+
+    protected void lblTitle_PreRender(object sender, EventArgs e)
+    {
+        Label lblTitle = (Label)sender;
+        SiteMapNode node = SiteMap.CurrentNode;
+        if (node == null)
+        {
+            string[] strReport = this.Page.Request.FilePath.Split('/');
+            string reportId = strReport.LastOrDefault().Replace("R", "").Replace('_', '.').Replace(".aspx", "");
+            if (string.IsNullOrEmpty(reportId))
+            {
+                lblTitle.Text = this.Page.Title;
+            }
+            else
+            {
+                lblTitle.Text = string.Format("{0}: {1}", reportId, this.Page.Title);
+            }
+        }
+        else
+        {
+            string reportId = node["ReportId"];
+            if (string.IsNullOrEmpty(reportId))
+            {
+                lblTitle.Text = this.Page.Title;
+            }
+            else
+            {
+                this.Page.Title = string.Format("DCMS Live Report {0}", reportId);
+                lblTitle.Text = string.Format("{0}: {1}", reportId, node.Title);
+            }
+        }
+    }
+</script>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <title>Untitled Page</title>
+    <link runat="server" id="linkJqueryCss" type="text/css" rel="Stylesheet" media="screen" />
+    <link type="text/css" rel="Stylesheet" media="print" href="/DcmsShared/Styles/Print.css" />
+    <jquery:JQueryScriptManager runat="server" ID="ctlScriptMgr" />
+    <asp:ContentPlaceHolder ID="head" runat="server" />
+</head>
+<body>
+    <%--Forced to put script within body because it has code blocks--%>
+    <script type="text/javascript">
+        function ddlThemes_Change(event) {
+            var self = this;
+            $.ajax({
+                cache: false,
+                data: { theme: $(this).val(), action: 'save_theme' },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $('#themeSelector').html('ddlThemes_Change error: ' + XMLHttpRequest.responseText);
+                },
+                success: function (data, textStatus) {
+                    // Sharad 13 Nov 2013: Using ResolveURL so that this evaluates correctly on IIS development server
+                    var root = '<%= this.ResolveUrl("~/Styles") %>';
+                    $('#<%= this.linkJqueryCss.ClientID %>').attr('href', root + '/' + $(self).val() + '/jquery-ui-1.8.8.custom.css');
+                },
+                type: 'POST',
+                url: '<%= this.ResolveUrl("~/AjaxHelper.aspx") %>'
+            });
+        }
+    </script>
+    <div id="page-wrap">
+        <div id="inside" class="ui-widget">
+            <form id="form1" runat="server">
+            <div id="header" class="ui-widget">
+                <div class="ui-widget-header" style="height: 100px; text-align: center; padding: 2px 2px 2px 2px">
+                    <asp:Image ID="Image1" runat="server" ImageUrl="~/Images/maidenform_Logo.gif" ImageAlign="Left"
+                        AlternateText="Maidenform Logo" Height="100px" />
+                    <div style="float: left; margin-left: 2mm">
+                        <asp:LoginView runat="server">
+                            <AnonymousTemplate>
+                                <span class="ui-state-error">You are not logged in. Please disable anonymous access
+                                    in IIS manager for proper functioning of DCMS Live. </span>
+                            </AnonymousTemplate>
+                            <LoggedInTemplate>
+                                Welcome
+                                <asp:LoginName ID="LoginName1" runat="server" />
+                            </LoggedInTemplate>
+                        </asp:LoginView>
+                    </div>
+                    <div style="float: right; margin-right: 2mm">
+                        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Default.aspx" Text="Home"
+                            Font-Bold="true" Font-Underline="true" />
+                        <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/Preferences.aspx" Text="Preferences"
+                            Font-Bold="true" Font-Underline="true" />
+                    </div>
+                    <asp:HyperLink runat="server" NavigateUrl="~/Default.aspx" Font-Underline="false"
+                        Font-Size="30pt">
+                      DCMS <span style="font-weight: normal">Live 2012</span>      
+                    </asp:HyperLink>
+                    <div class="pageTitle">
+                        <asp:Label runat="server" OnPreRender="lblTitle_PreRender" />
+                    </div>
+                    <oracle:OracleDataSource runat="server" ID="dsStats" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+                        ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>" CancelSelectOnNullParameter="true">
+                        <SelectSql>
+WITH execution_times AS
+ (select t.hit_date AS hit_date,
+         t.report_id,
+         t.query_seconds AS query_seconds,
+         t.user_name AS user_name,
+         t.hit_index AS hit_index,
+         ROW_NUMBER() OVER(ORDER BY t.hit_index DESC) AS query_rank
+    from xreporter_report_hits t
+   where t.report_id = :report_id
+     and t.application_name = 'DcmsLive')
+select *
+  from execution_times et
+ where et.query_rank &lt;= 5
+ order by et.hit_index desc
+                        </SelectSql>
+                        <SelectParameters>
+                            <asp:Parameter Name="report_id" Type="String" />
+                        </SelectParameters>
+                    </oracle:OracleDataSource>
+                    <div style="font-size: 10pt; font-weight: normal" class="ui-helper-clearfix">
+                        <asp:Label runat="server" ID="lblThisExecutionPublic" ToolTip="This execution" />
+                        <asp:Repeater runat="server" DataSourceID="dsStats">
+                            <ItemTemplate>
+                                <asp:Label runat="server" Text='<%# Eval("hit_index", "{0} hits")%>' Visible='<%# Convert.ToInt32(Eval("query_rank")) == 1 %>'
+                                    Font-Size="14pt" Font-Bold="true" />  &bull;
+                                <span title='<%# string.Format("Executed by {0} on {1:F}", Eval("user_name"), Eval("hit_date")) %>'>
+                                    <%# Eval("query_seconds", "{0:N2} sec")%></span>
+                            </ItemTemplate>
+                            <SeparatorTemplate>
+                                &bull;
+                            </SeparatorTemplate>
+                        </asp:Repeater>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-helper-clearfix">
+            </div>
+            <asp:PlaceHolder ID="phSideBar" runat="server">
+                <div id="left-sidebar" class="ui-widget">
+                    <div id="themeSelector" class="ui-widget-content" style="margin-top: 2mm; padding: 1mm 1mm 1mm 1mm;
+                        margin-bottom: 1mm">
+                        Select Theme
+                        <i:DropDownAjax ID="ddlThemes" runat="server" OnLoad="ddlThemes_Load" OnClientChange="ddlThemes_Change"
+                            Width="10em" FocusPriority="Low">
+                            <Cascadable WebMethod="GetThemes" WebServicePath="~/Styles/ThemeInfo.asmx" />
+                        </i:DropDownAjax>
+                    </div>
+                    <asp:HyperLink ID="hlViewTrace" runat="server" NavigateUrl="~/trace.axd" Text="View Trace"
+                        Target="trace" />
+                    <asp:Repeater runat="server" ID="repRecentReports" EnableViewState="false">
+                        <HeaderTemplate>
+                            <div class="ui-state-default ui-widget-header" style="padding: 0mm 1mm 0mm 1mm">
+                                Recently Viewed Reports</div>
+                            <div class="ui-widget-content">
+                                <ol>
+                        </HeaderTemplate>
+                        <FooterTemplate>
+                            </ol></div>
+                        </FooterTemplate>
+                        <ItemTemplate>
+                            <li runat="server" visible='<%# Eval("[ReportId]", "{0}") != "" %>' style="margin-bottom: 2mm">
+                                <asp:HyperLink runat="server" NavigateUrl='<%# Eval("Url") %>'>
+                        <%# Eval("[ReportId]") %>: <%# Eval("Title") %>
+                                </asp:HyperLink>
+                            </li>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                    <br />
+                    <br />
+                    <i:ButtonEx runat="server" ID="btnAbout" Text="About..." Icon="Custom" CustomIconName="ui-icon-info"
+                        OnClientClick="function(e) {
+ $('#dlgAbout').dialog('open')                        
+                        }" />
+                    <jquery:Dialog ID="dlgAbout" runat="server" Title="About DCMS Live 2012" Resizable="false"
+                        Modal="true" AutoOpen="false" ClientIDMode="Static" Width="350">
+                        <Buttons>
+                            <jquery:CloseButton Text="Ok" />
+                        </Buttons>
+                        <ContentTemplate>
+                            <div style="text-align: center; margin-bottom: 2mm">
+                                DcmsLive Version P7.0.16
+                            </div>
+                            <eclipse:AboutBox ID="AboutBox2" runat="server" />
+                        </ContentTemplate>
+                    </jquery:Dialog>
+                </div>
+            </asp:PlaceHolder>
+            <asp:Panel ID="main_content" runat="server" CssClass="main-content">
+                <p>
+                    <%= SiteMap.CurrentNode != null ? SiteMap.CurrentNode.Description : null %>
+                </p>
+<uc1:ReleaseCandidate ID="ReleaseCandidate1" runat="server" />
+                <div>
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </asp:Panel>
+            </form>
+            <div style="clear: both" />
+            <div id="footer">
+            </div>
+        </div>
+        <div style="clear: both" />
+    </div>
+</body>
+</html>

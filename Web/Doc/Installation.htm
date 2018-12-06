@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>DcmsShared Installation</title>
+    <link rel="Stylesheet" href="style.css" />
+    <style type="text/css">
+
+.codeinlineitalic
+	{
+	font-style: italic;
+	}
+
+
+    </style>
+</head>
+<body>
+    <h1>
+        DcmsLive Installation</h1>
+    <h3>
+        Objective</h3>
+    <p>
+        Create a website which will serve the pages of DcmsLive web. IIS will be configured
+        to pass intranet user identity to the application. After installation DcmsLive 
+        will be configuired to specify the database connect strings. Optionally, you can 
+        restrict access to some reports from specific users.</p>
+    <h3>
+        System Requirements</h3>
+    <p>
+        Windows Server 2003 R2 running IIS6.</p>
+    <h3>
+        Prerequisites</h3>
+    <ul>
+        <li><strong>IIS Preinstalled:</strong>
+            <p>
+                Ensure that IIS 6 is installed on the server. This web server is used for serving all pages in DcmsLive.</p>
+        </li>
+        <li><strong>.NET Framework 4.0: </strong>
+            <p>
+                Make sure .Net Framework 4.0 should be installed on the server. You can download 
+                it from one of many Microsoft links.</p>
+        </li>
+        <li>ODP.NET 11.2. This is required for connecting to the Oracle Server.</li>
+    </ul>
+    <h3>
+        Deploy DcmsLive</h3>
+    <ul>
+        <li><strong>Extract supplied zip file:</strong>
+            <p>
+                You should first extract the contents of the zip file into a temporary directory
+                (c:\temp). After extraction succeeds you will see a <a href="file:///C:/temp/DcmsLive">
+                    C:\temp\DcmsLive</a> directory which will contain all the necessary files. You
+                should then move this DcmsLive directory to a convenient location (c:\Dcms\DcmsLive
+                is recommended).</p>
+        </li>
+        <li><strong>Create Virtual Directory</strong>
+            <p>
+                <a href="CreateVirtualDirectory.htm" target="_blank">Create a Virtual directory</a>&nbsp;
+                named <strong>DcmsLive</strong>. Any other name can also be specified but virtual
+                directory with that name should not already exist. Specify <a href="file:///c:/Dcms/DcmsLive">
+                    c:\Dcms\DcmsLive</a> as the path for this virtual directory. Disable anonymous
+                access and enable windows authentication for this virtual directory.</p>
+        </li>
+    </ul>
+    <h3>
+        Verify Installation</h3>
+    <p>
+        The installation need to be verified for the proper installation. Specify the URL
+        <a href="http://%3Cservername%3E/DcmsShared">http:/localhost/DcmsLive</a> in your
+        browser on machine in which you have just installed DcmsLive. You should see a list
+        of available reports.</p>
+    </body>
+</html>

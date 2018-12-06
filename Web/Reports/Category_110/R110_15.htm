@@ -1,0 +1,617 @@
+﻿<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        .style10
+        {
+            width: 159px;
+        }
+        .style11
+        {
+            text-align: center;
+        }
+        .style12
+        {
+            width: 159px;
+            text-align: center;
+        }
+        .style15
+        {
+            width: 136px;
+            text-align: center;
+        }
+        .style16
+        {
+            width: 136px;
+        }
+        .style17
+        {
+            width: 104px;
+            text-align: center;
+        }
+        .style18
+        {
+            width: 104px;
+        }
+        .style19
+        {
+            width: 68px;
+            text-align: center;
+        }
+        .style20
+        {
+            width: 68px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        R110<b>.15 : Customer Open Order Summary Report</b></h1>
+    <h4>
+        Author : Sanjeev kumar</h4>
+    Reviewed By: Hemant K. Varshney<br />
+    $Revision: 4644 $<br />
+    Status: Reviewed<br />
+    Tested By : Shivani Bist
+    <h2>
+        Overview</h2>
+    <p>
+        Report shows order status of customer. It also shows no.of SKU, pickslip belonging
+        to various order status, total boxes in order as well as boxes scanned at UPS. Information
+        shown can be further filtered by using customer DC, customer store, order type, delivery date 
+        and building.</p>
+    <p>
+        <strong>This report&nbsp; provides drill down to view&nbsp;</strong></p>
+    <ol>
+        <li><b><i>Pickslip details</i></b> for particular pickslip status by clicking on No.
+            of Pickslips&nbsp; </li>
+        <li><b><i>Purchase Order details</i></b> for particular pickslip status by clicking
+            on No. of POs. The report can be further drilled to view <b><i>SKU details</i></b>
+            by clicking on No. of SKUs&nbsp; </li>
+        <li><strong><em>Total boxes |UPS Scan:-</em></strong> Provided the link on the UPS scan
+            column so that you can see boxes scanned by UPS.</li>
+    </ol>
+    <h4>
+        Algorithm</h4>
+    <p>
+        Get all the information from dem_pickslip, dem_pickslip_detail, ps, box and boxdet
+        tables.Report is displaying the status of the pickslip , count of PO , count of
+        pickslip, total_order_quantity and total_order_dollar from&nbsp; ps table and getting&nbsp;
+        UPC, order shipped and dollar shipped from box and boxdet table. Retrieved the &#39;In
+        Order Bucket &#39; detail&nbsp; from dem_pickslip and dem_pickslip_detail.</p>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td class="style12">
+                <b>Name</b>
+            </td>
+            <td class="style11">
+                <b>Default</b>
+            </td>
+            <td class="style11">
+                <b>Details</b>
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Customer
+                ID</td>
+            <td>
+                None
+            </td>
+            <td>
+                Id of the customer.&nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Customer DC
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                Distribution centre of customer.
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Customer Store
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                The store id of&nbsp; customer.
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Customer Order Type
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                Order Type like All, Domestic,International
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Building
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                Building of the Open orders.
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Delivery Date
+            </td>
+            <td>
+                Uncheck
+            </td>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+    </table>
+    <h3>
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td class="style15">
+                <b>Item</b>
+            </td>
+            <td class="style17">
+                <b>Summary</b>
+            </td>
+            <td class="style19">
+                <b>Sort Sequence</b>
+            </td>
+            <td class="style11">
+                <b>Details</b>
+            </td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Building</td>
+            <td class="style18">
+                NO</td>
+            <td class="style20">
+                1</td>
+            <td>
+                Showing list of status building wise.</td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Status
+            </td>
+            <td class="style18">
+                NO
+            </td>
+            <td class="style20">
+                &nbsp;</td>
+            <td>
+                Status of the pickslip.
+            </td>
+        </tr>
+        <tr>
+            <td class="style16">
+                No. Of&nbsp; PO
+            </td>
+            <td class="style18">
+                NO
+            </td>
+            <td class="style20">
+                &nbsp;
+            </td>
+            <td>
+                count of the PO
+            </td>
+            </tr>
+            <tr>
+                <td class="style16">
+                    No. Of Pickslip
+                </td>
+                <td class="style18">
+                    NO
+                </td>
+            <td class="style20">
+                &nbsp;
+            </td>
+            <td>
+                Pickslip of the customer.
+            </td>
+        </tr>
+        <tr>
+            <td class="style16">
+                No. Of&nbsp; SKU
+            </td>
+            <td class="style18">
+                NO
+            </td>
+            <td class="style20">
+                &nbsp;
+            </td>
+            <td>
+                Ordered SKU
+            </td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Boxes Total
+            </td>
+            <td class="style18">
+                SUM
+            </td>
+            <td class="style20">
+                &nbsp;
+            </td>
+            <td>
+                Total boxes
+            </td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Boxes UPS Scan
+            </td>
+            <td class="style18">
+                SUM
+            </td>
+            <td class="style20">
+                &nbsp;
+            </td>
+            <td>
+                Total UPS scan boxes.
+            </td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Ordered Pieces
+            </td>
+            <td class="style18">
+                SUM
+            </td>
+            <td class="style20">
+                &nbsp;
+            </td>
+            <td>
+                Number of Pieces Ordered
+            </td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Ordered Dollars
+            </td>
+            <td class="style18">
+                SUM
+            </td>
+            <td class="style20">
+                &nbsp;
+            </td>
+            <td>
+                Ordered amount
+            </td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Shipped Pieces
+            </td>
+            <td class="style18">
+                SUM
+            </td>
+            <td class="style20">
+                &nbsp;
+            </td>
+            <td>
+                Shipped amount
+            </td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Shipped Dollars
+            </td>
+            <td class="style18">
+                SUM
+            </td>
+            <td class="style20">
+                &nbsp;
+            </td>
+            <td>
+                Number of pieces shipped
+            </td>
+        </tr>
+    </table>
+    &nbsp;<h2>
+        Behavior Change</h2>
+    <ol>
+        <li>Provided count of boxes which are already scanned at UPS station.&nbsp;User can
+            also drill down on this number.</li>
+        <li>Provided building filter for displaying customer order status list building wise.
+            </li>
+    </ol>
+    <h2>
+        Issues</h2>
+    No Known Issue. &nbsp;<br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        <strong>Private synonyms for the following table is requried</strong></p>
+    Box,<br />
+    Boxdet,<br />
+    PS,<br />
+    PSDET,<br />
+    PO,<br />
+    Dem_pickslip,<br />
+    Dem_pickslip_detail<br />
+    TAB_REPORTING_STATUS<br />
+    <strong>The below script to create the synonyms</strong>
+    <ol>
+        <li>Create or replace synonym box for dcms8.box;</li>
+        <li>Create or replace synonym boxdet for dcms8.boxdet; </li>
+        <li>Create or replace synonym PS for dcms8.PS;</li>
+        <li>Create or replace synonym PSDET for dcms8.PSDET ;</li>
+        <li>Create or replace synonym PO for dcms8.PO;</li>
+        <li>Create or replace synonym Dem_pickslip for dcms4.Dem_pickslip;</li>
+        <li>Create or replace synonym Dem_pickslip_detail for dcms4.Dem_pickslip_detail;</li>
+        <li>Create or replace synonym tab_reporting_status for dcms4.tab_reporting_status;</li>
+    </ol>
+    <b>Following appSettings are required:</b>
+    <p>
+        No used AppSetting in this report</p>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.
+    <h3>
+        Query&#39;s documentation:<br />
+    </h3>
+    <pre style="height: 1788px">
+   WITH ORDERED_INFO(COUNT_PICKSLIPS,
+REPORTING_STATUS,
+SORT_SEQUENCE,
+COUNT_SKU,
+ORDER_QUANTITY,
+ORDER_DOLLARS,
+COUNT_PO,
+WAREHOUSE_LOCATION_ID) AS
+ (SELECT COUNT(DISTINCT PS.PICKSLIP_ID),
+         PS.REPORTING_STATUS,
+         MAX(TRS.SORT_SEQUENCE),
+         COUNT(DISTINCT PD.UPC_CODE),
+         SUM(PD.PIECES_ORDERED),
+         SUM(PD.PIECES_ORDERED * PD.EXTENDED_PRICE), 
+         COUNT(DISTINCT PS.PO_ID) AS COUNT_PO,
+         PS.WAREHOUSE_LOCATION_ID
+    FROM PS
+    INNER JOIN PSDET PD
+    ON PS.PICKSLIP_ID = PD.PICKSLIP_ID
+    <if c="$delivery_start_date or $delivery_end_date">
+   INNER JOIN PO
+      ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+     AND PS.PO_ID = PO.PO_ID
+     AND PS.ITERATION = PO.ITERATION</if>
+   INNER JOIN TAB_REPORTING_STATUS TRS
+      ON TRS.REPORTING_STATUS = PS.REPORTING_STATUS
+   WHERE PS.TRANSFER_DATE IS NULL
+     AND PD.TRANSFER_DATE IS NULL
+     AND PS.PICKSLIP_CANCEL_DATE IS NULL
+     AND PS.REPORTING_STATUS IS NOT NULL
+ <if>AND PS.customer_id = :customer_id</if>
+ <if>AND PS.CUSTOMER_DC_ID = :customer_dc_id</if>
+ <if>AND ps.CUSTOMER_STORE_ID =:customer_store_id</if>
+ <if c="$customer_type='D'">AND PS.EXPORT_FLAG IS NULL</if>
+ <if c="$customer_type='I'">AND PS.EXPORT_FLAG = 'Y'</if>
+ <if>AND po.start_date &gt;= CAST(:delivery_start_date AS DATE)</if>      
+ <if>AND po.start_date &lt;= CAST(:delivery_end_date AS DATE)</if>
+ <if>AND ps.warehouse_location_id = :warehouse_location_id</if>
+   GROUP BY PS.REPORTING_STATUS, PS.WAREHOUSE_LOCATION_ID),
+PACKED_PIECES(REPORTING_STATUS,
+TOTAL_BOXES,
+UPS_SCAN_COUNT,
+SHIPPED_PIECES,
+SHIPPED_DOLLARS,
+WAREHOUSE_LOCATION_ID) AS
+ (SELECT PS.REPORTING_STATUS,
+         COUNT(DISTINCT B.UCC128_ID),
+         COUNT(DISTINCT(CASE
+                          WHEN B.PRO_NUMBER IS NOT NULL THEN
+                           B.UCC128_ID
+                        END)),
+         SUM(BD.CURRENT_PIECES),
+         SUM(BD.CURRENT_PIECES * BD.EXTENDED_PRICE),
+         PS.WAREHOUSE_LOCATION_ID
+    FROM PS
+     <if c="$delivery_start_date or $delivery_end_date">
+   INNER JOIN PO
+      ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+     AND PS.PO_ID = PO.PO_ID
+     AND PS.ITERATION = PO.ITERATION</if>
+   INNER JOIN BOX B
+      ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+   WHERE PS.TRANSFER_DATE IS NULL
+     AND B.STOP_PROCESS_DATE IS NULL
+     AND BD.STOP_PROCESS_DATE IS NULL
+     AND PS.PICKSLIP_CANCEL_DATE IS NULL
+     AND PS.REPORTING_STATUS IS NOT NULL
+    <if>AND PS.customer_id = :customer_id</if>
+ <if>AND PS.CUSTOMER_DC_ID = :customer_dc_id</if>
+ <if>AND ps.CUSTOMER_STORE_ID =:customer_store_id</if>
+ <if c="$customer_type='D'">AND PS.EXPORT_FLAG IS NULL</if>
+ <if c="$customer_type='I'">AND PS.EXPORT_FLAG = 'Y'</if>
+ <if>AND po.start_date &gt;= CAST(:delivery_start_date AS DATE)</if>      
+ <if>AND po.start_date &lt;= CAST(:delivery_end_date AS DATE)</if>
+ <if>AND ps.warehouse_location_id = :warehouse_location_id</if>
+   GROUP BY PS.REPORTING_STATUS,PS.WAREHOUSE_LOCATION_ID)
+SELECT OI.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID,
+       OI.REPORTING_STATUS      AS REPORTING_STATUS,
+       OI.SORT_SEQUENCE         AS SORT_SEQUENCE,
+       OI.COUNT_PO              AS COUNT_PO,
+       OI.COUNT_PICKSLIPS       AS COUNT_PICKSLIPS,
+       OI.COUNT_SKU             AS COUNT_SKU,
+       SI.TOTAL_BOXES           AS TOTAL_BOXES,
+       SI.UPS_SCAN_COUNT        AS UPS_SCAN_COUNT,
+       OI.ORDER_QUANTITY        AS ORDER_QUANTITY,
+       OI.ORDER_DOLLARS         AS ORDER_DOLLARS,
+       SI.SHIPPED_PIECES        AS SHIPPED_PIECES,
+       SI.SHIPPED_DOLLARS       AS SHIPPED_DOLLARS
+  FROM ORDERED_INFO OI
+  LEFT OUTER JOIN PACKED_PIECES SI
+    ON SI.REPORTING_STATUS = OI.REPORTING_STATUS
+   AND SI.WAREHOUSE_LOCATION_ID = OI.WAREHOUSE_LOCATION_ID
+
+UNION ALL
+
+SELECT DP.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID,
+       'IN ORDER BUCKET' AS REPORTING_STATUS,
+       1 AS SORT_SEQUENCE,
+       COUNT(DISTINCT DP.CUSTOMER_ORDER_ID) AS COUNT_PO,
+       COUNT(DISTINCT DP.PICKSLIP_ID) AS COUNT_PICKSLIPS,
+       COUNT(DISTINCT DPD.UPC_CODE) AS COUNT_SKU,
+       NULL AS TOTAL_BOXES,
+       NULL AS UPS_SCAN_COUNT,
+       SUM(DPD.QUANTITY_ORDERED) AS ORDER_QUANTITY,
+       SUM(DPD.EXTENDED_PRICE * DPD.QUANTITY_ORDERED) AS ORDER_DOLLARS,
+       NULL AS SHIPPED_PIECES,
+       NULL AS SHIPPED_DOLLARS
+  FROM DEM_PICKSLIP DP
+  INNER JOIN DEM_PICKSLIP_DETAIL DPD
+    ON DP.PICKSLIP_ID = DPD.PICKSLIP_ID
+ WHERE DP.PS_STATUS_ID = 1
+ <if>AND DP.customer_dist_center_id =:customer_dc_id</if>
+ <if>AND DP.CUSTOMER_STORE_ID =:customer_store_id</if>
+ <if c="$customer_type='D'">AND DP.EXPORT_FLAG IS NULL</if>
+ <if c="$customer_type='I'">AND DP.EXPORT_FLAG = 'Y'</if>
+ <if c="$customer_type='B'"></if>
+ <if>AND DP.delivery_date &gt;= CAST(:delivery_start_date AS DATE)</if>         
+ <if>AND DP.delivery_date &lt;= CAST(:delivery_end_date AS DATE)</if>  
+ <if>AND DP.customer_id = :customer_id</if>
+ <if>AND DP.warehouse_location_id = :warehouse_location_id</if>
+ GROUP BY DP.WAREHOUSE_LOCATION_ID
+        </pre>
+    <h2>
+        Validation details</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.
+    <br />
+    <b>Query:Blow query displays the Total order quantity and Total order dollars.</b>
+    <br />
+    <pre>
+    SELECT COUNT(DISTINCT PS.PICKSLIP_ID),
+         PS.REPORTING_STATUS,
+         SUM(PS.TOTAL_QUANTITY_ORDERED),
+         SUM(PS.TOTAL_DOLLARS_ORDERED),
+         COUNT(DISTINCT PS.PO_ID) AS COUNT_PO
+    FROM PS
+   WHERE PS.TRANSFER_DATE IS NULL
+     AND PS.PICKSLIP_CANCEL_DATE IS NULL
+     AND PS.CUSTOMER_ID = :customer_id
+ <if>AND PS.CUSTOMER_DC_ID = :customer_dc_id</if>
+ <if>AND ps.CUSTOMER_STORE_ID =:customer_store_id</if>
+   GROUP BY PS.REPORTING_STATUS
+    </pre>
+    <b>Query: Below query display the pickslip count, reporting_status, total quantity and
+        total dollars passed delivery date and other filters.</b>
+    <pre>
+    SELECT COUNT(DISTINCT PS.PICKSLIP_ID),
+         PS.REPORTING_STATUS,
+         SUM(PS.TOTAL_QUANTITY_ORDERED),
+         SUM(PS.TOTAL_DOLLARS_ORDERED),
+         COUNT(DISTINCT PS.PO_ID) AS COUNT_PO
+    FROM PS
+    INNER JOIN PO ON 
+    PS.CUSTOMER_ID = PO.CUSTOMER_ID 
+    AND PS.PO_ID = PO.PO_ID 
+    AND PS.ITERATION = PO.ITERATION
+   WHERE PS.TRANSFER_DATE IS NULL
+     AND PS.PICKSLIP_CANCEL_DATE IS NULL
+     AND PS.CUSTOMER_ID = :customer_id
+ AND PS.CUSTOMER_DC_ID = :customer_dc_id
+ AND ps.CUSTOMER_STORE_ID =:customer_store_id
+ AND po.start_date &gt;= CAST(:delivery_start_date AS DATE)     
+ AND po.start_date &lt;= CAST(:delivery_end_date AS DATE)
+   GROUP BY PS.REPORTING_STATUS
+    </pre>
+    <b>Description:&nbsp; </b><b>Query: Blow query displays the shipped order and dollars
+        count of pickslip, total boxes and UPS scan boxes. </b>
+    <pre>
+    SELECT PS.REPORTING_STATUS,
+         COUNT(DISTINCT B.UCC128_ID),
+         COUNT(DISTINCT(CASE
+                          WHEN B.PRO_NUMBER IS NOT NULL THEN
+                           B.UCC128_ID
+                        END)),
+         COUNT(DISTINCT BD.UPC_CODE),
+         SUM(BD.CURRENT_PIECES),
+         SUM((BD.CURRENT_PIECES * BD.EXTENDED_PRICE))
+    FROM PS
+   INNER JOIN BOX B
+      ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+   WHERE PS.TRANSFER_DATE IS NULL
+     AND B.STOP_PROCESS_DATE IS NULL
+     AND BD.STOP_PROCESS_DATE IS NULL
+     AND PS.PICKSLIP_CANCEL_DATE IS NULL
+     AND PS.CUSTOMER_ID = :customer_id
+ <if>AND PS.CUSTOMER_DC_ID = :customer_dc_id</if>
+ <if>AND ps.CUSTOMER_STORE_ID =:customer_store_id</if>
+   GROUP BY PS.REPORTING_STATUS
+    </pre>
+    <b>QUERY: Below query displaying total boxes, UPS scan boxes, </b>
+    <pre>
+ SELECT PS.REPORTING_STATUS,
+         COUNT(DISTINCT B.UCC128_ID),
+         COUNT(DISTINCT(CASE
+                          WHEN B.PRO_NUMBER IS NOT NULL THEN
+                           B.UCC128_ID
+                        END)),
+         COUNT(DISTINCT BD.UPC_CODE),
+         SUM(BD.CURRENT_PIECES),
+         SUM((BD.CURRENT_PIECES * BD.EXTENDED_PRICE))
+    FROM PS
+    INNER JOIN PO ON 
+    PS.CUSTOMER_ID = PO.CUSTOMER_ID 
+    AND PS.PO_ID = PO.PO_ID 
+    AND PS.ITERATION = PO.ITERATION
+   INNER JOIN BOX B
+      ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+   WHERE PS.TRANSFER_DATE IS NULL
+     AND B.STOP_PROCESS_DATE IS NULL
+     AND BD.STOP_PROCESS_DATE IS NULL
+     AND PS.PICKSLIP_CANCEL_DATE IS NULL
+     AND PS.CUSTOMER_ID = :customer_id
+ <if>AND PS.CUSTOMER_DC_ID = :customer_dc_id</if>
+ <if>AND ps.CUSTOMER_STORE_ID =:customer_store_id</if>
+   GROUP BY PS.REPORTING_STATUS
+</pre>
+    <b>Query:Blow query displays the In Order Bucket detail. </b>
+    <pre>
+    SELECT 'IN ORDER BUCKET' AS REPORTING_STATUS,
+         COUNT(DISTINCT DPD.UPC_CODE) AS COUNT_SKU,
+         COUNT(DISTINCT DP.PICKSLIP_ID) AS COUNT_PICKSLIPS,
+         SUM(DP.TOTAL_DOLLARS_ORDERED) AS ORDER_DOLLARS,
+         COUNT(DISTINCT DP.CUSTOMER_ORDER_ID) AS COUNT_PO,
+         SUM(DP.TOTAL_QUANTITY_ORDERED) AS ORDER_QUANTITY
+    FROM DEM_PICKSLIP DP
+    LEFT OUTER JOIN DEM_PICKSLIP_DETAIL DPD
+      ON DP.PICKSLIP_ID = DPD.PICKSLIP_ID
+   WHERE DP.CUSTOMER_ID = :customer_id
+ <if>AND DP.customer_dist_center_id =:customer_dc_id</if>
+ <if>AND DP.CUSTOMER_STORE_ID =:customer_store_id</if>
+     AND DP.PS_STATUS_ID = 1
+    </pre>
+</body>
+</html>

@@ -1,0 +1,349 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        110<b>.118 : Box QC Audit Report (#) </b>
+    </h1>
+    <h3>
+        Author : Dinesh Panwar</h3>
+    $Revision: 1387 $<br />
+    Status:
+    <br />
+    Reviewed By :<br />
+    Tested By: Skumar &nbsp;
+    <p>
+        For the specified operation date/date range the report displays the information
+        box QC boxes.
+    </p>
+    <h2>
+        Overview</h2>
+    <ul>
+        <li>This report can be helpful for showing the audited carton detail for that pitcher
+            with in operation date/date range. </li>
+    </ul>
+    <h2>
+        Algorithm
+    </h2>
+    <p>
+        Get all the box qc information from the tables box_productivity, ps, cust and
+        qco.
+    </p>
+    <h2>
+        Output</h2>
+    <table border="1" cellpadding="0" cellspacing="1">
+        <tr>
+            <td>
+                <b>Item</b>
+            </td>
+            <td>
+                <p>
+                    <b>Summary</b></p>
+            </td>
+            <td>
+                <b>Default Sort Sequence</b>
+            </td>
+            <td>
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Box Id
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                1
+            </td>
+            <td>
+                Box Id of QC boxes.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Customer Name
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Customer Name
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Date of Pitching
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                2
+            </td>
+            <td>
+                Max operation Start date which pitching operation was performed
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Scan Result
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Outcome after QC.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Error Descriptions
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Error Descriptions of Outcome.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pitched Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Number of Pieces pitched by the pitcher which is calculated as (Total Scan Pieces
+                - Total Abnormal Pieces)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Scanned Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Number of Scanned Pieces by the pitcher.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Percentage Accurate
+            </td>
+            <td>
+                No
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Percentage of accurate which is calculated as ((pitched pieces - scanned pieces)/pitched
+                pieces)*100.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td align="center">
+                    <b>Name</b>
+                </td>
+                <td align="center">
+                    <b>Default</b>
+                </td>
+                <td align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Pitcher
+                    </p>
+                </td>
+                <td>
+                    <p>
+                        None</p>
+                </td>
+                <td>
+                    Specify Pitcher which you want to see the information.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Min Operation Date</p>
+                </td>
+                <td>
+                    <p>
+                        None</p>
+                </td>
+                <td>
+                    <p>
+                        Min Operation Date in which the operation is preformed.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Max Operation Date</p>
+                </td>
+                <td>
+                    <p>
+                        None</p>
+                </td>
+                <td>
+                    <p>
+                        Max Operation Date in which the operation is preformed.</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 2 </i>Sec.</p>
+    <h2>
+        Behavior Change</h2>
+    <h2>
+        Issues</h2>
+    No Known Issue.
+    <br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        box_productivity,<br />
+        PS <br />
+        CUST<br />
+        QCO<br />
+        </p>
+    <p>
+        Use the below script to create the synonyms</p>
+          <code>
+        CREATE OR REPLACE SYNONYM BOX_PRODUCTIVITY FOR dcms8.BOX_PRODUCTIVITY;<br />
+        CREATE OR REPLACE SYNONYM ps FOR dcms8.ps;<br />
+        CREATE OR REPLACE SYNONYM cust FOR dcms8.cust;<br />
+        CREATE OR REPLACE SYNONYM qco FOR dcms8.qco;<br />
+        </code>
+    <p>
+        No AppSettings are need.</p>
+    <br />
+    <h1>
+        Technical Documentaion</h1>
+    <h2>
+        Parameter Technical Details</h2>
+    <ul>
+        <li>Pitcher(Type = string):Specify Pitcher which you want to see the information.</li>
+        <li>Min Operation Date(Type:DateTime):Min Operation Date in which the operation is preformed.</li>
+        <li>Max Operation Date(Type:dateTime):Max Operation Date in which the operation is preformed.</li>
+    </ul>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.
+    <h2>
+        Query&#39;s documentation:</h2>
+    <p>
+        The report query is as follows:</p>
+    <pre>
+      WITH BOX1 AS
+(SELECT BP.UCC128_ID AS CARTON,
+         SUM(BP.NUM_OF_PIECES) AS NORMALPIECES,
+         SUM(BP.NUM_OF_ABNORMAL_PIECES) AS ABNORMALPIECES,
+         MAX(BP.OUTCOME) AS SCANRESULT,
+         MAX(CUST.NAME) AS CUSTOMERNAME,
+         MAX(QC.DESCRIPTION) AS DESCRIPTION,
+         MAX(TO_CHAR(TRUNC(BP.OPERATION_START_DATE), 'MM/DD/YYYY')) AS OPERATION_DATE
+    FROM BOX_PRODUCTIVITY BP
+    LEFT OUTER JOIN PS PS
+      ON BP.PICKSLIP_ID = PS.PICKSLIP_ID
+    LEFT OUTER JOIN CUST CUST
+      ON PS.CUSTOMER_ID = CUST.CUSTOMER_ID
+    LEFT OUTER JOIN QCO QC
+      ON BP.QCO_ID = QC.QCO_ID
+   WHERE BP.OPERATION_CODE = '$BOXQC'
+     AND BP.NUM_OF_PIECES &gt; 0
+      AND bp.OPERATION_START_DATE &gt;= cast(:min_operation_date as DATE) 
+     AND bp.OPERATION_START_DATE &lt; cast(:max_operation_date as DATE) + 1
+     GROUP BY BP.UCC128_ID),
+
+BOX2 AS
+(SELECT
+   BP.UCC128_ID AS BOX_ID,
+   max(BP.OPERATOR) AS PITCHER,
+   max(TO_CHAR(TRUNC(BP.OPERATION_START_DATE), 'MM/DD/YYYY')) AS OPERATION_DATE_PITCH
+    FROM BOX_PRODUCTIVITY BP
+   WHERE BP.OPERATION_CODE = 'PITCH'
+     AND BP.OPERATOR =:PITCHER_NAME
+       AND bp.OPERATION_START_DATE &amp;gt;= cast(:FROM_OPERATION_DATE as DATE) -:Days
+     AND bp.OPERATION_START_DATE &amp;lt; cast(:TO_OPERATION_DATE as DATE) + 1 GROUP BY BP.UCC128_ID)
+
+SELECT MAX(B2.PITCHER),
+       SUM(B1.NORMALPIECES) AS PITCHED_PIECES,
+       SUM(B1.NORMALPIECES - B1.ABNORMALPIECES) AS SCANNED_PIECES,
+       B1.CARTON,
+       ROUND(((1 - (SUM(B1.NORMALPIECES) -
+             SUM(B1.NORMALPIECES - B1.ABNORMALPIECES)) /
+             DECODE(SUM(B1.NORMALPIECES), 0, 1, SUM(B1.NORMALPIECES)))),
+             4) AS ACCURATE,
+       B2.OPERATION_DATE_PITCH AS OPERATION_DATE_PITCH,
+       MAX(B1.SCANRESULT) AS SCAN_RESULT,
+       MAX(B1.CUSTOMERNAME) AS CUSTOMER,
+       MAX(B1.DESCRIPTION) AS ERROR_DESCRIPTION
+  FROM BOX1 B1
+INNER JOIN BOX2 B2
+    ON B1.CARTON = B2.BOX_ID
+GROUP BY B1.CARTON, B2.OPERATION_DATE_PITCH
+
+        </pre>
+    <h2>
+        Validation details</h2>
+
+    You need to specify the operation_start_date and operation_end_date in order to validate the Name of Customer,Box,Scanned Pieces for a particular pitcher on specified range of dates.
+    
+    <pre>
+    SELECT bp.ucc128_id As Box,
+max(cust.name) AS Customer_name,
+max(qco.description) As Error_description, 
+ max(bp.outcome) As Scanresult,    
+ to_char(trunc(bp.operation_start_date), 'MM/DD/YYYY') AS DateofPitching,
+SUM(bp.num_of_pieces) AS Pitched_Pieces,      
+ (SUM(bp.num_of_pieces) - SUM(bp.num_of_abnormal_pieces)) AS scanned_pieces
+  FROM box_productivity bp
+   inner join cust cust
+   on bp.customer_id=cust.customer_id  
+   inner join qco qco
+   on bp.qco_id=qco.qco_id
+WHERE bp.operation_code = '$BOXQC'
+   AND bp.operation_start_date >= to_date(:DATE, 'mm/dd/yyyy')
+   AND bp.operation_start_date <= to_date(:DATE, 'mm/dd/yyyy')+1
+   GROUP BY bp.ucc128_id,to_char(trunc(bp.operation_start_date), 'MM/DD/YYYY')
+
+    </pre>
+</body>
+</html>

@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ValidatorBase>
+    <doc name="class">
+        <remarks>
+            <para>
+                <c>ValidatorBase</c> serves as the abstract base class for all validators. Derived classes dictate
+                the validation rules which must be enforced. Derived classes exist to handle most common validation needs.
+                You can write your own custom validators by deriving from this class.
+                <see cref="InputControlBase" /> class has a <see cref="InputControlBase.Validators" /> property which
+                enables you to specify one or more validations for that input control.
+            </para>
+            <para>
+                You may not want to apply a particular validation rule when some other conditon
+                is not satisfied. For example, max pieces limit could be applicable only when Allow Over Receiving is not checked.
+                The <see cref="DependsOn" />, <see cref="DependsOnState" /> and <see cref="DependsOnValue" /> properties
+                enable you to model such conditions. This condition can be modeled as shown in this markup:
+            </para>
+            <code language="XML">
+                <![CDATA[
+                <input:TextBoxEx runat="server" ID="tbPieces" FriendlyName="Pieces per carton">
+                    <Validators>
+                        <input:Value Max="50" DependsOn="cbOverReceive" DependsOnState="Unchecked" />
+                    </Validators>
+                </input:TextBoxEx>  
+                ...
+                <input:CheckBoxEx runat="server" ID="cbOverReceive" Text="Allow over receiving" />
+                        ]]>
+            </code>
+            <para>
+                More realistic examples can be found in <see cref="DependsOn" />.
+            </para>
+            <list type="table">
+                <item>
+                    <term>
+                        <see cref="Filter" />
+                    </term>
+                    <description>
+                        <c>Filter</c> validator sets the <see cref="InputControlBase.FilterDisabled" /> property to
+                        <c>true</c> when a dependency condition is not met. This validator does not apply any validator
+                        rule. It simply ensures that your <c>ControlParameter</c> does not see the value entered when the
+                        condition is not met.
+                    </description>
+                </item>
+            </list>
+            <para>
+Sharad 20 Oct 2010: Special handling for input controls within a <c>GridViewRow</c>. The message is prefixed by the row number
+such as <c>Row 1: Quantity is required</c>.
+            </para>
+            <para>
+                Gyaneshwar 21 Oct. 2010: By default, the dependency check will not be performed. As 
+                the default value of <code>DependsOnState</code> has been specified as "NotSet".
+            </para>
+        </remarks>
+    </doc>
+    <doc name="DependsOn">
+        <remarks>
+            <para>
+                If <see cref="DependsOnState"/> is anything other than <c>Custom</c>, then this must be the ID of a server control
+                whose value will be compared with <see cref="DependsOnValue"/> to decide whether the associated control needs to be valdiated.
+                If <see cref="DependsOnState"/> is <c>Custom</c>, then this must be a javascript function
+                which is passed the element and which returns
+                true if validation should be performed. The corresponding server dependency check should be performed in the
+                <see cref="ServerDependencyCheck"/> event handler.
+            </para>
+        </remarks>
+        <example>
+            <para>
+                For an example of using <see cref="DependsOnState"/> = <c>Selector</c> see the
+                <see cref="DependsOnState"/> property.
+                This example shows how to use <see cref="DependsOnState"/> = <c>Custom</c>.
+                Normally, the maximum value
+                acceptable in this text box within a <see cref="GridViewEx"/> is 1000. However, if the row in which this
+                <see cref="TextBoxEx"/> exists is selected, it can accept values as large as 5000. The following is the markup
+                for the text box. The text box is within a grid whose markup is not shown.
+            </para>
+            <code language="XML">
+                <![CDATA[
+        <i:TextBoxEx ID="tbpiecesToday" FriendlyName='<%# Eval("UPC", "Pieces received today for UPC {0}") %>'
+            Text='<%#Bind("pieces_Today") %>' runat="server">
+            <Validators>
+                <i:Value ValueType="Integer" Min="0" Max="1000" DependsOnState="Custom" DependsOn="IsRowUnselected"
+                    OnServerDependencyCheck="val_ServerDependencyCheckUnselected" />
+                <i:Value ValueType="Integer" Min="0" Max="5000" DependsOnState="Custom" DependsOn="IsRowSelected"
+                    OnServerDependencyCheck="val_ServerDependencyCheckSelected" />
+            </Validators>
+        </i:TextBoxEx>
+        ]]>
+            </code>
+            <para>
+                <c>IsRowUnselected</c> and <c>IsRowSelected</c> are javascript functions which are
+                called when validation takes place. If the function returns <c>false</c> then the <c>Min</c>
+                and <c>Max</c> validations are applied, otherwise they are not applied. The function is passed
+                the associated textbox as the DOM element. The functions shown here return true/false depending on whether
+                the <c>tr</c> element in which the textbox exists has been selected. Thus either Max=1000 is enforced
+                or Max=5000 is enforced, depending on the row's selection state.
+            </para>
+            <code language="js">
+                <![CDATA[
+          function IsRowUnselected(element) {
+             return !$(element).closest('tr').is('.ui-selected');
+          }
+          function IsRowSelected(element) {
+             return $(element).closest('tr').is('.ui-selected');
+          }
+          ]]>
+            </code>
+            <para>
+                You must also handle the server event <see cref="ServerDependencyCheck"/>
+                to perform the same dependency check on the server side. This event is passed <see cref="DependencyCheckEventArgs.ControlToValidate"/>
+                which refers to the text box being validated. You are responsible for setting <see cref="DependencyCheckEventArgs.NeedsToBeValdiated"/>
+                property to <c>false</c> if validation should not occur for the text box. The function
+                <c>val_ServerDependencyCheckSelected</c>below
+                checks whether the row is selected and sets <c>NeedsToBeValdiated</c> accordingly.
+            </para>
+            <code language="c#">
+                <![CDATA[
+        protected void val_ServerDependencyCheckSelected(object sender, DependencyCheckEventArgs e)
+        {
+            Value val = (Value)sender;
+            GridViewRow row = (GridViewRow)e.ControlToValidate.NamingContainer;
+            bool bIsRowSelected = gvSKU.SelectedIndexes.Contains(row.RowIndex);
+            e.NeedsToBeValdiated = bIsRowSelected;
+        }
+        ]]>
+            </code>
+            <para>
+                The code for the function <c>val_ServerDependencyCheckUnselected</c> will be similar and is not shown here.
+            </para>
+        </example>
+    </doc>
+    <doc name="DependsOnState">
+        <remarks>
+            <para>
+                When <see cref="DependsOnState"/> = <c>Custom</c>, then <see cref="DependsOn"/>
+                should be a javascript function which returns true if the dependency is satisfied.
+                In this case you must also handle the <see cref="ServerDependencyCheck"/> event
+                to perform the same check on the server side.
+            </para>
+            <para>
+                When <see cref="DependsOnState"/> = <c>Selector</c>, then <see cref="DependsOn"/>
+                should be a jquery selector. If this selector selects any elements, the dependency
+                is satisfied.
+                In this case also you must also handle the <see cref="ServerDependencyCheck"/> event
+                to perform the same check on the server side.
+            </para>
+            <para>
+                For all other values, <see cref="DependsOn"/> must be the ID of a server control.
+                If naming container issues prevent you from specifying the id, you can use the
+                <see cref="SetDependsOnControl"/> method to set the control through code.
+            </para>
+        </remarks>
+        <example>
+            <para>
+                For an example of using <see cref="DependsOnState"/> = <c>Custom</c> see the
+                <see cref="DependsOn"/> property.
+                This example shows how to use <see cref="DependsOnState"/> = <c>Selector</c>. The example
+                below shows that, the <c>TextBox "tbSrcArea"</c> will be required only if
+                the <c>Panel "pnlRepack"</c> (one of the panel of <see cref="Tabs">TabbedPanel</see>) is not hidden.
+            </para>
+            <code>
+                <![CDATA[
+        <jquery:JPanel ID="pnlRepack" runat="server" HeaderText="Repack" ClientIdSameAsId="true">
+            <i:TextBoxEx runat="server" ID="tbSrcArea">
+                <Validators>
+                    <i:Required DependsOnState="Selector" DependsOn="#pnlRepack:not(.ui-tabs-hide)" />
+                </Validators>
+            </i:TextBoxEx>
+        </jquery:JPanel>
+             ]]>
+            </code>
+        </example>
+    </doc>
+    <doc name="OnServerDependencyCheck">
+        <remarks>
+            <para>
+                This checks for the dependency before validating any control and return <see cref="DependencyCheckEventArgs.NeedsToBeValdiated"/>
+            </para>
+        </remarks>
+        <example>
+            More realistic example is of a validation of textboxes placed inside rows of a grid.
+            The validation should only be done for the selected rows and the rows which are not updated
+            the validation need not be performed. The following markup denoted the two textboxes placed in
+            a row of a <see cref="GridViewEx"/>.
+            <code lang="XML">
+                <![CDATA[
+        <asp:TemplateField HeaderText="Quantity|Delivered">
+            <ItemStyle VerticalAlign="Top" Wrap="false" />
+            <ItemTemplate>
+                <i:TextBoxEx ID="tbDelivered" runat="server" Text='<%# Bind("QtyDelivered") %>' MaxLength="9"
+                    TabIndex="-1" FriendlyName='<%# Eval("ItemCode", "Delivered for Item {0}") %>'
+                    EnableViewState="true">
+                    <Validators>
+                        <i:Required />
+                        <i:Value Min="0" ValueType="Integer" />
+                    </Validators>
+                </i:TextBoxEx>
+            </ItemTemplate>
+        </asp:TemplateField>
+        <asp:TemplateField HeaderText="Quantity|Accepted">
+            <ItemStyle VerticalAlign="Top" Wrap="false" />
+            <ItemTemplate>
+                <i:TextBoxEx ID="tbAccepted" runat="server" Text='<%# Bind("AcceptedQty") %>' MaxLength="9"
+                    TabIndex="1" FriendlyName='<%# Eval("ItemCode", "Accepted for Item {0}") %>'
+                    EnableViewState="true">
+                    <Validators>
+                        <i:Required />
+                        <i:Value Min="0" ValueType="Integer" />
+                        <i:Custom Rule="GreaterThanDelivered" DependsOn="function(element) {
+                        return $(element).closest('tr').is('.ui-selected');
+                        }" DependsOnState="Custom" OnServerValidate="tbAccepted_ServerValidate"
+                        MessageFormatString="Accepted quantity for Item {0} can not be more than delivered quantity" 
+                        OnServerDependencyCheck="tbAccepted_ServerDependencyCheck"/>
+                    </Validators>
+                </i:TextBoxEx>
+            </ItemTemplate>
+        </asp:TemplateField>
+        ]]>
+            </code>
+            <para>
+                In the above markup the <c>DependsOn</c> works for the client side validation. To perform server side validation of
+                detrmining which textboxes of the grid need to be validated, <c>OnServerDependencyCheck</c> need to be coded.
+                Following is the code for dependency check.
+            </para>
+            <code lang="C#">
+                <![CDATA[
+         protected void tbAccepted_ServerDependencyCheck(object sender, DependencyCheckEventArgs e)
+         {
+            GridViewEx gv = (GridViewEx)fvReceive.FindControl("gvEditGRNItems");
+            GridViewRow row = (GridViewRow)e.ControlToValidate.NamingContainer;
+            e.NeedsToBeValdiated = gv.SelectedIndexes.Contains(row.RowIndex);
+         }
+         ]]>
+            </code>
+            <para>
+                The above mentioned code for dependency check ensures that, textboxes inside only the selected rows need to be validated.
+            </para>
+        </example>
+
+    </doc>
+</ValidatorBase>

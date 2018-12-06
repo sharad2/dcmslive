@@ -1,0 +1,637 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0084)http://w3chile/xtremereporter/ReportDoc.aspx -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+    <style type="text/css">
+        .style3
+        {
+            font-style: normal;
+        }
+    </style>
+</head>
+<body>
+    <h1 align="center" xmlns="http://www.w3.org/1999/xhtml">
+        30<b>.</b>06<b> : </b>SKUs to be Pulled</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    $Revision: 6362 $<br />
+    Status: Reviewed<br />
+    Reviewed By : Manmohan Bisht<br />
+    Tested By : Hemant K. Singh 
+    <p>
+        This report displays a list of SKUs, which are to be pulled from the specified source
+        area e.g. BIR (Bundle Inventory Reserve), along with the Warehouse ID they belong
+        to. The report gives information for the SKUs to be pulled from the specified source
+        area based on what requirements are entered. The restock aisle of the SKUs is also
+        shown.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        This report displays the list of SKUs, which are to be pulled from the specified
+        area (defaulted to &#39;BIR&#39;) along with the warehouse id they belong to. You
+        can use destination area, Warehouse location, Virtual Warehouse&nbsp; as optional
+        filters.
+    </p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        The area is retrieved from table src_carton and src_carton_detail. Warehouse location
+        is retrieved from table master_storage_location and for retrieving label, master_style
+        table is used. Restock aisle has been retrieved from src_req_detail.location_id.
+        The records has to be groupded for SKUs, Process_Id, location_id, carton_storage_area,
+        destination_inv_storage_area, warehouse_loc and vwh_id.
+       
+        </p>
+    <h3>
+        Output</h3>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td style="width: 25%; text-align: center">
+                    <b>Item</b>
+                </td>
+                <td style="width: 20%; text-align: center">
+                    <b>Summary</b>
+                </td>
+                <td style="width: 10%; text-align: center">
+                    <b>Default Sort Sequence</b>
+                </td>
+                <td style="width: 35%; text-align: center">
+                    <b>Detail
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Process/Bucket ID</td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    The process ID for the SKU.
+                    In case of Area ADR we will show Bucket ID</td>
+            </tr>
+            <tr>
+                <td class="style3">
+                    Style
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    2
+                </td>
+                <td>
+                    Style of the SKU.
+                </td>
+            </tr>
+            <tr>
+                <td class="style3">
+                    Color
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    3
+                </td>
+                <td>
+                    Color of the SKU.
+                </td>
+            </tr>
+            <tr>
+                <td class="style3">
+                    Dimension
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    4
+                </td>
+                <td>
+                    Dimensions of the SKU.
+                </td>
+            </tr>
+            <tr>
+                <td class="style3">
+                    Size
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    5
+                </td>
+                <td>
+                    Size of the SKU.
+                </td>
+            </tr>
+            <tr>
+                <td class="style3">
+                    Quality
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    6
+                </td>
+                <td>
+                    Quality
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pieces
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Quantity stored in cartons.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Min Assign Date
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Minimum Date on which cartons are assigned to some area.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Max Assign Date
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Maximum Date on which cartons are assigned to some area.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Max Priority
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    1
+                </td>
+                <td>
+                    Maximum priority given to the carton.
+                    In case of Area ADR we will get max priority using :-select max(sp.splh_value) 
+                    from splh sp where sp.splh_id = &#39;$SHPPULPRI&#39;</td>
+            </tr>
+            <tr>
+                <td>
+                    Min Priority
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Minimum priority given to the carton.
+                    In case of Area ADR we will use Condition select min(sp.splh_value) from splh sp 
+                    where sp.splh_id = &#39;$SHPPULPRI&#39;</td>
+            </tr>
+            <tr>
+                <td>
+                    Label
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Label assigned to the carton.
+                </td>
+            </tr>
+            <tr>
+                <td class="style3">
+                    Dest. Area
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    The destination area for the carton.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VWh
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Virtual Warehouse ID for the cartons.
+                </td>
+            </tr>
+            <tr>
+                <td class="style3">
+                    Building</td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Warehouse location of the carton.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    RST Aisle
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Restock aisle where SKU is assigned
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td style="width: 20%; text-align: center">
+                    <b>Name</b>
+                </td>
+                <td style="width: 20%; text-align: center">
+                    <b>Default</b>
+                </td>
+                <td style="width: 60%; text-align: center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Virtual Warehouse
+                </td>
+                <td>
+                    All
+                </td>
+                <td>
+                    Virtual warehouse ID for the SKUs.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Destination Area
+                </td>
+                <td>
+                    All
+                </td>
+                <td>
+                    Destination area for the carton.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Source Area
+                </td>
+                <td>
+                    BIR
+                </td>
+                <td>
+                    Carton Storage Area of the cartons.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    UPC</td>
+                <td>
+                    None</td>
+                <td>
+                    UPC Code of the SKU</td>
+            </tr>
+            <tr>
+                <td>
+                    Building</td>
+                <td>
+                    All checkbox bydefault Checked
+                </td>
+                <td>
+                    Warehouse location of the area.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is</i> 2 seconds.</p>
+    <p>
+        The query exhibits linear performance with respect to the number of records in src_carton_detail.
+        There is index based scan on tables master_storage_location, src_carton, src_req_detail
+        and master_style. index STLOC_PK used in the table master_storage_location, index
+        CTN_PK is used in the table src_carton table, index REQDET_PK is used in the table
+        SRC_REQ_DETAIL and index STY_PK used in the table master_style. There is a full
+        scan on SRC_CARTON_DETAIL.</p>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Provided UPC parameter&nbsp; so that user can see pullable area for specific SKU.</ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No Known Issue. </li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        <code>src_carton,<br />
+            src_carton_detail,<br />
+            master_style,<br />
+            src_req_detail,<br />
+            master_storage_location,<br />
+            box,<br />
+            boxdet,<br />
+            ps,<br />
+            bucket,<br />
+            master_sku<br /></code>
+    </p>
+    <p>
+        Use the script below to create the synonyms.<code><br />
+            <br />
+            create or replace synonym src_carton for dcms4.src_carton;<br />
+            create or replace synonym src_carton_detail for dcms4.src_carton_detail;<br />
+            create or replace synonym master_style for dcms4.master_style;<br />
+            create or replace synonym src_req_detail for dcms4.src_req_detail;<br />
+            create or replace synonym master_storage_location for dcms4.master_storage_location;<br />
+            create or replace synonym box for dcms8.box;<br />
+            create or replace synonym boxdet for dcms8.boxdet;<br />
+            create or replace synonym ps for dcms8.ps;<br />
+            create or replace synonym bkt for dcms8.bucket;<br />
+            create or replace synonym master_sku for dcms4.master_sku;<br />
+            
+
+        </code>&nbsp;
+    </p>
+    <div>
+        <h2>
+            Parameter Technical Details</h2>
+        <ul>
+            <li><b>Virtual Warehouse:</b> This is a drop-down list parameter control. By default,
+                inventory of all Warehouses is shown for each area. If your focus is on the inventory
+                in a particular Warehouse, select that Warehouse. Select "All" to view for all virtual
+                warehouses.
+                <ul>
+                    <li>Query to fill list values:<br />
+                        <pre>"SELECT vwh_id AS vwh_id, description AS description FROM tab_virtual_warehouse ORDER BY vwh_id" </pre>
+                    </li>
+                </ul>
+            </li>
+            <li><b>Warehouse Location:</b> This is a drop-down list parameter control. By default,
+                inventory of all Warehouse locations is shown for each area. If your focus is on
+                the inventory in a particular Warehouse location, then select that Warehouse Location.
+                Select "All" to view for all warehouse locations.
+                <ul>
+                    <li>Query to fill list values:<br />
+                        <pre>"SELECT warehouse_location_id, description AS description FROM tab_warehouse_location order BY 1"</pre>
+                    </li>
+                </ul>
+            </li>
+            <li><b>Destination Area:</b> Select the destination area to see SKU details. By default,
+                inventory of all destination areas is shown. If your focus is on the inventory in
+                a particular destination area, then select that destination area. Select "All" to
+                view for all destination areas.
+                <ul>
+                    <li>Query to fill list values:<br />
+                        <pre>"SELECT inventory_storage_area AS inventory_storage_area,description AS description,'Carton Areas' AS area_type, 
+1 AS option_sort_sequence FROM tab_inventory_area t WHERE unusable_inventory IS NULL AND t.stores_what = 'CTN' 
+UNION 
+SELECT ia_id,short_description, 'Shipping Areas', 2 FROM ia where ia.shipping_area_flag = 'Y' ORDER BY 2 "</pre>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h2>
+            Parameter Validation</h2>
+        <ul>
+            <li>No special validations.</li></ul>
+        <h2>
+            Query's documentation:</h2>
+        <ul>
+            <li>
+               
+                <pre>           with Q1 AS(SELECT ctn.vwh_id AS vwh_id,
+                      CTNDET.SKU_ID,
+               ctn.quality_code as quality_code,
+               SUM(ctndet.quantity) AS pieces,
+               ctndet.req_process_id AS process_id,
+               MIN(ctndet.req_assign_date) AS min_assign_date,
+               MAX(ctndet.req_assign_date) AS max_assign_date,
+               COUNT(distinct priority) AS priority_count,
+               MAX(reqdet.priority) AS max_priority,
+               MIN(reqdet.priority) AS min_priority,
+               reqdet.destination_inv_storage_area AS destination_inv_storage_area,
+               MAX(TIA.SHORT_NAME) AS SHORT_NAME,
+               COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+               MSLOC.WAREHOUSE_LOCATION_ID,
+               'Unknown') AS WAREHOUSE_LOC,
+               MAX(reqdet.location_id) AS restock_aisle
+          FROM src_carton ctn
+          INNER JOIN src_carton_detail ctndet ON ctn.carton_id =
+                                                      ctndet.carton_id
+          INNER JOIN src_req_detail reqdet ON ctndet.req_process_id =
+                                                   reqdet.req_process_id
+                                               AND ctndet.req_module_code =
+                                                   reqdet.req_module_code
+                                               AND ctndet.req_line_number =
+                                                   reqdet.req_line_number
+          left outer join master_sku ms on 
+                      ctndet.sku_id= ms.sku_id
+          left outer JOIN TAB_INVENTORY_AREA TIA
+          ON reqdet.destination_inv_storage_area = TIA.INVENTORY_STORAGE_AREA
+          LEFT OUTER JOIN master_storage_location msloc ON ctn.carton_storage_area =
+                                                                 msloc.storage_area
+                                                             AND ctn.location_id =
+                                                                 msloc.location_id
+         WHERE ctn.carton_storage_area = :inventory_storage_area
+         <if>AND ctn.vwh_id = :vwh_id</if>
+             AND ctn.suspense_date IS NULL
+                     <if c="$req_module_code">AND CTNDET.REQ_MODULE_CODE ='REQ2'</if>
+                      <if>and ms.upc_code =:upc_code</if>
+         <if>AND reqdet.destination_inv_storage_area = :destination_area</if>
+         <if>AND <a pre="COALESCE(TIA.WAREHOUSE_LOCATION_ID, MSLOC.WAREHOUSE_LOCATION_ID, 'Unknown') IN (" sep="," post=")">:warehouse_location_id</a></if>
+          GROUP BY ctn.vwh_id,
+                     CTNDET.SKU_ID,
+                  ctn.quality_code,
+                  ctndet.req_process_id,
+                  reqdet.location_id,
+                  reqdet.destination_inv_storage_area,
+                 COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+               MSLOC.WAREHOUSE_LOCATION_ID,
+               'Unknown') 
+                               
+                  UNION All
+
+SELECT PS.VWH_ID AS VWH_ID,
+       BDET.sku_id,
+       '01' AS QUALITY_CODE,
+       SUM(BDET.EXPECTED_PIECES) AS PIECES,
+       BKT.BUCKET_ID AS PROCESS_ID,
+       MIN(BOX.DATE_CREATED) AS MIN_ASSIGN_DATE,
+       MAX(BOX.DATE_CREATED) AS MAX_ASSIGN_DATE,
+      NULL AS PRIORITY_COUNT,
+       TO_NUMBER((SELECT MAX(SP.SPLH_VALUE)
+                   FROM SPLH SP
+                  WHERE SP.SPLH_ID = '$SHPPULPRI')) AS MAX_PRIORITY,
+       TO_NUMBER((SELECT MIN(SP.SPLH_VALUE)
+                   FROM SPLH SP
+                  WHERE SP.SPLH_ID = '$SHPPULPRI')) AS MIN_PRIORITY,
+       (BKT.SHIP_IA_ID) AS DESTINATION_INV_STORAGE_AREA,
+       MAX(IA.SHORT_NAME) AS SHORT_NAME,
+       PS.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOC,
+       NULL AS RESTOCK_AISLE
+  FROM BOX BOX
+INNER JOIN BOXDET BDET
+    ON BOX.UCC128_ID = BDET.UCC128_ID
+   AND BOX.PICKSLIP_ID = BDET.PICKSLIP_ID
+INNER JOIN PS PS
+    ON BOX.PICKSLIP_ID = PS.PICKSLIP_ID
+INNER JOIN BUCKET BKT
+    ON PS.BUCKET_ID = BKT.BUCKET_ID
+LEFT OUTER JOIN IA  ON 
+BKT.SHIP_IA_ID = IA.IA_ID
+ WHERE BOX.CARTON_ID IS NOT NULL
+   AND BOX.IA_ID IS NULL
+   AND BOX.STOP_PROCESS_DATE IS NULL
+   AND BDET.STOP_PROCESS_DATE IS NULL
+   <if c="$req_module_code">AND PS.TRANSFER_DATE IS NOT NULL</if>
+                      <else>AND PS.TRANSFER_DATE IS NULL</else>
+   <if>and ps.vwh_id=:vwh_id</if>
+                      <if>and bdet.upc_code =:upc_code</if>
+   <if>AND <a pre="ps.WAREHOUSE_LOCATION_ID IN (" sep="," post=")">:warehouse_location_id</a></if>
+   <if>and bkt.pull_carton_area = :inventory_storage_area</if>
+   <if>and bkt.ship_ia_id =:destination_area </if> 
+GROUP BY PS.VWH_ID,
+         BDET.sku_id,
+         BKT.BUCKET_ID,
+         PS.WAREHOUSE_LOCATION_ID,
+         BKT.SHIP_IA_ID)
+SELECT Q1.VWH_ID                       AS VWH_ID,
+       Q1.SKU_ID                       AS SKU_ID,
+       MSKU.STYLE                      AS STYLE,
+       MSKU.COLOR                      AS COLOR,
+       MSKU.DIMENSION                  AS DIMENSION,
+       MSKU.SKU_SIZE                   AS SKU_SIZE,
+       MST.LABEL_ID                    AS LABEL_ID,
+       Q1.QUALITY_CODE                 AS QUALITY_CODE,
+       Q1.PIECES                       AS PIECES,
+       Q1.PROCESS_ID                   AS PROCESS_ID,
+       Q1.min_assign_date              AS min_assign_date,
+       Q1.max_assign_date              AS max_assign_date,
+       Q1.MIN_PRIORITY                 AS MIN_PRIORITY,
+       Q1.MAX_PRIORITY                 AS MAX_PRIORITY,
+       Q1.DESTINATION_INV_STORAGE_AREA AS DESTINATION_INV_STORAGE_AREA,
+       Q1.SHORT_NAME                   AS SHORT_NAME,
+       Q1.WAREHOUSE_LOC                AS WAREHOUSE_LOC,
+       Q1.RESTOCK_AISLE                AS RESTOCK_AISLE
+  FROM Q1
+  LEFT OUTER JOIN MASTER_SKU MSKU
+    ON Q1.SKU_ID = MSKU.SKU_ID
+  LEFT OUTER JOIN MASTER_STYLE MST
+    ON MSKU.STYLE = MST.STYLE
+ 
+</pre>
+            </li>
+        </ul>
+        <h2>
+            Validation details</h2>
+        Bellow queries may have the where clause in the [] brackets. It means these are
+        the optional parameters. If you do not want to pass these parameters just remove
+        the [] section. <b>Query:</b><pre>           select scd.req_process_id,
+       scd.style,
+       scd.color,
+       scd.dimension,
+       scd.sku_size,
+       sum(scd.quantity),
+       max(reqdet.destination_inv_storage_area),
+       msl.warehouse_location_id
+  from src_carton_detail scd
+ inner join src_carton sc
+    on scd.carton_id = sc.carton_id
+  left outer  join master_storage_location msl
+    on sc.location_id = msl.location_id
+    INNER JOIN src_req_detail reqdet ON scd.req_process_id =
+                                                   reqdet.req_process_id
+                                               AND scd.req_module_code =
+                                                   reqdet.req_module_code
+                                               AND scd.req_line_number =
+                                                   reqdet.req_line_number
+ where scd.req_process_id = :process_id
+   and scd.style = :style
+   and sc.vwh_id = :vwh_id
+   
+   and msl.warehouse_location_id = :warehouse_location_id
+ group by scd.style,
+          scd.color,
+          scd.dimension,
+          scd.sku_size,
+          scd.req_process_id,
+          msl.warehouse_location_id
+
+            </pre>
+        <b>Description:</b><pre>        
+            To validiate the query, bucket id .
+          </pre>
+        <b>Query:</b><pre> 
+        SELECT b.ucc128_id, bd.upc_code, bd.expected_pieces
+        FROM box b, ps p, boxdet bd
+        WHERE b.pickslip_id = p.pickslip_id
+        AND b.carton_id IS NOT NULL
+        and b.ia_id is null
+        AND p.bucket_id = '606019'
+  
+        AND b.pickslip_id = bd.pickslip_id
+        AND b.ucc128_id = bd.ucc128_id;
+            </pre>
+        <b>Description:</b><pre>
+            Enter the sku and you will get the warehouse location for a given SKU.
+        </pre>
+        <!--End divTechnical-->
+    </div>
+</body>
+</html>

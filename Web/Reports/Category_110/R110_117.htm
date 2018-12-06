@@ -1,0 +1,272 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        110<b>.117 : In Process Report - Sku Detail </b></h1>
+    <h3>
+        Author : Sanjeev kumar</h3>
+    $Revision: 7057 $<br />
+    Status: Tested<br />
+    Tested By: Sanjeev Kumar 
+    <p>
+        This report shows the detail information of sku for passed box.</p>
+    <h2>
+        Overview</h2>
+    <ul>
+        <li>For the specified UCC128&nbsp; ID this report is showing the detail information
+            of SKU.</li>
+    </ul>
+    <h2>
+        Algorithm
+    </h2>
+    <p>
+        Getting the sku detail of passed ucc128 id using the table BOX, BOXDET and MASTER_SKU.</p>
+    <h2>
+        Output</h2>
+    <table border="1" cellpadding="0" cellspacing="1">
+        <tr>
+            <td>
+                <b>Item</b>
+            </td>
+            <td>
+                <p>
+                    <b>Summary</b></p>
+            </td>
+            <td>
+                <b>Default Sort Sequence</b>
+            </td>
+            <td>
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Box Id
+            </td>
+            <td>
+                No
+            </td>
+            <td>
+                1
+            </td>
+            <td>
+                The UCC128 Id of the box.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Style
+            </td>
+            <td>
+                No
+            </td>
+            <td>
+                2
+            </td>
+            <td>
+                Style of SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Color
+            </td>
+            <td>
+                No
+            </td>
+            <td>
+                3
+            </td>
+            <td>
+                Color of SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Dimension
+            </td>
+            <td>
+                No
+            </td>
+            <td>
+                4
+            </td>
+            <td>
+                Dimension of SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Sku Size
+            </td>
+            <td>
+                No
+            </td>
+            <td>
+                5
+            </td>
+            <td>
+                Sku Size of SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pieces Expected
+            </td>
+            <td>
+                Yes
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Total no. expected pieces in each box.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pieces Current
+            </td>
+            <td>
+                Yes
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Total no. of current pieces in each box.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td align="center">
+                    <b>Name</b>
+                </td>
+                <td align="center">
+                    <b>Default</b>
+                </td>
+                <td align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Box Id
+                    </p>
+                </td>
+                <td>
+                    <p>
+                        None</p>
+                </td>
+                <td>
+                    UCC128 ID of BOX
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Vitual Warehouse</td>
+                <td>
+                    All</td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 2</i> Sec.</p>
+    <p>
+        This Report displays the linear performance with respect to MASTER_SKU, BOX and
+        BOXDET Table. There is index based scan on the MASTER_SKU, BOX and BOXDET table.
+        Index BOXDET_PK used in the table BOXDET,Index BOX_PK used in the table BOX and
+        Index SKU_UKused in the table MASTER_SKU.</p>
+    <h2>
+        Behavior Change </h2>
+    <h2>
+        Issues</h2>
+    No Known Issue.
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        box,<br />
+        master_sku,<br />
+        boxdet<br />
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>create or replace synonym box for dcms8.box;<br />
+            create or replace synonym boxdet for dcms8.boxdet;<br />
+            create or replace synonym master_sku for dcms4.master_sku;</code></p>
+    <p>
+        No appSettings are required:
+    </p>
+    <h2>
+        Technical Documentation</h2>
+    <h2>
+        Parameter Technical Detail</h2>
+    <ul>
+        <li>Box Id (Type = String): The UCC128 ID of box</li>
+        <li>Virtual Warehouse(Type = String): This is a list parameter control. By default,
+            inventory of all Warehouse is shown for each area. If your focus is on the inventory
+            in a particular Warehouse, Specify that virtual warehouse.</li>
+        <li>Query to fill list values = "select tab_virtual_warehouse.vwh_id, tab_virtual_warehouse.vwh_id
+            from tab_virtual_warehouse" </li>
+    </ul>
+    <h2>
+        Parameter Validation</h2>
+    <p>
+        No special validations.</p>
+    <h2>
+        Query's documentation:</h2>
+    <ul>
+        <li>For passed box gets all required information: </li>
+    </ul>
+    <pre>
+ SELECT BOX.UCC128_ID AS BOX_ID,
+               SKU.STYLE AS STYLE,
+               SKU.COLOR AS COLOR,
+               SKU.DIMENSION AS DIMENSION,
+               SKU.SKU_SIZE AS SKU_SIZE,
+               SUM(BOXDET.EXPECTED_PIECES) AS EXPECTED_PIECES,
+               SUM(BOXDET.CURRENT_PIECES) AS CURRENT_PIECES
+          FROM BOX
+         INNER JOIN BOXDET ON BOX.UCC128_ID = BOXDET.UCC128_ID
+                           AND BOX.PICKSLIP_ID = BOXDET.PICKSLIP_ID
+         INNER JOIN MASTER_SKU SKU ON BOXDET.UPC_CODE = SKU.UPC_CODE
+         WHERE BOX.UCC128_ID = CAST(:UCC128_ID as VARCHAR2(255))
+           AND BOX.VWH_ID = CAST(:vwh_id as VARCHAR2(255))
+         GROUP BY BOX.UCC128_ID, SKU.STYLE, SKU.COLOR, SKU.DIMENSION, SKU.SKU_SIZE	                                    </pre>
+    <h2>
+        Validation detail</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.<br />
+    <b>
+        <br />
+        Query1:</b>
+    <pre>SELECT t.UPC_CODE, t.expected_pieces, t.current_pieces 
+FROM boxdet t
+WHERE t.ucc128_id = :ucc128_id;       
+    </pre>
+    <b>Description:</b><p>
+        Enter the ucc128_id and validiate the result same
+        for expected pieces and current pieces.</p>
+    <b>Query2:</b>
+    <pre>SELECT sku.style, sku.color, sku.dimension, sku.sku_size
+FROM master_sku sku
+WHERE sku.upc_code = :upc_code;
+            </pre>
+    <b>Description:</b><p>
+        Enter the upc_code which is getting from query1 and sku detail of box.</p>
+</body>
+</html>

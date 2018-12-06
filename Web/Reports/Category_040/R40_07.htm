@@ -1,0 +1,376 @@
+﻿<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        .style1
+        {
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        40<b>.</b>07<b> : </b>Receiving Report
+    </h1>
+    <h3>
+        Author : Sanjeev kumar</h3>
+    $Revision: 25082$<br />
+    Status: Reviewed<br />
+    Tested By : Ritesh Verma <p>
+        This report get the detail of process through which the carton is received in DC
+        for the specified date/date range, recieiving area.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        This report displays the details of a process through which the carton is received
+        in DC for the specified date or date range, receiving area. The report is helpful in monitoring
+        the productivity and capacity of receiving operators.
+    </p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        Get all the information of the process for the passed&nbsp; Date from the tables 
+        src_carton_process&nbsp; Retreving process_id, module_code, pro_number, pro_date, 
+        carrier and operator_name form the table src_carton_process . 
+        Retreving sewing plant code,carton count, process_start_date and process_end_date from the table 
+        src_carton and src_open_carton. Retrieving carrier description&nbsp; from table 
+        master_carrier.</p>
+    <h2>
+        Parameters
+    </h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center">
+                <b>Name</b>
+            </td>
+            <td align="center">
+                <b>Default</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Receiving&nbsp; Date (From)
+            </td>
+            <td>
+                Last seventh days from current date
+            </td>
+            <td>
+                Receiving date from which Shipment summary is to be displayed.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Receiving Date&nbsp; (To)
+            </td>
+            <td>
+                Current date
+            </td>
+            <td>
+                Receiving date to for which Shipment summary is to be displayed.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Receiving Area
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                Receiving area in which a process is received.
+            </td>
+        </tr>
+    </table>
+&nbsp;<h3>
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center">
+                <b>Item</b>
+            </td>
+            <td align="center">
+                <b>Summary</b>
+            </td>
+            <td align="center">
+                <b>Sort Sequence</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Shipment Received
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                These are total shipment received in the passed date range(This is the master
+                column so by default this column will not get displayed in the report.).
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Process
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2
+            </td>
+            <td>
+                The process ID for the receiving process.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Process Start Time
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                The time when receiving process was started.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Process End Time
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Time when receiving process ends.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                User
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Operator who performs the receiving process.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Sewing Plant Code
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Sewing Plant Code for the Process.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pro No.
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                The Pro Number.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pro Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;Pro Date on which the receiving process is executed.
+            </td>
+        </tr>
+        <tr>
+            <td class="style1">
+                Carrier
+            </td>
+            <td class="style1">
+                No
+            </td>
+            <td align="center" class="style1">
+                &nbsp;
+            </td>
+            <td class="style1">
+                Report is displaying the Carrier id with description.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                # Cartons
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                The number of cartons received through the process.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>1 second</p>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Provided filter of receiving area.</li>
+        <li>Report performance has been fine tuned.</li>
+        </ul>
+    <h2>
+        Issues</h2>
+    No Known Issue. &nbsp;<br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following table is requried</p>
+  
+        src_carton_process,<br />
+        src_carton,<br />
+        src_open_carton,<br />
+        master_carrier<br />
+        <br />
+        Use the below script to create the synonyms<br />
+        <br />
+        create or replace synonym src_carton_process for dcms4.src_carton_process;<br />
+        create or replace synonym src_open_carton for dcms4.src_open_carton ;<br /> 
+        create or replace synonym src_carton for dcms4.src_carton;<br />
+        create or replace synonym master_carrier for dcms4.master_carrier;<h2>
+        Parameter Validation</h2>
+    No special validations.
+    <h2>
+        Query&#39;s documentation:</h2>
+    <ul>
+        <li>The query will get the receiving details of a process from tables src_carton_process,
+            src_carton, src_open_carton and&nbsp;&nbsp; master_carrier
+            <pre> 
+ WITH Q1 AS
+ (SELECT S.INSHIPMENT_ID AS PROCESS_ID, 
+         S.SEWING_PLANT_CODE, 
+         S.CARTON_ID
+    FROM SRC_CARTON S
+   WHERE  S.insert_date &gt;= CAST(:FromDate as date) 
+  AND S.insert_date &lt; CAST(:ToDate as date) + 1
+     AND S.INSHIPMENT_ID IS NOT NULL
+  
+  UNION ALL
+  
+  SELECT SOP.INSHIPMENT_ID AS PROCESS_ID,
+         SOP.SEWING_PLANT_CODE,
+         SOP.CARTON_ID
+    FROM SRC_OPEN_CARTON SOP
+     WHERE SOP.receipt_date &gt;= CAST(:FromDate as date) 
+  AND SOP.receipt_date &lt; CAST(:ToDate as date) + 1
+     AND SOP.INSHIPMENT_ID IS NOT NULL),
+Q2 AS
+ (SELECT SCP.PROCESS_ID,
+         SCP.OPERATOR_NAME,
+         COUNT(DISTINCT SCP.PRO_NUMBER) OVER() TOTAL_SHIPMENT,
+         SCP.PRO_NUMBER AS PRO_NUMBER,
+         SCP.PRO_DATE,
+         MIN(SCP.PROCESS_START_DATE) OVER(PARTITION BY Q1.PROCESS_ID) AS PROCESS_START_DATE,
+         MAX(SCP.PROCESS_END_DATE) OVER(PARTITION BY Q1.PROCESS_ID) AS PROCESS_END_DATE,
+         SCP.CARRIER_ID,
+         CAR.DESCRIPTION, 
+         Q1.SEWING_PLANT_CODE,
+         Q1.CARTON_ID
+    FROM Q1
+   INNER JOIN SRC_CARTON_PROCESS SCP
+      ON Q1.PROCESS_ID = SCP.PROCESS_ID
+    LEFT OUTER JOIN MASTER_CARRIER CAR
+      ON SCP.CARRIER_ID = CAR.CARRIER_ID
+     WHERE 1=1
+    <if>AND <a pre="SCP.receiving_area_id IN (" sep="," post=")">:area_id</a></if>)
+SELECT Q2.PROCESS_ID,
+       COUNT(Q2.CARTON_ID) AS TOTAL_CARTONS_RECEIVED,
+       Q2.SEWING_PLANT_CODE,
+       MAX(Q2.OPERATOR_NAME) AS OPERATOR_NAME,
+       MAX(Q2.TOTAL_SHIPMENT) AS TOTAL_SHIPMENT_COUNT,
+       MAX(Q2.PRO_NUMBER) AS PRO_NUMBER,
+       MAX(Q2.PRO_DATE) AS PRO_DATE,
+       MIN(Q2.PROCESS_START_DATE)  AS PROCESS_START_DATE,
+       MAX(Q2.PROCESS_END_DATE)  AS PROCESS_END_DATE,
+       MAX(Q2.CARRIER_ID) AS CARRIER_ID,
+       MAX(Q2.DESCRIPTION) AS DESCRIPTION
+  FROM Q2
+ GROUP BY Q2.PROCESS_ID, Q2.SEWING_PLANT_CODE                      
+                    </pre>
+        </li>
+    </ul>
+    <h2>
+        Validation details</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.
+    <br />
+    <br />
+    <b>Query: This query shows the carton count from src_carton</b>
+    <pre>SELECT COUNT(DISTINCT s.carton_id) AS carton_count 
+    FROM src_carton s
+    WHERE s.inshipment_id ='Process_id' </pre>
+<b>Query: This query shows the carton count from src_open_carton</b>
+    <pre>SELECT COUNT(DISTINCT s.carton_id) AS carton_count 
+    FROM src_open_carton s
+    WHERE s.inshipment_id ='Process_id' </pre>
+    <b>Query: This query is showing the process_start_date, process_end_date, carton_id, sewing_plan_code and shipment_id from src_carton  </b>&nbsp;<pre>
+    SELECT s.carton_id AS carton,
+           s.shipment_id AS shipment,
+           s.sewing_plant_code AS sewing_plant_code,
+           s.insert_date AS process_end_date
+    FROM src_carton s
+    WHERE s.inshipment_id ='6016996'
+    </pre>
+    <b>Query: This query is showing the process_start_date, process_end_date, carton_id, sewing_plan_code and shipment_id from src_open_carton  
+    
+    </b>
+    <pre>
+        SELECT s.carton_id AS carton,
+           s.shipment_id AS shipment,
+           s.sewing_plant_code AS sewing_plant_code,
+           s.insert_date AS process_end_date
+    FROM src_open_carton s
+    WHERE s.inshipment_id ='6016996'
+    
+    </pre>
+    <b>Description:</b><pre>
+            Enter the process id and process start date and this query will get the receiving
+            details of a process. Validiate this with report&#39;s data.
+          </pre>
+</body>
+</html>

@@ -1,0 +1,350 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html>
+  <head>
+		<title>Report Documentation</title>
+		
+  </head>
+	<body>
+			<h1 style="text-align:center">130<b>.</b>17<b> : </b>QTY in BIR against specific Style(s)</h1>
+			<h3> Author :Sanjeev Kumar</h3>
+    <ul style="list-style: none">
+        <li>$Revision: 5887 $ </li>
+        <li>Reviewed By : Manmohan Bisht</li>
+        <li>Status : Tested</li>
+        <li>Tested By : Hemant K. Singh</li>
+    </ul><p>
+          The report displays the stock-details for various PriceSeasonCodes in BIR of each SKU belonging to the specified style
+          and only to those cartons which are not assigned to any request. This report also intents to show quantity of those SKUs in FPK area.
+                Optionally, you can also see SKUs in multiple locations.</p>
+        <h2>Overview</h2>
+        <p>
+              For a specified style passed in the BIR the report displays the stock details for various season codes in BIR and 
+              also the report displays
+              the SKU wise qantity in FPK area. The Report also displays the details about the SKU located at multiple location.
+            </p>
+            <h2>Algorithm</h2>
+            <p>
+            The informations are retrieved from src_carton and src_carton_detail table. Style is reterived from the src_carton_detail table. 
+            SKUs in particular are retrieved from scr_carton_detail table. Price season code also retrieved from 
+                scr_carton_detail table.
+            Query will retrieve sku details only for those cartons which are not assigned to any request which means where
+                src_carton_detail.req_process_id IS NULL. Quantity of the SKUs in FPK area is retrieved from ialoc_content table.</p>
+          <h3>Output</h3>
+          <table width="100%" cellspacing="1" cellpadding="1" border="1">
+          <tr>
+              <td style="width:25%; text-align:center"><b>Item</b></td>
+              <td style="width:20%; text-align:center"><b>Summary</b></td>
+              <td style="width:10%; text-align:center"><b>Sort Sequence</b></td>
+              <td style="width:35%; text-align:center"><b>Detail</b></td>
+          </tr>
+          <tr>
+              <td>Building</td>
+              <td>No</td>
+              <td align="center">1</td>
+              <td>Building of the SKU.</td>
+          </tr>
+          <tr>
+              <td>Style</td>
+              <td>No</td>
+              <td align="center">&nbsp;2&nbsp;</td>
+              <td>Style of the SKU.</td>
+          </tr>
+          <tr>
+              <td>Color</td>
+              <td>No</td>
+              <td align="center">3</td>
+              <td>Color of the SKU.</td>
+          </tr>
+          <tr>
+              <td>Dim.</td>
+              <td>No</td>
+              <td align="center">4</td>
+              <td>Dimension of the SKU.</td>
+          </tr>
+          <tr>
+              <td>Size</td>
+              <td>No</td>
+              <td align="center">5</td>
+              <td>Size of the SKU.</td>
+          </tr>
+          <tr>
+              <td>Quantity for Season Code</td>
+              <td>Sum</td>
+              <td align="center">&nbsp;</td>
+              <td>Quantity in area BIR.</td>
+          </tr>
+          <tr>
+              <td>Quantity in Picking area</td>
+              <td>Sum</td>
+              <td align="center">&nbsp;</td>
+              <td>Quantity in forward pick area.</td>
+          </tr>
+          <tr>
+              <td>VWh</td>
+              <td>No</td>
+              <td align="center">6</td>
+              <td>Virtual Warehouse Id.</td>
+          </tr>
+          </table>
+          <h2>Parameters</h2>
+          <table width="100%" cellspacing="1" cellpadding="1" border="1">
+          <tr>
+              <td style="width:20%; text-align:center"><b>Name</b></td>
+              <td style="width:20%; text-align:center"><b>Default</b></td>
+              <td style="width:60%; text-align:center"><b>Detail</b></td>
+          </tr>
+          <tr>
+              <td>Style</td>
+              <td>None</td>
+              <td>Style of the SKU. Excepts multiple styles separated by comma.</td>
+          </tr>
+          <tr>
+              <td>SKU having multiple locations </td>
+              <td>Unchecked</td>
+              <td>To see SKUs having multiple locations.</td>
+          </tr>
+          <tr>
+              <td>VWh </td>
+              <td>All</td>
+              <td>Virtual Warehouse</td>
+          </tr>
+          </table>
+          <h2>Performance Detail</h2>
+          <p><i>Expected Time for the report output is </i>1 second</p>
+          <p>The query will exhibit sub linear performance with repect to
+          number of records in src_carton_detail table.
+          The query also does a index based scan on src_carton_detail, master_sku,&nbsp; ialoc 
+              and ialoc_content tables and full scan on src_carton table. The index SKU_PK used in master_sku, index IALOC_SKU_FK_I
+          used in table ialoc. The query took 0.79 seconds seconds for 19 qualified records for a given style.</p>
+        <h2>Behavior Change</h2>
+        <ol>
+            <li>
+                Now, report is ready for separate picking area for each Building.
+            </li>
+        </ol>
+        <h2>Issues</h2><ul><li>
+        <p>
+          None.</p>
+        </li></ul>
+       <h2>
+        Prerequisites</h2>
+        <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+ <code>
+        src_carton,<br />
+        src_carton_detail,<br />
+        master_sku,<br />
+        ialoc,<br />
+        ialoc_content,<br />
+        
+        </code></p>
+    <p>
+        Use the script below to create the synonyms.<code><br />
+        <br />
+        create or replace synonym src_carton for dcms4.src_carton;<br />        
+        create or replace synonym src_carton_detail for dcms4.src_carton_detail;<br />
+        create or replace synonym master_sku for dcms4.master_sku;<br />
+        create or replace synonym ialoc for dcms8.ialoc;<br />
+        create or replace synonym ialoc_content for dcms8.ialoc_content;<br />
+            </code>  &nbsp; </p>
+            <p>
+        Following AppSettings are required: <br />
+    <code>
+    &lt;add key="CartonReserveArea" value="BIR"/&gt;<br />
+    &lt;add key="PickingArea" value="FPK"/&gt;<br />
+   
+&nbsp;</code></p>
+        <div>
+        
+        <h2>Parameter Technical Details</h2>
+        <ul>
+        <li>Style: Please enter the value for Style (It is required). Multiple styles can 
+            now be specified but they need to be separated by comma(s).</li>
+		<li>SKU having multiple location:
+		Check this to display SKU's located on multiple locations.</li>
+		<li>VWh: This is a list parameter control.
+		By default, inventory of all Warehouse is shown for each area. 
+		If your focus is on the inventory in a particular Warehouse, Specify that Virtual Warehouse.
+		Null value text is "All".
+		<ul>
+		<li>
+          Query to fill list values = "SELECT vwh_id AS vwh_id, description AS description 
+            FROM tab_virtual_warehouse ORDER BY vwh_id&quot;
+        </li>
+        </ul></li>
+        </ul>
+        <h2>Parameter Validation</h2>
+		<ul>
+		    <li>No special validations.</li>
+		</ul>
+		
+		<h2>Sub-Query's documentation:</h2>
+		<p>To extract the deatils about the multiple location.</p>
+            <pre>
+             SELECT 1 AS "UPC_CODE"
+            FROM ialoc i
+            WHERE i.assigned_upc_code = ms.upc_code
+            GROUP BY i.assigned_upc_code, i.vwh_id
+            HAVING count(i.assigned_upc_code) &gt;= 2
+            </pre>
+          <h2>Query's documentation:</h2>
+          <p>
+            The query will display the Quantity of a specified SKU in
+            BIR area for different price season codes based on  different styles.
+              Below queries may have the where clause in the [] brackets. It means these are 
+              the optional parameters.
+            </p>
+            <pre>
+             WITH PSC_SKU_Inventory
+ AS
+ (
+ SELECT /*+Rule*/
+   sum(cd.quantity) AS QUANTITY,
+   c.price_season_code AS PRICE_SEASON_CODE,
+   cd.STYLE AS STYLE,
+   cd.COLOR AS COLOR,
+   cd.DIMENSION AS DIM,
+   c.vwh_id AS VWH_ID,
+   cd.SKU_SIZE AS SKU_SIZE,
+   COALESCE(TIA.WAREHOUSE_LOCATION_ID,MSL.WAREHOUSE_LOCATION_ID,'Unknown') AS WAREHOUSE_LOCATION_ID
+   FROM src_carton_detail cd
+   LEFT OUTER JOIN src_carton c ON c.carton_id = cd.carton_id
+   INNER JOIN master_sku ms ON ms.style = cd.style
+                                 AND ms.color = cd.color
+                                 AND ms.dimension = cd.dimension
+                                 AND ms.sku_size = cd.sku_size
+   INNER JOIN TAB_INVENTORY_AREA TIA ON 
+   C.CARTON_STORAGE_AREA = INVENTORY_STORAGE_AREA
+   LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL ON
+   C.CARTON_STORAGE_AREA = MSL.STORAGE_AREA
+   AND C.LOCATION_ID =MSL.LOCATION_ID
+   WHERE CD.REQ_PROCESS_ID IS NULL
+ AND TIA.STORES_WHAT ='CTN'
+   <if c="$style">AND cd.STYLE IN (<a sep=','>:style</a>)</if>
+   AND TIA.SHORT_NAME = :CartonReserveArea
+   <if>AND c.vwh_id=:vwh_id</if>
+   
+   <if c="$has_multiple_location">AND exists (SELECT 1 AS UPC_CODE
+          FROM ialoc i
+         WHERE i.assigned_upc_code = ms.upc_code
+         GROUP BY i.assigned_upc_code, i.vwh_id
+        HAVING count(i.assigned_upc_code) &gt;= 2)</if>
+  GROUP BY c.vwh_id,
+           c.price_season_code,
+           cd.STYLE,
+           cd.COLOR,
+           cd.DIMENSION,
+           cd.SKU_SIZE,
+            COALESCE(TIA.WAREHOUSE_LOCATION_ID,MSL.WAREHOUSE_LOCATION_ID,'Unknown')
+  ),
+  FPK_QTY AS
+  (            
+/* Quantity of a specific SKU in FPK area*/              
+SELECT ioc.iacontent_id AS IACONTENT_ID,
+              sum(ioc.number_of_units) AS FPK_QUANTITY,
+              il.vwh_id AS VWH_ID,
+              ms.style AS STYLE,
+              ms.COLOR AS COLOR,
+              ms.dimension AS DIM,
+              ms.sku_size AS SKU_SIZE,
+              NVL(IL.WAREHOUSE_LOCATION_ID,'Unknown') AS WAREHOUSE_LOCATION_ID
+              FROM ialoc_content ioc
+              LEFT OUTER JOIN ialoc il ON ioc.ia_id = il.ia_id
+              AND ioc.location_id = il.location_id
+              LEFT OUTER JOIN master_sku ms 
+              ON ms.UPC_CODE = ioc.IACONTENT_ID
+              INNER JOIN IA ON 
+               ia.ia_id =il.ia_id
+              WHERE ia.PICKING_AREA_FLAG ='Y'
+              AND ms.inactive_flag IS NULL
+              <if c="$style">AND ms.STYLE IN (<a sep=','>:style</a>)</if>
+              <if>AND il.vwh_id=:vwh_id</if>
+              
+              <if c="$has_multiple_location">AND exists (SELECT 1 AS UPC_CODE
+                                                    FROM ialoc i
+                                                     WHERE i.assigned_upc_code = ms.upc_code
+                                                     GROUP BY i.assigned_upc_code, i.vwh_id
+                                                    HAVING count(i.assigned_upc_code) &gt;= 2)</if>
+              GROUP BY ioc.iacontent_id,
+              il.vwh_id,
+              ms.style,
+              ms.COLOR,
+              ms.dimension,
+              ms.sku_size,
+              NVL(IL.WAREHOUSE_LOCATION_ID,'Unknown')
+   )
+   SELECT nvl(psi.STYLE,fpk.STYLE) AS STYLE,
+          nvl(psi.COLOR,fpk.COLOR) AS COLOR,
+          nvl(psi.DIM,fpk.DIM) AS DIM,
+          nvl(psi.SKU_SIZE,fpk.SKU_SIZE) AS SKU_SIZE,
+          psi.PRICE_SEASON_CODE AS PRICE_SEASON_CODE,
+          psi.QUANTITY AS PSC_QTY,
+          fpk.FPK_QUANTITY AS FPK_QUANTITY,
+          nvl(psi.VWH_ID,fpk.VWH_ID) AS VWH_ID,
+          nvl(PSI.WAREHOUSE_LOCATION_ID,FPK.WAREHOUSE_LOCATION_ID) AS WAREHOUSE_LOCATION_ID
+     FROM PSC_SKU_Inventory psi
+     FULL OUTER JOIN FPK_QTY fpk ON fpk.STYLE = psi.STYLE
+                                AND fpk.COLOR = psi.COLOR
+                                AND fpk.DIM = psi.DIM
+                                AND fpk.SKU_SIZE = psi.SKU_SIZE
+                                and fpk.vwh_id = psi.vwh_id 
+                                AND FPK.WAREHOUSE_LOCATION_ID = PSI.WAREHOUSE_LOCATION_ID
+            </pre>
+           
+            <h2>Validation details</h2>
+          <b>Query: Below query is showing price season code wise quantity for the pass SKU and VWh.</b>  
+            <pre>
+       SELECT SUM(SCD.QUANTITY) AS Qty,
+       COALESCE(T.WAREHOUSE_LOCATION_ID, M.WAREHOUSE_LOCATION_ID, 'Unknown') as warehouse_location_id,
+       S.PRICE_SEASON_CODE,
+       S.VWH_ID
+  FROM SRC_CARTON S
+ INNER JOIN SRC_CARTON_DETAIL SCD
+    ON S.CARTON_ID = SCD.CARTON_ID
+ INNER JOIN TAB_INVENTORY_AREA T
+    ON S.CARTON_STORAGE_AREA = T.INVENTORY_STORAGE_AREA
+  LEFT OUTER JOIN MASTER_STORAGE_LOCATION M
+    ON S.CARTON_STORAGE_AREA = M.STORAGE_AREA
+   AND S.LOCATION_ID = M.LOCATION_ID
+ WHERE SCD.STYLE = '00011'
+   AND SCD.COLOR = 'PP'
+   AND SCD.DIMENSION = 'B'
+   AND SCD.SKU_SIZE = '34'
+   AND S.VWH_ID = '15'
+   AND COALESCE(T.WAREHOUSE_LOCATION_ID, M.WAREHOUSE_LOCATION_ID, 'Unknown') =
+       'ANX1'
+ GROUP BY S.PRICE_SEASON_CODE,
+          S.VWH_ID,
+          COALESCE(T.WAREHOUSE_LOCATION_ID,
+                   M.WAREHOUSE_LOCATION_ID,
+                   'Unknown')
+            </pre>
+          <b>Query: Below query is showing picking area quantity for the pass SKU.</b><pre>SELECT SUM(ia.number_of_units) AS FPK,
+       I.WAREHOUSE_LOCATION_ID
+  FROM master_sku ms
+ INNER JOIN ialoc_content ia
+    ON ia.iacontent_id = ms.upc_code
+ INNER JOIN ialoc i
+    ON i.location_id = ia.location_id
+ WHERE ms.style = '00011'
+   AND ms.color = 'FF'
+   AND ms.dimension = '.'
+   AND ms.sku_size = '36'
+   GROUP BY I.WAREHOUSE_LOCATION_ID     </pre>  
+<b>Query:</b><pre>
+select  max(m.style), max(m.color), max(m.dimension), max(m.sku_size)
+from ialoc i, master_sku m
+where i.assigned_upc_code = m.upc_code
+and m.style= &#39;00431&#39;
+group by i.assigned_upc_code, i.vwh_id
+having count(i.location_id) &gt;= 2;</pre>
+            <b>Description:</b><pre>
+ This query will validiate the sku having multiple locations. Enter the SKU, and this query will give you SKUs having multiple location.
+Please, validiate the data with report's data.
+            </pre>
+            
+            <!--End divTechnical--></div>
+	</body>
+</html>

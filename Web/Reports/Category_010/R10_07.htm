@@ -1,0 +1,224 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <xs:documentation>
+      <r:ReportDoc>
+        <r:Overview>
+        </r:Overview>
+      </r:ReportDoc>
+    <form id="Form1" 
+    action="http://localhost/XTremeReporter/ReportDoc.aspx?_Report=C%3a%5cWork%5cMFReports%5ctrunk%5cReports%5cShipped%5cR10.07.xsd" 
+    method="post" name="Form1">
+    <div>
+        <input id="__VIEWSTATE" name="__VIEWSTATE" type="hidden" 
+            value="/wEPDwULLTEzNDA3MDMyNjVkZMKSRWhY70lSbWwum7kfm5+QqSdO" />
+    </div>
+    <h1 align="center" xmlns="http://www.w3.org/1999/xhtml">
+        10<b>.</b>07<b> : </b>DCMS to Richter Export Progress Report
+    </h1>
+    <h3>Author : Sanjeev Kumar</h3>
+    <p>
+    $Revision: 5595 $<br />
+    Reviewed By: Manmohan Bisht<br />
+    Status: Reviewed<br />
+    Tested By : Hemant K. Singh
+    </p>
+    The report displays the number of records that are being exported from DCMS to 
+    Richter   .
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Overview</h2>
+    <p>
+        The report displays the number of records that are waiting to be exported from 
+        DCMS to Richter. Through this report one can view current progress of records 
+        being exported from DCMS.
+    </p>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Algorithm</h2>
+    Get count of all records for each record name with total number of records from 
+    table LOAD_ISI_WM_CHRONO and table LOAD_ISI_WM_CHRONO_POC.
+    <h3 xmlns="http://www.w3.org/1999/xhtml">
+        Output</h3>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%" 
+        xmlns="http://www.w3.org/1999/xhtml">
+        <tr>
+            <td align="middle" width="25%">
+                <b>Item</b></td>
+            <td align="middle" width="20%">
+                <b>Summary</b></td>
+            <td align="middle" width="10%">
+                <b>Default Sort Sequence</b></td>
+            <td align="middle" width="35%">
+                <b>Detail</b></td>
+        </tr>
+        <tr>
+            <td>
+                Record Type</td>
+            <td>
+                No</td>
+            <td align="middle">
+                1</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                Record Name</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                2&nbsp;</td>
+            <td>
+                <r:item 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R99.900.xsd" SortSequence="1" Key="false" 
+Term="Record Name">The Record Name for each type of records for both tables LOAD_ISI_WM_CHRONO 
+                and LOAD_ISI_WM_CHRONO_POC. </R:ITEM>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No. of Records</td>
+            <td>
+                Sum</td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R99.900.xsd" Term="No. of Records" 
+Summary="Sum">The total number of each type of records for both tables LOAD_ISI_WM_CHRONO and 
+                LOAD_ISI_WM_CHRONO_POC. 
+</R:ITEM>
+            </td>
+        </tr>
+    </table>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Performance Detail</h2>
+    <p xmlns="http://www.w3.org/1999/xhtml">
+        <i>Expected Time for the report output is </i>0.5 seconds</p>
+    There is full scan on the tables LOAD_ISI_WM_CHRONO and LOAD_ISI_WM_CHRONO_POC.
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Issues</h2>
+    No Known Issue.
+    <br />
+    <br />
+    <h2>Prerequisites</h2>
+    <p>Private synonyms for the following tables are requried</p>
+    <p>load_isi_wm_chrono,
+    <br />
+    load_isi_wm_chrono_poc<br />
+    <br />
+    Use the below script to create the synonyms<br />
+    <br />
+    <code>
+    create or replace synonym load_isi_wm_chrono for dcms4.load_isi_wm_chrono;
+    <br />
+    create or replace synonym load_isi_wm_chrono_poc for dcms4.load_isi_wm_chrono_poc; 
+    </code>&nbsp;</p>
+    
+    
+        <h2>
+            Parameter Technical Details</h2>
+        This Report has no Parameters.
+        <br />
+    <h2>
+            Query&#39;s documentation:</h2>
+        <ul>
+            <li><r:doc xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R99.900.xsd">The query will get the total reords for each type 
+                reords from LOAD_ISI_WM_CHRONO.
+                <pre>              SELECT isi_wm_chro_record_name &quot;Record Name&quot;,
+              COUNT(isi_wm_chro_record_name) &quot;No.of Records&quot;
+              FROM dcms4.load_isi_wm_chrono
+              GROUP BY isi_wm_chro_record_name;
+            </pre>
+                </R:DOC></li>
+        </ul>
+        <ul>
+            <li><r:doc xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R99.900.xsd">The query will get the total reords for each type 
+                reords from LOAD_ISI_WM_CHRONO_POC.
+                <pre>              SELECT isi_wm_chro_record_name &quot;Record Name POC&quot;,
+              COUNT(isi_wm_chro_record_name) &quot;No.of Records POC&quot;
+              FROM dcms4.load_isi_wm_chrono_poc
+              GROUP BY isi_wm_chro_record_name;
+            </pre>
+                </R:DOC>
+                <br /></li>
+        </ul>
+        <h2>
+            Validation details</h2>
+        Bellow queries may have the where clause in the [] brackets. It means these are 
+        the optional parameters. If you do not want to pass these parameters just remove 
+        the [] section.
+        <br />
+        <br />
+        <b>Query:</b><pre><r:query 
+            xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            xmlns:mstns="http://tempuri.org/R99.900.xsd">
+            SELECT COUNT(isi_wm_chro_record_name) &quot;No.of Records&quot;
+            FROM dcms4.load_isi_wm_chrono
+            where isi_wm_chro_record_name = :Record Name;
+          </R:QUERY></pre>
+        <b>Description:</b><pre><r:description 
+            xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            xmlns:mstns="http://tempuri.org/R99.900.xsd">
+            This validiation query will validiate the count of records for passed record name.
+          </R:DESCRIPTION></pre>
+        <b>Query:</b><pre><r:query 
+            xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            xmlns:mstns="http://tempuri.org/R99.900.xsd">
+            SELECT COUNT(*) &quot;Total_No_Of_Record&quot;
+            FROM dcms4.load_isi_wm_chrono;
+          </R:QUERY></pre>
+        <b>Description:</b><pre><r:description 
+            xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            xmlns:mstns="http://tempuri.org/R99.900.xsd">
+            This validiation query will validiate the Total number of records for LOAD_ISI_WM_CHRONO which will waiting to be exported.
+          </R:DESCRIPTION></pre>
+        <b>Query:</b><pre><r:query 
+            xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            xmlns:mstns="http://tempuri.org/R99.900.xsd">
+            SELECT COUNT(isi_wm_chro_record_name) &quot;No.of Records POC&quot;
+            FROM dcms4.load_isi_wm_chrono_poc
+            Where isi_wm_chro_record_name = :Record Name;
+          </R:QUERY></pre>
+        <b>Description:</b><pre><r:description 
+            xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            xmlns:mstns="http://tempuri.org/R99.900.xsd">
+            This validiation query will validiate the count of records for passed record name.
+          </R:DESCRIPTION></pre>
+        <b>Query:</b><pre><r:query 
+            xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            xmlns:mstns="http://tempuri.org/R99.900.xsd">
+            SELECT COUNT(*) &quot;Total_No_Of_Record&quot;
+            FROM dcms4.load_isi_wm_chrono_poc;
+          </R:QUERY></pre>
+        <b>Description:</b><pre><r:description 
+            xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            xmlns:mstns="http://tempuri.org/R99.900.xsd">
+            This validiation query will validiate the Total number of records for LOAD_ISI_WM_CHRONO_POC which will waiting to be exported.
+          </R:DESCRIPTION></pre>
+        <!--End divTechnical-->
+    </div>
+    </form>
+    </xs:documentation>
+</body>
+</html>

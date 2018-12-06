@@ -1,0 +1,645 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        130<b>.</b>06<b> : </b>SKU Inventory(#)
+    </h1>
+    Author : Sanjeev kumar<br />
+    $Revision: 28044$<br />
+    Status: Tested<br />
+    Reviewed By : Manmohan Bisht<br />
+    Tested By Sanjeev Kumar<br />
+    <p>
+        The main goal of this report is to display area-wise inventory for a given SKU.
+        For each SKU and virtual warehouse it displays the quantity of pieces in each inventory
+        area.</p>
+    <p>
+        <strong>Note:-</strong> Now report will show all inventory areas irrespective of &nbsp;whether SKU inventory is available there or not. </p>
+    <h2>
+        Overview</h2>
+    <p>
+        The main goal of this report is to show area-wise inventory (Total no. of Pieces in each area of DC) for a given SKU and virtual warehouse.
+    </p>
+    <ul>
+        <li>Shows the exact scenario regarding current status of a particular SKU in the DC.</li>
+        <li>We are Using &#39;BOX&#39; area instead of all box areas. </li>
+    </ul>
+    <p>
+        It will further drilldown on Picking or ship area to show location in inventory area. </p>
+    <h2>
+        Algorithm</h2>
+    ALL inventory in SHL and EXM area is be retrieved from master_raw_inventory table.Inventory
+    areas except SHL and EXM area will be retrieved from src_carton and src_carton_detail
+    tables.Picking area inventory is retrieved from Ialoc and inventory in BOX is retrieved from BOX table.
+    <h3>
+        Output</h3>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center">
+                <b>Item</b>
+            </td>
+            <td align="center">
+                <b>Summary</b>
+            </td>
+            <td align="center">
+                <b>Default Sort Sequence</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Style</td>
+            <td>
+                No</td>
+            <td align="center">
+                1</td>
+            <td>
+                Style of the SKU</td>
+        </tr>
+        <tr>
+            <td>
+                Color
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2</td>
+            <td>
+                Color of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Dim.
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                3
+            </td>
+            <td>
+                Dimension of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Size
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                4</td>
+            <td>
+                Size of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Quality
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                5</td>
+            <td>
+                Quality code
+            </td>
+        </tr>
+         <tr>
+            <td>
+                VWH</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                6
+            </td>
+            <td>
+                Virtual Warehouse
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Carton Area Quantity</td>
+            <td>
+                Sum of quantity
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Quantity in different carton areas with building in DC.
+            </td>
+        </tr>
+         <tr>
+            <td>
+                Pick/Ship(SHL) Quantity
+            </td>
+            <td>
+                Sum of quantity
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Quantity in SHL ,Picking area & BOX.BOX area quantity represents consolidated quantity in diferrent areas of BOX table like SHP,PIT,FDK etc with building.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                SHL-A
+            </td>
+            <td>
+                Sum of pieces in SHL-Sum of Pieces in IA
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total Pieces in SHL.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Pieces
+            </td>
+            <td>
+                Sum of pieces
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total Pieces in all areas(except SHL).
+            </td>
+        </tr>
+
+         </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center">
+                <b>Name</b>
+            </td>
+            <td align="center">
+                <b>Default</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Label</td>
+            <td>
+                All</td>
+            <td>
+                Style of the label.</td>
+        </tr>
+        <tr>
+            <td>
+                Style
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                Style of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Color
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                Color&nbsp; of the SKU</td>
+        </tr>
+        <tr>
+            <td>
+                Dimension
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                Dimension of the SKU</td>
+        </tr>
+        <tr>
+            <td>
+                Sku Size
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                Size of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Virtual Warehouse
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                Virtual Warehouse</td>
+        </tr>       
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 5</i>.031 seconds for specific style</p>
+   
+    <h2>
+        Behavior Change</h2>
+    <ol>
+        <li>
+            Now report will show all inventory areas irrespective of whether inventory is available there or not.</li>
+        <li>
+            Style parameter is now optional.</li>
+        <li>
+            Added new column for showing Style.</li>
+        <li>
+            Provided label filter so that user can see SKU inventory for the passed label.</li>
+        <li>
+            Report will not show suspense carton inventory in a separate column. This quantity will be collectively displayed with the area quantity.</li>
+    </ol>
+    <h2>
+        Issues
+    </h2>
+    <p>
+        No Known Issue.</p>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are required</p>
+    <p>
+        src_carton,<br />
+        src_carton_detail,<br />
+        master_raw_inventory,<br />
+        ia,<br />
+        master_sku,<br />
+        ialoc,<br />
+        ialoc_content,<br />
+        box,<br />
+        boxdet,<br />
+        tab_inventory_area,<br />
+        master_storage_location
+    </p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>create or replace synonym src_carton for dcms4.src_carton;<br />
+            create or replace synonym src_carton_detail for dcms4.src_carton_detail;<br />
+            create or replace synonym master_raw_inventory for dcms4.master_raw_inventory;<br />
+            create or replace synonym ia for dcms8.ia;<br />
+            create or replace synonym ialoc for dcms8.ialoc;<br />
+            create or replace synonym ialoc_content for dcms8.ialoc_content ;<br />
+            create or replace synonym box for dcms8.box ;<br />
+            create or replace synonym boxdet for dcms8.boxdet ;<br />
+            create or replace synonym master_sku for dcms4.master_sku;<br />
+            create or replace synonym tab_inventory_area for dcms4.tab_inventory_area;<br />
+            create or replace synonym master_storage_area for dcms4.master_storage_location;
+        </code></p>
+    
+    <h1>
+        Technical Documentation</h1>
+    <h2>
+        Parameter Technical Details</h2>
+    <ul>
+        <li>Style&nbsp; (Type = String): To see inventory in different area of a specific Style
+            of SKU. Please provide Style. </li>
+        <li>Color (Type = String):&nbsp; To see inventory in different area of a specific Color
+            of SKU. Please provide Color. </li>
+        <li>Dim.(Type = String):&nbsp; To see inventory in different area of a specific Dimension
+            of SKU. Please provide Dimension. </li>
+        <li>Sku Size (Type = String):&nbsp; To see inventory in different area of a specific
+            Size of SKU. Please provide Sku Size. </li>
+        <li>Virtual Warehouse(Type = String): This is a list parameter control. By default,
+            inventory of all Warehouse is shown for each area. If your focus is on the inventory
+            in a particular Warehouse, Specify that Virtual Warehouse. Null value text is "All".<ul>
+                <li>Query to fill list values = "select tab_virtual_warehouse.vwh_id, tab_virtual_warehouse.vwh_id
+                    from tab_virtual_warehouse" </li>
+            </ul>
+        </li>
+    </ul>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.
+    <h2>
+        Query&#39;s documentation:</h2>
+    <pre>
+WITH ALL_AREAS AS
+ (SELECT T.INVENTORY_STORAGE_AREA AS AREA_ID,
+         T.SHORT_NAME AS AREA,
+         'CTN' AS AREA_TYPE,
+         T.WAREHOUSE_LOCATION_ID AS BUILDING
+    FROM TAB_INVENTORY_AREA T
+   WHERE T.UNUSABLE_INVENTORY IS NULL
+  UNION
+  SELECT IA.IA_ID AS AREA_ID,
+         IA.SHORT_NAME AS AREA,
+         'SHL' AS AREA_TYPE,
+         IA.WAREHOUSE_LOCATION_ID AS BUILDING
+    FROM IA
+   WHERE (IA.PICKING_AREA_FLAG = 'Y' OR IA.SHORT_NAME = :CANArea)
+  UNION
+  SELECT 'BOX' AS AREA_ID,
+         'BOX' AS AREA,
+         'SHL' AS AREA_TYPE,
+         NULL AS BUILDING
+    FROM DUAL),
+ALL_INVENTORY AS
+ (SELECT SC.VWH_ID,         
+         SCD.SKU_ID,
+         MAX(SCD.STYLE) AS STYLE,
+         MAX(SCD.COLOR) AS COLOR,
+         MAX(SCD.DIMENSION) AS DIMENSIONS,
+         MAX(SCD.SKU_SIZE) AS SKU_SIZE,
+         MAX(MS.UPC_CODE) AS UPC_CODE,
+         SUM(SCD.QUANTITY) AS QUANTITY,
+         NULL AS SHLQTY,
+         NULL AS BOXQTY,
+         SC.CARTON_STORAGE_AREA AS AREA_ID,
+         SC.QUALITY_CODE,
+         NVL(TIA.WAREHOUSE_LOCATION_ID, MSL.WAREHOUSE_LOCATION_ID) AS BUILDING
+    FROM SRC_CARTON SC
+   INNER JOIN SRC_CARTON_DETAIL SCD
+      ON SC.CARTON_ID = SCD.CARTON_ID
+    LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+      ON SC.CARTON_STORAGE_AREA = MSL.STORAGE_AREA
+     AND SC.LOCATION_ID = MSL.LOCATION_ID
+   INNER JOIN TAB_INVENTORY_AREA TIA
+      ON TIA.INVENTORY_STORAGE_AREA = SC.CARTON_STORAGE_AREA
+    LEFT OUTER JOIN MASTER_SKU MS
+      ON SCD.SKU_ID = MS.SKU_ID
+    LEFT OUTER JOIN MASTER_STYLE MST ON SCD.STYLE = MST.STYLE
+   WHERE 1 = 1
+    <if>AND SCD.style =:style</if>
+    <if>AND SCD.color =:Color</if>
+    <if>AND SCD.sku_size =:sku_size</if>
+    <if>AND SCD.dimension =:Dimension</if>
+    <if>AND MST.LABEL_ID =:label_id</if>
+    <if>AND SC.vwh_id = :vwh_id</if>
+   GROUP BY SC.VWH_ID,
+            SCD.SKU_ID,
+            SC.CARTON_STORAGE_AREA,
+            NVL(TIA.WAREHOUSE_LOCATION_ID, MSL.WAREHOUSE_LOCATION_ID),
+            SC.QUALITY_CODE  
+  UNION ALL
+  SELECT MRI.VWH_ID,
+         MRI.SKU_ID,
+         MAX(MRI.STYLE) AS STYLE,
+         MAX(MRI.COLOR) AS COLOR,
+         MAX(MRI.DIMENSION) AS DIMENSIONS,
+         MAX(MRI.SKU_SIZE) AS SKU_SIZE,
+         MAX(MS.UPC_CODE) AS UPC_CODE,
+         SUM(MRI.QUANTITY) AS QUANTITY,
+         SUM(CASE
+               WHEN MRI.SKU_STORAGE_AREA = 'SHL' THEN
+                MRI.QUANTITY
+             END) AS SHLQTY,
+         NULL AS BOXQTY,
+         MRI.SKU_STORAGE_AREA,
+         MRI.QUALITY_CODE,
+         TIA.WAREHOUSE_LOCATION_ID AS BUILDING
+    FROM MASTER_RAW_INVENTORY MRI
+    LEFT OUTER JOIN TAB_INVENTORY_AREA TIA
+      ON MRI.SKU_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+    LEFT OUTER JOIN MASTER_SKU MS
+      ON MRI.SKU_ID = MS.SKU_ID
+    LEFT OUTER JOIN MASTER_STYLE MST ON MRI.STYLE = MST.STYLE
+   WHERE TIA.STORES_WHAT = 'SKU'
+     AND TIA.UNUSABLE_INVENTORY IS NULL
+    <if>AND MRI.style =:style</if>
+    <if>AND MRI.color =:Color</if>
+    <if>AND MRI.sku_size =:sku_size</if>
+    <if>AND MRI.dimension =:Dimension</if>
+    <if>AND MST.LABEL_ID =:label_id</if>
+    <if>AND MRI.vwh_id = :vwh_id</if>
+   GROUP BY MRI.VWH_ID,
+            MRI.SKU_ID,
+            MRI.SKU_STORAGE_AREA,
+            MRI.QUALITY_CODE,
+            TIA.WAREHOUSE_LOCATION_ID
+  UNION ALL
+  SELECT B.VWH_ID,
+         MS.SKU_ID,
+         MAX(MS.STYLE) AS STYLE,
+         MAX(MS.COLOR) AS COLOR,
+         MAX(MS.DIMENSION) AS DIMENSIONS,
+         MAX(MS.SKU_SIZE) AS SKU_SIZE,
+         MAX(BD.UPC_CODE) AS UPC_CODE,
+         SUM(BD.CURRENT_PIECES) AS QUANTITY,
+         NULL AS SHLQTY,
+         SUM(BD.CURRENT_PIECES) AS BOXQTY,
+         'BOX' AS AREA_ID,
+         '01' AS QUALITY_CODE,
+         NULL AS BUILDING
+    FROM BOX B
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+    LEFT OUTER JOIN MASTER_SKU MS
+      ON MS.UPC_CODE = BD.UPC_CODE
+    LEFT OUTER JOIN MASTER_STYLE MST ON MS.STYLE = MST.STYLE
+   WHERE MS.INACTIVE_FLAG IS NULL
+     AND BD.STOP_PROCESS_DATE IS NULL
+     AND B.STOP_PROCESS_DATE IS NULL
+     AND B.IA_ID IS NOT NULL
+     AND B.IA_ID_COPY IS NOT NULL
+    <if>AND MS.style =:style</if>
+    <if>AND MS.color =:Color</if>
+    <if>AND MS.sku_size =:sku_size</if>
+    <if>AND MS.dimension =:Dimension</if>
+    <if>AND MST.LABEL_ID =:label_id</if>
+    <if>AND B.vwh_id = :vwh_id</if>
+   GROUP BY B.VWH_ID, MS.SKU_ID
+  UNION ALL
+  SELECT I.VWH_ID,
+         MS.SKU_ID,
+         MAX(MS.STYLE) AS STYLE,
+         MAX(MS.COLOR) AS COLOR,
+         MAX(MS.DIMENSION) AS DIMENSIONS,
+         MAX(MS.SKU_SIZE) AS SKU_SIZE,
+         MAX(IC.IACONTENT_ID) AS UPC_CODE,
+         SUM(IC.NUMBER_OF_UNITS) AS QUANTITY,
+         NULL AS SHLQTY,
+         SUM(IC.NUMBER_OF_UNITS) AS BOXQTY,
+         I.IA_ID AS AREA_ID,
+         '01' AS QUALITY_CODE,
+         I.WAREHOUSE_LOCATION_ID AS BUILDING
+    FROM IALOC I
+   INNER JOIN IALOC_CONTENT IC
+      ON I.LOCATION_ID = IC.LOCATION_ID
+    LEFT OUTER JOIN MASTER_SKU MS
+      ON IC.IACONTENT_ID = MS.UPC_CODE  
+    LEFT OUTER JOIN MASTER_STYLE MST ON MS.STYLE = MST.STYLE 
+   WHERE IC.IACONTENT_TYPE_ID = 'SKU'
+     AND i.location_type ='RAIL'
+    <if>AND MS.style =:style</if>
+    <if>AND MS.color =:Color</if>
+    <if>AND MS.sku_size =:sku_size</if>
+    <if>AND MS.dimension =:Dimension</if>
+    <if>AND MST.LABEL_ID =:label_id</if>
+    <if>AND I.vwh_id = :vwh_id</if>
+   GROUP BY I.VWH_ID,
+            MS.SKU_ID,
+            I.IA_ID,
+            I.WAREHOUSE_LOCATION_ID),
+ FINAL_QUERY AS
+ (SELECT AI.VWH_ID AS VWH_ID,
+         AI.SKU_ID AS SKU_ID,
+         NVL(AI.STYLE,'XXXXX') AS STYLE,
+         AI.COLOR,
+         AI.DIMENSIONS,
+         AI.SKU_SIZE,
+         AI.UPC_CODE,
+         SUM(NVL(AI.QUANTITY, 0))OVER() AS OVERALL_INVENTORY,
+         NVL(AI.QUANTITY, 0) AS QUANTITY,
+         NVL(AI.QUALITY_CODE, '01') AS QUALITY_CODE,
+         CASE WHEN AA.AREA_TYPE ='SHL' THEN
+             AA.AREA_ID
+            ELSE
+            NULL
+            END AS AREA_ID,
+         AA.AREA  AS AREA,
+         SUM(NVL(AI.SHLQTY, 0)) OVER(PARTITION BY AI.SKU_ID, AI.VWH_ID, QUALITY_CODE) AS SHLQTY,
+         SUM(NVL(AI.SHLQTY, 0)) OVER(PARTITION BY AI.SKU_ID, AI.VWH_ID, QUALITY_CODE) - SUM(NVL(BOXQTY, 0)) OVER(PARTITION BY AI.SKU_ID, AI.VWH_ID, QUALITY_CODE) AS SHLA,
+         SUM(NVL(AI.QUANTITY, 0)) OVER(PARTITION BY AI.SKU_ID, AI.VWH_ID, QUALITY_CODE) - SUM(NVL(AI.SHLQTY, 0)) OVER(PARTITION BY AI.SKU_ID, AI.VWH_ID, QUALITY_CODE) AS TOTAL_PIECES,
+         AA.AREA_TYPE,
+         CASE
+           WHEN AA.AREA = 'BOX' THEN
+            NULL
+           ELSE
+            COALESCE(AI.BUILDING, AA.BUILDING, 'Unknown')
+         END AS BUILDING
+    FROM ALL_AREAS AA
+    LEFT OUTER JOIN ALL_INVENTORY AI
+      ON AA.AREA_ID = AI.AREA_ID)
+SELECT *
+  FROM FINAL_QUERY FQ  
+  WHERE FQ.OVERALL_INVENTORY &lt;&gt;0
+</pre>
+    <h2>
+        Validation details</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.
+    <br />
+    <br />
+    <b>Query:Below query is showing area wise(carton areas) quantity for pass SKU.</b><pre>
+ SELECT SCD.SKU_ID,
+       SUM(SCD.QUANTITY) AS QTY,
+       SC.QUALITY_CODE,
+       MAX(SCD.STYLE) AS STYLE,
+       MAX(SCD.COLOR) AS COLOR,
+       MAX(SCD.DIMENSION) AS DIMENSIONS,
+       MAX(SCD.SKU_SIZE) AS SKU_SIZE,
+       SC.VWH_ID,
+       MAX(SC.CARTON_STORAGE_AREA) AS AREA_ID,
+       T.SHORT_NAME,
+       COALESCE(T.WAREHOUSE_LOCATION_ID, M.WAREHOUSE_LOCATION_ID, 'Unknown') AS BUILDING
+  FROM SRC_CARTON SC
+ INNER JOIN SRC_CARTON_DETAIL SCD
+    ON SC.CARTON_ID = SCD.CARTON_ID
+  LEFT OUTER JOIN TAB_INVENTORY_AREA T
+    ON SC.CARTON_STORAGE_AREA = T.INVENTORY_STORAGE_AREA
+  LEFT OUTER JOIN MASTER_STORAGE_LOCATION M
+    ON SC.CARTON_STORAGE_AREA = M.STORAGE_AREA
+   AND SC.LOCATION_ID = M.LOCATION_ID
+  LEFT OUTER JOIN MASTER_SKU MS
+    ON SCD.SKU_ID = MS.SKU_ID
+  LEFT OUTER JOIN MASTER_STYLE MST
+    ON MST.STYLE = MS.STYLE
+ WHERE SCD.STYLE = '00011'
+   AND SCD.COLOR = 'FF'
+   AND SCD.DIMENSION = '.'
+   AND SCD.SKU_SIZE = '34'
+   AND SC.VWH_ID = '15'
+   AND SC.QUALITY_CODE = '01'
+   AND T.UNUSABLE_INVENTORY IS NULL
+ GROUP BY SC.VWH_ID,
+          SCD.SKU_ID,
+          SC.QUALITY_CODE,
+          T.SHORT_NAME,
+          COALESCE(T.WAREHOUSE_LOCATION_ID,
+                   M.WAREHOUSE_LOCATION_ID,
+                   'Unknown')
+
+</pre>
+    <b>Query: Below query is showing area wise (SKU areas) quantity for the pass SKU.</b><pre>
+ SELECT m.SKU_STORAGE_AREA, 
+        NVL(T.WAREHOUSE_LOCATION_ID,'Unknown'), 
+        sum(m.QUANTITY) as Qty
+  FROM master_raw_inventory m
+ inner join TAB_INVENTORY_AREA t
+    on t.INVENTORY_STORAGE_AREA = m.SKU_STORAGE_AREA
+ where t.UNUSABLE_INVENTORY is null
+   and m.STYLE = '00025'
+   and m.COLOR = 'FF'
+   and m.DIMENSION = '.'
+   and m.SKU_SIZE = '34'
+   and t.STORES_WHAT = 'SKU'
+ group by m.SKU_STORAGE_AREA, NVL(T.WAREHOUSE_LOCATION_ID,'Unknown')
+having sum(m.QUANTITY) > 0
+</pre>
+    <b>Query: Below query is showing quantity in the Ialoc for the pass SKU.</b>
+    <pre>
+SELECT IA.SHORT_NAME AS AREA,
+       I.WAREHOUSE_LOCATION_ID,
+       SUM(IACONT.NUMBER_OF_UNITS) AS QUANTITY
+  FROM IALOC_CONTENT IACONT
+ INNER JOIN IALOC I
+    ON I.LOCATION_ID = IACONT.LOCATION_ID
+ INNER JOIN IA
+    ON IA.IA_ID = I.IA_ID
+  LEFT OUTER JOIN MASTER_SKU SKU
+    ON IACONT.IACONTENT_ID = SKU.UPC_CODE
+  LEFT OUTER JOIN MASTER_STYLE MST
+    ON SKU.STYLE = MST.STYLE
+ WHERE IACONT.IACONTENT_TYPE_ID = 'SKU'
+   AND SKU.STYLE = '00011'
+   AND SKU.COLOR = 'TT'
+   AND SKU.DIMENSION = '.'
+   AND SKU.SKU_SIZE = '32'
+   AND I.VWH_ID = 'S15'
+ GROUP BY IA.SHORT_NAME, I.WAREHOUSE_LOCATION_ID
+HAVING SUM(IACONT.NUMBER_OF_UNITS) > 0</pre>
+    <b>Query: Below query is showing total quanity in the Box area</b>
+    <pre>SELECT BOX.VWH_ID AS VWH_ID, SUM(BOXDET.CURRENT_PIECES) AS QUANTITY
+  FROM BOXDET BOXDET
+ INNER JOIN BOX
+    ON BOX.UCC128_ID = BOXDET.UCC128_ID
+   AND BOX.PICKSLIP_ID = BOXDET.PICKSLIP_ID
+  LEFT OUTER JOIN MASTER_SKU MS
+    ON BOXDET.UPC_CODE = MS.UPC_CODE
+  LEFT OUTER JOIN MASTER_STYLE MST
+    ON MS.STYLE = MST.STYLE
+ WHERE MS.INACTIVE_FLAG IS NULL
+   AND BOXDET.STOP_PROCESS_DATE IS NULL
+   AND BOX.IA_ID IS NOT NULL
+   AND BOX.IA_ID_COPY IS NOT NULL
+   AND MS.STYLE = '00011'
+   AND MS.COLOR = 'PP'
+   AND MS.DIMENSION = 'D'
+   AND MS.SKU_SIZE = '34'
+   AND BOX.VWH_ID = '15'
+ GROUP BY BOX.VWH_ID</pre>
+
+</body>
+</html>

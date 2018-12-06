@@ -1,0 +1,420 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <form id="Form2" 
+    action="http://w3chile/XTremeReporter/ReportDoc.aspx?_Report=C%3a%5cDCMSLive%5cReports%5cR150.04.xsd" 
+    method="post" name="Form1">
+    <div>
+        <input id="Hidden1" name="__VIEWSTATE" type="hidden" 
+            value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+    </div>
+    <h1 align="center">
+        150<b>.</b>0<b>5 : </b>Checker Productivity Report
+    </h1>
+    <h3>
+        Author : Manmohan Bisht</h3>
+    $Revision: 1.01$<br />
+    Status: Reviewed<br/>
+    Reviewed By : Hemant K. Varshney
+    <p> 
+        This report shows the summary of each checker for a given date range
+        and also on shift bases.            
+    </p>
+    <h2>
+        Overview</h2>
+            This report shows the productivity of each checker for a given date or date range
+            and also on shift bases. The report is helpful in monitoring the productivity. The
+            productivity is measured by number of boxes and pieces checked by a 
+    checker in a day.<h3>
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="25%" align="center">
+                <b>Item</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Summary</b>
+            </td>
+            <td width="10%" align="center">
+                <b>Sort Sequence</b>
+            </td>
+            <td width="35%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <i><b>OPERATOR</b></i>
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1&nbsp;</td>
+            <td>
+                <r:item term="OPERATOR" key="true">
+						The Checker,who performed Checking.
+					</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <i><b>Session ID</b></i>
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2</td>
+            <td>
+                <r:item term="Session_ID" sortsequence="1" key="true">
+						The id of the session against which checker performed the operation
+						</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Warehouse Location</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Warehouse Location of Operator</td>
+        </tr>
+        <tr>
+            <td>
+                Operation Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;&nbsp;</td>
+            <td>
+                <r:item term="Process Date" key="true">
+						The date on which, checking operation was performed by the checker
+					</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Start Time
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                <r:item term="Start Time">The time on which work was started on the particular process by the checker
+					</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                End Time
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                <r:item term="End Time">The time on which work was ended on the particular process by the checker
+					</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of PDs
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                <r:item term="Number of PDs" summary="Sum">
+						Number of pickslips, processed  by the checker on the particular date.
+					</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of Boxes
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                <r:item term="Number of Boxes" summary="Sum">
+						The number of boxes, processed  by the checker on the particular date.
+					</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                <r:item term="Number of Pieces" summary="Sum">
+						Number of pieces, processed  by the checker on the particular date.
+					</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of UPC Scans
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                <r:item term="Number of UPC Scans" summary="Sum">
+						Number of UPC scans, done by the checker on the particular date.
+					</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of COO Scans
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                <r:item term="Number of COO Scans" summary="Sum">
+						Number of Country of Origin scans, done by the checker on the particular date.
+					</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of Qty scans
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                <r:item term="Number of Qty scans" summary="Sum">
+						Number of qty mode scans, done by the checker on the particular date.
+					</r:item>
+            </td>
+        </tr>
+        <tr>
+                <td>
+                    User Setup Date</td>
+                <td>
+                    None</td>
+                <td align="middle">
+                    &nbsp;&nbsp;</td>
+                <td>
+                    Date when user had been created.</td>
+            </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="20%" align="center">
+                <b>Name</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Default</b>
+            </td>
+            <td width="60%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+         
+        <tr>
+            <td>
+                Operation Date
+            </td>
+            <td>
+                Last 7 days period
+            </td>
+            <td>
+                Date on which checking operation was performed by the checker.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Shift
+            </td>
+            <td>
+                All Shifts
+            </td>
+            <td>
+                Checker can work in any shift. Checker can perform the checking operation in multiple
+                shifts. Specify a shift if you interested in a specific shift.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Warehouse Location
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                Warehouse Location where checker worked.
+            </td>
+        </tr>
+        </table>
+    </form>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Summary Check box is removed, instead we are recommending to use Collaps button 
+            it will show you summary for all the Checkers.</li>
+    </ul>
+     <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>        
+        box_productivity,<br />      
+    </p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>
+            create or replace synonym box_productivity for dcms8.box_productivity;<br />
+           
+            </code></p>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <ul>
+        <li><r:doc>The query is the main query of the report 
+            specified operation date.
+            <pre>
+with Chk_Productivity AS (
+SELECT bp.process_id,
+       bp.ucc128_id,
+       bp.operator,
+       count(distinct bp.ucc128_id) OVER(PARTITION BY  bp.operator, bp.process_id) as count_cartons,
+       count(distinct bp.pickslip_id) OVER(PARTITION BY  bp.operator, bp.process_id) as count_pickslips,
+       min(bp.operation_start_date) OVER(PARTITION BY  bp.operator, bp.process_id) as start_time,
+       max(bp.operation_end_date) OVER(PARTITION BY  bp.operator, bp.process_id) as end_time,
+       max(bp.operation_start_date) OVER(PARTITION BY bp.operator, bp.process_id, bp.ucc128_id) as max_start_date,
+       bp.num_of_pieces AS num_of_pieces,
+       sum(bp.num_of_upc_scans) over(partition by bp.operator, bp.process_id) as sum_num_of_upc_scans,
+       sum(bp.num_of_coo_scans) over(partition by bp.operator, bp.process_id) as sum_num_of_coo_scans,
+       sum(bp.num_of_qty_mode_scans) over(partition by bp.operator, bp.process_id) as sum_num_of_qty_mode_scans,
+       sum(bp.number_of_unscans) over(partition by bp.operator, bp.process_id) as sum_number_of_unscans,
+       ROW_NUMBER() OVER(PARTITION BY bp.operator, bp.process_id, bp.ucc128_id ORDER BY bp.operation_start_date DESC) as row_sequence,
+       max(au.created) OVER(PARTITION BY  bp.operator, bp.process_id) as user_setup_date   
+  FROM box_productivity bp
+  LEFT OUTER JOIN all_users au on au.username = bp.operator  
+ WHERE bp.operation_code = '$CHECKING'
+   AND bp.operation_start_date &gt;= CAST(:operation_start_date_from AS DATE)
+   AND bp.operation_start_date &lt; CAST(:operation_start_date_to AS DATE) + 1
+   <![CDATA[
+   $ShiftNumberWhere$
+   ]]>
+   <if>AND bp.warehouse_location_id = :warehouse_location_id</if>
+)
+SELECT cp.operator AS operator,
+       cp.process_id AS process_id,      
+       trunc(cp.max_start_date) AS max_start_date,
+       MAX(cp.start_time) as start_time,
+       MAX(cp.end_time) as end_time,
+       NVL(MAX(cp.count_cartons),0) AS count_cartons,
+       NVL(MAX(cp.count_pickslips),0) AS count_pickslips,
+       NVL(SUM(cp.num_of_pieces),0) AS num_of_pieces,
+       NVL(MAX(cp.sum_num_of_upc_scans),0) AS sum_num_of_upc_scans,
+       NVL(MAX(cp.sum_num_of_coo_scans),0) AS sum_num_of_coo_scans,       
+       NVL(MAX(cp.sum_num_of_qty_mode_scans),0) AS sum_num_of_qty_mode_scans, 
+       NVL(MAX(cp.sum_number_of_unscans),0) AS sum_number_of_unscans,
+       MAX(cp.user_setup_date) as user_setup_date  
+  FROM Chk_Productivity cp
+ WHERE cp.row_sequence = 1
+ GROUP BY cp.operator, cp.process_id,trunc(cp.max_start_date)
+		    </pre>
+            </R:DOC></li>
+    </ul>
+    <p>
+            </R:DOC>
+    </p>
+    <h2>
+        Validation details</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are 
+    the optional parameters. If you do not want to pass these parameters just remove 
+    the [] section.
+    <br />
+    <br />
+    <b>Query:</b><pre><r:query>
+SELECT boxpro.operator AS &quot;OPERATOR&quot;,
+boxpro.process_id AS &quot;PROCESS_ID&quot;,
+TRUNC(boxpro.operation_start_date) AS &quot;OPERATION_START_DATE&quot;,
+min(boxpro.operation_start_date) AS &quot;START_TIME&quot;,
+max(boxpro.operation_end_date) AS &quot;END_TIME&quot;,
+COUNT(DISTINCT BOX.Pickslip_Id) AS &quot;PDS&quot;,
+COUNT(DISTINCT boxpro.ucc128_id) AS &quot;BOXES&quot;
+FROM dcms8.box_productivity boxpro, dcms8.box box, dcms8.ps ps
+WHERE boxpro.operation_code = &#39;$CHECKING&#39;
+AND boxpro.ucc128_id = box.ucc128_id(+)
+AND box.pickslip_id = ps.pickslip_id(+)
+AND boxpro.process_id=::PROCESS_ID
+GROUP BY boxpro.operator,
+boxpro.process_id,
+TRUNC(boxpro.operation_start_date)
+
+					</R:QUERY></pre>
+    <b>Description:</b><pre><r:description>
+        Execute the query to check the details of checker for a specified process id.
+					</R:DESCRIPTION></pre>
+    <b>Query:</b><pre><r:query>
+SELECT /*+Rule*/
+t.operator AS &quot;OPERATOR&quot;,
+t.process_id AS &quot;PROCESS_ID&quot;,
+TRUNC(t.operation_start_date) AS &quot;OPERATION_START_DATE&quot;,
+sum(t.num_of_pieces) AS &quot;PIECES&quot;
+FROM box_productivity t
+WHERE t.operation_code = &#39;$CHECKING&#39;
+AND t.operation_start_date &gt;= (TO_DATE(&#39;03/15/2006&#39;, &#39;MM/DD/YYYY&#39;))
+AND t.operation_start_date &lt;= (TO_DATE(&#39;03/15/2007&#39;, &#39;MM/DD/YYYY&#39;)) + 1
+GROUP BY /*+Rule*/ t.operator, t.process_id, TRUNC(t.operation_start_date)
+          </R:QUERY></pre>
+    <b>Description:</b><pre><r:description>
+Execute the query to check the number of pieces processed by the checker for a specified operation date.
+					</R:DESCRIPTION></pre>
+    <b>Query:</b><pre><r:query>
+SELECT /*+Rule*/
+t.operator AS &quot;OPERATOR&quot;,
+t.process_id AS &quot;PROCESS_ID&quot;,
+TRUNC(t.operation_start_date) AS &quot;OPERATION_START_DATE&quot;,
+sum(t.num_of_upc_scans) AS &quot;UPC_SCANS&quot;,
+sum(t.num_of_coo_scans) AS &quot;COO_SCANS&quot;,
+sum(t.num_of_qty_mode_scans) AS &quot;QTY_SCANS&quot;,
+SUM(t.number_of_unscans) AS &quot;UNSCANS&quot;
+FROM box_productivity t
+WHERE t.operation_code = &#39;$CHECKING&#39;
+AND t.operation_start_date &gt;= (TO_DATE(&#39;03/15/2006&#39;, &#39;MM/DD/YYYY&#39;)) 
+AND t.operation_start_date &lt;= (TO_DATE(&#39;03/15/2007&#39;, &#39;MM/DD/YYYY&#39;)) + 1
+GROUP BY /*+Rule*/ t.operator, t.process_id, TRUNC(t.operation_start_date)
+</R:QUERY></pre>
+ <b>Description:</b><pre><r:description>
+Execute the query to check the scans and unscans done by the checker for a specified operation date.
+</pre>
+</body>
+</html>

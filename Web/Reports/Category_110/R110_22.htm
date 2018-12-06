@@ -1,0 +1,320 @@
+﻿<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        .style10
+        {
+            width: 159px;
+        }
+        .style11
+        {
+            text-align: center;
+        }
+        .style12
+        {
+            width: 159px;
+            text-align: center;
+        }
+        .style15
+        {
+            width: 136px;
+            text-align: center;
+        }
+        .style16
+        {
+            width: 136px;
+        }
+        .style17
+        {
+            width: 104px;
+            text-align: center;
+        }
+        .style18
+        {
+            width: 104px;
+        }
+        .style19
+        {
+            width: 68px;
+            text-align: center;
+        }
+        .style20
+        {
+            width: 68px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        R110<b>.</b>22<b> : Brazil Load Sheet</b></h1>
+    <h4>
+        Author : Sanjeev kumar</h4>
+    $Revision: 4126 $<br />
+    Status: Reviewed
+    <h2>
+        Overview</h2>
+    <p>
+        This report shows the unshipped boxes for specific customer
+    </p>
+    <h4>
+        Algorithm</h4>
+    <p>
+        Get information of  non shipped orders of customer from PS table. 
+        Retreving count of boxes form the table BOX.&nbsp;
+    </p>
+    <h3>
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td class="style15">
+                <b>Item</b>
+            </td>
+            <td class="style17">
+                <b>Summary</b>
+            </td>
+            <td class="style19">
+                <b>Sort Sequence</b>
+            </td>
+            <td class="style11">
+                <b>Details</b>
+            </td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Customer
+            </td>
+            <td class="style18">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NO</td>
+            <td class="style20">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                1
+            </td>
+            <td>
+                Id of the customer.</td>
+        </tr>
+        <tr>
+            <td class="style16">
+                PO
+            </td>
+            <td class="style18">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                NO</td>
+            <td class="style20">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                2
+            </td>
+            <td>
+                Order of the customer.</td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Style
+            </td>
+            <td class="style18">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NO</td>
+            <td class="style20">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                3
+            </td>
+            <td>
+                Style of the SKU.</td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Color
+            </td>
+            <td class="style18">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                NO</td>
+            <td class="style20">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                4
+            </td>
+            <td>
+                Color of the SKU.</td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Boxes
+            </td>
+            <td class="style18">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Yes</td>
+            <td class="style20">
+                &nbsp;
+            </td>
+            <td>
+                Count of the boxes per style and color.</td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Pieces
+            </td>
+            <td class="style18">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Yes</td>
+            <td class="style20">
+                &nbsp;
+            </td>
+            <td>
+                Total pieces in the boxes each style and color.</td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Amount
+            </td>
+            <td class="style18">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Yes</td>
+            <td class="style20">
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Wieght</td>
+            <td class="style18">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NO</td>
+            <td class="style20">
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Ctry of Origion</td>
+            <td class="style18">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NO</td>
+            <td class="style20">
+                &nbsp;
+            </td>
+            <td>
+                Name of the country.</td>
+        </tr>
+        <tr>
+            <td class="style16">
+                SewingPlantCode
+            </td>
+            <td class="style18">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NO</td>
+            <td class="style20">
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+    </table>
+    &nbsp;<h2>
+        Parametersters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td class="style12">
+                <b>Nameme</b>
+            </td>
+            <td class="style11">
+                <b>Default</b>
+            </td>
+            <td class="style11">
+                <b>Details</b>
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Customer
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                Id of the customer.&nbsp;
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Behavior Changege</h2>
+    <h2>
+        Issues</h2>
+    No Known Issue. &nbsp;<br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        <strong>Private synonyms for the following table is requried</strong></p>
+    BOX,<br />
+    boxdet,<br />
+    master_sku,<br />
+    PS,<br />
+    PO<br />
+   <strong>The below script to create the synonyms</strong>
+       <p> Create or replace synonym box for dcms8.box;<br />
+        Create or replace synonym boxdet for dcms8.boxdet;<br />
+        Create or replace synonym master_sku for dcms4.master_sku;<br />
+        Create or replace synonym PS for dcms8.PS;<br />
+        Create or replace synonym PO for dcms8.PO;<br />
+        Create or replace synonym TAB_SEWINGPLANT for dcms8.TAB_SEWINGPLANT;<br />
+        Create or replace synonym SRC_OPEN_CARTON for dcms8.SRC_OPEN_CARTON;<br />
+        Create or replace synonym TAB_COUNTRY for dcms8.TAB_COUNTRY ;<br />
+        Create or replace synonym SKUCASE for dcms8.SKUCASE;<br />
+        Create or replace synonym MASTER_STYLE_COLOR for dcms8.MASTER_STYLE_COLOR;<br />
+           Create or replace synonym TAB_CONTENT for dcms8.TAB_CONTENT;</p>
+
+    <b>Following appSettings are required:</b>
+    <p>No used AppSetting in this report</p>
+    <h2>Parameter Validation</h2>
+    No special validations.
+    <h3>
+        Query&#39;s documentation:</h3>
+        <pre>
+        SELECT PS.PO_ID AS PO_ID,
+       COUNT(DISTINCT B.UCC128_ID) AS BOX,
+       SUM(BD.CURRENT_PIECES) AS PIECES,
+       SUM(BD.CURRENT_PIECES * BD.EXTENDED_PRICE) AS AMOUNT,
+       ROUND(SUM(NVL(BD.CURRENT_PIECES, 0) * (NVL(MSKU.WEIGHT_PER_DOZEN, 0) / 12)) +
+       SUM(NVL(SKUCASE.EMPTY_WT, 0))) AS BOX_WEIGHT,
+       MAX(CASE WHEN TS.SEWING_PLANT_CODE IS NOT NULL THEN 
+           TS.SEWING_PLANT_CODE ||':'|| TS.SEWING_PLANT_NAME
+           END) AS SEWING_PLANT_NAME ,
+        MAX(tcry.name) AS Country_name,
+       MAX(TC.DESCRIPTION) AS DESCRIPTION,
+       MAX(PS.CUSTOMER_ID) AS CUSTOMER,
+       MSKU.STYLE AS STYLE,
+       MSKU.COLOR AS COLOR
+  FROM PS PS
+  LEFT OUTER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+ INNER JOIN BOXDET BD
+    ON B.UCC128_ID = BD.UCC128_ID
+   AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+ LEFT OUTER JOIN SRC_OPEN_CARTON SOP
+    ON B.CARTON_ID = SOP.CARTON_ID
+ LEFT OUTER JOIN TAB_SEWINGPLANT TS
+    ON SOP.SEWING_PLANT_CODE = TS.SEWING_PLANT_CODE
+ LEFT OUTER JOIN BOXDETCO BCO
+    ON BD.UCC128_ID = BCO.UCC128_ID
+   AND BD.UPC_CODE = BCO.UPC_CODE
+   LEFT OUTER JOIN tab_country tcry ON
+   bco.co_of_origin = tcry.country_id
+ LEFT OUTER JOIN SKUCASE
+    ON B.CASE_ID = SKUCASE.CASE_ID
+ INNER JOIN MASTER_SKU MSKU
+    ON BD.SKU_ID = MSKU.SKU_ID
+ LEFT OUTER JOIN MASTER_STYLE_COLOR MSC
+    ON MSKU.STYLE = MSC.STYLE
+   AND MSKU.COLOR = MSC.COLOR
+  LEFT OUTER JOIN TAB_CONTENT TC
+    ON MSC.CONTENT_ID = TC.CONTENT_ID
+ WHERE B.STOP_PROCESS_DATE IS NULL
+   AND BD.STOP_PROCESS_DATE IS NULL
+   AND PS.TRANSFER_DATE IS NULL
+  AND PS.CUSTOMER_ID = :customer_id
+ GROUP BY MSKU.STYLE, MSKU.COLOR, PS.PO_ID
+        </pre>
+    <h2>
+        Validation details</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.
+    <br />
+    <b>Query:</b><br />
+    <b>Description:&nbsp; </b>
+</body>
+</html>

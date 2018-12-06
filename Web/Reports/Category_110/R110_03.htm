@@ -1,0 +1,577 @@
+﻿<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        110<b>.</b>03<b> : </b>Location of Box in DC
+    </h1>
+    Author : <b>Sanjeev Kumar</b><br />
+    $Revision: 7232 $<br />
+    Reviewed By: Manmohan Bisht<br />
+    Status: Tested<br />
+    Tested By : Anil Panwar<br />
+    <p>
+        This report displays two things. a) For each area, count of boxes in unshipped pickslips. b) Number of pickslips in order bucket. Several optional filters are available to help you focus on your orders of interest: PO, Pickslip, Customer, bucket, MPC, Label and DC. All pickslips are in process mode. You also have the option to focus on validated pickslips only. </p>
+    <p class="MsoNormal">
+        Now you will be able to see count of boxes of specific VAS in different areas with the help of filter <b>Orders Required</b> VAS.<o:p></o:p></p>
+    <h2>Overview</h2>
+    The goal of this report is to make visible the progress of all unshipped pickslips.
+    As a pickslip is processed within the DC, cartons get created and these cartons
+    move from one area to another and eventually reach the shipping area. This report
+    shows the number of boxes&nbsp; in each area.
+    <p>
+        If you want to focus on a smaller subset of unshipped pickslips, you can do so by
+        optionally specifying one or more of the following filters:
+    </p>
+    <ul>
+        <li><b>Area. </b>You can choose to view box count in all areas or you can choose a specific
+            area.</li>
+        <li>Three conceptual areas are provided for your convenience. If a carton qualifies
+            for one of these areas, it will not be included in the actual to which it belongs.
+            This ensures that the total carton count you see represents a real count. </li>
+        <li><b><i>Expediter Bucket.</i></b>Those boxes which have not been assigned to an MPC
+            yet. </li>
+        <li><b><i>Unstarted Cancelled.</i></b> Those boxes which were cancelled before they
+            were assigned to an MPC. </li>
+        <li><b><i>MPC Unstarted.</i></b> Unpitched boxes which belong to some MPC. By contrast,
+            area PIT contains cartons for which pitching has started. After pitching is complete
+            for a carton, it moves to RED or GRN area. </li>
+        <li><b>PO.</b> The purchase order which you wish to track. </li>
+        <li><b>Pickslip. </b>A specific pickslip id if you are interested in the progress of
+            a single pickslip. </li>
+        <li><b>Customer Id.</b> This allows you to track order progress of a specific customer.
+        </li>
+        <li><b>MPC Id.</b> This allows you to track the progress of a specific MPC.</li>
+        <li><b>Label.</b> To track progress of a cartons containing SKUs of a specific label.
+        </li>
+        <li><b>DC.</b> To track cartons destined for a specific DC. If you specify this parameter,
+            it is highly recommended that you specify customer id as well. This is because different
+            customers can have same DC Id. </li>
+        <li><b>Validated Only.</b> Choosing this option includes only those cartons which have
+            successfully passed through the validation station. </li>
+        <li><b>Customer Type. </b>You can use this parameter the see the carton details of Domestic
+            or international customers. By default, the carton details for domestic customer
+            will be displayed.</li>
+        <li>
+            <p class="MsoNormal">
+                <b>VAS</b> &nbsp;&nbsp;This allows you to track the boxes that are related to VAS(Value Added Service) orders.<o:p></o:p></p>
+        </li>
+    </ul>
+    <p>
+        Note that some combination of parameters do not make any sense. For example, if
+        a pickslip is specified, specifying a PO adds no value since only a single pickslip
+        will be displayed anyway. In fact, if the specified PO does not contain the specified
+        pickslip, no rows will be displayed. It is up to you to specify a sensible combination
+        of parameters.
+    </p>
+    <p>
+        For the purposes of this report, unshipped pickslip is defined as that pickslip
+        for which information has not been sent to Richter yet. This means that even if
+        you ship the pickslip, it will be visible to this report until data for this pickslip
+        is transferred to Richter.
+    </p>
+    <p>
+        A box can be said in VAS area when it requires VAS and it is pitched and it is not yet validated.</p>
+    <h2>
+        Algorithm</h2>
+    Get the areas and their cartons count from box,ps, mpc and mpcloc. Get the number
+    of pickslip in &#39;in order bucket&#39; from dem_pickslip table and VAS orders are being retreived from table PS_VAS. <h3>
+        Output</h3>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center">
+                <b>Item</b>
+            </td>
+            <td align="center">
+                <b>Summary</b>
+            </td>
+            <td align="center">
+                <b>Default
+                    <br />
+                    Sort Sequence</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Inventory Area
+            </td>
+            <td>
+                None
+            </td>
+            <td align="center">
+                &nbsp; 1
+            </td>
+            <td>
+                The Inventory area where carton is currently lying
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No of Boxes
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                No of&nbsp; boxes in the area.
+            </td>
+        </tr>
+        </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center">
+                <b>Name</b>
+            </td>
+            <td align="center">
+                <b>Default</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;Area
+            </td>
+            <td>
+                All areas
+            </td>
+            <td>
+                The inventory area in warehouse. This dropdown box also includes conceptual areas
+                which are &#39;Expediter Bucket&#39;, MPC Unstarted and Unstarted Cancelled.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                PO
+            </td>
+            <td>
+                Optional
+            </td>
+            <td>
+                The PO ID
+            </td>
+        </tr>
+        <tr>
+            <td>
+                PickSlip
+            </td>
+            <td>
+                Optional
+            </td>
+            <td>
+                Pickslip ID
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Customer
+            </td>
+            <td>
+                Optional
+            </td>
+            <td>
+                The ID of Customer
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Bucket
+            </td>
+            <td>
+                Optional
+            </td>
+            <td>
+                Bucket ID
+            </td>
+        </tr>
+        <tr>
+            <td>
+                MPC
+            </td>
+            <td>
+                Optional
+            </td>
+            <td>
+                MPC ID
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Label
+            </td>
+            <td>
+                ALL
+            </td>
+            <td>
+                Style Label
+            </td>
+        </tr>
+        <tr>
+                <td>
+                    Orders Required
+                    VAS</td>
+                <td>
+                    All VAS</td>
+                <td>
+                    Any VAS(Value Added Service) applied on order.</td>
+            </tr>
+        <tr>
+            <td>
+                Customer DC
+            </td>
+            <td>
+                Optional
+            </td>
+            <td>
+                The ID of Customer DC
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Only Validated Pickslips
+            </td>
+            <td>
+                Unchecked
+            </td>
+            <td>
+                To view those pickslips, which are already passed from validation station
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Customer Type
+            </td>
+            <td>
+                ALL
+            </td>
+            <td>
+                To view pickslip of domestic or international Customers
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Date range for
+                Start Date</td>
+            <td>
+                        First day of previous year 
+                <br />
+                        The month end date for the system date which is based on FDC Calendar</td>
+            
+            <td>
+                We are showing the starting date sysdate -30 and ending date will show month_end_date inrespect to current date from table 
+                tab_fdc_calender</td>
+        </tr>
+        <tr>
+            <td>
+                Date range for
+               DC Cancel Date</td>
+            <td>
+                        First day of previous year 
+                <br />
+                        The month end date for the system date which is based on FDC Calendar</td>
+            
+            <td>
+                We are showing the starting date sysdate -30 and ending date will show month_end_date inrespect to current date from table 
+                tab_fdc_calender</td>
+        </tr>
+        <tr>
+            <td>
+                Building</td>
+            <td>
+                Building Check box Checked </td>
+            
+            <td>
+                The particular warehouse location id for which you would like to run the report</td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>9 Seconds</p>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Now report will show STO against a PO. This additional information will be displayed under a new column &#39;PO Attrib 1&#39;.</li>
+    </ul>
+    <h2>
+        Issues</h2>
+&nbsp;<br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        dem_pickslip,<br />
+        box,<br />
+        ps,<br />
+        PO,<br />
+        ia,<br />
+        mpc,<br />
+        mpcloc,<br />
+        ps_vas
+    </p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>create or replace synonym dem_pickslip for dcms4.dem_pickslip;
+            <br />
+            create or replace synonym box for dcms8.box;
+            <br />
+            create or replace synonym ps for dcms8.ps;<br />
+            create or replace synonym ia for dcms8.ia;<br />
+            create or replace synonym po for dcms8.po;<br />
+            create or replace synonym ps_vas for dcms8.ps_vas;<br />
+            create or replace synonym mpc for dcms8.mpc;<br />
+            create or replace synonym mpcloc for dcms8.mpcloc;</code></p>
+    <p>
+        Following appSettings are required:</p>
+    &lt;!--Report R110_03 WIPBoxArea specified--&gt;<br />
+    &lt;add key="WIPAreaForBox" value="PIT"/&gt;<br />
+    &lt;!--Report R110_03 Area for canceled inventory--&gt;<br />
+    &lt;add key="CancelArea" value="CAN"/&gt;<br />
+    <h1>
+        Technical Documentaion</h1>
+    <h2>
+        Parameter Technical Details</h2>
+    <ul>
+        <li>Inventory Area (Type = String): This is a list parameter control. Inventory Area
+            of distribution center. Null value text is &quot;All&quot;.
+            <ul>
+                <li>Value = EB, Text = Expediter Bucket </li>
+                <li>Value = MU, Text = MPC Unstarted </li>
+                <li>Value = UC, Text = Unstarted Cancelled </li>
+                <li>Query to fill list values = <code>select distinct (ia_id) as ia_id, &#39;(&#39;||
+                    ia_id || &#39;) &#39; || short_description as short_description, ia.process_flow_sequence
+                    as area_sequence from ia ia where ia_id not in (&#39;FPK&#39;, &#39;BLK&#39;, &#39;RST&#39;,&#39;DOC&#39;)
+                    order by area_sequence;</code></li>
+            </ul>
+        </li>
+        <li>PO&nbsp; (Type = String): To see carton count of a specific PO(Purchase order) plesae
+            provide PO Id. </li>
+        <li>Pickslip (Type = String): To see carton count of a specific pickslip please provide
+            Pickslip Id </li>
+        <li>Customer (Type = String): To see carton count of a specific Customer please provide
+            Customer Id </li>
+        <li>Bucket (Type = String): To see carton count of a specific Bucket please provide
+            Bucket Id </li>
+        <li>MPC (Type = String): To see carton count of a specific MPC please provide MPC Id
+        </li>
+        <li>Style Label (Type = String): To see carton count of a specific Label please provide
+            Label Id </li>
+        <li>Customer DC (Type = String): To see carton count of a specific distribution center
+            please provide DC Id </li>
+        <li>Only Validated Pickslips (Type = Boolean): Check the checkbox to see the carton
+            count of only validated pickslips </li>
+        <li>Customer Type (Type = String): This is a list parameter control. Select the customer
+            type Null value text is &quot;All&quot;.
+            <ul>
+                <li>Value = DOM, Text = Domestic </li>
+                <li>Value = EXP, Text = International</li>
+            </ul>
+        </li>
+        <li>Orders Required VAS (Type = string)his allows you to track the boxes that are related to VAS(Value Added Service) orders.<o:p></o:p></li>
+    </ul>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.
+    <h2>
+        Query&#39;s documentation:</h2>
+    <ul>
+        <li>Query1. This query executes to show the pickslip count of IN Order Bucket. These
+            pickslips are those pickslips whose PS_STATUS_ID is 1 in DEM_PICKSLIP table.
+            <pre> SELECT COUNT(dem.pickslip_id) AS order_pickslip_count
+         FROM dem_pickslip dem
+        WHERE dem.ps_status_id=1
+        <if>AND dem.customer_order_id=cast(:po_id as varchar2(25))</if>
+        <if>AND dem.pickslip_id=cast(:pickslip_id as number(10))</if>
+        <if>AND dem.customer_id=cast(:customer_id as varchar2(10))</if>
+        <if>AND dem.customer_dist_center_id=cast(:customer_dc_id as varchar2(13))</if>
+        <if>AND dem.pickslip_type=cast(:label_id as varchar2(5))</if>
+        <if c="$ExpFlag = 'I'">AND dem.Export_Flag = 'Y'</if>
+        <if c="$ExpFlag = 'D'">AND dem.export_flag is null</if>            
+                         </pre>
+        </li>
+        <li>Query2. This query executes to show the distinct box count for all box area include
+            the some conceptual are i.e. Expeditor Bucket, Unstarted Cancelled and MPC Unstarted.
+            Tables used in this query are BOX and PS.
+            <pre>   
+            WITH BOX_AREA AS
+   (SELECT CASE
+             WHEN B.PITCHING_END_DATE IS NOT NULL AND B.VERIFY_DATE IS NULL AND
+                  PV.VAS_ID IS NOT NULL AND B.IA_ID != :REDBOXAREA THEN
+              'VAS'
+             WHEN B.IA_ID IS NULL THEN
+              DECODE(B.STOP_PROCESS_DATE, NULL, 'EB', 'UC')
+             WHEN B.IA_ID = :WORK_IA_ID_BOX THEN
+              DECODE(MPC.PITCHING_START_DATE, NULL, 'MU', :WORK_IA_ID_BOX)
+             ELSE
+              B.IA_ID
+           END AS BOX_AREA_ID,
+           COUNT(DISTINCT B.UCC128_ID) AS COUNT_CARTONS
+      FROM BOX B
+      LEFT OUTER JOIN PS PS
+        ON B.PICKSLIP_ID = PS.PICKSLIP_ID
+    
+      LEFT OUTER JOIN MPCLOC MLOC
+        ON B.UCC128_ID = MLOC.UCC128_ID
+      LEFT OUTER JOIN MPC MPC
+        ON MPC.MPC_ID = MLOC.MPC_ID
+      LEFT OUTER JOIN PS_VAS PV
+        ON PS.PICKSLIP_ID = PV.PICKSLIP_ID
+     WHERE PS.TRANSFER_DATE IS NULL
+          
+       AND NVL(PS.WAREHOUSE_LOCATION_ID, 'UNKNOWN') IN
+           (:WAREHOUSE_LOCATION_ID0, :WAREHOUSE_LOCATION_ID1)
+    
+     GROUP BY CASE
+                WHEN B.PITCHING_END_DATE IS NOT NULL AND
+                     B.VERIFY_DATE IS NULL AND PV.VAS_ID IS NOT NULL AND
+                     B.IA_ID != :REDBOXAREA THEN
+                 'VAS'
+                WHEN B.IA_ID IS NULL THEN
+                 DECODE(B.STOP_PROCESS_DATE, NULL, 'EB', 'UC')
+                WHEN B.IA_ID = :WORK_IA_ID_BOX THEN
+                 DECODE(MPC.PITCHING_START_DATE, NULL, 'MU', :WORK_IA_ID_BOX)
+                ELSE
+                 B.IA_ID
+              END)
+  SELECT A.BOX_AREA_ID AS BOX_AREA_ID,
+         CASE
+           WHEN A.BOX_AREA_ID = 'EB' THEN
+            'EXPEDITER BUCKET'
+           WHEN A.BOX_AREA_ID = 'MU' THEN
+            'MPC UNSTARTED'
+           WHEN A.BOX_AREA_ID = 'UC' THEN
+            'UNSTARTED CANCELLED'
+           ELSE
+            A.BOX_AREA_ID
+         END AS BOX_AREA_DISCRIPTION,
+         A.COUNT_CARTONS AS COUNT_NO_OF_BOXES
+    FROM BOX_AREA A
+    LEFT OUTER JOIN IA
+      ON IA.IA_ID = A.BOX_AREA_ID
+   WHERE 1 = 1
+  
+   ORDER BY CASE
+              WHEN A.BOX_AREA_ID = :CAN_IA_ID_BOX THEN
+               -100
+              WHEN A.BOX_AREA_ID = 'UC' THEN
+               -60
+              WHEN A.BOX_AREA_ID = 'EB' THEN
+               -50
+              WHEN A.BOX_AREA_ID = 'MU' THEN
+               -40
+              WHEN A.BOX_AREA_ID = 'VAS' THEN
+               25
+              ELSE
+               IA.PROCESS_FLOW_SEQUENCE
+            END
+
+</pre>
+        </li>
+    </ul>
+    <h2>
+        Validation details</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.
+    <br />
+    <br />
+    <b>Query:</b><pre>
+            SELECT CASE
+               WHEN b.ia_id IS NULL THEN
+                   DECODE(b.stop_process_date, NULL, 'EB', 'UC')
+               WHEN b.ia_id = 'PIT' THEN
+                   DECODE(mpc.pitching_start_date, NULL, 'MU', 'PIT')
+               ELSE
+                   b.ia_id
+               END AS box_area_id,
+           COUNT(DISTINCT b.ucc128_id) AS count_cartons
+          FROM box b
+          LEFT OUTER JOIN ps ps ON b.pickslip_id = ps.pickslip_id
+          LEFT OUTER JOIN mpcloc mloc ON b.ucc128_id = mloc.ucc128_id
+          LEFT OUTER JOIN mpc mpc on mpc.mpc_id = mloc.mpc_id
+          where ps.bucket_id ='bucket_id'
+          and b.ia_id ='ia_id'
+          GROUP BY CASE
+                   WHEN b.ia_id IS NULL THEN
+                       DECODE(b.stop_process_date, NULL, 'EB', 'UC')
+                   WHEN b.ia_id = 'PIT' THEN
+                       DECODE(mpc.pitching_start_date, NULL, 'MU', 'PIT')
+                   ELSE
+                       b.ia_id
+                 END
+          </pre>
+    <b>Query: Below query Displaying Box count for the pass area</b>
+    <pre>
+  SELECT COUNT(DISTINCT B.UCC128_ID)
+  FROM PS
+ INNER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND B.IA_ID ='CAN';
+    </pre>
+    <b>Query: Below query Displaying Box count for VAS area</b>
+    <pre>
+  SELECT COUNT(DISTINCT B.UCC128_ID)
+  FROM PS
+ INNER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND B.IA_ID ='CAN';
+    </pre>
+    <b>Description:</b><pre>
+            Run the above query to validate the number of cartons in the area other than Expeditor bucket, Unstarted Cancelled and PIT.
+          </pre>
+    <b>Query:</b><pre>
+            SELECT DECODE(B1.STOP_PROCESS_DATE, NULL, 'EB', 'UC') AS "IA_ID",
+       COUNT(DISTINCT B1.UCC128_ID) AS "CARTONS"
+  FROM BOX B1, PS PS
+ WHERE B1.PICKSLIP_ID = PS.PICKSLIP_ID(+)
+   AND B1.STOP_PROCESS_DATE IS NULL
+   AND PS.PO_ID = :PO_ID
+   AND PS.PICKSLIP_ID = :PICKSLIP_ID
+   AND PS.CUSTOMER_ID = :CUSTOMER_ID
+   AND PS.CUSTOMER_DC_ID = :DC_ID
+   AND PS.BUCKET_ID = :BUCKET_ID
+   AND PS.LABEL_ID = :LABEL_ID
+   AND PS.REPORTING_STATUS IS NOT NULL
+   AND PS.EXPORT_FLAG IS NULL
+ GROUP BY DECODE(B1.STOP_PROCESS_DATE, NULL, 'EB', 'UC')
+          </pre>
+    <b>Description:</b><pre>
+            Run the above query to validate the records agains Expeditor bucket or Unstarted cancelled area.
+         </pre>
+    <b>Query:</b><pre>
+            SELECT COUNT(DISTINCT B2.UCC128_ID) AS "CARTONS",
+       DECODE(MPC.PITCHING_START_DATE, NULL, 'MU', 'PIT') AS "IA_ID"
+  FROM BOX B2, PS PS, MPCLOC MPCLOC, MPC MPC
+ WHERE B2.PICKSLIP_ID = PS.PICKSLIP_ID(+)
+   AND B2.UCC128_ID = MPCLOC.UCC128_ID(+)
+   AND MPCLOC.MPC_ID = MPC.MPC_ID(+)
+   AND B2.IA_ID = 'PIT'
+   AND PS.PO_ID = :PO_ID
+   AND PS.PICKSLIP_ID = :PICKSLIP_ID
+   AND PS.CUSTOMER_ID = :CUSTOMER_ID
+   AND PS.LABEL_ID = :LABEL_ID
+   AND PS.BUCKET_ID = :BUCKET_ID
+   AND PS.CUSTOMER_DC_ID = :DC_ID
+   AND MPCLOC.MPC_ID = :MPC_ID
+ GROUP BY DECODE(MPC.PITCHING_START_DATE, NULL, 'MU', 'PIT')
+
+          </pre>
+    <b>Description:</b><pre>
+            Run the above query to validate the number of carton in PIT or MPC Unstarted area.</pre>
+    <!--End divTechnical-->
+</body>
+</html>

@@ -1,0 +1,364 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        .style1
+        {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+    130.106 SKU Inventory</h1>
+    Author : <b>Sanjeev Kumar</b><br />
+    $Revision: 6171 $<br />
+    Mentor: Manmohan Bisht<br />
+    Tested By :Anil Panwar<br />
+    <p>
+        This report shows details of quantity at each location for a specified UPC code
+        in picking area.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        The report shows location-wise inventory of picking inventory area for a specified
+        upc code</p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        IALOC table has detail information of locations-wise inventory for each inventory
+        area.</p>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 25%; text-align: center">
+                <b>Item</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Summary</b>
+            </td>
+            <td style="width: 10%; text-align: center">
+                <b>Default Sort Sequence</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Style
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                1
+            </td>
+            <td style="width: 45%;" class="style1">
+                SKU Style
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Color
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                2
+            </td>
+            <td style="width: 45%;" class="style1">
+                SKU Color
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Dim.
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                3
+            </td>
+            <td style="width: 45%;" class="style1">
+                SKU Dimension
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Size
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                4
+            </td>
+            <td style="width: 45%;" class="style1">
+                SKU Size
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Area
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                Inventory Area
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Location
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                5
+            </td>
+            <td style="width: 45%; text-align: left">
+                Location Id
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Pieces
+            </td>
+            <td style="width: 20%; text-align: center">
+                sum
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%; text-align: left">
+                Total number of pieces at particular location
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 20%; text-align: center">
+                <b>Name</b>
+            </td>
+            <td style="width: 15%; text-align: center">
+                <b>Type</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Default</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                UPC Code
+            </td>
+            <td style="width: 15%; text-align: center">
+                string
+            </td>
+            <td style="width: 20%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                UPC Code
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Virtual Warehouse
+            </td>
+            <td style="width: 15%; text-align: center">
+                string
+            </td>
+            <td style="width: 20%; text-align: center">
+                &nbsp; All
+            </td>
+            <td style="width: 45%; text-align: left">
+                Virtual Warehouse Id
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        Expected time for report output is 0.15 seconds.</p>
+    <p>
+    This Report displays the linear performance with respect to MASTER_SKU,
+        IA, IALOC and IALOC_CONTENT. There is index based scan on
+        the table MASTER_SKU,IALOC, IA and IALOC_CONTENT.Index SKU_PK used in the table
+        MASTER_SKU, Index IACONT_IACONTENT_ID_I used in the table IALOC_CONTENT, Index IALOC_PK
+        used in IALOC table, Index IA_PK used in the IA table and Index
+        SKU_UK used in the table MASTER_SKU.</p>
+       
+        
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Fixed bug, now report will not show different SKU in the drill down.</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No Known issues</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+    <ul>
+        <li>
+            <h4>
+                Private synonyms requried for the tables:
+            </h4>
+            <pre>
+<code>IALOC_CONTENT<br />
+    IALOC<br />
+    MASTER_SKU<br />
+    IA<br />
+    rsvdet<br /></code></pre>
+            <h4>
+                Script to create the synonyms:</h4>
+            <pre>
+ <code>create or replace synonym IALOC_CONTENT for dcms8.IALOC_CONTENT;<br />
+     create or replace synonym IALOC for dcms8.IALOC;<br />
+     create or replace synonym MASTER_SKU for dcms4.MASTER_SKU;<br />
+     create or replace synonym IA for dcms8.IA;<br />
+     create or replace synonym  resvdet for dcms8.resvdet;</code></pre>
+        </li>
+    </ul>
+    </li>
+    <li>
+        <h4>
+            App-Settings required:</h4>
+        <pre><code>No AppSetting used in the report.</code></pre>
+    </li>
+    <h2>
+        Query&#39;s documentation:</h2>
+        <h4>When report is used as drill down to report 130.06</h4>
+        <pre><if c="$AREA !='BOX'">        <if c="not($showunresvpieces)">SELECT ic.ia_id           AS ia_id,
+               SYS.STRAGG(UNIQUE ic.location_id ||',')     AS location_id,
+               max(ic.iacontent_id)    AS UPC_Code,
+               sum(ic.number_of_units) AS pieces_at_location,
+               MAX(ms.style)           AS style,
+               MAX(ms.color)           AS color,
+               MAX(ms.dimension)       AS dimension,
+               MAX(ms.sku_size)        AS sku_size
+          FROM ialoc_content ic
+          LEFT OUTER JOIN ialoc ial
+            ON ic.ia_id = ial.ia_id
+           AND ic.location_id = ial.location_id
+         LEFT OUTER JOIN master_sku ms
+            ON ms.UPC_Code = ic.iacontent_id
+         LEFT OUTER JOIN ia i
+            ON i.ia_id = ial.ia_id
+         WHERE 1=1
+              <if c="not($AREA)">AND i.picking_area_flag = 'Y'</if>
+              <else>AND ic.ia_id=:area</else>
+            <if>AND ic.iacontent_id = CAST(:upc_code as varchar2(255))</if>
+           <if>AND ial.vwh_id = CAST(:vwh_id as varchar2(255))</if>
+                GROUP BY IC.IA_ID
+              </if>
+           <else>
+         SELECT  IL.IA_ID,
+         IL.location_id as location_id,
+         NVL(IL.NUMBER_OF_UNITS, 0) - NVL(R.RESERVED_UNITS, 0) AS pieces_at_location,
+         IL.style as style,
+         IL.color as color,
+         IL.dimension as dimension,
+         IL.sku_size as sku_size
+    FROM (SELECT max(IAC.IA_ID)      AS IA_ID,
+                 iac.location_id as location_id,
+                 max(msku.style) as style,
+                 max(msku.color) as color,
+                 max(msku.dimension) as dimension,
+                 max(msku.sku_size) as sku_size,
+                 sum(IAC.NUMBER_OF_UNITS) AS NUMBER_OF_UNITS,
+                 I.vwh_id as vwh_id,
+                 msku.sku_id
+            FROM IALOC_CONTENT IAC
+           INNER JOIN IALOC I
+              ON I.IA_ID = IAC.IA_ID
+             AND I.LOCATION_ID = IAC.LOCATION_ID          
+           INNER JOIN MASTER_SKU MSKU
+              ON MSKU.UPC_CODE = IAC.IACONTENT_ID
+           WHERE 1=1
+             <if>AND I.VWH_ID = :vwh_id</if>
+             <if> and iac.iacontent_id=:upc_code</if>
+             <if>and IAC.IA_ID=:area</if>
+           GROUP BY msku.sku_id,
+                    I.VWH_ID,
+                    Iac.location_id
+                    ) IL
+    LEFT OUTER JOIN (SELECT max(RD.IA_ID) AS IA_ID,
+                            rd.location_id as location,
+                            max(msku.style) as style,
+                            max(msku.color) as color,
+                            max(msku.dimension) as dimension,
+                            max(msku.sku_size) as sku_size,
+                            sum(RD.PIECES_RESERVED) as RESERVED_UNITS,
+                            msku.sku_id as sku_id,
+                            RD.vwh_id as vwh_id
+                            FROM RESVDET RD
+                            INNER JOIN MASTER_SKU MSKU
+                            ON RD.UPC_CODE = MSKU.UPC_CODE                        
+                             where 1=1
+                           <if>and rd.vwh_id=:vwh_id</if>
+                           <if>and rd.upc_code=:upc_code</if>
+ GROUP BY msku.sku_id, RD.VWH_ID,rd.location_id) R   
+     on IL.Sku_id=R.sku_id
+     AND IL.VWH_ID = R.VWH_ID
+           </else></if>
+             <else>
+SELECT B.IA_ID,
+       NULL AS LOCATION_ID,
+       MAX(MS.STYLE) AS STYLE,
+       MAX(MS.COLOR) AS COLOR,
+       MAX(MS.DIMENSION) AS DIMENSION,
+       MAX(MS.SKU_SIZE) AS SKU_SIZE,
+       SUM(BD.CURRENT_PIECES) as pieces_at_location
+  FROM BOX B
+ INNER JOIN BOXDET BD
+    ON B.UCC128_ID = BD.UCC128_ID
+   AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+  LEFT OUTER JOIN MASTER_SKU MS
+    ON BD.UPC_CODE = MS.UPC_CODE
+ WHERE B.STOP_PROCESS_DATE IS NULL
+   AND BD.STOP_PROCESS_DATE IS NULL
+    AND bd.current_pieces >0
+   <if>and b.vwh_id=:vwh_id</if>
+   <if>and bd.upc_code=:upc_code</if>
+   GROUP BY B.IA_ID
+             </else></pre>
+    <h2>
+        Validation details</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.
+    <br />
+    <b>Query:</b><pre>
+              SELECT ic.number_of_units FROM IALOC_CONTENT IC
+              WHERE ic.iacontent_id = ::UPC_Code::
+              AND ic.location_id = ::Location_ID::
+              AND ic.ia_id = &#39;FPK&#39;</pre>
+    <b>Description:</b><pre>This query retrives the no. of pieces for the specified location and UPC code in FPK area.<br />
+    <b>Query</b>
+    <pre>select rd.pieces_reserved
+        from resvdet rd
+         where rd.upc_code = :upc_code
+         and rd.vwh_id = :vwh_id
+         and rd.ia_id = :area</pre>
+      <b>Description:</b>This query retrieves  reserved pieces for the specified upc and area
+ 
+</body>
+</html>

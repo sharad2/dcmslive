@@ -1,0 +1,413 @@
+﻿<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h1 style="text-align: center">40<b>.</b>103<b> : </b>Receiving Detail for the selected Process ID
+    </h1>
+    <h3>Author : Hemant K. Singh</h3>
+    $Revision: 6873 $<br />
+    Status: Reviewed<br />
+    Reviewed By : Sanjev Kumar<br />
+    Tested by: Sanjeev Kumar
+    <p>
+        This report shows the Summary of the Shipments as well as cartons received under the
+        given Process ID. It also displays the shipments which are partially received.
+        Now the report will show all the original shipments which are partially received as well with the latest shipment.
+    </p>
+    <h2>Overview</h2>
+    <p>
+        This report shows the Summary of the Shipments as well as cartons received under the
+        given Process ID. It also displays the shipments which are partially received.
+        <br />
+        For the given process id, it displays:
+    </p>
+    <ul>
+        <li>The summary of shipments received: For each Sewing Plant it displays the shipment
+            id, Receiving date of the cartons as well as the number of total cartons received
+            under the given process id. </li>
+        <li>Shipments which are partially received.: For a shipment, it displays the number
+            of cartons un-received as well.</li>
+        <li>Cartons received: For each Sewing Plant it displays Shipment id and Carton id.</li>
+    </ul>
+
+    <h2>Algorithm</h2>
+    <p>
+        Get all the information of the process for the passed&nbsp; 
+        inshipment (Process id)&nbsp; from the tables 
+        src_carton and src_open_carton&nbsp; Retreving process_id,carton 
+        ,sewing_plant_code, insert date and shipment_id form the table src_carton. 
+        Retreving source_order_prefix,source_order_id&nbsp; from the table 
+        src_carton_intransit.
+    </p>
+    <h2>Parameters</h2>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center">
+                <b>Name</b>
+            </td>
+            <td align="center">
+                <b>Default</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>Process ID
+            </td>
+            <td>None</td>
+            <td>The process ID for which Summary of the Shipments, which are received under this
+                Process ID,Shipment which are partially received, and details of Cartons received
+                under this Process ID,are displayed.
+            </td>
+        </tr>
+        <tr>
+            <td>Sewing plant code</td>
+            <td>None</td>
+            <td>Sewing plant code for the process.</td>
+        </tr>
+        <tr>
+            <td>Receiving Date From | To</td>
+            <td>Last week dates</td>
+            <td>Date on which the shipment was received.</td>
+        </tr>
+    </table>
+    <h3>Output</h3>
+    <ul>
+        <li>Grid: 1
+            <table border="1" cellpadding="1" cellspacing="1" width="100%">
+                <tr>
+                    <td align="center">
+                        <b>Item</b>
+                    </td>
+                    <td align="center">
+                        <b>Summary</b>
+                    </td>
+                    <td align="center">
+                        <b>Default Sort Sequence</b>
+                    </td>
+                    <td align="center">
+                        <b>Detail</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sewing Plant Code
+                    </td>
+                    <td>No
+                    </td>
+                    <td align="center">1
+                    </td>
+                    <td>Sewing Plant Code for the process.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Shipment
+                    </td>
+                    <td>No
+                    </td>
+                    <td align="center">&nbsp;2
+                    </td>
+                    <td>The Shipment ID, for which shipments are received in a process.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Source Order Prefix
+                    </td>
+                    <td>No
+                    </td>
+                    <td align="center">&nbsp; 3&nbsp;
+                    </td>
+                    <td>The source order prefix.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Source Order Number
+                    </td>
+                    <td>No
+                    </td>
+                    <td align="center">4&nbsp;
+                    </td>
+                    <td>The Source Order ID.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Received Date
+                    </td>
+                    <td>No
+                    </td>
+                    <td align="center">&nbsp;
+                    </td>
+                    <td>Date on which shipments was received.
+                    </td>
+                </tr>
+                <tr>
+                    <td>No. of Cartons
+                    </td>
+                    <td>Sum
+                    </td>
+                    <td align="center">&nbsp;
+                    </td>
+                    <td>Total number of cartons received for the process.
+                    </td>
+                </tr>
+            </table>
+            <br />
+        </li>
+        <li>Grid: 2
+            <table border="1" cellpadding="1" cellspacing="1" width="100%">
+                <tr>
+                    <td align="center">
+                        <b>Item</b>
+                    </td>
+                    <td align="center">
+                        <b>Summary</b>
+                    </td>
+                    <td align="center">
+                        <b>Default Sort Sequence</b>
+                    </td>
+                    <td align="center">
+                        <b>Detail</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Shipment</td>
+                    <td>No
+                    </td>
+                    <td align="center">1
+                    </td>
+                    <td>The Shipment ID, for which shipments are received in a process.
+                    </td>
+                </tr>
+                <tr>
+                    <td>No. of Unreceived Cartons
+                    </td>
+                    <td>Sum
+                    </td>
+                    <td align="center">&nbsp;
+                    </td>
+                    <td>Total number of cartons which are unreceived for the process.
+                    </td>
+                </tr>
+            </table>
+            <br />
+        </li>
+        <li>Grid: 3
+            <table border="1" cellpadding="1" cellspacing="1" width="100%">
+                <tr>
+                    <td align="center">
+                        <b>Item</b>
+                    </td>
+                    <td align="center">
+                        <b>Summary</b>
+                    </td>
+                    <td align="center">
+                        <b>Default Sort Sequence</b>
+                    </td>
+                    <td align="center">
+                        <b>Detail</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sewing Plant Code
+                    </td>
+                    <td>No
+                    </td>
+                    <td align="center"></td>
+                    <td>Sewing Plant Code for the process.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Shipment
+                    </td>
+                    <td>No
+                    </td>
+                    <td align="center">&nbsp;
+                        1</td>
+                    <td>The Shipment ID, for which the shipments are received in a process.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Carton</td>
+                    <td>No
+                    </td>
+                    <td align="center">2&nbsp;</td>
+                    <td>The carton ID for the process.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Received Date
+                    </td>
+                    <td>No
+                    </td>
+                    <td align="center">&nbsp;
+                    </td>
+                    <td>Date on which shipments are received.
+                    </td>
+                </tr>
+            </table>
+        </li>
+    </ul>
+    <h2>Performance Detail</h2>
+    <p>
+        Expected Time for the report is 5 seconds.
+    </p>
+    <h2>Prerequisites</h2>
+    <p>
+        Private synonyms for the following table is requried
+    </p>
+    src_carton,<br />
+    src_open_carton<br />
+    src_carton_intransit,<br />
+    <br />
+    Use the below script to create the synonyms<br />
+    <br />
+    <code>create or replace src_carton synonym  for dcms4.src_carton;<br />
+        create or replace src_open_carton synonym  for dcms4.src_open_carton;<br />
+        create or replace synonym src_carton_intransit for dcms4.src_carton_intransit;</code><br />
+
+    <p><b>Following appSettings are required:</b></p>
+    <p>
+        Report is not using Appsetting.
+    </p>
+    <h2>Behaviour</h2>
+    <ol>
+        <li>Now the report will show all the original shipments which are partially received as well with the latest shipment.</li>
+    </ol>
+    <h2>Query&#39;s documentation:</h2>
+    <ul>
+        <li><b>Report query 1: Summary of the Shipments, which are received under this given Process ID:</b></li>
+    </ul>
+    <pre>WITH Q1 AS
+ (SELECT CTN.Inshipment_Id           AS PROCESS_ID,
+         CTN.CARTON_ID               AS CARTON_ID,
+         CTN.SEWING_PLANT_CODE       AS SEWING_PLANT_CODE,
+         CTNINT.original_shipment_id AS SHIPMENT_ID,
+         CTN.INSERT_DATE             AS RECEIVED_DATE,
+         CTNINT.SOURCE_ORDER_PREFIX  AS SOURCE_ORDER_PREFIX,
+         CTNINT.SOURCE_ORDER_ID      AS SOURCE_ORDER_ID
+    FROM SRC_CARTON CTN
+   inner  JOIN SRC_CARTON_INTRANSIT CTNINT
+      ON CTN.CARTON_ID = CTNINT.CARTON_ID
+   WHERE CTN.inshipment_id = '6023399'
+     AND CTN.SEWING_PLANT_CODE = '356'
+  
+  UNION
+  SELECT SOC.INSHIPMENT_ID           AS PROCESS_ID,
+         SOC.CARTON_ID               AS CARTON_ID,
+         SOC.SEWING_PLANT_CODE       AS SEWING_PLANT_CODE,
+         CTNINT.original_shipment_id AS SHIPMENT_ID,
+         SOC.receipt_date            AS RECEIVED_DATE,
+         CTNINT.SOURCE_ORDER_PREFIX  AS SOURCE_ORDER_PREFIX,
+         CTNINT.SOURCE_ORDER_ID      AS SOURCE_ORDER_ID
+    FROM SRC_OPEN_CARTON SOC
+   INNER JOIN SRC_CARTON_INTRANSIT CTNINT
+      ON SOC.CARTON_ID = CTNINT.CARTON_ID
+   WHERE SOC.INSHIPMENT_ID = '6023399'
+     AND SOC.SEWING_PLANT_CODE = '356'
+  )
+SELECT Q1.PROCESS_ID AS PROCESS_ID,
+       COUNT(DISTINCT Q1.CARTON_ID) AS CARTON_COUNT,
+       MAX(Q1.SEWING_PLANT_CODE) AS SEWING_PLANT_CODE,
+       Q1.SHIPMENT_ID AS SHIPMENT_ID,
+       MAX(Q1.RECEIVED_DATE) AS RECEIVED_DATE,
+       Q1.SOURCE_ORDER_PREFIX AS SOURCE_ORDER_PREFIX,
+       Q1.SOURCE_ORDER_ID AS SOURCE_ORDER_ID
+  FROM Q1
+ GROUP BY Q1.PROCESS_ID,
+          Q1.SHIPMENT_ID,
+          Q1.SOURCE_ORDER_PREFIX,
+          Q1.SOURCE_ORDER_ID
+HAVING COUNT (DISTINCT Q1.CARTON_ID) > 0
+ ORDER BY sewing_plant_code   ASC,
+          shipment_id         ASC,
+          source_order_prefix ASC,
+          source_order_id     ASC</pre>
+    <ul>
+        <li><b>Report query 2: Following query is for getting Shipment which are partially received</b></li>
+    </ul>
+    <pre>SELECT SCI.original_shipment_id AS SHIPMENT_ID,
+        COUNT(SCI.CARTON_ID) AS unreceived_cartons_count
+ FROM SRC_CARTON_INTRANSIT SCI
+ WHERE SCI.SHIPMENT_ID IN
+       (SELECT s.SHIPMENT_ID
+ FROM SRC_CARTON S
+ WHERE S.INSHIPMENT_ID = '6023291'      
+            )
+ AND SCI.RECEIVED_DATE IS NULL
+ GROUP BY SCI.original_shipment_id
+
+ UNION
+
+ SELECT SCI.original_shipment_id AS SHIPMENT_ID,
+        COUNT(SCI.CARTON_ID) AS unreceived_cartons_count
+ FROM SRC_CARTON_INTRANSIT SCI
+ WHERE SCI.SHIPMENT_ID IN
+       (SELECT SOC.SHIPMENT_ID
+ FROM SRC_OPEN_CARTON SOC
+ WHERE SOC.INSHIPMENT_ID = '6023291'    
+            )
+ AND SCI.RECEIVED_DATE IS NULL
+ GROUP BY SCI.original_shipment_id
+    </pre>
+    <b>Report query 3: Following Cartons are received under this Process ID: </b>
+    <pre>WITH RECIEVED_CARTONS AS
+(SELECT CTN.SEWING_PLANT_CODE AS SEWING_PLANT_CODE,
+        CTN.INSERT_DATE       AS RECEIVED_DATE,
+        CTN.CARTON_ID         AS CARTON_ID
+ FROM SRC_CARTON CTN
+ WHERE CTN.INSHIPMENT_ID = '6023291'
+          UNION
+ SELECT SOC.SEWING_PLANT_CODE AS SEWING_PLANT_CODE,
+        SOC.INSERT_DATE       AS RECEIVED_DATE,
+        SOC.CARTON_ID         AS CARTON_ID
+ FROM SRC_OPEN_CARTON SOC
+ WHERE SOC.INSHIPMENT_ID = '6023291'
+             )
+SELECT Q1.SEWING_PLANT_CODE,
+       Q1.RECEIVED_DATE,
+       Q1.CARTON_ID,
+       SCI.ORIGINAL_SHIPMENT_ID as shipment_id
+  FROM RECIEVED_CARTONS Q1
+ INNER JOIN SRC_CARTON_INTRANSIT SCI
+    ON Q1.CARTON_ID = SCI.CARTON_ID
+         </pre>
+    <h2>Validation details</h2>
+    <b>Below are the validation queries to validate your records.</b>
+    <br />
+    <br />
+    <b>Query:&nbsp;&nbsp; The below query shows Summary of the Shipments, which are received under this Process ID:</b>
+    <pre>
+    SELECT sc.inshipment_id AS inshipment_id,
+       max(sc.sewing_plant_code) AS sewing_plant_code,
+       max(sc.insert_date) AS receive_date,
+       sci.source_order_prefix AS source_order_prefix,
+       sci.source_order_id AS  source_order_id
+       FROM src_carton sc 
+LEFT OUTER JOIN src_carton_intransit sci
+ON sc.carton_id = sci.carton_id
+WHERE sc.inshipment_id ='6023291'
+GROUP BY sc.inshipment_id, sci.source_order_prefix,
+       sci.source_order_id 
+    </pre>
+    <b>Query:&nbsp;&nbsp; The below query will get the unreceived cartons.</b>
+    <pre>
+ SELECT S.SHIPMENT_ID, COUNT(DISTINCT S.CARTON_ID)
+   FROM SRC_CARTON_INTRANSIT S
+    WHERE S.SHIPMENT_ID = '6023291'
+    AND S.RECEIVED_DATE IS NULL
+ GROUP BY S.SHIPMENT_ID
+   </pre>
+    <b>Query:&nbsp;&nbsp; The below query will get the Received cartons Detail.</b>
+    <pre>
+  SELECT S.SHIPMENT_ID, 
+       S.CARTON_ID, 
+       S.SEWING_PLANT_CODE, 
+       S.INSERT_DATE
+  FROM SRC_CARTON S
+ WHERE S.INSHIPMENT_ID = '6023291'
+   </pre>
+    <!--End divTechnical-->
+
+</body>
+</html>

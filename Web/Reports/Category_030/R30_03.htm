@@ -1,0 +1,691 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+		<title>Report Documentation</title>	
+        </head>
+	<body>
+			
+			<h1 style="text-align:center" >30<b>.</b>03<b> : SKU Inventory In Given Area</b></h1> 
+			<ul style="list-style:none">
+			<li>
+			<h3>
+                Author : Sanjeev Kumar</h3></li>
+    <li>
+        $Revision: 6317 $</li>
+    <li>Status: Tested</li>
+                <li>Reviewed By: Manmohan Bisht</li>
+    <li>Tested By: Hemant Singh</li>
+        </ul>
+            <h2 >Overview</h2>
+                  <p>
+                     This report is for showing sku wise inventory for given area. By default this report will get executed for EXM area. This will help Re-packers to repack cartons from EXM area. User of this report can also further filter inventory on the basis of style, color, dimension , size, quality code, area, virtual warehouse, label and building. User can pass multiple values separated by comma in following specific filters Style, Color, Dimension and Size. With the help of these filters users will be able to get desired picture of inventory for the given area. This report is also able to display outbound inventory in box areas. For this inventory which is not shipped yet will be displayed in the report.</p>
+            
+                     <strong>Note</strong>
+        <ol>
+            <li>
+                SSS Area :- Report is retrieving SSS area inventory from master_raw_inventory table.
+            </li>
+            <li>
+                CAN Area&nbsp; :- Report is retrieving CAN area inventory from Ialoc_content table.
+            </li>
+        </ol>
+         <h2>Algorithm</h2>
+            <p>
+                Get all inventory information for given area from master_raw_inventory with src_carton, box and ialoc. Its retrieving UPC and pieces per package from master_SKU table. Along with label retrieving from master_style table. it displays quality from src_carton and master_raw_inventory table. Cancelled box inventory will be retrieved with the help of tables ialoc and ialoc_content.</p>
+   <h2>Output</h2>
+            <table border="1" cellpadding="0" cellspacing="1" class="MsoNormalTable" style="width:100.0%" width="100%">
+                <tr>
+                    <td style="width: 25%; text-align: center">
+                       
+                            <b>Item</b>
+                    </td>
+                    <td style="width: 20%; text-align: center">
+                       
+                            <b>Summary</b>
+                    </td>
+                   <td style="width: 10%; text-align: center">
+                       
+                            <b>Sort Sequence</b>
+                    </td>
+                  <td style="width: 35%; text-align: center">
+                       
+                            <b>Detail</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Building
+                    </td>
+                    <td>
+                       
+                            No
+                    </td>
+                    <td>
+                       
+                            1
+                    </td>
+                    <td>
+                       
+                            Building for which inventory is being displayed. 
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                            Vwh
+                    </td>
+                    <td>
+                       
+                            No
+                    </td>
+                    <td>
+                       
+                            2&nbsp;
+                    </td>
+                    <td>
+                       
+                            Virtual warehouse to which the SKU inventory belongs to.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            UPC
+                    </td>
+                    <td>
+                       
+                            No
+                    </td>
+                    <td>
+                       
+                            &nbsp;
+                    </td>
+                    <td>
+                       
+                            Universal Product Code of the SKU
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Style
+                    </td>
+                    <td>
+                       
+                            No
+                    </td>
+                    <td>
+                       
+                            3
+                    </td>
+                    <td>
+                       
+                            Style of the SKU
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Color
+                    </td>
+                    <td>
+                       
+                            No
+                    </td>
+                    <td>
+                       
+                            4
+                    </td>
+                    <td>
+                       
+                            Color of the SKU 
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Dim
+                    </td>
+                    <td>
+                       
+                            No 
+                    </td>
+                    <td>
+                       
+                            5</td>
+                    <td>
+                       
+                            Dimension of the SKU</td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Size</td>
+                    <td>
+                       
+                            No 
+                    </td>
+                    <td>
+                       
+                            6</td>
+                    <td>
+                       
+                            Sizes of the SKU
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Pcs/Pkg
+                    </td>
+                    <td>
+                       
+                            No
+                    </td>
+                    <td>
+                       
+                           
+                        
+                        &nbsp;&nbsp;</td>
+                    <td>
+                       
+                            SKU bundle has this many pieces.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Label
+                    </td>
+                    <td>
+                       
+                            No
+                    </td>
+                    <td>
+                       
+                        &nbsp;&nbsp; &nbsp;</td>
+                    <td>
+                       
+                            Label of the Style
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Quality
+                    </td>
+                    <td>
+                       
+                            No
+                    </td>
+                    <td>
+                       
+                        &nbsp;</td>
+                    <td>
+                       
+                            Quality of the SKU
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Pieces
+                    </td>
+                    <td>
+                       
+                            Sum of quantity
+                    </td>
+                    <td>
+                       
+                            &nbsp;</td>
+                    <td>
+                       
+                            Total quantity in pieces, for the corresponding SKU.
+                    </td>
+                </tr>
+            </table>
+            <h2>Parameters</h2>
+            <table border="1" cellpadding="0" cellspacing="1" class="MsoNormalTable" style="width:100.0%" width="100%">
+                <tr>
+                    <td style="width: 25%; text-align: center">
+                       
+                            <b>Name</b>
+                    </td>
+                    <td style="width: 25%; text-align: center">
+                       
+                            <b>Default</b>
+                    </td>
+                    <td style="width:60.0%" width="60%">
+                       
+                            <b>Detail</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Style
+                    </td>
+                    <td>
+                       
+                            None
+                    </td>
+                    <td>
+                       
+                            User can pass Style for which he/she wants to see inventory. Multiple styles separated by comma is allowed here in this filter. 
+                       
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Color
+                    </td>
+                    <td>
+                       
+                            None
+                    </td>
+                    <td>
+                       
+                            In the same way as Style user can use color filter as well.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Dimension
+                    </td>
+                    <td>
+                       
+                            None
+                    </td>
+                    <td>
+                       
+                            In the same way as Style user can use Dimension filter as well.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Size
+                    </td>
+                    <td>
+                       
+                            None
+                    </td>
+                    <td>
+                       
+                            In the same way as Style user can use Size filter as well.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Quality Code
+                    </td>
+                    <td>
+                       
+                            All
+                    </td>
+                    <td>
+                       
+                            User can use this filter to see the inventory of desired quality. 
+                       
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Virtual Warehouse
+                    </td>
+                    <td>
+                       
+                            All
+                    </td>
+                    <td>
+                       
+                            User can use this filter to see the inventory of desired virtual warehouse
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Area
+                    </td>
+                    <td>
+                       
+                            EXM
+                    </td>
+                    <td>
+                       
+                            This filter is for selecting the desired area.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Label
+                    </td>
+                    <td>
+                       
+                            All
+                    </td>
+                    <td>
+                       
+                            User can use this filter to see the inventory report for the desired label.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                            Building
+                    </td>
+                    <td>
+                       
+                            All Buildings
+                    </td>
+                    <td>
+                       
+                            Building for which user wants to see the inventor
+                    </td>
+                </tr>
+            </table>
+          <h2>Performance Detail</h2><p>Expected Time for the report output is<strong> 5.375</strong> seconds</p>
+&nbsp;<h2>Behavior Change</h2>
+        <ol>
+            <li>As this report will now show area wise inventory so we have changed report name from &#39;Carton in Examining area&#39; to &#39;Inventory in given area&#39;. </li>
+            <li>Provided new filters :- Style, Color, Dimension, Size, vwh, Quality Code, Area, Label and Building. User can pass multiple values separated by comma in following filters Style, Color, Dimension, Size.</li>
+            <li>Provided new columns :-UPC, Label, Quality and Building.</li>
+            <li>This report will not show any carton related information like Days, Carton id, Price Season Code, Package Preference and Sale Type.</li>
+        </ol>
+            <h2>&nbsp;Issues</h2>
+            <ul>
+                <li>No Issue</li>
+            </ul>
+        <h2>Prerequisites</h2>
+        <h4>App Settings</h4>
+        <ol>
+        <li>&lt;add key="ScrapArea" value="SSS"/&gt;</li>
+        <li>&lt;add key="SkuTypeStorageArea" value="SKU"/&gt;</li></ol>
+        <p>
+            Private synonyms for the following tables are required</p>
+        <p>
+            Ialoc,<br />
+            Ialoc_Content,<br />
+            PS,<br />
+            Box,<br />
+            Boxdet,<br />
+            Master_Raw_Inventory,<br />Master_SKU,<br />
+        Master_Style,<br />
+            Tab_Inventory_Area
+        </p>
+         <p>Use the below script to create the synonyms</p>
+            <ol><li>create or replace synonym ialoc for dcms8.ialoc;</li>
+            <li>create or replace synonym ialoc_content for dcms8.ialoc_content;</li>
+                <li>create or replace synonym ps for dcms8.ps;</li>
+             
+            <li>create or replace synonym box for dcms8.box;</li>
+            <li>create or replace synonym boxdet for dcms8.boxdet;</li>
+            <li>create or replace synonym master_raw_inventory for dcms4.master_raw_inventory;</li>
+                <li>create or replace synonym tab_inventory_area&nbsp; for dcms4.tab_inventory_area;</li>
+            <li>create or replace synonym master_sku for dcms4.master_sku;</li>
+                <li>create or replace synonym master_style for dcms4.master_style;</li>
+         </ol>
+        <div id="divTechnical" style="display:block">
+        <h2>Parameter Technical Details</h2>
+        <ul><li>VWh (Datatype =String):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; This is a string&nbsp; type parameter and its report is using to&nbsp; display SKU and pieces virtual warehouse wise.</li>
+		<li>Area (Datatype =String):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a string type parameter and its report is using to&nbsp; display SKU and pieces Inventory Area wise.</li>
+            <li>Style (Datatype =String):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a string type&nbsp; parameter. User can use this parameter for specific Style.</li>
+            <li>Color (Datatype =String):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a string type&nbsp; parameter.User can use this parameter for specific Color.</li>
+            <li>Dim (Datatype =String):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a string type&nbsp; parameter.User can use this parameter for specific Dimension.</li>
+            <li>Size (Datatype =String) :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a string type&nbsp; parameter.User can use this parameter for specific SKU Size.</li>
+            <li>Label (Datatype =String):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a string type&nbsp; parameter User can use this parameter for see all inventory of the&nbsp; specific Label.</li>
+            <li>Building (Datatype =String): This is a string type&nbsp; parameter and its report is using to&nbsp; display SKU and pieces Warehouse location wise. </li></ul>
+		<h2>Parameter Validation</h2>
+		    No special validations.
+		<h2>Query's documentation:</h2>
+     <pre xmlns="">
+            WITH INVENTORY  AS
+ (SELECT BD.SKU_ID,
+         PS.VWH_ID,
+         BD.UPC_CODE AS UPC,
+         MSKU.STYLE AS STYLE,
+         MSKU.COLOR AS COLOR,
+         MSKU.DIMENSION AS DIMENSION,
+         MSKU.SKU_SIZE AS SKU_SIZE,
+         MST.LABEL_ID AS LABEL_ID,
+         MSKU.PIECES_PER_PACKAGE AS PIECES_PER_PACKAGE,
+         BD.CURRENT_PIECES AS TOTAL_QUANTITY,
+         '01' AS QUALITY,
+         PS.WAREHOUSE_LOCATION_ID AS BUILDING
+    FROM PS
+   INNER JOIN BOX BOX
+      ON BOX.PICKSLIP_ID = PS.PICKSLIP_ID
+   INNER JOIN BOXDET BD
+      ON BOX.UCC128_ID = BD.UCC128_ID
+     AND BOX.PICKSLIP_ID = BD.PICKSLIP_ID
+    LEFT OUTER JOIN MASTER_SKU MSKU
+      ON BD.SKU_ID = MSKU.SKU_ID
+    LEFT OUTER JOIN MASTER_STYLE MST
+      ON MSKU.STYLE = MST.STYLE
+   WHERE BOX.STOP_PROCESS_DATE IS NULL
+     AND BD.STOP_PROCESS_DATE IS NULL
+     AND PS.TRANSFER_DATE IS NULL
+     AND BD.CURRENT_PIECES &gt; 0
+     AND ps.pickslip_cancel_date IS NULL
+   AND BOX.IA_ID = :area
+   AND PS.vwh_id = :vwh_id
+   AND NVL(PS.WAREHOUSE_LOCATION_ID,'Unknown') IN :warehouse_location_id
+   AND MST.LABEL_ID =:LABEL_ID
+   and MSKU.style IN :Style
+   and MSKU.Color IN :Color
+   and MSKU.Dimension IN :Dimension
+   and MSKU.SKU_SIZE IN :Size
+  UNION ALL
+  SELECT MSKU.SKU_ID,
+         I.VWH_ID,
+         IAC.IACONTENT_ID AS UPC,
+         MSKU.STYLE AS STYLE,
+         MSKU.COLOR AS COLOR,
+         MSKU.DIMENSION AS DIMENSION,
+         MSKU.SKU_SIZE AS SKU_SIZE,
+         MST.LABEL_ID AS LABEL_ID,
+         MSKU.PIECES_PER_PACKAGE AS PIECES_PER_PACKAGE,
+         IAC.NUMBER_OF_UNITS AS TOTAL_QUANTITY,
+         '01' AS QUALITY,
+         I.WAREHOUSE_LOCATION_ID AS BUILDING
+    FROM IALOC_CONTENT IAC 
+   LEFT OUTER JOIN IALOC I
+      ON IAC.IA_ID = I.IA_ID
+     AND IAC.LOCATION_ID = I.LOCATION_ID
+   LEFT OUTER JOIN MASTER_SKU MSKU
+      ON IAC.IACONTENT_ID = MSKU.UPC_CODE
+    LEFT OUTER JOIN MASTER_STYLE MST
+      ON MSKU.STYLE = MST.STYLE
+    LEFT OUTER JOIN IA ON 
+            I.IA_ID = IA.IA_ID
+   WHERE IAC.IACONTENT_TYPE_ID = 'SKU'
+       AND IAC.NUMBER_OF_UNITS &lt;&gt; 0
+   AND I.IA_ID = :area
+       AND nvl(ia.SHORT_NAME,I.IA_ID) !=:scraparea 
+   AND I.vwh_id = :vwh_id
+   AND NVL(I.WAREHOUSE_LOCATION_ID,'Unknown') IN (:warehouse_location_id)
+   AND MST.LABEL_ID =:LABEL_ID
+   and MSKU.style IN (:Style)
+   and MSKU.Color IN (:Color)
+   and MSKU.Dimension IN (:Dimension)
+   and MSKU.SKU_SIZE IN (:Size)  
+   UNION ALL
+  SELECT RAWINV.SKU_ID,
+         RAWINV.VWH_ID,
+         MSKU.UPC_CODE AS UPC,
+         RAWINV.STYLE AS STYLE,
+         RAWINV.COLOR AS COLOR,
+         RAWINV.DIMENSION AS DIMENSION,
+         RAWINV.SKU_SIZE AS SKU_SIZE,
+         MST.LABEL_ID AS LABEL_ID,
+         MSKU.PIECES_PER_PACKAGE AS PIECES_PER_PACKAGE,
+         RAWINV.QUANTITY AS TOTAL_QUANTITY,
+         NVL(RAWINV.QUALITY_CODE, 'Unknown') AS QUALITY,
+         NVL(TIA.WAREHOUSE_LOCATION_ID, 'Unknown') AS BUILDING
+    FROM MASTER_RAW_INVENTORY RAWINV
+    LEFT OUTER JOIN TAB_INVENTORY_AREA TIA
+      ON RAWINV.SKU_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+    LEFT OUTER JOIN MASTER_SKU MSKU
+      ON RAWINV.SKU_ID = MSKU.SKU_ID
+    LEFT OUTER JOIN MASTER_STYLE MST
+      ON MSKU.STYLE = MST.STYLE
+   WHERE TIA.STORES_WHAT = 'SKU'
+   AND rawinv.sku_storage_area = :area
+   AND rawinv.vwh_id = :vwh_id
+   AND rawinv.sku_storage_area != 'RED'
+   and NVL(rawinv.quality_code,'Unknown') = :quality_code
+   AND NVL(TIA.WAREHOUSE_LOCATION_ID,'Unknown') IN (:warehouse_location_id)
+   AND MST.LABEL_ID =:LABEL_ID
+       AND RAWINV.QUANTITY  &lt;&gt; 0
+   and MSKU.style IN (:Style)
+   and MSKU.Color IN (:Color)
+   and MSKU.Dimension IN (:Dimension)
+   and MSKU.SKU_SIZE IN (:Size)  
+  UNION ALL
+  SELECT SCD.SKU_ID,
+         SC.VWH_ID,
+         MSKU.UPC_CODE AS UPC,
+         MSKU.STYLE AS STYLE,
+         MSKU.COLOR AS COLOR,
+         MSKU.DIMENSION AS DIMENSION,
+         MSKU.SKU_SIZE AS SKU_SIZE,
+         MST.LABEL_ID AS LABEL_ID,
+         MSKU.PIECES_PER_PACKAGE AS PIECES_PER_PACKAGE,
+         SCD.QUANTITY AS TOTAL_QUANTITY,
+         SC.QUALITY_CODE AS QUALITY,
+         COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                  MSL.WAREHOUSE_LOCATION_ID,
+                  'Unknown') AS BUILDING
+    FROM SRC_CARTON SC
+   INNER JOIN SRC_CARTON_DETAIL SCD
+      ON SC.CARTON_ID = SCD.CARTON_ID
+    LEFT OUTER JOIN MASTER_SKU MSKU
+      ON SCD.SKU_ID = MSKU.SKU_ID
+    LEFT OUTER JOIN MASTER_STYLE MST
+      ON MSKU.STYLE = MST.STYLE
+    LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+      ON SC.CARTON_STORAGE_AREA = MSL.STORAGE_AREA
+     AND SC.LOCATION_ID = MSL.LOCATION_ID
+   INNER JOIN TAB_INVENTORY_AREA TIA
+      ON SC.CARTON_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+   WHERE TIA.STORES_WHAT = 'CTN'
+       AND SCD.QUANTITY &gt; 0
+   AND SC.CARTON_STORAGE_AREA = :area
+   AND SC.vwh_id = :vwh_id
+   and NVL(SC.quality_code,'Unknown') = :quality_code
+   AND COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                     MSL.WAREHOUSE_LOCATION_ID,
+                     'Unknown') IN (:warehouse_location_id)
+   AND MST.LABEL_ID =:LABEL_ID
+   and MSKU.style IN (:Style)
+   and MSKU.Color IN (:Color)
+   and MSKU.Dimension IN (:Dimension)
+   and MSKU.SKU_SIZE IN (:Size)  
+            )
+SELECT MAX(Q1.STYLE) AS STYLE,
+       MAX(Q1.COLOR) AS COLOR,
+       MAX(Q1.DIMENSION) AS DIMENSION,
+       MAX(Q1.SKU_SIZE) AS SKU_SIZE,
+       MAX(Q1.UPC) AS UPC,
+       MAX(Q1.LABEL_ID) AS LABEL_ID,
+       Q1.QUALITY,
+       MAX(Q1.PIECES_PER_PACKAGE) AS PIECES_PER_PACKAGE,
+       SUM(Q1.TOTAL_QUANTITY) AS TOTAL_QUANTITY,
+       Q1.VWH_ID,
+       Q1.BUILDING,
+       Q1.SKU_ID
+  FROM INVENTORY Q1
+ WHERE 1=1
+ and NVL(Q1.quality,'Unknown') = :quality_code
+ GROUP BY Q1.BUILDING, Q1.VWH_ID, Q1.SKU_ID, Q1.QUALITY
+          </pre>
+           
+        <h2>
+            Validation details</h2>
+        <br />
+        <b>Query: Below Query For box Areas</b><pre>
+                SELECT MS.STYLE AS "STYLE",
+              MS.COLOR AS "COLOR",
+              MS.DIMENSION AS "DIMENSION",
+              MS.SKU_SIZE AS "SKU_SIZE",
+              SUM(BD.CURRENT_PIECES) AS "TOTAL_QUANTITY"
+              FROM MASTER_SKU MS 
+              RIGHT OUTER JOIN BOXDET BD ON MS.upc_code = BD.UPC_CODE                                         
+              RIGHT OUTER JOIN BOX BOX ON BOX.UCC128_ID = BD.UCC128_ID
+                                       AND BOX.Pickslip_Id = BD.Pickslip_Id
+              WHERE 
+              BD.CURRENT_PIECES > 0
+              AND BOX.IA_ID = 'RST'
+              AND BOX.VWH_ID = '15'
+              AND BD.UPC_CODE =''
+              GROUP BY MS.STYLE, MS.COLOR, MS.DIMENSION, MS.SKU_SIZE     </pre>
+            <b>Query: Below query is showing Style, Color, Dimension, SKU Size and Pieces Per Package for specific UPC.</b>
+            <pre>
+    SELECT M.STYLE, M.COLOR, M.DIMENSION, M.SKU_SIZE, M.PIECES_PER_PACKAGE
+    FROM MASTER_SKU M
+    WHERE M.UPC_CODE = '' 
+            </pre>
+            <b>Query :- Below query for Forward pick and cancelled areas</b>
+            <pre>
+  SELECT IC.IA_ID, IC.IACONTENT_ID, IC.NUMBER_OF_UNITS
+  FROM IALOC I
+ INNER JOIN IALOC_CONTENT IC
+    ON I.IA_ID = IC.IA_ID
+   AND I.LOCATION_ID = IC.LOCATION_ID
+ INNER JOIN MASTER_SKU MS
+    ON IC.SKU_ID = MS.SKU_ID
+ INNER JOIN MASTER_STYLE MST ON MS.STYLE = MST.STYLE
+ WHERE IC.IACONTENT_ID = ''
+            </pre>
+            <b>Query:- Below query for SKU areas</b>
+            <pre>
+ SELECT MRI.STYLE,
+       MRI.COLOR,
+       MRI.DIMENSION,
+       MRI.SKU_SIZE,
+       MRI.QUANTITY,
+       MRI.QUALITY_CODE
+  FROM MASTER_RAW_INVENTORY MRI
+ INNER JOIN MASTER_SKU MS
+    ON MRI.SKU_ID = MS.SKU_ID
+ INNER JOIN MASTER_STYLE MST
+    ON MS.STYLE = MST.STYLE
+ WHERE MRI.SKU_STORAGE_AREA = ''
+   AND MS.UPC_CODE = ''
+   AND MST.LABEL_ID=''
+   AND MRI.QUALITY_CODE =''
+
+            </pre>
+            <b>Query:- Below query for Carton areas</b>
+            <pre>
+ SELECT MS.STYLE,
+       MS.COLOR,
+       MS.DIMENSION,
+       MS.SKU_SIZE,
+       MS.PIECES_PER_PACKAGE,
+       SC.QUALITY_CODE,
+       SCD.QUANTITY
+  FROM SRC_CARTON SC
+ INNER JOIN SRC_CARTON_DETAIL SCD
+    ON SC.CARTON_ID = SCD.CARTON_ID
+ INNER JOIN MASTER_SKU MS
+    ON SCD.SKU_ID = MS.SKU_ID
+ INNER JOIN MASTER_STYLE MST
+    ON MS.STYLE = MST.STYLE
+ WHERE MS.UPC_CODE = ''
+   AND MS.STYLE = ''
+   AND MST.LABEL_ID = '' 
+   AND SC.QUALITY_CODE =''
+   AND SC.CARTON_STORAGE_AREA = ''
+            </pre>
+        <!--End divTechnical-->
+    </div>
+</body>
+</html>

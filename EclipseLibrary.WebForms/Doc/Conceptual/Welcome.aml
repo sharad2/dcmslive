@@ -1,0 +1,360 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="41cdae8a-8724-4082-ab83-24d0f078f5f6" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <summary>
+      <para>
+        The goal of <application>Eclipse .NET Library</application> is to make it convenient to use
+        <externalLink>
+          <linkText>Jquery UI Widgets</linkText>
+          <linkUri>http://jqueryui.com/home</linkUri>
+        </externalLink> within an ASP.NET WebForm application. Several controls have been provided which encapsulate
+        existing jQuery widgets. ASP.NET validation has been replaced by valdiation features provided by
+        <externalLink>
+          <linkText>jQuery Validation plugin</linkText>
+          <linkUri>http://docs.jquery.com/Plugins/Validation</linkUri>
+        </externalLink>. A replacement for most ASP.NET input controls is available which take advantage of
+        jQuery validation. Heavy emphasis is placed on AJAX capabilities and most of the controls enable and support AJAX features.
+      </para>
+    </summary>
+
+    <introduction>
+      <para>
+        Most of the jQuery oriented classes derive from <codeEntityReference>T:EclipseLibrary.Web.JQuery.WidgetBase</codeEntityReference>.
+        Some of the classes directly encapsulate jQuery Widgets.
+      </para>
+      <table>
+        <title>jQuery Widgets and the associated Eclipse Library .NET classes</title>
+        <tableHeader>
+          <row>
+            <entry>
+              <para>jQuery Links</para>
+            </entry>
+            <entry>
+              <para>Eclipse Library .NET class</para>
+            </entry>
+          </row>
+        </tableHeader>
+        <row>
+          <entry>
+            <para>
+              <externalLink>
+                <linkText>jQuery Dialog Widget</linkText>
+                <linkUri>http://jqueryui.com/demos/dialog/</linkUri>
+
+              </externalLink>
+            </para>
+          </entry>
+          <entry>
+            <para>
+              <codeEntityReference>T:EclipseLibrary.Web.JQuery.Dialog</codeEntityReference>. This class adds
+              full support for loading remote pages.
+            </para>
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <para>
+              <externalLink>
+                <linkText>jQuery Tabs Widget</linkText>
+                <linkUri>http://jqueryui.com/demos/tabs/</linkUri>
+              </externalLink>
+            </para>
+          </entry>
+          <entry>
+            <para>
+              <codeEntityReference>T:EclipseLibrary.Web.JQuery.Tabs</codeEntityReference>. This class adds the capability to
+              post back the index of the tab which is currently selected so that it can stay selected after postback.
+            </para>
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <para>
+              <externalLink>
+                <linkText>jQuery Accordion Widget</linkText>
+                <linkUri>http://jqueryui.com/demos/accordion/</linkUri>
+              </externalLink>
+            </para>
+          </entry>
+          <entry>
+            <para>
+              <codeEntityReference>T:EclipseLibrary.Web.JQuery.Accordion</codeEntityReference>
+            </para>
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <para>
+              <externalLink>
+                <linkText>jQuery Selectable Widget</linkText>
+                <linkUri>http://jqueryui.com/demos/selectable/</linkUri>
+              </externalLink>
+            </para>
+          </entry>
+          <entry>
+            <para>
+              <codeEntityReference>T:EclipseLibrary.Web.JQuery.GridViewEx</codeEntityReference>
+              has a <codeEntityReference>P:EclipseLibrary.Web.JQuery.GridViewEx.Selectable</codeEntityReference>
+              property which can make the rows of the grid selectable.
+            </para>
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <para>
+              jQuery
+              <externalLink>
+                <linkText>Sortable</linkText>
+                <linkUri>http://jqueryui.com/demos/sortable/</linkUri>
+              </externalLink>,
+              <externalLink>
+                <linkText>Draggable</linkText>
+                <linkUri>http://jqueryui.com/demos/draggable/</linkUri>
+              </externalLink> and
+              <externalLink>
+                <linkText>Droppable</linkText>
+                <linkUri>http://jqueryui.com/demos/sortable/</linkUri>
+              </externalLink> widgets.
+            </para>
+          </entry>
+          <entry>
+            <para>
+              <codeEntityReference>T:EclipseLibrary.Web.JQuery.SortColumnsChooser</codeEntityReference> uses sortable
+              widget to allow the end user to choose the columns on which a
+              <codeEntityReference>T:EclipseLibrary.Web.JQuery.GridViewEx</codeEntityReference> should be sorted.
+            </para>
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <para>
+              <externalLink>
+                <linkText>jQuery DatePicker Widget</linkText>
+                <linkUri>http://jqueryui.com/demos/datepicker/</linkUri>
+              </externalLink>
+            </para>
+          </entry>
+          <entry>
+            <para>
+              <codeEntityReference>T:EclipseLibrary.Web.JQuery.Input.TextBoxEx</codeEntityReference> in conjuction with the
+              <codeEntityReference>T:EclipseLibrary.Web.JQuery.Input.Date</codeEntityReference> validator associates a date
+              picker with the text box.
+            </para>
+          </entry>
+        </row>
+      </table>
+    </introduction>
+    <section>
+      <title>Focus Management</title>
+      <content>
+        <para>
+          When a page is initially loaded, it is very important that some control receives focus. Our goal was to make this
+          decision automatically without the developer having to think about focus all the time. At the same time
+          we wanted the developers to be able to override automatic focus management when their neeeds so demand. Keeping
+          this objective in mind, the following algorithm is used on the server side
+          to determine which control should get focus when the
+          page initially loads.
+        </para>
+        <procedure>
+          <title>Steps for deciding which control gets focus when page loads</title>
+          <steps class="bullet">
+            <step>
+              <content>
+                <para>
+                  Enumerate all controls on the page which are willing to accept focus. These include all input controls.
+                  These also include jQuery widgets like Tabs which have intelligence to decide what to do when they get focus.
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Ask each control how interested it is in receiving focus (High, Normal, Low, Never).
+                  Controls which indicate no interest are removed from the list of candidates.
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Grant focus to the first control with the highest interest. The placement of the control on the page is used
+                  as a tie-breaker. The control appearing first on the page wins over other controls having same level of interest.
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  The default level of interest for each control is Normal but page developers can override this on a per control basis
+                  by setting the <codeInline>FocusPriority</codeInline> property.
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Dialog, accordion and Tabs participate in this process to ensure that invisible controls do not get focus.
+                </para>
+              </content>
+            </step>
+          </steps>
+        </procedure>
+        <para>Several classes also update focus of the page when specific event happen. These are lsited below</para>
+        <table>
+          <tableHeader>
+            <row>
+              <entry>
+                <para>
+                  EclipseLibrary.NET class
+                </para>
+              </entry>
+              <entry>
+                <para>
+                  Who gets focus
+                </para>
+              </entry>
+            </row>
+          </tableHeader>
+          <row>
+            <entry>
+              <para>
+                <codeEntityReference>T:EclipseLibrary.Web.JQuery.Tabs</codeEntityReference>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                Always sets focus to the first focusable control when a tab is clicked.
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <codeEntityReference>T:EclipseLibrary.Web.JQuery.Dialog</codeEntityReference>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                Sets focus to first focusable control whenever the dialog is activated.
+                This is a built in feature of the jquery dialog widget. TODO: What should happen to the focus when
+                dialog closes?
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <codeEntityReference>T:EclipseLibrary.Web.JQuery.Accordion</codeEntityReference>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                Whenever an accordion pane is opened, the focus is set to the first focusable control within that pane.
+              </para>
+            </entry>
+          </row>
+        </table>
+      </content>
+    </section>
+    <section>
+      <title>Default Button</title>
+      <content>
+        <para>
+          Validation containers are responsible for implementing the default button. Each validation container
+          generates script to click the default button when the enter key is pressed. The default button is the first
+          enabled, tabbable button within the container unless you have specifically set IsDefault=true for some button.
+          The default button is displayed using more prominent colors.
+        </para>
+      </content>
+    </section>
+    <section address="ViewState">
+      <title>View State Considerations</title>
+      <content>
+        <para>
+          By default <codeInline>EnableViewState</codeInline> has been set to <codeInline>false</codeInline> for all
+          controls in the library. There are some exceptions such as
+          <codeEntityReference>T:EclipseLibrary.Web.JQuery.GridViewExInsert</codeEntityReference>
+          GridViewExInsert defaults to true because it is meant for editing.
+        </para>
+        <para>
+          In general you do not need view state to work on your page.You definitely do not need view state if your page will never postback.
+          Even when your page posts back, you will need view state only under the following circumstances:
+        </para>
+        <para>
+          1) You are collecting data within a grid view. If you have input controls within a grid, consider what happens when input
+          validation fails. You will need to recreate the grid exactly as it was after the page has posted back.
+        </para>
+        <para>
+          2) Input controls will need view state if you are setting validator properties dynamically.
+        </para>
+      </content>
+    </section>
+    <section address="Skin" >
+
+      <title>Use skin </title>
+      <content>
+        <para>
+          Use skin for input controls that are used in  multiple pages. For eaxmple,we have made a skin for pickslip_id
+          which is used in many pages.
+          <code>
+            <![CDATA[
+<i:TextBoxEx SkinID="PickSlipId" ClientIdSameAsId="true" QueryString="pickslip_id"
+    runat="server" FriendlyName="PickSlip" MaxLength="9">
+    <Validators>
+        <i:Value ValueType="Integer" Min="1" />      
+    </Validators>
+</i:TextBoxEx>
+          ]]>
+          </code>
+        </para>
+        <para>
+          Now in the page where you want to use pickslip_id you will write following markup.
+          <code>
+            <![CDATA[            
+            <i:TextBoxEx ID="tbPickSlipId" runat="server" SkinID="PickSlipId">
+              <Validators>
+                <i:Required />
+              </Validators>
+            </i:TextBoxEx>
+            ]]>
+          </code>
+        </para>
+        <para>
+          Using skin in this way has many advantages.
+        </para>
+        <steps class="bullet">
+          <step>
+            <content>
+              <para>
+                Notice that you are not required to repeat properties like FriendlyName,QueryString,MaxLength and common validators
+                in every page where pickslip_id is used now.
+              </para>
+            </content>
+          </step>
+          <step>
+            <content>
+              <para>
+                Brings consistancy in code writing because Pickslipid will always be referred as pickslip_id in every page.
+                This is particularly importent for remote pages.
+              </para>
+            </content>
+          </step>
+        </steps>
+      </content>
+    </section>
+    <relatedTopics>
+      <link xlink:href="32370cb5-7504-45ad-9c91-7c79c958c718">AJAX Overview</link>
+      <externalLink>
+        <linkText>jQuery Home Page</linkText>
+        <linkAlternateText>Home page of the jQuery javascript framework</linkAlternateText>
+        <linkUri>http://jquery.com/</linkUri>
+      </externalLink>
+      <externalLink>
+        <linkText>jQuery UI Home Page</linkText>
+        <linkAlternateText>Home page of jQuery UI</linkAlternateText>
+        <linkUri>http://jqueryui.com/</linkUri>
+      </externalLink>
+      <codeEntityReference>T:EclipseLibrary.Web.JQuery.WidgetBase</codeEntityReference>
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

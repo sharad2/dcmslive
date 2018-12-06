@@ -1,0 +1,211 @@
+﻿<%@ Page Title="SKUs which are locking Buckets" Language="C#" MasterPageFile="~/MasterPage.master" %>
+
+<%--*
+ *  Programming: Eclipse Systems (P) Ltd., NOIDA, INDIA
+ *  E-mail: support@eclsys.com
+ *
+ *  $Revision: 5979 $
+ *  $Author: skumar $
+ *  $HeadURL: http://server/svn/dcmslive/Projects/DcmsLive/trunk/Web/Reports/Category_140/R140_107.aspxExclude $
+ *  $Id: R140_107.aspxExclude 5979 2013-08-12 11:20:58Z skumar $
+ * Version Control Template Added.
+--%>
+<script runat="server">
+
+
+    protected void cbSpecificBuilding_OnServerValidate(object sender, EclipseLibrary.Web.JQuery.Input.ServerValidateEventArgs e)
+    {
+        if (string.IsNullOrEmpty(ctlWhLoc.Value))
+        {
+            e.ControlToValidate.IsValid = false;
+            e.ControlToValidate.ErrorMessage = "Please provide select at least one building.";
+            return;
+        }
+    }
+</script>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <meta name="Description" content="The Report lists the Buckets, whose expediting may be locked, while creating
+     pitch carts, due to the shortage of the specified SKU at FPK Locations. When this happens, it becomes 
+     imperative to optimize the replenishment process for specified SKU so that boxes are not bypassed at
+      MPC creation time.This report displays ordered quantity of buckets only" />
+    <meta name="ReportId" content="140.107" />
+    <meta name="Browsable" content="false" />
+    <meta name="Version" content="$Id: R140_107.aspxExclude 5979 2013-08-12 11:20:58Z skumar $" />
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <jquery:Tabs runat="server" ID="tabs">
+        <jquery:JPanel ID="JPanel" runat="server" HeaderText="Filters">
+            <eclipse:TwoColumnPanel ID="TwoColumnPanel1" runat="server">
+                <eclipse:LeftLabel runat="server" Text="UPC Code" />
+                <i:TextBoxEx ID="tbUpCode" runat="server" QueryString="upc_code" FriendlyName="UPC Code" />
+                <eclipse:LeftLabel runat="server" />
+                <d:VirtualWarehouseSelector ID="ctlVwh" runat="server" ShowAll="true" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+                    QueryString="vwh_id" ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>"
+                    ToolTip="Select any warehouse id(optional)" />
+              <%--  <eclipse:LeftLabel ID="LeftLabel1" runat="server" />--%>
+               <%-- <d:BuildingSelector ID="ctlwhloc" runat="server" QueryString="whloc" ShowAll="true"
+                    ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>" ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>"
+                    ToolTip="Warehouse Location">
+                </d:BuildingSelector>--%>
+               <eclipse:LeftPanel ID="LeftPanel1" runat="server">
+                    <eclipse:LeftLabel ID="LeftLabel3" runat="server"  Text="Check For Specific Building"/>
+                    <i:CheckBoxEx ID="cbSpecificBuilding" runat="server" FriendlyName="Specific Building">
+                        <Validators>
+                            <i:Custom OnServerValidate="cbSpecificBuilding_OnServerValidate" />
+                        </Validators>
+                 </i:CheckBoxEx>
+                </eclipse:LeftPanel>
+                <oracle:OracleDataSource ID="dsAvailableInventory" runat="server" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+                    ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>" CancelSelectOnNullParameter="true">
+                    <SelectSql>
+                           SELECT TWL.WAREHOUSE_LOCATION_ID,
+                                   (TWL.WAREHOUSE_LOCATION_ID || ':' || TWL.DESCRIPTION) AS DESCRIPTION
+                            FROM TAB_WAREHOUSE_LOCATION TWL
+                            ORDER BY 1
+
+                    </SelectSql>
+                </oracle:OracleDataSource>
+                
+                <i:CheckBoxListEx ID="ctlWhLoc" runat="server" DataTextField="DESCRIPTION"
+                    DataValueField="WAREHOUSE_LOCATION_ID" DataSourceID="dsAvailableInventory" FriendlyName="Building"
+                    QueryString="building" OnClientChange="ctlWhLoc_OnClientChange">
+                </i:CheckBoxListEx>
+
+
+            </eclipse:TwoColumnPanel>
+        </jquery:JPanel>
+        <jquery:JPanel ID="JPanel1" runat="server" HeaderText="Sorting">
+            <jquery:SortColumnsChooser ID="SortColumnsChooser1" runat="server" GridViewExId="gv"
+                EnableGroupBy="true" />
+        </jquery:JPanel>
+    </jquery:Tabs>
+    <%--Use button bar to put all the buttons, it will also provide you the validation summary and Applied Filter control--%>
+    <%--<uc:ButtonBar ID="ButtonBar1" runat="server" />--%>
+    <uc2:ButtonBar2 ID="ButtonBar1" runat="server" />
+    <%--Provide the data source for quering the data for the report, the datasource should always be placed above the display 
+            control since query execution time is displayed where the data source control actaully is on the page,
+            while writing the select query the alias name must match with that of database column names so as to avoid 
+            any confusion, for details of control refer OracleDataSource.htm with in doc folder of EclipseLibrary.Oracle--%>
+    <oracle:OracleDataSource ID="ds" runat="server" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+        ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>" 
+        CancelSelectOnNullParameter="true" >
+  <SelectSql>
+with bucket_sku_info as 
+(
+SELECT bucket.bucket_id AS BUCKET_ID,
+       sum(psdet.pieces_ordered) AS REQUIRED_QUANTITY,
+       max(psdet.upc_code) as upc_code
+  FROM ps ps left outer join bucket bucket on ps.bucket_id = bucket.bucket_id
+  left outer join psdet psdet on ps.pickslip_id = psdet.pickslip_id
+  left outer join bucketsku bs on bs.bucket_id = bucket.bucket_id
+                              and bs.upc_code = psdet.upc_code
+ WHERE 1=1
+  and ps.TRANSFER_DATE is null
+ 
+   <if>AND ps.vwh_id =:vwh_id</if>
+<%--   <if>AND PS.WAREHOUSE_LOCATION_ID =:WAREHOUSE_LOCATION_ID</if>--%>
+      <if>AND <a pre="PS.WAREHOUSE_LOCATION_ID IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+   <if>AND psdet.upc_code = :upc_code</if>
+ GROUP BY bucket.bucket_id
+<%--union all
+SELECT bucket.bucket_id AS BUCKET_ID,
+       sum(boxdet.expected_pieces) AS REQUIRED_QUANTITY,
+       max(boxdet.upc_code) as upc_code
+  FROM ps ps 
+  Left outer join  psdet pd on ps.pickslip_id = pd.pickslip_id
+  left outer join bucket bucket on  ps.bucket_id = bucket.bucket_id
+
+  left outer join box box on box.pickslip_id = ps.pickslip_id 
+  left outer join boxdet boxdet on boxdet.ucc128_id = box.ucc128_id
+                               AND boxdet.pickslip_id = box.pickslip_id  
+  left outer join bucketsku bs on bs.bucket_id = bucket.bucket_id
+                              and bs.upc_code = boxdet.upc_code
+ WHERE 1=1 
+ 
+   AND boxdet.expected_pieces &gt; 0
+   <if>AND boxdet.upc_code = :upc_code</if>
+   AND box.ia_id is null
+   AND box.carton_id is null
+   and ps.TRANSFER_DATE is null
+   
+   <if>AND PS.WAREHOUSE_LOCATION_ID =:WAREHOUSE_LOCATION_ID</if>
+   <if>AND box.vwh_id = :vwh_id</if>
+ GROUP BY bucket.bucket_id--%>
+), ialoc_sku as 
+(
+SELECT ia.assigned_upc_code AS UPC_CODE,
+       ia.vwh_id AS VWH_ID,
+      case
+         when count(distinct ia.location_id) &gt; 1 then
+          '*****'
+         else
+          max(ia.location_id)
+       end AS LOCATION_ID,
+       count(distinct ia.location_id) AS LOCATION_COUNT,
+       sum(iac.number_of_units) AS FPK_QUANTITY
+  FROM  ialoc ia left outer join ialoc_content iac on ia.ia_id = iac.ia_id
+  AND  ia.location_id = iac.location_id
+  LEFT OUTER JOIN RESVDET RD
+      ON IA.VWH_ID = RD.VWH_ID
+     AND IA.ASSIGNED_UPC_CODE = RD.UPC_CODE
+ <if>WHERE ia.assigned_upc_code = :upc_code</if>
+   <if>AND ia.vwh_id = :vwh_id</if>
+   <%--<if>AND IA.WAREHOUSE_LOCATION_ID =:WAREHOUSE_LOCATION_ID</if>--%>
+      <if>AND <a pre="IA.WAREHOUSE_LOCATION_ID IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+   <if>AND ia.ia_id = :PickingArea</if>
+ GROUP BY ia.assigned_upc_code, ia.vwh_id
+), resv_sku as
+(
+SELECT resv.upc_code AS UPC_CODE,
+       resv.vwh_id AS VWH_ID,
+       sum(resv.pieces_reserved) AS RESERVED_QUANTITY
+  FROM resvdet resv
+ <if>WHERE resv.upc_code = :upc_code</if>
+   <if>AND resv.vwh_id = :vwh_id</if>
+ GROUP BY resv.upc_code, resv.vwh_id)
+select bsi.bucket_id as bucket_id,
+       bsi.REQUIRED_QUANTITY as REQUIRED_QUANTITY,
+       nvl(ias.FPK_QUANTITY,0) as FPK_QUANTITY,
+     NVL(ias.FPK_QUANTITY, 0) - NVL(rs.RESERVED_QUANTITY, 0) AS UNALLOCATED_QUANTITY,
+     <%--rs.RESERVED_QUANTITY AS UNALLOCATED_QUANTITY,--%>
+       IAS.LOCATION_ID AS FPK_LOCATION
+  from bucket_sku_info bsi
+  left outer join ialoc_sku ias on bsi.upc_code = ias.upc_code
+  left outer join resv_sku rs on rs.upc_code = ias.upc_code
+  </SelectSql> 
+        <SelectParameters>
+            <asp:ControlParameter ControlID="tbUpCode" DbType="String" Name="upc_code" Direction="Input" />
+            <asp:ControlParameter ControlID="ctlVwh" DbType="String" Name="vwh_id" Direction="Input" />
+            <asp:ControlParameter ControlID="ctlwhloc" DbType="String" Name="WAREHOUSE_LOCATION_ID" Direction="Input" />
+            <asp:Parameter DbType="String" Name="PickingArea" DefaultValue="<%$  AppSettings: PickingArea  %>" />
+            <asp:Parameter DbType="String" Name="Pitching" DefaultValue="<%$  AppSettings: Pitching  %>" />
+        </SelectParameters>
+    </oracle:OracleDataSource>
+    <%--Provide the control where result to be displayed over here--%>
+    <jquery:GridViewEx ID="gv" runat="server" AutoGenerateColumns="false" AllowSorting="true"
+        ShowFooter="true" DataSourceID="ds" DefaultSortExpression="BUCKET_ID">
+        <Columns>
+            <eclipse:SequenceField />
+            <eclipse:MultiBoundField DataFields="bucket_id" HeaderText="Bucket" HeaderToolTip="Bucket Id"
+                SortExpression="bucket_id" />
+            <eclipse:MultiBoundField DataFields="REQUIRED_QUANTITY" HeaderText="Required Quantity"
+                HeaderToolTip="Required Quantity of passed SKU in bucket." SortExpression="REQUIRED_QUANTITY"
+                DataSummaryCalculation="ValueSummation">
+                <ItemStyle HorizontalAlign="Right" />
+                <FooterStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="FPK_QUANTITY" HeaderText="FPK Quantity" HeaderToolTip="FPK 
+            Quantity of passed SKU. If this location is blank that means there is no location assigned for this SKU."
+                SortExpression="FPK_QUANTITY">
+                <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="UNALLOCATED_QUANTITY" HeaderText="Unallocated FPK Quantity"
+                HeaderToolTip="FPK Quantity of passed SKU, which is not reserved. If this column is blank, that means there is no location assigned for this SKU."
+                SortExpression="UNALLOCATED_QUANTITY">
+                <ItemStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="FPK_LOCATION" HeaderText="FPK Location" HeaderToolTip="The location where SKU is assigned. If there are more than one location then '*****' will be displayed. If this column is blank that measn there is no location assigned for this SKU."
+                SortExpression="FPK_LOCATION" />
+        </Columns>
+    </jquery:GridViewEx>
+</asp:Content>

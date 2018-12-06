@@ -1,0 +1,289 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>140.104 Pickslip Details</title>
+    <style type="text/css">
+        .style1
+        {
+            text-align: left;
+        }
+        .style2
+        {
+            width: 36%;
+        }
+        .style3
+        {
+            text-align: left;
+            width: 36%;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        140.104 Pickslip Details</h1>
+    <h3>
+        Author : Name of the Author</h3>
+    <ul style="list-style: none">
+        <li>Mentor: Name of the Mentor</li>
+        <li>$Revision: 1807 $</li>
+        <li>Status: Tested</li>
+        <li>Tested By: Hemant K. Varshney  </li>
+    </ul>
+    <p>
+        For a particular pickslip id, virtual warehouse, label and customer id this 
+        report shows the ordered SKU and their current pieces</p>
+    <h2>
+        Overview</h2>
+    <p>
+        This is the drilldown on pickslip id to show the pickslip details. For a 
+        particular pickslip id, virtual warehouse, label and customer id the report 
+        shows the SKU details along with the carton id (UCC128 id) and pieces currently 
+        contained in boxes of the passed pickslip. </p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        Get all the pickslip details from tables master_sku ,box, boxdet and ps. </p>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:25%; text-align:center">
+                <b>Item</b>
+            </td>
+            <td style="width:20%; text-align:center">
+                <b>Summary</b>
+            </td>
+            <td style="width:10%; text-align:center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Carton Id</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                1</td>
+            <td style="width:45%; " class="style1">
+                UCC128 Id of the box</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Style</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                2</td>
+            <td style="width:45%; " class="style1">
+                Style of the SKU contain by the box</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Color</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Color of the SKU contain by the box</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Dimension</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Dimension of the SKU contain by the box</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Size</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Size of the SKU contain by the box</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Current Pieces</td>
+            <td style="width:20%; " class="style1">
+                Sum</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Piecess currently lying in the box</td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:20% ; text-align:center">
+                <b>Name</b>
+            </td>
+            <td style="width:15% ; text-align:center">
+                <b>Type</b>
+            </td>
+            <td style="text-align:center" class="style2">
+                <b>Default</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:20%; " class="style1">
+                Pickslip</td>
+            <td style="width:15%; text-align:left">
+                Number</td>
+            <td class="style3">
+                None</td>
+            <td style="width:45%; " class="style1">
+                Pickslip Id, whose boxes you wish to see.</td>
+        </tr>
+        <tr>
+            <td style="width:20%; " class="style1">
+                Virtual Warehouse</td>
+            <td style="width:15%; text-align:left">
+                String</td>
+            <td class="style3">
+                All</td>
+            <td style="width:45%; " class="style1">
+                Virtual Warehouse of the pickslip</td>
+        </tr>
+        <tr>
+            <td style="width:20%; " class="style1">
+                Label</td>
+            <td style="width:15%; text-align:left">
+                String</td>
+            <td class="style3">
+                All</td>
+            <td style="width:45%; " class="style1">
+                Lable of the SKU</td>
+        </tr>
+        <tr>
+            <td style="width:20%; " class="style1">
+                Customer Id</td>
+            <td style="width:15%; text-align:left">
+                String</td>
+            <td class="style3">
+                None</td>
+            <td style="width:45%; " class="style1">
+                Customer Id, whose boxes you wish to see.</td>
+        </tr>
+        <tr>
+            <td style="width:20%; " class="style1">
+                Warehouse location id</td>
+            <td style="width:15%; text-align:left">
+                String</td>
+            <td style="text-align:left" class="style2">
+                All</td>
+            <td style="width:45%; " class="style1">
+                The particular warehouse location id for which you would like to run the report</td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p xmlns="http://www.w3.org/1999/xhtml">
+        <i>Expected Time for the report output is </i>1 second</p>
+    The query will exhibit linear performance with respect to the number of Skus in 
+    boxes of Pickslip. The query also does a index based search on master_sku ,box, 
+    boxdet and ps. The query took 1 second to display the records.
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>No behavior change</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No know issue</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+        <ul>
+                <li>
+                <h4>
+                Private synonyms requried for the tables: </h4>
+            <pre>
+<code>boxdet,
+box,
+ps,
+master_sku</code></pre>
+                <ul>
+                <li>
+            <h4>
+                Script to create the synonyms:</h4>
+                <pre>
+ <code>create or replace synonym boxdet for dcms8.boxdet;       
+create or replace synonym box for dcms8.box;
+create or replace synonym ps for dcms8.ps
+create or replace synonym master_sku for dcms4.master_sku</code></pre>
+        </li>
+                </ul>
+                </li>
+         <li>
+         <h4>App-Settings required:</h4>
+           <pre><code>No appSetting is required</code></pre></li>
+   </ul>
+    <h2>
+        Query&#39;s documentation:</h2>
+        <pre>
+        select b.ucc128_id, 
+               ms.style as style,
+               ms.color as color,
+               ms.dimension as dimension,
+               ms.sku_size as sku_size,
+               sum(bd.current_pieces) as current_pieces
+          from boxdet bd
+         inner join box b on bd.pickslip_id = b.pickslip_id
+                         and bd.ucc128_id = b.ucc128_id
+         inner join ps ps on ps.pickslip_id = b.pickslip_id
+         LEFT OUTER JOIN po po
+            ON ps.customer_id = po.customer_id
+           AND ps.po_id = po.po_id
+           AND ps.iteration = po.iteration
+         inner join master_sku ms on bd.upc_code = ms.upc_code
+         where ps.pickslip_id = cast(:pickslip_id as number)
+         <if>AND ps.label_id=cast(:label_id as varchar2(255))</if>
+         <if>AND ps.vwh_id = CAST(:vwh_id as varchar2(255))</if> 
+         <if>AND ps.customer_id=CAST(:customer_id as varchar2(255))</if> 
+         <if>and ps.warehouse_location_id =:WhLoc</if>  
+         <if>AND po.start_date &gt;= CAST(:delivery_start_date AS DATE)</if>      
+         <if>AND po.start_date &lt;= CAST(:delivery_end_date AS DATE)</if>       
+         <if>AND po.dc_cancel_date &gt;=CAST(:dc_cancel_start_date AS DATE)</if>
+         <if>AND po.dc_cancel_date &lt;=CAST(:dc_cancel_end_date AS DATE)</if> 
+         group by b.ucc128_id, 
+                  ms.style,
+                  ms.color,
+                  ms.dimension,
+                  ms.sku_size
+
+        </pre>
+    <h2>
+        Validation details</h2>
+        <pre>
+        select sku.style,
+       sku.sku_size,
+       sku.color,
+       sku.dimension,
+       bd.ucc128_id from box b
+inner join boxdet bd on
+b.pickslip_id =bd.pickslip_id
+and b.ucc128_id = bd.ucc128_id
+inner join master_sku sku on
+ sku.upc_code=bd.upc_code
+where b.pickslip_id = :pickslip_id
+        </pre>
+    <p>
+        Description</p>
+        <p style="font-weight:bold">Query:</p>
+</body>
+</html>

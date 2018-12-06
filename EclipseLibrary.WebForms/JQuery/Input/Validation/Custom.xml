@@ -1,0 +1,291 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Custom>
+    <doc name="class">
+        <remarks>
+            <para>
+                The most common reason to use a <c>Custom</c> validator is when you need to validate values in multiple controls.
+                For example, you may want the value in one control to be less than the value in another control. In such a scenario,
+                you will associate a <c>Custom</c> validator with one of the controls and perform both server side and client side validation.
+            </para>
+          <para>
+            Custom validators should be prepared to validate empty values.
+          </para>
+            <para>
+                A basic example is provide below. Another more advanced example is given in the <see cref="Rule" /> property.
+            </para>
+        </remarks>
+        <example>
+            <para>
+                In this scenario, we want to ensure that the passwords entered in the <c>tbPassword</c> text box matches the password
+                entered in the <c>tbConfirmPassword</c> text box. To accomplish this, a <c>Custom</c> validator is associated with the
+                <c>tbConfirmPassword</c> textbox as shown in the markup below. The name of the <see cref="Rule"/> is specified as <c>issame</c>.
+                This custom rule is added to the built in validation rules as shown in the javascript code later. <see cref="Params"/> can be anything;
+                they are simply passed to your client and server validation functions. <see cref="ValidatorBase.ClientMessage"/> is the message to display
+                if validation fails. <see cref="ValidatorBase.ServerValidate"/> is the event handler which is responsible for performing server side validation.
+            </para>
+            <code lang="XML">
+                <![CDATA[
+    <i:TextBoxEx runat="server" ID="tbConfirmPassword" MaxLength="15" Required="true"
+        Text='<%# Bind("Password") %>' CaseConversion="Password">
+        <Validators>
+            <i:Required />
+            <i:Custom Rule="issame" Params="#tbPassword" ClientMessage="The two passwords you entered do not match"
+                OnServerValidate="tbConfirmPassword_ServerValidate" />
+        </Validators>
+    </i:TextBoxEx>
+     ]]>
+            </code>
+            <para>
+                You must write javascript code to add the custom validation <see cref="Rule"/> you have specified in your markup.
+                The simple javascript function returns true if the values in both text boxes is same.
+            </para>
+            <code lang="javascript">
+                <![CDATA[
+    $.validator.addMethod('issame', function(value, element, params) {
+        return value == $('#tbPassword').val();
+    });
+     ]]>
+            </code>
+            <para>
+                It is critical that you perform server side validation as well since client side validation can be easily
+                bypassed by a hacker. The <see cref="ValidatorBase.ServerValidate"/> event handler is passed <see cref="ServerValidateEventArgs"/>
+                as argument. The <see cref="ServerValidateEventArgs.ControlToValidate"/> is the control which you need to validate.
+                The <c>sender</c> is actually the <see cref="Custom"/> validator so you cannot cast it to a text box. Instead you must
+                use <c>ControlToValidate</c>. The value of <see cref="ServerValidateEventArgs.ControlToValidate"/> is the value to validate. It is
+                passed to you to save you the trouble of accessing the value from the control. Your responsibility is to set
+                <c>IsValid</c> property of <see cref="ServerValidateEventArgs.ControlToValidate"/> property to true if validation succeeds.
+                This property defaults to <c>false</c>
+                so validation will always fail if you do not bother to write the server event handler.
+            </para>
+            <code lang="C#">
+                <![CDATA[
+    protected void tbConfirmPassword_ServerValidate(object sender, ServerValidateEventArgs e)
+    {
+            TextBoxEx tbPassword = (TextBoxEx)e.ControlToValidate.NamingContainer.FindControl("tbPassword");
+            TextBoxEx tbConfirmPassword = (TextBoxEx)e.ControlToValidate;
+            e.ControlToValidate.IsValid = tbConfirmPassword.Text == tbPassword.Text;
+    }
+     ]]>
+            </code>
+        </example>
+    </doc>
+    <doc name="Params">
+        <remarks>
+            <para>
+                This value is passed to the javascript function specified in the <see cref="Rule"/> property.
+            </para>
+            <para>
+                Provide a comma seperated list of values. If there is only a single value, a single value
+                is passed to your client function. If there are multiple values, an array is passed to the
+                client function of the rule. Furthermore, if all values are numeric then they are passed as
+                integers, otherwise they are passed as strings.
+            </para>
+            <para>
+                Any space within Params will block the possibility of them being integers.
+                Params is saved in ViewState so that is is available to you at the time of server valdiation.
+            </para>
+            <list type="table">
+                <listheader>
+                    <term>Markup</term>
+                    <description>Javascript Parameter passed to validation rule</description>
+                </listheader>
+                <item>
+                    <term>Param="A"</term>
+                    <description>param = 'A' (string)</description>
+                </item>
+                <item>
+                    <term>Param="A,B,C"</term>
+                    <description>param = ['A', 'B', 'C'] (array of strings)</description>
+                </item>
+                <item>
+                    <term>Param="1"</term>
+                    <description>param = 1 (number)</description>
+                </item>
+                <item>
+                    <term>Param="1,2,3"</term>
+                    <description>param = [1, 2, 3] (array of numbers)</description>
+                </item>
+            </list>
+        </remarks>
+    </doc>
+    <doc name="Rule">
+        <remarks>
+            <para>
+                The name of the client side validation rule which will be called to perform validation.
+                If you have several custom validators which use the same rule, you need to add the rule only once.
+                This code should be outside of any <c>$(document).ready(...)</c> blocks.
+            </para>
+            <code lang="javascript">
+                <![CDATA[
+$.validator.addMethod('issame', function(value, element, params) {
+    return value == $('#tbPassword').val();
+});
+]]>
+            </code>
+            <para>
+                The rule is a function which receives three parameters:
+            </para>
+            <list type="table">
+                <item>
+                    <term>
+                        value
+                    </term>
+                    <description>
+                        This is the value which the user has entered in the control which needs to be validated.
+                    </description>
+                </item>
+                <item>
+                    <term>
+                        element
+                    </term>
+                    <description>
+                        element refers to the textbox being validated. This example does not use this parameter.
+                    </description>
+                </item>
+                <item>
+                    <term>
+                        params
+                    </term>
+                    <description>
+                        This contains whatever you passed as the <see cref="Params"/> property in your markup; in this case this is the selector
+                        of the other text box <c>#tbPassword</c>. It is helpful only if you are trying to write a generic rule which can change its
+                        behavior based on the param passed. This example does not use this value.
+                    </description>
+                </item>
+            </list>
+        </remarks>
+        <example>
+            <para>
+                Here we have a pair of text boxes in each row of a grid. We want to ensure that the accepted quantity is always
+                less than the delivered quantity. Additionally, we want to enforce this for selected rows only.
+            </para>
+            <para>
+                Following is the markup to show two textboxes which need to be validated.
+            </para>
+            <code lang="XML">
+                <![CDATA[
+                  <asp:TemplateField HeaderText="Delivered">
+                    <ItemTemplate>
+                        <i:TextBoxEx ID="tbDelivered" runat="server" Text='<%# Bind("QtyDelivered") %>' MaxLength="9"
+                            TabIndex="-1" FriendlyName='<%# Eval("ItemCode", "Delivered for Item {0}") %>'
+                            EnableViewState="true">
+                            <Validators>
+                                <i:Required />
+                                <i:Value Min="0" ValueType="Integer" />
+                            </Validators>
+                        </i:TextBoxEx>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="Accepted">
+                    <ItemTemplate>
+                        <i:TextBoxEx ID="tbAccepted" runat="server" Text='<%# Bind("AcceptedQty") %>' MaxLength="9"
+                            TabIndex="1" FriendlyName='<%# Eval("ItemCode", "Accepted for Item {0}") %>'
+                            EnableViewState="true">
+                            <Validators>
+                                <i:Required />
+                                <i:Value Min="0" ValueType="Integer" />
+                                <i:Custom Rule="GreaterThanDelivered" DependsOn="function(element) {
+                                return $(element).closest('tr').is('.ui-selected');
+                                }" DependsOnState="Custom" 
+                                ClientMessage="Accepted quantity for Item {0} can not be more than delivered quantity" />
+                            </Validators>
+                        </i:TextBoxEx>
+                    </ItemTemplate>
+                </asp:TemplateField>
+            ]]>
+            </code>
+            <para>
+                Through the above markup we need <c>tbAccepted</c> to have values less than the value in <c>tbDelivered</c>. For this, we have
+                specified the <see cref="Custom" /> validation rule <c>"GreaterThanDelivered"</c> in <c>tbAccepted</c> textbox.
+                The parameters have been specified in the table below:
+            </para>
+            <list type="table">
+                <item>
+                    <term>
+                        Rule:
+                    </term>
+                    <description>
+                        Specified rule is <c>GreaterThanDelivered</c>. This is a <c>JavaScript</c> function which
+                        is required to be coded to implement validation.
+                    </description>
+                </item>
+              <item>
+                <term>
+                  <see cref="DependsOnState" />
+
+                </term>
+                <description>
+This is set to <c>Custom</c> so that <see cref="ValidatorBase.DependsOn" /> is interpreted as a javascript function.
+                </description>
+              </item>
+                <item>
+                    <term>
+                      <see cref="ValidatorBase.DependsOn" />
+                    </term>
+                    <description>
+                        This property is used to specify the condition when the validation has to be carried on. In this scenario,
+                        the validation need to occur when the containing row is selected. The code below returns true
+                        if the row containing <c>tbAccepted</c> is selected.
+                        <code lang="JavaScipt">
+                            <![CDATA[
+                                DependsOn="function(element) {
+                                    return $(element).closest('tr').is('.ui-selected');
+                                }"  
+                                ]]>
+                        </code>
+                    </description>
+                </item>
+
+                <item>
+                    <term>
+                      <see cref="ValidatorBase.ClientMessage" />
+                    </term>
+                    <description>
+                        This property lets you specify the format string for the error message. However, any constant
+                        string can also be specified but it has the option to show the values specified in the
+                        <see cref="Params"/> property. Here we are not specifying the values of
+                        <see cref="Params"/> through the markup, instead we are specifying this property in the
+                        code behind. Please refer to the code below for this, where we are specifying <c>ItemCode</c>
+                        as <c>Param</c>:
+
+                        <code lang="C#">
+                            <![CDATA[
+                                protected void gvEditGRNItems_RowDataBound(object sender, GridViewRowEventArgs e)
+                                {
+                                    switch (e.Row.RowType)
+                                    {
+                                        case DataControlRowType.DataRow:
+                                            TextBoxEx tbAccepted = (TextBoxEx)e.Row.FindControl("tbAccepted");
+                                            tbAccepted.Validators.OfType<Custom>().Single().Params = DataBinder.Eval(e.Row.DataItem, "ItemCode", "{0}");
+                                            break;
+                                    }
+                                }
+                                ]]>
+                        </code>
+                    </description>
+                </item>
+            </list>
+
+            <para>
+                Now, we need to code the <c>JavaScript</c> function which has been specified as <c>Rule</c> />.
+                <para>
+                    In the code above <c>value</c> contains the value of the textbox whose validation
+                    has to be done.
+                </para>
+                <para>
+                    The second argument <c>element</c> refers to the current textbox.
+                </para>
+                Refer to the code below:
+                <code lang="JavaScript">
+                    <![CDATA[
+                        $.validator.addMethod('GreaterThanDelivered', function (value, element, params) {
+                            var $tbDelivered = $(':text[name$=tbDelivered]', $(element).closest('tr'));
+                            return value <= $tbDelivered.val();
+                        });
+                    ]]>
+                </code>
+
+            </para>
+        </example>
+    </doc>
+</Custom>

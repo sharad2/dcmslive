@@ -1,0 +1,305 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>00.00 Title of the Report</title>
+</head>
+<body>
+    <h1 id="ctlReportHeading" style="TEXT-ALIGN: center">
+        140.107 SKUs which are locking Buckets&nbsp;</h1>
+    <h3>
+        Author : Ritesh Verma</h3>
+    <ul style="list-style: none">
+        <li>Mentor: Hemant varshney</li>
+        <li>$Revision: 5979 $</li>
+        <li>Status: Done</li>
+        <li>Tested By: </li>
+    </ul>
+    <p>
+        The Report lists the Buckets, whose expediting may be locked, while creating 
+        pitch carts, due to the shortage of the specified SKU at FPK Locations. When 
+        this happens, it becomes imperative to optimize the replenishment process for 
+        specified SKU so that boxes are not bypassed at MPC creation time.The report 
+        displays orders of Buckets only. </p>
+    <h2>
+        Overview</h2>
+    <p>
+        When expediting is done, sometimes the program refuses to create pitch carts 
+        because inventory does not exist for any of the boxes remaining in the bucket.
+    </p>
+    <p>
+        This report list all the Buckets which contains the specified problem SKU. A 
+        problem SKU is the SKU, for which the total required quantity is more than the 
+        quantity available at FPK Locations.
+    </p>
+  
+    <h2>
+        Algorithm</h2>
+    <p>
+        Identify all the Buckets, which will be affected due to the shortage for the 
+        specified SKUs. The information 
+        regarding each bucket will be displayed in the report. </p>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:25%; text-align:center">
+                <b>Item</b>
+            </td>
+            <td style="width:20%; text-align:center">
+                <b>Summary</b>
+            </td>
+            <td style="width:10%; text-align:center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:25%">
+                <i><b>Bucket </b></i></td>
+            <td style="width:20%">
+                No</td>
+            <td style="width:10%">
+                1</td>
+            <td style="width:45%">
+                The Bucket Id, which may create problem during CreateMPC. This will be fetched 
+                from bucket table.</td>
+        </tr>
+        <tr>
+            <td style="width:25%">
+                Required Quantity</td>
+            <td style="width:20%">
+                Sum</td>
+            <td style="width:10%">
+                &nbsp;</td>
+            <td style="width:45%">
+                Required Quantity of the specified SKU in the Bucket. This will be fetched from 
+                psdet table</td>
+        </tr>
+        <tr>
+            <td style="width:25%">
+                FPK Quantity</td>
+            <td style="width:20%">
+                No</td>
+            <td style="width:10%">
+                &nbsp;</td>
+            <td style="width:45%">
+                                The total number of pieces, for this SKU, which are lying at FPK Locations. This 
+                will be fetched from the ialoc_content table.</td>
+        </tr>
+        <tr>
+            <td style="width:25%">
+                Unallocated FPK Quantity</td>
+            <td style="width:20%">
+                No</td>
+            <td style="width:10%">
+                &nbsp;</td>
+            <td style="width:45%">
+                The total number of pieces of this SKU lying at the FPK locations, which can be 
+                picked against the required quantity. That means, those pieces, which are not 
+                reserved for any other bucket. This will be calculated as quantity in 
+                ialoc_content table minus quantity reserved in resvdet table.</td>
+        </tr>
+        <tr>
+            <td style="width:25%">
+                FPK Location</td>
+            <td style="width:20%">
+                No</td>
+            <td style="width:10%">
+                &nbsp;</td>
+            <td style="width:45%">
+                The Location, where the SKU is assigned. There may be more that one location 
+                where the SKU is assigned, however, only one location will be displayed. This 
+                will be fetched from the ialoc table.</td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:20% ; text-align:center">
+                <b>Name</b>
+            </td>
+            <td style="width:15% ; text-align:center">
+                <b>Type</b>
+            </td>
+            <td style="width:20%; text-align:center">
+                <b>Default</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:20%">
+                UPC Code</td>
+            <td style="width:15%">
+                string</td>
+            <td style="width:20%">
+                No default</td>
+            <td style="width:45%">
+                The UPC Code for the Shortage SKU.</td>
+        </tr>
+        <tr>
+            <td style="width:20%">
+                Virtual Warehouse</td>
+            <td style="width:15%">
+                string</td>
+            <td style="width:20%">
+                All warehouse</td>
+            <td style="width:45%">
+                The Virtual Warehouse for the SKU.</td>
+        </tr>
+         <tr>
+            <td style="width:20%">
+                Warehouse Location</td>
+            <td style="width:15%">
+                string</td>
+            <td style="width:20%">
+                All warehouse</td>
+            <td style="width:45%">
+                The Warehouse Location for the SKU.</td>
+        </tr>
+    </table>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>No behavior change</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No Known Issue.</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+        <ul>
+                <li>
+                <h4>
+                Private synonyms requried for the tables: </h4>
+            <pre>
+<code>ps,
+psdet,
+bucket,
+ialoc,
+ialoc_content,
+resvdet</code>&nbsp;</pre>
+                    <ul>
+                        <li>
+                            <h4>
+                Script to create the synonyms:</h4>
+                <pre>
+create or replace synonym ps FOR DCMS8.ps;<code>       
+create or replace synonym psdet FOR dcms8.psdet;
+create or replace synonym bucket for dcms8.bucket;
+create or replace synonym ialoc for dcms8.ialoc;
+create or replace synonym ialoc_content for dcms8.ialoc_content;
+create or replace synonym resvdet for dcms8.resvdet;</code>&nbsp;</pre>
+        </li>
+                </ul>
+                </li>
+         <li>
+         <h4>App-Settings required:</h4>
+           <pre><code>&lt;add key=&quot;PickingArea" value="FPK"/&gt;</code></pre>
+                </li>
+   </ul>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <ul>
+        <li>This query will get the unavailable bucket with its respective required quantity 
+            for the passed SKU.</li>
+    </ul>
+    <ul>
+        <li>The query will fetch the SKUs and their 
+            required quantity for available buckets for passed SKU.</li>
+    </ul>
+    <ul>
+        <li>This query will get the FPK quantity and 
+            reserve quantity of the passed SKU from ialoc, ialoc_content and resvdet table.
+        </li>
+    </ul>
+    <ul>
+        <li>This query will get the reserved quantity for 
+            passed SKU from table resvdet.</li>
+    </ul>
+    <p style="font-weight:bold">Query:</p>
+    <pre>with bucket_sku_info as 
+( 
+SELECT bucket.bucket_id AS BUCKET_ID,
+       sum(psdet.pieces_ordered) AS REQUIRED_QUANTITY,
+       max(psdet.upc_code) as upc_code
+  FROM ps ps
+  left outer join bucket bucket on ps.bucket_id = bucket.bucket_id
+  left outer join psdet psdet on ps.pickslip_id = psdet.pickslip_id
+  left outer join bucketsku bs on bs.bucket_id = bucket.bucket_id
+                              and bs.upc_code = psdet.upc_code
+ WHERE bucket.available_for_mpc = 'Y'
+   and bs.underpitch_flag is null
+   AND bucket.available_for_pitching is null
+   AND bucket.pick_mode = cast(:Pitching as varchar2(255))
+   AND ps.vwh_id = cast(:VwhId as varchar2(255))
+   AND psdet.upc_code = cast(:UpcCode as varchar2(255))
+ GROUP BY bucket.bucket_id
+union all
+SELECT bucket.bucket_id AS BUCKET_ID,
+       sum(boxdet.expected_pieces) AS REQUIRED_QUANTITY,
+       max(boxdet.upc_code) as upc_code
+  FROM ps ps
+  left outer join bucket bucket on ps.bucket_id = bucket.bucket_id
+  left outer join box box on box.pickslip_id = ps.pickslip_id
+  left outer join boxdet boxdet on boxdet.ucc128_id = box.ucc128_id
+                               AND boxdet.pickslip_id = box.pickslip_id
+  left outer join bucketsku bs on bs.bucket_id = bucket.bucket_id
+                              and bs.upc_code = boxdet.upc_code
+ WHERE bucket.available_for_mpc = 'Y'
+   AND bucket.available_for_pitching = 'Y'
+   and bs.underpitch_flag is null
+   AND bucket.pick_mode = cast(:Pitching as varchar2(255))
+   AND boxdet.expected_pieces &gt; 0
+   AND boxdet.upc_code = cast(:UpcCode as varchar2(255))
+   AND box.ia_id is null
+   AND box.carton_id is null
+   AND box.vwh_id = cast(:VwhId as varchar2(255))
+ GROUP BY bucket.bucket_id), ialoc_sku as 
+ (
+ SELECT ia.assigned_upc_code AS UPC_CODE,
+        ia.vwh_id AS VWH_ID,
+        case
+          when count(distinct ia.location_id) &gt; 1 then
+           '*****'
+          else
+           max(ia.location_id)
+        end AS LOCATION_ID,
+        count(distinct ia.location_id) AS LOCATION_COUNT,
+        sum(iac.number_of_units) AS FPK_QUANTITY
+   FROM ialoc ia
+   left outer join ialoc_content iac on ia.ia_id = iac.ia_id
+                                    AND ia.location_id = iac.location_id
+  WHERE ia.assigned_upc_code = cast(:UpcCode as varchar2(255))
+    AND ia.vwh_id = cast(:VwhId as varchar2(255))
+    AND ia.ia_id = cast(:PickingArea as varchar2(255))
+  GROUP BY ia.assigned_upc_code, ia.vwh_id), resv_sku as
+  (
+  SELECT resv.upc_code AS UPC_CODE,
+         resv.vwh_id AS VWH_ID,
+         sum(resv.pieces_reserved) AS RESERVED_QUANTITY
+    FROM resvdet resv
+   WHERE resv.upc_code = cast(:UpcCode as varchar2(255))
+     AND resv.vwh_id = cast(:VwhId as varchar2(255))
+   GROUP BY resv.upc_code, resv.vwh_id)
+select bsi.bucket_id as bucket_id,
+       bsi.REQUIRED_QUANTITY as REQUIRED_QUANTITY,
+       ias.FPK_QUANTITY as FPK_QUANTITY,
+       NVL(ias.FPK_QUANTITY, 0) - NVL(rs.RESERVED_QUANTITY, 0) AS UNALLOCATED_QUANTITY,
+       IAS.LOCATION_ID AS FPK_LOCATION
+  from bucket_sku_info bsi
+  left outer join ialoc_sku ias on bsi.upc_code = ias.upc_code
+  left outer join resv_sku rs on rs.upc_code = ias.upc_code
+ ORDER BY BUCKET_ID ASC</pre>
+    <h2>
+        Validation details</h2>
+    <p>
+        No special validations.</p>
+</body>
+</html>

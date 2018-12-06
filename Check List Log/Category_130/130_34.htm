@@ -1,0 +1,2063 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+ <p style="text-align: center">
+        Testing log of report :R130.34<br />
+        Report version:6674<br />
+        DCMSLive 2014<br />
+        Tested by : Sanjeev Kumar<br />
+        Test date : 7-April-2014</p>
+    <table border="1" cellpadding="1" cellspacing="1">
+        <tr>
+            <th align="center">
+                S.No
+            </th>
+            <th>
+                Contents
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Comments
+            </th>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <b>1. Documentation</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.1
+            </td>
+            <td>
+                Overview of the report
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.2
+            </td>
+            <td>
+                Output columns are documented. All columns of all Grids should be documented.
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.3
+            </td>
+            <td>
+                Parameters are documented
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.4
+            </td>
+            <td>
+                Performance is defined. The parameters under which the performance was obtained
+                must be mentioned. Explain scalability of the query. (Linear, sublinear, logarithmic)
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.5
+            </td>
+            <td>
+                Behavior changes are documented
+            </td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                1.6
+            </td>
+            <td>
+                Author and Reviewer are there
+            </td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                1.7
+            </td>
+            <td>
+                Data validation queries must be documented properly
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.8
+            </td>
+            <td>
+                Make sure that Prerequisite section is added in the document
+                (Synonyms and AppSettings)</td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>2. Parameters</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                2.1
+            </td>
+            <td>
+                Verify each parameter documentation
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                2.2
+            </td>
+            <td>
+                Parameter tooltips and default values
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                2.3
+            </td>
+            <td>
+                In case of from to date parameters, run the report for single date i.e., from and
+                to date should have the same
+                <br />
+                date. Make sure that the database must have entries for two consecutive dates. For
+                example, database have records for two dates 23rd and 24th. If you run the report
+                for 23 i.e., from date and to date has 23, then the report must not display records
+                or 24th. <strong>NOTE: This check would not apply for productivtiy reports</strong>
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                2.4
+            </td>
+            <td>
+                In reports which have Warhouse Id column and also have a drill, make sure that the
+                warehouse id of the row is being passed to the drill down report as a parameter.
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                2.5
+            </td>
+            <td>
+                If a report has UPC (Style, Color, Dimension, SKU Size) as a parameter, then conceptually
+                warehouse id should be also there as a parameter. If it is not there, verify it
+                with the developer.
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>3. Verify Report</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.1
+            </td>
+            <td>
+                Report displays columns defined in the document (In Master child report, master
+                tables columns as well as child table columns should be documented.)
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.2
+            </td>
+            <td>
+                Reasonable Tooltips are defined for each column header and footer
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.3
+            </td>
+            <td>
+                Calculated column's tooltip explains formula
+            </td>
+            <td>
+                NA</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                3.4
+            </td>
+            <td>
+                Sorting on most column is working properly (Also ensure that in case of Master Child
+                report the sorting on columns of master table is also working)
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.5
+            </td>
+            <td>
+                Export to Excel works properly.
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.6</td>
+            <td>
+                Export to PDF works properly</td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                                3.7</td>
+            <td>
+                Data of the report validated with the provided validation queries
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.8</td>
+            <td>
+                Sort Columns for default view are as specified in document
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.9</td>
+            <td>
+                Summaries are displaying as specified in document
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.10</td>
+            <td>
+                Report must display sort icon on any of the column
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.11</td>
+            <td>
+                Meta Name Browseable propertity must be false for drill down reports. (To be tested
+                by Developer)
+            </td>
+            <td>
+                NA&nbsp;&nbsp;&nbsp; </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.12</td>
+            <td>
+                Run Report with different combination of parameters. Ensure parameters do affect
+                the output of the report.
+            </td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                3.13</td>
+            <td>
+                                If report is using the controls VirtualWarehouseSelector, BuildingSelector or 
+                StyleLabelSelector and if they are optional make sure you are using ShowAll 
+                property of these controls to show All option.</td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.14</td>
+            <td>
+                If date control is used in the report make sure you are using BusinessDateTextBox
+                control
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.15</td>
+            <td>
+                Make sure that if column is showing the Number, Time and Date then 
+                DataFormatString propertity and DataFooterFormatString propertity must be 
+                defined in the item and footer of this column respectivily.
+            </td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                3.16</td>
+            <td>
+                Make sure that the keywork $Id:&nbsp; $ is added in the meta tag to show the version number of the report
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.17</td>
+            <td>
+                If used make sure ProviderName and ConnectionString is provided for 
+                OracleDataSource, BuildingSelector, CartonAreaSelector, CustomerTypeSelector, 
+                PrinterSelector, StyleLabelSelector and VirtualWarehouseSelector.
+            </td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>4. Report Code Review</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                4.1
+            </td>
+            <td>
+                Validation queries are documented properly. <strong>NOTE: </strong>Validation Queries
+                should not be exact as report query. The validation query should validate a complete
+                row or a part of the row of the report. There should be provision for passing a
+                parameter in the validation query so that the tester can pass the parameter and
+                validate a particular row<strong>
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                4.2
+                      </td>
+            <td>
+      Ensure that schema is not hard wired in the report queries eg. dcms8a.&lt;column 
+                name&gt;, dcms4.&lt;column name&gt; etc.</td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>5. Comparison with old report (mention old report file name)</strong></td>
+        </tr>
+        <tr>
+            <td>
+                5.1
+            </td>
+            <td>
+      Match Title and number of the report
+            </td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                5.2
+                      </td>
+            <td>
+      Match number of parameters
+            </td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                5.3
+                      </td>
+            <td>
+      Match parameter validations
+            </td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                5.4
+                      </td>
+            <td>
+      Match report column headers
+            </td>
+            <td>
+                N</td>
+            <td>
+                3 new columns are added.</td>
+        </tr>
+        <tr>
+            <td>
+                5.5
+                      </td>
+            <td>
+      Match sequence of parameters
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                5.6
+                      </td>
+            <td>
+      Match sequence of columns
+            </td>
+            <td>
+                N</td>
+            <td>
+                new columns are added</td>
+        </tr>
+        <tr>
+            <td>
+                5.7
+                      </td>
+            <td>
+      Match no of data columns
+            </td>
+            <td>
+                N</td>
+            <td>
+                new columns are added</td>
+        </tr>
+        <tr>
+            <td>
+                5.8
+                      </td>
+            <td>
+      Match no of data rows
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                5.9
+                      </td>
+            <td>
+      Match column formatting
+            </td>
+            <td>
+                Y</td>
+            <td>
+                new coluns are added</td>
+        </tr>
+        <tr>
+            <td>
+                5.10
+                      </td>
+            <td>
+      Match default sorting. (Check the order by clause of the old report query. Do check
+                the default sorting on Master table columns, in case of Master Child report)
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                5.11
+                      </td>
+            <td>
+      Match column footers
+            </td>
+            <td>
+                Y</td>
+            <td>
+                new coluns are added</td>
+        </tr>
+        <tr>
+            <td style="height: 23px">
+                5.12
+                      </td>
+            <td style="height: 23px">
+      Match alignments of each column
+            </td>
+            <td style="height: 23px">
+                Y</td>
+            <td style="height: 23px">
+                new coluns are added</td>
+        </tr>
+        <tr>
+            <td>
+                5.13
+                      </td>
+            <td>
+                (SS Aug 10 2006) Run old and new reports with same parameters and ensure that all
+                data displayed matches exactly
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>6. Performance Test</strong> NA</td>
+        </tr>
+        <tr>
+            <td>
+                6.1
+            </td>
+            <td>
+                Verify that the performance of the report is consistent with what is stated in the
+                document
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                6.2
+            </td>
+            <td>
+                Check the EXPLAIN PLAN for each query that can potentially be executed. Ensure that
+                full scanns are documented in the Performace section
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td style="height: 23px">
+                6.3
+            </td>
+            <td style="height: 23px">
+                The indexes which the report relies on must be mentioned (???Where???)
+            </td>
+            <td style="height: 23px">
+            </td>
+            <td style="height: 23px">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="height: 22px">
+                <strong>7.Synonym testing:</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                7.1
+            </td>
+            <td>
+      Make sure that the synonym which is requried to run your report is there in the
+                list defined in doc\DCMSLiveUser.txt file. If it is not there just add it.<br />
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="height: 22px">
+                <b>8      <b>8</b><strong>.Approval testing:</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                8.1
+            </td>
+            <td>
+                Make sure that the layout of the report and changes done in the report are 
+                already approved from the customer.<br />
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Summary
+            </td>
+            <td colspan="3">
+            </td>
+        </tr>
+    </table>
+
+    <p style="text-align: center">
+        Testing log of report :R130.34<br />
+        Report version:6624<br />
+        DCMSLive 2014<br />
+        Tested by : Hemant K. Singh<br />
+        Test date : 2-4-2014</p>
+    <table border="1" cellpadding="1" cellspacing="1">
+        <tr>
+            <th align="center">
+                S.No
+            </th>
+            <th>
+                Contents
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Comments
+            </th>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <b>1. Documentation</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.1
+            </td>
+            <td>
+                Overview of the report
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.2
+            </td>
+            <td>
+                Output columns are documented. All columns of all Grids should be documented.
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.3
+            </td>
+            <td>
+                Parameters are documented
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.4
+            </td>
+            <td>
+                Performance is defined. The parameters under which the performance was obtained
+                must be mentioned. Explain scalability of the query. (Linear, sublinear, logarithmic)
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.5
+            </td>
+            <td>
+                Behavior changes are documented
+            </td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                1.6
+            </td>
+            <td>
+                Author and Reviewer are there
+            </td>
+            <td>
+                N</td>
+            <td>
+                no reviewer is there.</td>
+        </tr>
+        <tr>
+            <td>
+                1.7
+            </td>
+            <td>
+                Data validation queries must be documented properly
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.8
+            </td>
+            <td>
+                Make sure that Prerequisite section is added in the document
+                (Synonyms and AppSettings)</td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>2. Parameters</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                2.1
+            </td>
+            <td>
+                Verify each parameter documentation
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                2.2
+            </td>
+            <td>
+                Parameter tooltips and default values
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                2.3
+            </td>
+            <td>
+                In case of from to date parameters, run the report for single date i.e., from and
+                to date should have the same
+                <br />
+                date. Make sure that the database must have entries for two consecutive dates. For
+                example, database have records for two dates 23rd and 24th. If you run the report
+                for 23 i.e., from date and to date has 23, then the report must not display records
+                or 24th. <strong>NOTE: This check would not apply for productivtiy reports</strong>
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                2.4
+            </td>
+            <td>
+                In reports which have Warhouse Id column and also have a drill, make sure that the
+                warehouse id of the row is being passed to the drill down report as a parameter.
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                2.5
+            </td>
+            <td>
+                If a report has UPC (Style, Color, Dimension, SKU Size) as a parameter, then conceptually
+                warehouse id should be also there as a parameter. If it is not there, verify it
+                with the developer.
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>3. Verify Report</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.1
+            </td>
+            <td>
+                Report displays columns defined in the document (In Master child report, master
+                tables columns as well as child table columns should be documented.)
+            </td>
+            <td>
+                N</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.2
+            </td>
+            <td>
+                Reasonable Tooltips are defined for each column header and footer
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.3
+            </td>
+            <td>
+                Calculated column's tooltip explains formula
+            </td>
+            <td>
+                NA</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                3.4
+            </td>
+            <td>
+                Sorting on most column is working properly (Also ensure that in case of Master Child
+                report the sorting on columns of master table is also working)
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.5
+            </td>
+            <td>
+                Export to Excel works properly.
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.6</td>
+            <td>
+                Export to PDF works properly</td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                                3.7</td>
+            <td>
+                Data of the report validated with the provided validation queries
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.8</td>
+            <td>
+                Sort Columns for default view are as specified in document
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.9</td>
+            <td>
+                Summaries are displaying as specified in document
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.10</td>
+            <td>
+                Report must display sort icon on any of the column
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.11</td>
+            <td>
+                Meta Name Browseable propertity must be false for drill down reports. (To be tested
+                by Developer)
+            </td>
+            <td>
+                NA&nbsp;&nbsp;&nbsp; </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.12</td>
+            <td>
+                Run Report with different combination of parameters. Ensure parameters do affect
+                the output of the report.
+            </td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                3.13</td>
+            <td>
+                                If report is using the controls VirtualWarehouseSelector, BuildingSelector or 
+                StyleLabelSelector and if they are optional make sure you are using ShowAll 
+                property of these controls to show All option.</td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.14</td>
+            <td>
+                If date control is used in the report make sure you are using BusinessDateTextBox
+                control
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.15</td>
+            <td>
+                Make sure that if column is showing the Number, Time and Date then 
+                DataFormatString propertity and DataFooterFormatString propertity must be 
+                defined in the item and footer of this column respectivily.
+            </td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                3.16</td>
+            <td>
+                Make sure that the keywork $Id:&nbsp; $ is added in the meta tag to show the version number of the report
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.17</td>
+            <td>
+                If used make sure ProviderName and ConnectionString is provided for 
+                OracleDataSource, BuildingSelector, CartonAreaSelector, CustomerTypeSelector, 
+                PrinterSelector, StyleLabelSelector and VirtualWarehouseSelector.
+            </td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>4. Report Code Review</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                4.1
+            </td>
+            <td>
+                Validation queries are documented properly. <strong>NOTE: </strong>Validation Queries
+                should not be exact as report query. The validation query should validate a complete
+                row or a part of the row of the report. There should be provision for passing a
+                parameter in the validation query so that the tester can pass the parameter and
+                validate a particular row<strong>
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                4.2
+                      </td>
+            <td>
+      Ensure that schema is not hard wired in the report queries eg. dcms8a.&lt;column 
+                name&gt;, dcms4.&lt;column name&gt; etc.</td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>5. Comparison with old report (mention old report file name)</strong></td>
+        </tr>
+        <tr>
+            <td>
+                5.1
+            </td>
+            <td>
+      Match Title and number of the report
+            </td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                5.2
+                      </td>
+            <td>
+      Match number of parameters
+            </td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                5.3
+                      </td>
+            <td>
+      Match parameter validations
+            </td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                5.4
+                      </td>
+            <td>
+      Match report column headers
+            </td>
+            <td>
+                NA</td>
+            <td>
+                3 new columns are added.</td>
+        </tr>
+        <tr>
+            <td>
+                5.5
+                      </td>
+            <td>
+      Match sequence of parameters
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                5.6
+                      </td>
+            <td>
+      Match sequence of columns
+            </td>
+            <td>
+                NA</td>
+            <td>
+                new columns are added</td>
+        </tr>
+        <tr>
+            <td>
+                5.7
+                      </td>
+            <td>
+      Match no of data columns
+            </td>
+            <td>
+                NA</td>
+            <td>
+                new columns are added</td>
+        </tr>
+        <tr>
+            <td>
+                5.8
+                      </td>
+            <td>
+      Match no of data rows
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                5.9
+                      </td>
+            <td>
+      Match column formatting
+            </td>
+            <td>
+                NA</td>
+            <td>
+                new coluns are added</td>
+        </tr>
+        <tr>
+            <td>
+                5.10
+                      </td>
+            <td>
+      Match default sorting. (Check the order by clause of the old report query. Do check
+                the default sorting on Master table columns, in case of Master Child report)
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                5.11
+                      </td>
+            <td>
+      Match column footers
+            </td>
+            <td>
+                NA</td>
+            <td>
+                new coluns are added</td>
+        </tr>
+        <tr>
+            <td style="height: 23px">
+                5.12
+                      </td>
+            <td style="height: 23px">
+      Match alignments of each column
+            </td>
+            <td style="height: 23px">
+                NA</td>
+            <td style="height: 23px">
+                new coluns are added</td>
+        </tr>
+        <tr>
+            <td>
+                5.13
+                      </td>
+            <td>
+                (SS Aug 10 2006) Run old and new reports with same parameters and ensure that all
+                data displayed matches exactly
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>6. Performance Test</strong> NA</td>
+        </tr>
+        <tr>
+            <td>
+                6.1
+            </td>
+            <td>
+                Verify that the performance of the report is consistent with what is stated in the
+                document
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                6.2
+            </td>
+            <td>
+                Check the EXPLAIN PLAN for each query that can potentially be executed. Ensure that
+                full scanns are documented in the Performace section
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td style="height: 23px">
+                6.3
+            </td>
+            <td style="height: 23px">
+                The indexes which the report relies on must be mentioned (???Where???)
+            </td>
+            <td style="height: 23px">
+            </td>
+            <td style="height: 23px">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="height: 22px">
+                <strong>7.Synonym testing:</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                7.1
+            </td>
+            <td>
+      Make sure that the synonym which is requried to run your report is there in the
+                list defined in doc\DCMSLiveUser.txt file. If it is not there just add it.<br />
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="height: 22px">
+                <b>8      <b>8</b><strong>.Approval testing:</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                8.1
+            </td>
+            <td>
+                Make sure that the layout of the report and changes done in the report are 
+                already approved from the customer.<br />
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Summary
+            </td>
+            <td colspan="3">
+            </td>
+        </tr>
+    </table>
+    <p style="text-align: center">
+        Testing log of report :R130.33<br />
+        Report version:13395<br />
+        DCMSLive 2011<br />
+        Tested by : Sanjeev Kumar<br />
+        Test date : 27-03-2014</p>
+    <table border="1" cellpadding="1" cellspacing="1">
+        <tr>
+            <th align="center">
+                S.No
+            </th>
+            <th>
+                Contents
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Comments
+            </th>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <b>1. Documentation</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.1
+            </td>
+            <td>
+                Overview of the report
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.2
+            </td>
+            <td>
+                Output columns are documented. All columns of all Grids should be documented.
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.3
+            </td>
+            <td>
+                Parameters are documented
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.4
+            </td>
+            <td>
+                Performance is defined. The parameters under which the performance was obtained
+                must be mentioned. Explain scalability of the query. (Linear, sublinear, logarithmic)
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.5
+            </td>
+            <td>
+                Behavior changes are documented
+            </td>
+            <td>
+                NA</td>
+            <td>
+                This is new report.</td>
+        </tr>
+        <tr>
+            <td>
+                1.6
+            </td>
+            <td>
+                Author and Reviewer are there
+            </td>
+            <td>
+                Y</td>
+            <td>
+                Status and Tested by is not there.</td>
+        </tr>
+        <tr>
+            <td>
+                1.7
+            </td>
+            <td>
+                Data validation queries must be documented properly
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                1.8
+            </td>
+            <td>
+                Make sure that Prerequisite section is added in the document
+                (Synonyms and AppSettings)</td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>2. Parameters</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                2.1
+            </td>
+            <td>
+                Verify each parameter documentation
+            </td>
+            <td>
+                N</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                2.2
+            </td>
+            <td>
+                Parameter tooltips and default values
+            </td>
+            <td>
+                N</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                2.3
+            </td>
+            <td>
+                In case of from to date parameters, run the report for single date i.e., from and
+                to date should have the same
+                <br />
+                date. Make sure that the database must have entries for two consecutive dates. For
+                example, database have records for two dates 23rd and 24th. If you run the report
+                for 23 i.e., from date and to date has 23, then the report must not display records
+                or 24th. <strong>NOTE: This check would not apply for productivtiy reports</strong>
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                2.4
+            </td>
+            <td>
+                In reports which have Warhouse Id column and also have a drill, make sure that the
+                warehouse id of the row is being passed to the drill down report as a parameter.
+            </td>
+            <td>
+                Na</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                2.5
+            </td>
+            <td>
+                If a report has UPC (Style, Color, Dimension, SKU Size) as a parameter, then conceptually
+                warehouse id should be also there as a parameter. If it is not there, verify it
+                with the developer.
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>3. Verify Report</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.1
+            </td>
+            <td>
+                Report displays columns defined in the document (In Master child report, master
+                tables columns as well as child table columns should be documented.)
+            </td>
+            <td>
+                N</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.2
+            </td>
+            <td>
+                Reasonable Tooltips are defined for each column header and footer
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.3
+            </td>
+            <td>
+                Calculated column's tooltip explains formula
+            </td>
+            <td>
+                NA</td>
+            <td>
+                No Calculation is there</td>
+        </tr>
+        <tr>
+            <td>
+                3.4
+            </td>
+            <td>
+                Sorting on most column is working properly (Also ensure that in case of Master Child
+                report the sorting on columns of master table is also working)
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.5
+            </td>
+            <td>
+                Export to Excel works properly.
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.6</td>
+            <td>
+                Export to PDF works properly</td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                                3.7</td>
+            <td>
+                Data of the report validated with the provided validation queries
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.8</td>
+            <td>
+                Sort Columns for default view are as specified in document
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.9</td>
+            <td>
+                Summaries are displaying as specified in document
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.10</td>
+            <td>
+                Report must display sort icon on any of the column
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.11</td>
+            <td>
+                Meta Name Browseable propertity must be false for drill down reports. (To be tested
+                by Developer)
+            </td>
+            <td>
+                NA&nbsp;&nbsp;&nbsp; </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.12</td>
+            <td>
+                Run Report with different combination of parameters. Ensure parameters do affect
+                the output of the report.
+            </td>
+            <td>
+                NA</td>
+            <td>
+                Only single parameter</td>
+        </tr>
+        <tr>
+            <td>
+                3.13</td>
+            <td>
+                                If report is using the controls VirtualWarehouseSelector, BuildingSelector or 
+                StyleLabelSelector and if they are optional make sure you are using ShowAll 
+                property of these controls to show All option.</td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.14</td>
+            <td>
+                If date control is used in the report make sure you are using BusinessDateTextBox
+                control
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.15</td>
+            <td>
+                Make sure that if column is showing the Number, Time and Date then 
+                DataFormatString propertity and DataFooterFormatString propertity must be 
+                defined in the item and footer of this column respectivily.
+            </td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                3.16</td>
+            <td>
+                Make sure that the keywork $Id:&nbsp; $ is added in the meta tag to show the version number of the report
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3.17</td>
+            <td>
+                If used make sure ProviderName and ConnectionString is provided for 
+                OracleDataSource, BuildingSelector, CartonAreaSelector, CustomerTypeSelector, 
+                PrinterSelector, StyleLabelSelector and VirtualWarehouseSelector.
+            </td>
+            <td>
+                Y</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>4. Report Code Review</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                4.1
+            </td>
+            <td>
+                Validation queries are documented properly. <strong>NOTE: </strong>Validation Queries
+                should not be exact as report query. The validation query should validate a complete
+                row or a part of the row of the report. There should be provision for passing a
+                parameter in the validation query so that the tester can pass the parameter and
+                validate a particular row<strong>
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                4.2
+                      </td>
+            <td>
+      Ensure that schema is not hard wired in the report queries eg. dcms8a.&lt;column 
+                name&gt;, dcms4.&lt;column name&gt; etc.</td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>5. Comparison with old report (mention old report file name)</strong></td>
+        </tr>
+        <tr>
+            <td>
+                5.1
+            </td>
+            <td>
+      Match Title and number of the report
+            </td>
+            <td>
+                NA</td>
+            <td>
+                This is new report.</td>
+        </tr>
+        <tr>
+            <td>
+                5.2
+                      </td>
+            <td>
+      Match number of parameters
+            </td>
+            <td>
+                NA</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                5.3
+                      </td>
+            <td>
+      Match parameter validations
+            </td>
+            <td>
+                NA</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                5.4
+                      </td>
+            <td>
+      Match report column headers
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                5.5
+                      </td>
+            <td>
+      Match sequence of parameters
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                5.6
+                      </td>
+            <td>
+      Match sequence of columns
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                5.7
+                      </td>
+            <td>
+      Match no of data columns
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                5.8
+                      </td>
+            <td>
+      Match no of data rows
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                5.9
+                      </td>
+            <td>
+      Match column formatting
+            </td>
+            <td>
+                NA</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                5.10
+                      </td>
+            <td>
+      Match default sorting. (Check the order by clause of the old report query. Do check
+                the default sorting on Master table columns, in case of Master Child report)
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                5.11
+                      </td>
+            <td>
+      Match column footers
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td style="height: 23px">
+                5.12
+                      </td>
+            <td style="height: 23px">
+      Match alignments of each column
+            </td>
+            <td style="height: 23px">
+                NA</td>
+            <td style="height: 23px">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                5.13
+                      </td>
+            <td>
+                (SS Aug 10 2006) Run old and new reports with same parameters and ensure that all
+                data displayed matches exactly
+            </td>
+            <td>
+                NA</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>6. Performance Test</strong> NA</td>
+        </tr>
+        <tr>
+            <td>
+                6.1
+            </td>
+            <td>
+                Verify that the performance of the report is consistent with what is stated in the
+                document
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                6.2
+            </td>
+            <td>
+                Check the EXPLAIN PLAN for each query that can potentially be executed. Ensure that
+                full scanns are documented in the Performace section
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td style="height: 23px">
+                6.3
+            </td>
+            <td style="height: 23px">
+                The indexes which the report relies on must be mentioned (???Where???)
+            </td>
+            <td style="height: 23px">
+            </td>
+            <td style="height: 23px">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="height: 22px">
+                <strong>7.Synonym testing:</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                7.1
+            </td>
+            <td>
+      Make sure that the synonym which is requried to run your report is there in the
+                list defined in doc\DCMSLiveUser.txt file. If it is not there just add it.<br />
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="height: 22px">
+                <b>8      <b>8</b><strong>.Approval testing:</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                8.1
+            </td>
+            <td>
+                Make sure that the layout of the report and changes done in the report are 
+                already approved from the customer.<br />
+            </td>
+            <td>
+                Y</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Summary
+            </td>
+            <td colspan="3">
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

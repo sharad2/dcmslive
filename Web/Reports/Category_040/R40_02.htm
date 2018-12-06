@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>00.00 Title of the Report</title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        R40_02.Cartons on location report.</h1>
+    <h3>
+        Author : H.K.Singh</h3>
+    <ul style="list-style: none">
+        <li>Mentor:Ritesh verma</li>
+        <li>$Revision: 3939 $</li>
+        <li>Status: </li>
+        <li>Tested By: </li>
+    </ul>
+    <p>
+        This report is used to display cartons on the locations desired.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        This report is used to filter the cartons based on the desired locations.This 
+        report will also check whether there exist cartons for the desired locations or 
+        the location is empty i.e there exists no carton. The report is also helpful in 
+        monitoring cartons against the desired locations..&nbsp; </p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        Get area, whole location and empty location information from src_carton against the passed locations 
+        range.</p>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:25%; text-align:center">
+                <b>Item</b>
+            </td>
+            <td style="width:20%; text-align:center">
+                <b>Summary</b>
+            </td>
+            <td style="width:10%; text-align:center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:25%; text-align:center">
+                Area</td>
+            <td style="width:20%; text-align:center">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; text-align:center">
+                Area to which the location belongs.</td>
+        </tr>
+        <tr>
+            <td style="width:25%; text-align:center">
+                Location</td>
+            <td style="width:20%; text-align:center">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; text-align:center">
+                Name of the location.</td>
+        </tr>
+        <tr>
+            <td style="width:25%; text-align:center">
+                Empty Location</td>
+            <td style="width:20%; text-align:center">
+                No</td>
+            <td style="width:10%; text-align:center">
+                1</td>
+            <td style="width:45%; text-align:center">
+                Shows whether the location is empty or loaded.</td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:20% ; text-align:center">
+                <b>Name</b>
+            </td>
+            <td style="width:20%; text-align:center">
+                <b>Default</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:20% ; text-align:center">
+                Start location</td>
+            <td style="width:15% ; text-align:center">
+                Nil</td>
+            <td style="width:20%; text-align:center">
+                Start range of the location</td>
+        </tr>
+        <tr>
+            <td style="width:20% ; text-align:center">
+                Till location</td>
+            <td style="width:15% ; text-align:center">
+                Nil</td>
+            <td style="width:20%; text-align:center">
+                End range of the location.</td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 3</i> Sec.</p>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Its a new report.</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No issues.</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+        <ul>
+                <li>
+                <h4>
+                Private synonyms requried for the tables: </h4>
+    <p>
+        src_carton</p>
+                    <p>
+                        Master_storage_location.</p>
+                <ul>
+                <li>
+            <h4>
+                Script to create the synonyms:</h4>
+                <pre>
+ create or replace synonym src_carton for dcms4.src_carton;</pre>
+                    <pre>
+create or replace synonym master_storage_location for dcms4.master_storage_location.</pre>
+        </li>
+                </ul>
+                </li>
+   </ul>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <p>
+        This query is used to show all the cartons on the desired locations.</p>
+    <pre>
+     SELECT MAX(MSL.STORAGE_AREA) AS AREA,
+       MSL.LOCATION_ID AS WHOLE_LOCATION,
+       (CASE
+         WHEN MAX(T.LOCATION_ID) IS NULL THEN
+          'EMPTY'
+         ELSE
+          'LOADED'
+       END) AS LOCATION_id
+  FROM SRC_CARTON T
+RIGHT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+    ON T.LOCATION_ID = MSL.LOCATION_ID
+   AND T.CARTON_STORAGE_AREA = MSL.STORAGE_AREA
+WHERE MSL.LOCATION_ID BETWEEN :Startlocation AND :Tilllocation
+GROUP BY MSL.LOCATION_ID
+    </pre>
+    <h2>
+        Validation details</h2>
+    <p>
+        This query is used to validate a single record for the passed location.</p>
+        <p style="font-weight:bold">Query:</p>
+    <pre>
+    SELECT MAX(MSL.STORAGE_AREA) AS AREA,
+       MSL.LOCATION_ID AS WHOLE_LOCATION,
+       (CASE
+         WHEN MAX(T.LOCATION_ID) IS NULL THEN
+          'EMPTY'
+         ELSE
+          'LOADED'
+       END) AS LOCATION_id
+  FROM SRC_CARTON T
+RIGHT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+    ON T.LOCATION_ID = MSL.LOCATION_ID
+   AND T.CARTON_STORAGE_AREA = MSL.STORAGE_AREA
+WHERE MSL.LOCATION_ID =:Location_ID
+GROUP BY msl.location_id
+    </pre>
+</body>
+</html>

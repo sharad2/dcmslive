@@ -1,0 +1,380 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+    <style type="text/css">
+        .style1
+        {
+            height: 19px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        130<b>.</b>104<b> : </b>Inventory Transaction Details</h1>
+    <b>Auther : Sanjeev Kumar</b><br />
+    $Revision: 3013 $
+    <br />
+    <b>Reviewed By :Ritesh Verma</b>
+    <br />
+    Status :<br />
+    <p>
+        This report displays the SKU information for inventory transacted for particular
+        reason code and module code. The report output can be further retrieved by specifying
+        inserted date and also a date range which is 7 days from the specified date.
+    </p>
+    <h2>
+        Overview</h2>
+    <p>
+        Whenever, a specific inventory transaction takes place in DCMS, it is recorded in
+        database along with appropriate details. The report displays the details of inventory
+        transacted for a specified reason code, module code, transaction date (or dates),
+        user and warehouse id. The details includes style, color, dimension and sku_size
+        along with the transacted quantity.
+    </p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        For a specified reason code, module code, transaction date and warehouse id get
+        the details of SKUs from src_transaction and src_transaction_detail table. 
+        Retreving style, color, dimesion, size, insert_date, insert_by, reason_code and 
+        module_code form the table src_transaction. and retreving the Transaction Pieces 
+        from table src_transaction_detail.</p>
+    <h3>
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 25%; text-align: center">
+                <b>Item</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Summary</b>
+            </td>
+            <td style="width: 10%; text-align: center">
+                <b>Default Sort Sequence</b>
+            </td>
+            <td style="width: 35%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Reason Code
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                The reason code for the inventory transaction.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Module
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Module code for the inventory transactions.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Inserted By
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                The name of user, who carried out the transactions.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Insert Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                5
+            </td>
+            <td>
+                Date on which transactions were carried out.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Style
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                Style of the SKU.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Color
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2
+            </td>
+            <td>
+                Color of the SKU.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Dimension</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                3
+            </td>
+            <td>
+                Dimensions of the SKU.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Size
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                4
+            </td>
+            <td>
+                Size of the SKU.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Transaction
+                Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Sum of total transacted pieces.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                VWh
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Virtual Warehouse
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 20%; text-align: center">
+                <b>Name</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Default</b>
+            </td>
+            <td style="width: 60%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Specify date to summarize inventory activity
+            </td>
+            <td>
+                Current date
+            </td>
+            <td>
+                The date for which you wish to see the summary of inventory transaction.
+            </td>
+        </tr>
+        <tr>
+            <td class="style1">
+                Last Week Transaction
+            </td>
+            <td class="style1">
+                Unchecked
+            </td>
+            <td class="style1">
+                Specifies whether you wish to see the transaction for last seven days from specified
+                date.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Reason Code
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                The reason code for the inventory transaction.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Module
+                Code</td>
+            <td>
+                None
+            </td>
+            <td>
+                Module code for the inventory transaction.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Virtual Warehouse
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                The particular warehouse for which you wish to see inventory transactions.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 1 second</i></p>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Warehouse Id has been changed to VWh</li>
+        <li>Add a new filter for module code which will shows the transaction SKU with 
+            inventory module code wise</li>
+        <li>in the report,shows the transaction reasoncode wise.</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>None</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        <code>src_transaction,<br />
+            src_transaction_detail</code></p>
+    <p>
+        Use the script below to create the synonyms.<code><br />
+            <br />
+            create or replace synonym src_transaction for dcms4.src_transaction;<br />
+            create or replace synonym src_transaction_detail for dcms4.src_transaction_detail;</code></p>
+    <h2>
+        Parameter Technical Details</h2>
+    <ul>
+        <li>Specify date to summarize inventory activity : Specify a particular date for the
+            inventory activity.</li>
+        <li>Last week transactions: Check this box, if you wish to view the last week inventory.</li>
+        <li>Reason Code: Reason code for inventory transaction.</li>
+        <li>Module Code: Module code for inventory transaction.</li>
+        <li>Virtual Warehouse: This is a list parameter control. By default, inventory of all
+            Warehouse is shown for each area. If your focus is on the inventory in a particular
+            Warehouse, Specify that Warehouse Id. Null value text is "All".
+            </li>
+    </ul>
+    <h2>
+        Parameter Validation</h2>
+    <ul>
+        <li>No special validations.</li>
+    </ul>
+    <h2>
+        Query's documentation:</h2>
+    <ul>
+        <li>The query will get the details of SKUs which are transacted against the specified
+            reason code and module code and in a particular warehouse.
+            <pre>
+              SELECT trans.reason_code    AS REASON_CODE,
+              trans.module_code           AS MODULE_CODE,
+              trans.inserted_by           AS INSERTED_BY,
+              trans.insert_date           AS INSERT_DATE,
+              trans.style                 AS STYLE,
+              trans.color                 AS COLOR,
+              trans.dimension             AS DIM,
+              trans.sku_size              AS SKU_SIZE,
+              trans.vwh_id                AS VWH_ID,
+              transdet.transaction_pieces AS TRANSACTION_PCS
+              FROM src_transaction trans
+              LEFT OUTER JOIN src_transaction_detail transdet ON transdet.transaction_id = trans.transaction_id
+              WHERE transdet.transaction_pieces !=0
+              <if c="not($last_week)">AND (trans.INSERT_DATE &gt;= cast(:insert_date as date) AND trans.INSERT_DATE &lt; cast(:insert_date as date) + 1)</if>
+              <if c="$last_week">AND (trans.INSERT_DATE &gt;= cast(:insert_date as date)- 7 AND trans.INSERT_DATE &lt; cast(:insert_date as date) + 1)</if>
+              <if>AND trans.reason_code = cast(:reason_code as varchar2(255))</if>
+              <if>AND trans.MODULE_CODE = cast(:module_code as varchar2(255))</if>
+              <if>AND trans.VWH_ID = cast(:vwh_id as varchar2(255))</if>  
+            </pre>
+        </li>
+    </ul>
+    <h2>
+        Validation details</h2>
+    <p>
+        The query below can validate the output.</p>
+    <b>Query:</b><pre>
+          SELECT trans.reason_code           AS REASON_CODE,
+            trans.module_code           AS MODULE_CODE,
+            trans.inserted_by           AS INSERTED_BY,
+            trans.insert_date           AS INSERT_DATE,
+            trans.style                 AS STYLE,
+            trans.color                 AS COLOR,
+            trans.dimension             AS DIM,
+            trans.sku_size              AS SKU_SIZE,
+            transdet.transaction_pieces AS TRANSACTION_PCS
+            FROM src_transaction trans
+	        LEFT OUTER JOIN src_transaction_detail transdet 
+             ON transdet.transaction_id = trans.transaction_id
+            WHERE trans.reason_code is not null
+            AND trans.INSERT_DATE Between
+            TO_DATE('02/14/2006', 'MM/DD/YYYY') - 7 and
+            TO_DATE('02/14/2006', 'MM/DD/YYYY') + 1
+            AND trans.reason_code = 'D005'
+            AND trans.MODULE_CODE = 'REC'
+            AND trans.VWH_ID = '15'
+            AND trans.style = '08155'
+            AND trans.color = 'BDB'
+            AND trans.dimension = 'A'
+            AND trans.sku_size = '34'
+            AND transdet.transaction_pieces is not null
+          </pre>
+    <b>Description:</b><pre>
+          Above query can be used to verify the report data. Change the values of parameters accordingly.
+        </pre>
+</body>
+</html>

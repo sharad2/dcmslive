@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>Security in XtremeReporter</title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        Security in DCMSLive</h1>
+    <p>
+        <em><span style="text-decoration: underline">Author: Hemant K. Varshney; Last Updated:
+            March 12, 2009</span></em></p>
+    <p>
+        Security is about controlling access to resources, such as application components,
+        data, and hardware.DCMSLive provides you a new feature where you can limit the user
+        access to specific directories by assigining them a specific role and restricting
+        them to access specific directories.
+    </p>
+    <p>
+        This document discusses:</p>
+    <ul>
+        <li><strong><a href="Security.htm#ReportAccess">Controlling which reports are visible
+            to which users.</a></strong></li>
+    </ul>
+    <h1 id="ReportAccess">
+        Controlling which reports are visible to which users</h1>
+    <p>
+        In DCMSLive web administrator can control the secutity by copying reports in different
+        directories.&nbsp; Access on these directories can be controled by web.config.&nbsp;
+        Reports of a directory will be visible to a user if he has access to that folder.&nbsp;
+        The scenarios explained below can help web adminisrator to provide the access to
+        diferent users.</p>
+    <p>
+        At run time, the authorization module iterates through the allow and deny elements,
+        starting at the most local configuration file, until the authorization module finds
+        the first access rule that fits a particular user account. Then, the authorization
+        module grants or denies access to a URL resource depending on whether the first
+        access rule found is an allow or a deny rule.</p>
+    <h2>
+        Scenario 1</h2>
+    <p>
+        In DCMSLive all the reports are visible to all the users but sometime you want to
+        restrict the access of some reports to a specific user or a group of&nbsp; users
+        i.e <strong>Manager, Superviosr </strong>etc. Suppose web administrator would like
+        to give access to all the reports in directory X to user of Manager group he can
+        do that by simply by defining security setting in web.config &nbsp;file by the following
+        way:</p>
+    <pre>  &lt;location path="Report1"&gt;
+    &lt;system.web&gt;
+      &lt;authorization&gt;
+        &lt;allow roles="ECLIPSE\manager"/&gt;
+        &lt;deny users="*"/&gt;
+      &lt;/authorization&gt;
+    &lt;/system.web&gt;
+  &lt;/location&gt;       </pre>
+    <p>
+        If administrator decides to give access to a user and not a group of user then 
+        instead of using
+        <span style="font-size:10.0pt;font-family:&quot;Courier New&quot;">“allow roles”
+        </span>you need to use<span 
+            style="font-size:10.0pt;font-family:&quot;Courier New&quot;"> “allow users”
+        </span>for example if Administrator decides to give access on Repopt 1 to just 
+        only a user “nmoham” then he would like to do it this way:<span 
+            style="font-size:10.0pt;font-family:&quot;Courier New&quot;"><o:p></o:p></span></p>
+       <pre>  &lt;location path="Report1"&gt;
+    &lt;system.web&gt;
+      &lt;authorization&gt;
+        &lt;allow users="ECLIPSE\nmohan"/&gt;
+        &lt;deny users="*"/&gt;
+      &lt;/authorization&gt;
+    &lt;/system.web&gt;
+  &lt;/location&gt;       </pre>
+    
+    <p>
+        As we are using Windows security so domain name needs to be added with the user
+        name or with the role name</p>
+    <h2>
+        Scenario 2</h2>
+    <p>
+        If you have multiple groups e.g <strong>Manager, Clerk,Worker</strong> and you would
+        like to give access to Clerk and Worker&nbsp; to <strong>Directory Y</strong> and
+        to Manager to <strong>Directory Z</strong> .In the <code>web.config </code>&nbsp;file
+        you have to do the following:
+    </p>
+    <pre>&lt;location path=&quot;Y"&gt;
+    &lt;system.web&gt;
+      &lt;authorization&gt;
+        &lt;allow roles=&quot;ECLIPSE\Clerk, Eclipse\Worker"/&gt;
+        &lt;deny users="*"/&gt;
+      &lt;/authorization&gt;
+    &lt;/system.web&gt;
+  &lt;/location&gt;       </pre>
+    <pre>&lt;location path=&quot;Z"&gt;
+    &lt;system.web&gt;
+      &lt;authorization&gt;
+        &lt;allow roles=&quot;ECLIPSE\Manager"/&gt;
+        &lt;deny users="*"/&gt;
+      &lt;/authorization&gt;
+    &lt;/system.web&gt;
+  &lt;/location&gt;</pre>
+    <p>
+        In the above examples we have used windows role to provide the security, instead
+        of windows roles you can directly provide login name to give the access to some
+        directory.
+    </p>
+    <h2>
+        Scenario 3</h2>
+    <p>
+        If you would like to give access to all user except the specific user or a group
+        of users i.e. <strong>Clerk, Worker </strong>etc on the report or report category
+        folder, in this case first you have to put the deny tag and then allow tag.&nbsp;
+        Allow tag will contain the * ( means remaining users.). In the web.config file you
+        have to do the following:</p>
+    <pre>&lt;location path="Report1"&gt;
+     &lt;system.web&gt;
+       &lt;authorization&gt;
+        &lt;deny roles="ECLIPSE\Clerk, Eclipse\Worker"/&gt;
+        &lt;allow users="*"/&gt;
+       &lt;/authorization&gt;
+      &lt;/system.web&gt;
+     &lt;/location&gt;    </pre>
+    <p>
+        As we are using Windows security so domain name needs to be added with the user
+        name or with the role name.</p>
+    <h2>
+        Scenario 4</h2>
+    <p>
+        If you would like to give access to all users of a user group “Managers” but 
+        also like to give access to a user which is not the part of Manager group you 
+        can specifically provide the user access as showing in the following example:</p>
+    <pre>&lt;location path=&quot;Z"&gt;
+     &lt;system.web&gt;
+       &lt;authorization&gt;
+        &lt;allow roles="ECLIPSE\Manager"/&gt;
+        &lt;allow users="ECLIPSE\nmohan"/&gt;
+        &lt;deny users="*"/&gt;
+       &lt;/authorization&gt;
+      &lt;/system.web&gt;
+     &lt;/location&gt;    </pre>
+    <p>
+        In the above example administrator is giving access to all users which are the 
+        part of Managers group additionally he is also given access to a user “nmohan” 
+        who is not the part of Managers group.</p>
+    <h2>
+        If a report is implemented in New System</h2>
+    <p>
+        If a report is tested and implemented at customer&#39;s end then there is no need to 
+        keep the report of
+        <span style="font-size:11.0pt;line-height:115%;
+font-family:&quot;Calibri&quot;,&quot;sans-serif&quot;;mso-ascii-theme-font:minor-latin;mso-fareast-font-family:
+Calibri;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;
+mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;
+mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR-SA">previous
+        </span>systems.&nbsp; In this case there is also no need to keep the link of 
+        report to old system in ExternalLinks.sitemap so this should be removed from the 
+        ExternalLinks.sitemap file.
+                </p>
+    <p>
+        For Example a report 10.07 is tested and implemented on the production server 
+        then there is no need to keep the report which was developed in the old system 
+        so go to the ExternalLinks.sitemap file and search for the 10.07 remove that 
+        line from the file.&nbsp; This will always show you the link of new reporting 
+        system for 10.07 report.&nbsp; Now if you apply security to this report the 
+        report link will not visible to those who are denied to this report
+    </p>
+</body>
+</html>

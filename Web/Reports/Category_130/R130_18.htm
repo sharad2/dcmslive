@@ -1,0 +1,253 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        130<b>.</b>18<b> : </b>Inventory Transaction Summary</h1>
+    <b>Author : Sanjeev Kumar</b><br />
+    $Revision: 5462 $
+    <br />
+    <b>Tested:Hemant K. Singh</b><br />
+    Status :
+    <br />
+    <p>
+       The report displays transaction details by reason code against all module codes for a specified date or last week transactions from the specified date.
+    </p>
+    <h2>
+        Overview</h2>
+    <p>
+        Whenever, a specific inventory transaction takes place in DCMS, it is recorded in
+        database along with appropriate details. The report displays reason code, module
+        code and the quantity of transaction pieces along with the virtual warehouse id
+        for each inventory transaction that took place on specified date or in last 7 days
+        from the specified date. 
+    </p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        The report intents to show two types of records</p>
+    <ol>
+        <li>
+            <p>
+                <b>When the parameter of &quot;Specify date to summarize inventory activity&quot; is
+                    specified </b><br />
+                Quantity of transacted pieces for each reason code and module code are retrieved
+                from the table src_transaction and src_transcation_detail.</p>
+            <h3>
+                Output</h3>
+            <table width="100%" cellspacing="1" cellpadding="1" border="1">
+                <tr>
+                    <td style="width: 25%; text-align: center">
+                        <b>Item</b>
+                    </td>
+                    <td style="width: 20%; text-align: center">
+                        <b>Summary</b>
+                    </td>
+                    <td style="width: 10%; text-align: center">
+                        <b>Default Sort Sequence</b>
+                    </td>
+                    <td style="width: 35%; text-align: center">
+                        <b>Detail</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Reason Code
+                    </td>
+                    <td>
+                        No
+                    </td>
+                    <td align="center">
+                        1
+                    </td>
+                    <td>
+                        Reason Code for inventory transaction.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Module
+                    </td>
+                    <td>
+                        No
+                    </td>
+                    <td align="center">
+                        2
+                    </td>
+                    <td>
+                        Module code for inventory transaction.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Qty
+                    </td>
+                    <td>
+                        Sum
+                    </td>
+                    <td align="center">
+                        &nbsp;
+                    </td>
+                    <td>
+                        Sum of the number of transacted pieces for particular reason code and module code.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        VWh
+                    </td>
+                    <td>
+                        No
+                    </td>
+                    <td align="center">
+                        3
+                    </td>
+                    <td>
+                        Virtual warehouse id in which inventory transaction took place.
+                    </td>
+                </tr>
+            </table>
+            <br />
+        </li>
+       
+    </ol>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 20%; text-align: center">
+                <b>Name</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Default</b>
+            </td>
+            <td style="width: 60%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Specify date to summarize inventory activity
+            </td>
+            <td>
+                Current Date
+            </td>
+            <td>
+                The date for which you wish to see the summary of inventory transaction.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Show last week transactions
+            </td>
+            <td>
+                CheckBox by default Unchecked
+            </td>
+            <td>
+                Specifies whether you wish to see the transaction for last seven days from specified
+                date.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Virtual Warehouse
+            </td>
+            <td>
+                &quot;(All)&quot; as default.
+            </td>
+            <td>
+                The particular warehouse for which you wish to see inventory transactions.
+            </td>
+        </tr>
+       
+    </table>
+    <h2>
+        Performance Detail</h2>
+    &nbsp;<h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Module Code Filter Removed. 4th May 2012</li>
+        <li>Check Box for Show transaction summary by reason code removed.4th May 2012</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No Known Issue.</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are required</p>
+    <p>
+        <code>src_transaction,<br />
+            src_transaction_detail</code></p>
+    <p>
+        Use the script below to create the synonyms.<code><br />
+            <br />
+            create or replace synonym src_transaction for dcms4.src_transaction;<br />
+            create or replace synonym src_transaction_detail for dcms4.src_transaction_detail;</code></p>
+    <h2>
+        Parameter Technical Details</h2>
+    <ul>
+        <li>Specify date to summarize inventory activity : Specify a particular Date for the
+            inventory activity</li>
+        <li>Last Week transactions: Check this checkbox, if you wish to view the last week inventory.</li>
+        <li>Virtual Warehouse: This is a drop-down list parameter control. By default, inventory
+            of all Warehouse is shown for each area. If your focus is on the inventory in a
+            particular Warehouse, Specify that Warehouse Id. Choose "All" to view inventory
+            of all virtual warehouses. </li>
+    </ul>
+    <h2>
+        Query's documentation:</h2>
+  
+        <pre>
+
+	     SELECT trans.vwh_id AS VWH_ID,
+            trans.reason_code AS REASON_CODE,
+            trans.module_code AS MODULE_CODE,
+            sum(transdet.transaction_pieces) AS QTY
+            FROM src_transaction trans LEFT OUTER JOIN src_transaction_detail transdet
+            ON trans.transaction_id = transdet.transaction_id
+            WHERE trans.reason_code is not null
+            <if c="not($last_week)">AND (trans.INSERT_DATE &gt;= cast(:insert_date as date) AND trans.INSERT_DATE &lt; cast(:insert_date as date) +1) </if>
+            <if c="$last_week">AND (trans.INSERT_DATE &gt;= cast(:insert_date as date) - 7 AND trans.INSERT_DATE &lt; cast(:insert_date as date) + 1)</if>
+            <if>AND trans.vwh_id = cast(:vwh_id as varchar2(255))</if>
+            AND transdet.transaction_pieces is not null
+            GROUP BY trans.vwh_id, trans.reason_code, trans.module_code</pre>
+   
+    <h2>
+        Validation details</h2>
+    Below queries can validate the records retrieved after applying different sets of
+    parameters.
+    <ul>
+        <li>
+            <p>
+                When parameter for "Date" is specified or in addition to this&nbsp; "Last Week Transactions"
+                is also specified.</p>
+            <b>Query:</b>
+            <pre>
+       SELECT	trans.vwh_id AS "VWH_ID" ,
+        trans.reason_code AS "REASON_CODE",
+	trans.module_code AS "MODULE",
+	sum(transdet.transaction_pieces) AS "QTY"
+		
+		FROM src_transaction trans
+                LEFT OUTER JOIN src_transaction_detail transdet 
+                ON trans.transaction_id = transdet.transaction_id 
+	WHERE trans.reason_code is not null
+       		AND trans.vwh_id = '15'
+		AND trans.INSERT_DATE  Between
+		TO_DATE('2/14/2006', 'MM/DD/YYYY')-7 AND
+		TO_DATE('2/14/2006', 'MM/DD/YYYY') + 1
+	       AND trans.reason_code='TCON'
+       	AND trans.module_code = 'OPE'
+	GROUP BY trans.vwh_id, trans.reason_code, trans.module_code
+					</pre>
+            <b>Description:</b><pre>
+Execute the above query to display the inventory details by Reason code and module code for the specified SKU.
+		   </pre>
+        </li>
+</body>
+</html>

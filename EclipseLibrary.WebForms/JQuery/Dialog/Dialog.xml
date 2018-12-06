@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Dialog>
+  <doc name="class">
+    <remarks>
+      <para>
+        A dialog is a floating window that contains a title bar and a content area.
+        The dialog window can be moved, resized and closed with the 'x' icon by default.
+        If the content length exceeds the maximum height, a scrollbar will automatically appear.
+        A dialog has a lot of default behavior built-in, but few methods are needed to control it programmatically.
+      </para>
+      <para>
+        You decide whether the dialog should open when the page is loaded or only when some javascript executes
+        to open it by setting the <see cref="AutoOpen"/> property. You also decide where the dialog should be
+        positioned by setting the <see cref="Position"/> property.
+        Except for picker dialogs, only one dialog can be open at a given time.
+        Whenever a new dialog is opened, the previous dialog, if any, is automatically closed.
+        <see cref="DialogStyle" /> property is used to create a picker dialog. It also
+        provides options to make the dialog always visible, or take up less space.
+        You can use the <see cref="ContentTemplate"/> to display controls within the dialog.
+      </para>
+      <para>
+        By default, the buttons within the dialog will not be able to postback the page since the common
+        use case is to display AJAX content within the dialog. You can allow the dialog buttons to postback
+        by setting <see cref="EnablePostBack"/> to <c>true</c>.
+        <c>Dialog</c> class implements the <see cref="IValidationContainer"/> interface which ensures that
+        when a <see cref="Input.ButtonEx"/> within the the dialog is clicked, the scope of validation is restricted to
+        the controls within the dialog. There is no way to override this behavior since the property
+        <see cref="IsValidationContainer"/> is readonly and always returns true.
+      </para>
+      <para>
+        In addition to the <c>ContentTemplate</c>, you can also display the contents of a remote page within the dialog
+        by setting the <see cref="Ajax"/> properties, the most prominent property being
+        <see cref="P:EclipseLibrary.Web.JQuery.AjaxDialogSettings.Url"/>.
+        Commonly used AJAX events <see cref="P:EclipseLibrary.Web.JQuery.AjaxDialogSettings.OnAjaxDialogLoading"/>
+        and <see cref="P:EclipseLibrary.Web.JQuery.AjaxDialogSettings.OnAjaxDialogLoaded"/> provide client side hooks
+        into the loading process.
+      </para>
+      <para>
+        There is a property corresponding to each option accepted by the jQuery dialog widget such as
+        <see cref="Buttons"/>, <see cref="Title"/>, <see cref="Draggable"/>, <see cref="Width"/> etc.
+        Client side events of the jQuery dialog widget are also encapsulated in <see cref="OnClientOpen"/>,
+        <see cref="OnClientClose"/>, etc.
+      </para>
+      <para>
+        The markup rendered is documented in <see cref="RenderChildren"/>. Notice that the css class <c>ui-ajax-dialog</c>
+        has been applied to this dialog. This class is always guranteed to exist and it is useful if you are trying to write
+        selectors to search for dialogs. The following javascript function determines which dialog is showing in the
+        currently selected tab and reloads its contents.
+      </para>
+      <code>
+        <![CDATA[
+function RefreshVisibleDialog() {
+    var $tabs = $('#tabsCartonCreation');
+    var visibleIndex = $tabs.tabs('option', 'selected');
+    $('div.ui-ajax-dialog', $tabs)
+        .eq(visibleIndex)
+        .ajaxDialog('reload');
+}        
+        ]]>
+      </code>
+      <para>
+        Dialogs within an AJAX page must have a globally unique <c>ID</c>. We ensure this by expecting an
+        underscore <c>_</c> somewhere in the ID, such as frmCreateBucket_mydlg. When a dialog is invoked from an AJAX
+        page, we need to do additional work to get rid of the dialog when the page posts back. <see cref="PreCreateScripts" />
+        generates script which removes the dialog from the DOM whenever the form posts back by hooking up to the form's
+        <c>sumbit</c> event.
+      </para>
+      <para>
+        The dialog is closed automatically if the remote page returns a status code of 205. This provides the power
+        to the remote page to decide whether the dialog should stay open. For example, after a bucket has been successfully
+        created, the remote page can decide that the dialog should close. The remote page can also pass the id of the
+        created bucket to the calling page for furhter action. See <see cref="AjaxDialogSettings.OnAjaxDialogClosing" /> for a full example.
+      </para>
+    </remarks>
+    <example>
+      <para>
+        See <a href="ff16f3a6-d63b-48cc-a0fb-438cd8c281a2.htm">Creating an AJAX Dialog</a> for a complete working example.
+      </para>
+      <para>
+        This simple example displays a button which opens an <c>About...</c> dialog.
+        The <see cref="ContentTemplate" /> of the dialog contains the
+        <see cref="T:EclipseLibrary.Web.UI.AboutBox" /> control which is responsible for displaying all version numbers.
+      </para>
+      <code>
+        <![CDATA[
+<i:ButtonEx runat="server" ID="btnAbout" Text="About..." Icon="Custom" CustomIconName="ui-icon-info"
+    IconOnRight="true" OnClientClick="function(e) {
+$('#dlgAbout').dialog('open')                        
+    }" />
+<jquery:Dialog ID="dlgAbout" runat="server" Title="About DCMS Live 2009" Resizable="false"
+    Modal="true" AutoOpen="false" ClientIdSameAsId="true">
+    <Buttons>
+        <jquery:CloseButton Text="Ok" />
+    </Buttons>
+    <ContentTemplate>
+        <eclipse:AboutBox ID="AboutBox2" runat="server" />
+    </ContentTemplate>
+</jquery:Dialog>        
+        ]]>
+      </code>
+    </example>
+    <example>
+      <para>
+        This example creates a dialog which asks the user to change his password. When the Ok button is
+        clicked, it posts back the page and changes the password.
+      </para>
+      <code>
+        <![CDATA[
+     <jq:Dialog ID="dlgChangePassword" runat="server" AutoOpen="false" CloseOnEscape="true"
+        ClientIdSameAsId="true" EnablePostBack="true" Title="Change Passsowrd">
+        <ContentTemplate>
+           <ecl:TwoColumnPanel runat="server">
+                <ecl:LeftLabel runat="server" Text="User" />
+                <inp:TextBoxEx runat="server" CaseConversion="UpperCase" Required="true" ID="tbUserName"
+                    ClientIdSameAsId="true" Enabled="false">
+                   <Validators>
+                      <inp:Required />
+                    </Validators>
+                </inp:TextBoxEx>
+                <ecl:LeftLabel runat="server" Text="Current Password" />
+                <inp:TextBoxEx runat="server" CaseConversion="Password" Required="true" ID="tbCurrentPassword">
+                    <Validators>
+                        <inp:Required />
+                    </Validators>
+                </inp:TextBoxEx>
+                <ecl:LeftLabel runat="server" Text="New Password" />
+                <inp:TextBoxEx runat="server" CaseConversion="Password" ID="tbNewPassword">
+                    <Validators>
+                        <inp:Required />
+                    </Validators>
+                </inp:TextBoxEx>
+                <ecl:LeftLabel runat="server" Text="Confirm New Password" />
+                <inp:TextBoxEx runat="server" CaseConversion="Password" ID="tbConfirmNewPassword">
+                    <Validators>
+                        <inp:Required />
+                    </Validators>
+                </inp:TextBoxEx>
+            </ecl:TwoColumnPanel>
+            <inp:ValidationSummary runat="server" />
+            <inp:ButtonEx Action="Submit" runat="server" ID="btnChangePassword" ButtonState="Default"
+                OnClick="btnChangePassword_Click" Text="Change Password" CausesValidation="true" />
+        </ContentTemplate>
+    </jq:Dialog>
+     ]]>
+      </code>
+      <para>
+        Following code opens the dialog when a button is clicked
+      </para>
+      <code>
+        <![CDATA[
+<inp:ButtonEx runat="server" Action="None" ID="btnOpenDialog" Text="Change Password"
+    OnClientClick="function(e){
+$('#dlgChangePassword').dialog('open');
+    }" />
+     ]]>
+      </code>
+    </example>
+  </doc>
+  <doc name="Title">
+    <remarks>
+      You can specify the title at design time for dialogs which are used for a single purpose.
+      For multi purpose dialogs where the title may depend on which button was clicked to open it,
+      you can set the title through javascript.
+    </remarks>
+    <example>
+      <para>
+        When the select customer button is clicked, the title is set to <c>Select Customer</c>
+        and the <see cref="P:EclipseLibrary.Web.JQuery.AjaxDialogSettings.Url"/> is set to
+        <c>CustomerPicker.aspx</c>. When the Select Pickslip button is clicked, the title is set to
+        <c>Select Pickslip</c> and <c>Url</c> is set to <c>PickslipPicker.aspx</c>.
+      </para>
+      <code>
+        <![CDATA[
+        <inp:ButtonEx runat="server" Text="Select Customer..." OnClientClick="function(e) {
+$('#dlgPicker').dialog('option', 'title', 'Select Customer')
+  .ajaxDialog('option', 'url', 'CustomerPicker.aspx')
+  .dialog('open')
+  .ajaxDialog('load');
+        }" />
+        <inp:ButtonEx runat="server" Text="Select Pickslip..." OnClientClick="function(e) {
+$('#dlgPicker').dialog('option', 'title', 'Select Pickslip')
+  .ajaxDialog('option', 'url', 'PickslipPicker.aspx')
+  .dialog('open')
+  .ajaxDialog('load');
+        }" />        
+        <jq:Dialog runat="server" ID="dlgPicker" ClientIdSameAsId="true" AutoOpen="false">
+          ...
+        </jq:Dialog>
+         ]]>
+      </code>
+      <para>
+        In this example, <c>dlgPicker</c> is being used for two completely different purposes.
+        This is not recommended but may be useful for code saving in some situations.
+      </para>
+    </example>
+  </doc>
+  <doc name="OnAjaxDialogClosing">
+    <remarks>
+      By handling this event you can perform some work after the dialog completes it task, like you can send
+      some data if required to the parent page of the dialog to notify the status of the work done in the dialog.
+    </remarks>
+    
+    <example>
+      <para>
+        The page in the AjaxDialog need to send the status code and data to the AjaxDialog in the parent page.
+        Following code is sending the status code 205 and the bucket_id of a newly created bucket to the AjaxDialog in the 
+        parent page after successfully creating a new bucket.
+      </para>
+      <code>
+        <![CDATA[
+        private int _waveId;
+        protected void btnInsert_Click(object sender, EventArgs e)
+        {
+            if (this.IsValid)
+            {
+                dsCreateBox.Insert();
+                //Check if the new bucket is created after Insert() has been called.
+                if (this._waveId > 0)
+                {
+                    this.Response.ContentType = "application/json";
+                    JavaScriptSerializer ser = new JavaScriptSerializer();
+                    string s = ser.Serialize(_waveId); ;
+                    this.Response.StatusCode = 205;
+                    this.Response.Write(s);
+                    this.Response.End();
+                }
+            }
+        }
+        ]]>
+      </code>
+      <para>
+        In the above example the <c>this.Response.StatusCode = 205</c> will send the status code and
+        <c>this.Response.Write(s)</c> will send the bucket_id as data.
+      </para>
+    </example>
+
+    <example>
+      <para>
+        In the illustrated example below, the dialog <c>dlgCreateWave</c>  used to create a new bucket. After the new bucket is
+        created the dialog returns the bucket id of the bucket just created to the parent page and refreshes the page by
+        submitting it's "Go" button.
+      </para>
+      <code>
+        <![CDATA[
+        <jquery:Dialog ID="dlgCreateWave" runat="server" ClientIdSameAsId="true" AutoOpen="false"
+                Position="RightTop" Width="500" Title="Create new Wave">
+                <Ajax Url="CreateWave.aspx" OnAjaxDialogClosing="function(event, ui) {
+                $('#tbWave').val(ui.data);
+                $('#btnGo').click();
+                return true;
+                }" />
+        ]]>
+      </code>
+      <para>
+        In the code above <c>ui.data</c> will have the data sent through <c>this.Response.Write(s)</c> (shown in the previous example)
+        from the page in the AjaxDialog.
+      </para>
+    </example>
+  </doc>
+</Dialog>

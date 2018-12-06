@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="d1456bfd-ec4f-4ed1-9c8f-08921ce01943" revisionNumber="1">
+  <developerWalkthroughDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <summary>
+      <para>
+        You can enable your end users to choose which jQuery theme they wish to use for your web site.
+        After you have followed these steps, you will see a drop down list of all the available themes. The theme is instantly
+        applied and the choice is saved in a cookie for use during future visits.
+      </para>
+    </summary>
+
+    <introduction>
+      <para>
+        This document explains step by step how you can enable your users to select the theme of their choice. The common scenario
+        is to add the theme selector drop down list to your master page so that it is available from all pages. In summary,
+        you will be performing these steps:
+      </para>
+      <list class="ordered">
+        <listItem>
+          <para>
+            Add an <codeEntityReference>T:EclipseLibrary.Web.JQuery.Input.AjaxDropDown</codeEntityReference>
+            control to the master page.
+          </para>
+        </listItem>
+        <listItem>
+          <para>Supply a web method which will be responsible for populating it with the list of themes when the drop down is clicked.</para>
+        </listItem>
+        <listItem>
+          <para>
+            Write javascript to handle the <codeInline>change</codeInline> event of the drop down
+            and update the path of your style sheet depending upon which theme the user has chosen. Also save the selection
+            in a cookie for future use.
+          </para>
+        </listItem>
+        <listItem>
+          <para>Write server side code to read the value in the cookie and initialize the theme to apply.</para>
+        </listItem>
+      </list>
+    </introduction>
+    <prerequisites>
+      <content>
+        <list class="ordered">
+          <listItem>
+            <para>
+              You must include some or all the jQuery themes within your project. The themes can be downloaded from the
+              <externalLink>
+                <linkText>jQuery UI ThemeRoller</linkText>
+                <linkUri>http://jqueryui.com/themeroller/</linkUri>
+              </externalLink> page.
+            </para>
+            <para>
+              For this walk through, we have created a <computerOutputInline>Styles</computerOutputInline> folder in our project
+              root directory. This folder contains one directory per jQuery Theme. The
+              output of the <command>dir</command>for this folder looks like this:
+            </para>
+            <code language="scr">
+              <![CDATA[
+ Directory of C:\Work\DcmsShared\Styles
+12/01/2009  04:09 PM    <DIR>          .
+12/01/2009  04:09 PM    <DIR>          ..
+12/01/2009  03:14 PM    <DIR>          BlackTie
+12/01/2009  03:14 PM    <DIR>          Blitzer
+12/01/2009  03:14 PM    <DIR>          Cupertino
+12/01/2009  03:14 PM    <DIR>          DarkHive
+12/01/2009  03:14 PM    <DIR>          Darkness
+12/01/2009  03:14 PM    <DIR>          Default
+12/01/2009  03:14 PM    <DIR>          DotLuv
+12/01/2009  03:14 PM    <DIR>          Eggplant
+12/01/2009  03:14 PM    <DIR>          ExciteBike
+12/01/2009  03:14 PM    <DIR>          Flick
+12/01/2009  03:14 PM    <DIR>          HotSneaks
+12/01/2009  03:14 PM    <DIR>          Humanity
+12/01/2009  03:14 PM    <DIR>          LeFrog
+12/01/2009  03:14 PM    <DIR>          Lightness
+12/01/2009  03:14 PM    <DIR>          MintChoc
+12/01/2009  03:14 PM    <DIR>          PepperGrinder
+12/01/2009  03:14 PM    <DIR>          Redmond
+12/01/2009  03:14 PM    <DIR>          Smoothness
+12/01/2009  03:14 PM    <DIR>          SouthStreet
+12/01/2009  03:14 PM    <DIR>          Start
+12/01/2009  03:14 PM    <DIR>          Sunny
+12/01/2009  03:14 PM    <DIR>          SwankyPurse
+12/01/2009  04:09 PM             1,322 ThemeInfo.asmx
+12/01/2009  03:14 PM    <DIR>          Trontastic
+12/01/2009  03:14 PM    <DIR>          Vader
+               2 File(s)          1,802 bytes
+              26 Dir(s)  263,980,941,312 bytes free
+
+]]>
+            </code>
+            <alert class="note">
+              <para>
+                Notice that this directory also contains the file <computerOutputInline>ThemeInfo.asmx</computerOutputInline>
+                which we will discuss next.
+              </para>
+            </alert>
+            <alert class="tip">
+              <para>
+                It is also possible to maintain this Styles folder in a shared project and reference the CSS style sheets by
+                providing the URL of that project. This is useful if you have several projects which use jQuery themes and you
+                do not wish to make a copy of all themes in each project.
+              </para>
+            </alert>
+          </listItem>
+          <listItem>
+            <para>
+              Make available a web service which will populate the list of themes. The file <computerOutputInline>ThemeInfo.asmx</computerOutputInline> that you saw in the directory listing above
+              is a web service which contains the method <codeInline>GetThemes</codeInline> which we will need.
+              Its job is to fill the drop down list with the name of each directory in the
+              <computerOutputInline>Styles</computerOutputInline> folder. It is a small and simple method and its full code is
+              given below:
+            </para>
+            <code language="c#">
+              <![CDATA[
+[System.Web.Services.WebMethod]
+public object[] GetThemes()
+{
+    string str = System.Web.HttpContext.Current.Request.PhysicalPath;
+    string strThemeDirectory = Path.GetDirectoryName(str);
+    string[] themeNames = (from path in Directory.GetDirectories(strThemeDirectory, "*", SearchOption.TopDirectoryOnly)
+                            where !path.Contains('.')
+                            select Path.GetFileName(path)).ToArray();
+    var query = (from theme in themeNames
+                orderby theme
+                select new { Text = theme, Value = theme }).ToArray();
+    return query;
+}
+]]>
+            </code>
+            <para>
+              The code assumes that all the themes are in the same directory as the web service file. It enumerates all direcories
+              and returns them in an object array. The only requirement is that each object must have the <codeInline>Text</codeInline>
+              and <codeInline>Value</codeInline> properties. In fact, this example returns an annonymous class with these
+              properties and this is certainly acceptable.
+            </para>
+          </listItem>
+        </list>
+
+      </content>
+    </prerequisites>
+    <!-- One or more procedure or section with procedure -->
+    <procedure>
+      <title>Adding Theme Selector to the Master Page</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>
+              Your current master page should already contain a link to some jQuery style sheet as shown in the markup
+              below. Give this link an <codeInline>id</codeInline> which we will use in writing code. For this example,
+              the id will be <codeInline>linkTheme</codeInline>.
+            </para>
+            <code language="c#">
+              <![CDATA[
+...
+<head runat="server">
+    <title></title>
+    <link id="linkTheme" type="text/css" rel="Stylesheet" media="screen" href="/DcmsShared/Styles/Default/jquery-ui-1.7.2.custom.css" />
+    <jq:JQueryScriptManager runat="server" />
+    ...
+</head>
+<body>
+...
+]]>
+            </code>
+            <para>
+              This link points to the <codeInline>Default</codeInline> theme which must exist at the path specified.
+            </para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>
+              Add an <codeEntityReference>T:EclipseLibrary.Web.JQuery.Input.AjaxDropDown</codeEntityReference> control
+              somewhere on your master page. Commonly, it is put in the left navigation area of your master page.
+            </para>
+            <code language="c#">
+              <![CDATA[
+<inp:AjaxDropDown ID="ddlThemes" runat="server" OnClientChange="ddlThemes_Change"
+    Width="10em" SelectedText="Default" SelectedValue="Default" UseCookie="true" QueryString="DcmsShared_Theme">
+    <Cascadable WebMethod="GetThemes" WebServicePath="/DcmsShared/Styles/ThemeInfo.asmx" />
+    <Validators>
+        <inp:Required />
+    </Validators>
+</inp:AjaxDropDown>              
+              ]]>
+            </code>
+            <para>
+              We have specified that the drop down should be populated by calling the web method
+              <codeInline>GetThemes</codeInline> which is available in the web service
+              <codeInline>/DcmsShared/Styles/ThemeInfo.asmx</codeInline>. The <codeInline>SelectedText</codeInline>
+              and <codeInline>SelectedValue</codeInline> properties indicate that by default the <codeInline>Default</codeInline>
+              theme will be applied. Whenever the user selects a different theme, the javascript <codeInline>ddlThemes_Change</codeInline>
+              function will be called.
+            </para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>
+              Write the javascript function <codeInline>ddlThemes_Change</codeInline> which is responsible for updating the <codeInline>href</codeInline>
+              of the the style sheet link so that it points to the new theme. Since this script uses <![CDATA[<%= %>]]>, it must be placed
+              within the <codeInline>body</codeInline> section and not within the <codeInline>head</codeInline> section.
+            </para>
+            <code language="js">
+              <![CDATA[
+<script type="text/javascript">
+    function ddlThemes_Change(e) {
+        var $link = $('#<%= linkTheme.ClientID %>');
+        var href = $link.attr('href');
+        var newhref = href.replace(/\/Styles\/.*\//, '/Styles/' + $(this).val() + '/');
+        $link.attr('href', newhref);
+    }
+</script>
+              ]]>
+            </code>
+            <para>
+              This script accesses the client id of <codeInline>linkTheme</codeInline> using a code
+              rendering block. This is a nuisance created by ASP.NET.
+              If <codeInline>href='/DcmsShared/Styles/Default/jquery-ui-1.7.2.custom.css'</codeInline>
+              and the theme chosen by the user is
+              <codeInline>EggPlant</codeInline>, then
+              <codeInline>newhref='/DcmsShared/Styles/EggPlant/jquery-ui-1.7.2.custom.css'</codeInline> which is
+              set as the <codeInline>href</codeInline> of the style sheet link. This immediately changes the look of the
+              page without requiring a postback.
+            </para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>
+              Finally we need to read the value of the cookie in server code and set it as the selected theme.
+            </para>
+            <code language="c#">
+              <![CDATA[
+protected override void OnPreRender(System.EventArgs e)
+{
+    HttpCookie theme = this.Page.Request.Cookies.Get("theme");
+    if (theme != null)
+    {
+        string themeDir = this.Request.MapPath("/DcmsShared/Styles");
+        if (Directory.Exists(themeDir + "\\" + theme.Value))
+        {
+            ddlThemes.SelectedText =
+                ddlThemes.SelectedValue = theme.Value;
+            linkTheme.Href = linkTheme.Href.Replace("/Default/", "/" + theme.Value + "/");
+        }
+    }
+    base.OnPreRender(e);
+}              
+              ]]>
+            </code>
+            <para>
+              As a safety check, we ignore the value of the theme if the directory of that name does not exist.
+            </para>
+          </content>
+        </step>
+      </steps>
+      <conclusion>
+        <content>
+          <para>
+            Now each page in your web site displays a drop down list which the end user can use to select the preferred theme.
+            The theme is saved in a cookie so that it will be used whenever the user visits the site in the future.
+          </para>
+        </content>
+      </conclusion>
+    </procedure>
+
+
+    <nextSteps>
+      <content>
+        <para>
+          Instead of saving the theme in a cookie, you can use a profile provider and save the theme
+          as a profile property. This will make it possible for the user to see his preferred theme regardless of which
+          machine he uses to visit your web site.
+        </para>
+      </content>
+    </nextSteps>
+
+    <relatedTopics>
+    </relatedTopics>
+  </developerWalkthroughDocument>
+</topic>

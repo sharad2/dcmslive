@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EclipseLibrary.Web.JQuery.Input.ValidatorBase">
+    <Position X="6.75" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="EclipseLibrary.Web.JQuery.Input.ValidatorBase.ValidatorType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Web\JQuery\Input\Validation\ValidatorBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACBgIAAAIAQEAAAABAAAAAgAQEBAAAEAAA=</HashCode>
+      <FileName>Web\JQuery\Input\Validation\ValidatorBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EclipseLibrary.Web.JQuery.Input.Custom" Collapsed="true">
+    <Position X="6" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAIAIBAEAAAAAAAIBQEAAAIAAAACAAAAAAAgIAAAA=</HashCode>
+      <FileName>Web\JQuery\Input\Validation\Custom.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EclipseLibrary.Web.JQuery.Input.Value" Collapsed="true">
+    <Position X="8.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAgAAAAAABAAABAAEIBQEAAAIAQAACAAEABAAgAAEAA=</HashCode>
+      <FileName>Web\JQuery\Input\Validation\Value.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EclipseLibrary.Web.JQuery.Input.Filter" Collapsed="true">
+    <Position X="3.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAIAAEAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Web\JQuery\Input\Validation\Filter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EclipseLibrary.Web.JQuery.Input.Required" Collapsed="true">
+    <Position X="10.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\JQuery\Input\Validation\Required.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="EclipseLibrary.Web.JQuery.Input.DependsOnState" Collapsed="true">
+    <Position X="13" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAACAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Web\JQuery\Input\Validation\ValidatorBase.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

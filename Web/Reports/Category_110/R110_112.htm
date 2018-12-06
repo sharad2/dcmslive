@@ -1,0 +1,417 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<head>
+    <title>Report Documentation</title>
+    <meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1" />
+    <meta name="CODE_LANGUAGE" content="C#" />
+    <meta name="vs_defaultClientScript" content="JavaScript" />
+    <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5" />
+</head>
+<body>
+    <form name="Form1" method="post" action="ReportDoc.aspx?_Report=C%3a%5cDCMSLive1%5cReports%5cR110.112.xsd"
+    id="Form1">
+    <div>
+        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+    </div>
+    <h1 align="center" xmlns="http://www.w3.org/1999/xhtml">
+        110<b>.</b>112<b> : </b>PO LIST</h1>
+    <h3>
+        Author : Dinesh Singh Panwar</h3>
+    $Revision: 1582 $<br xmlns="http://www.w3.org/1999/xhtml">
+    Status: Reviewed<br />
+    Reviewed By : Hemant K. Varshney<br />
+    &nbsp;<p author="Nilesh Mohan" reviewer="Pravin Awasthi" xmlns="http://www.w3.org/1999/xhtml">
+        The report shows all PO in bucket for a particular Customer, bucket, customer_dc
+        and date range.
+    </p>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Overview</h2>
+    <body xmlns:mstns="http://tempuri.org/R99.900.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" xmlns="http://www.w3.org/1999/xhtml">
+        <p>
+            The report shows the list of POs in a bucket for a particular passed Customer, Customer
+            DC and date range if bucket is passed. If bucket is not passed this will also show the list of PO for a particular passed Customer, Customer
+            DC and date range for pickslips of status id 1.
+        </p>
+    </body>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Algorithm</h2>
+    Get the list of all PO in bucket from ps, box and dem_pickslip tables.
+    <h3 xmlns="http://www.w3.org/1999/xhtml">
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1" xmlns="http://www.w3.org/1999/xhtml">
+        <tr>
+            <td width="25%" align="center">
+                <b>Item</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Summary</b>
+            </td>
+            <td width="10%" align="center">
+                <b>Sort Sequence</b>
+            </td>
+            <td width="35%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <i><b>PO</b></i>
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                <r:item term="PO" key="true" sortsequence="1" xmlns:mstns="http://tempuri.org/R99.900.xsd"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Purchase Order for given Customer.
+          </r:item>
+            </td>
+        </tr>
+    </table>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1" xmlns="http://www.w3.org/1999/xhtml">
+        <tr>
+            <td width="20%" align="center">
+                <b>Name</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Default</b>
+            </td>
+            <td width="60%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Customer
+            </td>
+            <td>
+            </td>
+            <td>
+                Customer for which you want to display information.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Bucket
+            </td>
+            <td>
+            </td>
+            <td>
+                Bucket for which you want to display information.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Customer Dist Center
+            </td>
+            <td>
+            </td>
+            <td>
+                Customer Dist Center for which you want to display information.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                From Date
+            </td>
+            <td>
+            </td>
+            <td>
+                The date from which you want to display information.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                To Date
+            </td>
+            <td>
+            </td>
+            <td>
+                The date to which you want to display information.
+            </td>
+        </tr>
+    </table>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Performance Detail</h2>
+    <p xmlns="http://www.w3.org/1999/xhtml">
+        <i>Expected Time for the report output is </i>1 sec</p>
+    This Report displays the sub linear performance with respect to table ps, box and
+    dem_pickslip. There is index based scan on the table ps and box. Index ps_customer_id_i
+    and ps_bkt_fk_i used in the table ps, Index box_ps_fk_i used in the table box.
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Behavior Change</h2>
+    <ul>
+        <li>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                Now if user want to see the PO between some date, he needs to pass the from and
+                to date, report will display all the POs. The report will ignore the parameters
+                which are left blank.</p>
+        </li>
+        <li>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                Now name of report is changed from Boxes In PO to PO LIST, because report is showing
+                the list of POs based on passed parameters.</p>
+        </li>
+    </ul>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Issues</h2>
+    No Known Issue.
+    <br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+         ps,<br />
+           po,<br />
+        dem_pickslip<br />
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>ccreate or replace synonym ps for dcms8.ps; <br />
+create or replace synonym po for dcms8.po; <br />
+create or replace synonym dem_pickslip for dcms4.dem_pickslip;</code></p>
+    <p>
+        No appSettings is required:</p>
+    <h2>
+        Parameter Technical Details</h2>
+    <ul>
+        <li>Customer&nbsp; (Type = String): Enter the Customer Id for which boxes information
+            to be displayed. </li>
+        <li>Bucket&nbsp; (Type = String): Enter the Bucket Id for which boxes information to
+            be displayed. </li>
+        <li>Customer Dist Center (Type = String): Enter the Customer DC Id for which boxes information
+            to be displayed. </li>
+        <li>From Date (Type = DateTime): Enter the From Date for which boxes information to
+            be displayed. </li>
+        <li>To Date (Type = DateTime): Enter the To Date for which boxes information to be displayed.</li>
+    </ul>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.
+    <h2>
+        Query&#39;s documentation:</h2>
+    <p>
+        Query 1 will be executed when bucket is passed. Query 2 will be executed when 
+        bucket is not passed.</p>
+    <ul>
+        <li>
+            <r:doc xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:mstns="http://tempuri.org/R99.900.xsd">The query thats being used
+  <h3>
+      Query 1</h3>
+            <pre>   SELECT distinct (ps.po_id) AS PO_ID
+  FROM ps ps, box box, po po
+ WHERE ps.pickslip_id = box.pickslip_id
+   AND ps.customer_id = po.customer_id
+   AND ps.po_id = po.po_id
+   AND ps.iteration = po.iteration
+   AND (box.stop_process_date IS NULL OR
+       (box.stop_process_reason NOT IN ('$PSCANCEL', '$BOXCANCEL&#39;)))
+   AND ps.reporting_status is not null
+   AND trunc(po.start_date) >= :FromDate
+   AND trunc(po.start_date) <= :ToDate + 1
+   AND ps.customer_dc_id = :Customer_dc
+   AND ps.customer_id = :customer_id
+   AND ps.bucket_id = :bucket_id
+</pre>
+<h3>
+    Query 2</h3>
+<pre>
+SELECT DISTINCT (dps.customer_order_id) AS PO_ID
+  FROM dem_pickslip dps
+ WHERE dps.ps_status_id = '1'
+   AND dps.upload_date IS NULL
+   AND trunc(dps.delivery_date) >= :FromDate
+   AND trunc(dps.delivery_date) <= :ToDate + 1
+   AND dps.customer_dist_center_id = :Customer_dc
+   AND dps.customer_id = :Customer_id
+ ORDER BY PO_ID ASC
+            </pre>
+            </r:doc>
+        </li>
+    </ul>
+    <p>
+        <br />
+    </p>
+    <h2>
+        Validation details</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.
+    <br />
+    <br />
+    <b>Query:</b><pre><r:query xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mstns="http://tempuri.org/R99.900.xsd">
+            SELECT DISTINCT (ps.po_id) AS PO_ID
+            FROM ps ps, box box, po po
+            WHERE ps.pickslip_id = box.pickslip_id
+            AND ps.customer_id = po.customer_id
+            AND ps.po_id = po.po_id
+            AND ps.iteration = po.iteration
+            AND (box.stop_process_date IS NULL OR
+                 box.stop_process_reason NOT IN ('$PSCANCEL', '$BOXCANCEL&#39;))
+            AND ps.reporting_status is not null
+            AND po.start_date >= :from_date AND po.start_date &lt; :to_date + 1 
+            AND ps.customer_dc_id = :customer_dc_id
+            AND ps.customer_id = :customer_id
+            AND ps.bucket_id = :bucket_id
+          </r:query></pre>
+    <b>Description:</b><pre><r:description xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mstns="http://tempuri.org/R99.900.xsd">
+            The above validiation query will validiate the all PO for
+            given Bucket_id , customer_id customer_dc_id and date range.
+          </r:description></pre>
+    <b>Query:</b><pre><r:query xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mstns="http://tempuri.org/R99.900.xsd">
+            SELECT DISTINCT (dps.customer_order_id) AS &quot;PO_ID&quot;
+            FROM dem_pickslip dps
+            WHERE dps.ps_status_id = 1
+            AND dps.upload_date IS NULL
+            AND dps.delivery_date >= :from_date AND dps.delivery_date <= :to_date + 1
+            AND dps.customer_dist_center_id = :customer_dc_id
+            AND dps.customer_id = :customer_id
+          </r:query></pre>
+    <b>Description:</b><pre><r:description xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mstns="http://tempuri.org/R99.900.xsd">
+            The above validiation query will validiate the all PO for
+            given Customer Id, Customer DC ID ,PS_STATUS_ID 1 and date range.
+          </r:description></pre>
+    <!--End divTechnical-->
+    <div id="divTechnical" style="display: none" xmlns="http://www.w3.org/1999/xhtml">
+        <h2>
+            List of report views:</h2>
+        <ul>
+            <li><b>Classic View</b> : This view will display the all PO in bucket for a particular
+                Customer Id and Customer DC ID.</li></ul>
+        <ul>
+            <b>Child Table Selector is </b><i>PO</i><ul>
+                <li><b>PO : </b>Purchase Order Id.. </li>
+                <ul>
+                    <b>Xpath Expression:</b><ul>
+                        <li>PO_ID</li></ul>
+                </ul>
+            </ul>
+        </ul>
+        <h2>
+            Parameter Technical Details</h2>
+        <ul>
+            <li>Customer ID (Type = ID): Enter the Customer Id for which boxes information to be
+                displayed.</li><li>Bucket ID (Type = ID): Enter the Bucket Id for which boxes information
+                    to be displayed.</li><li>Customer Dist Center ID (Type = ID): Enter the Customer DC
+                        Id for which boxes information to be displayed.</li><li>From Date (Type = XmlDate):
+                            Enter the From Date for which boxes information to be displayed.</li><li>To Date (Type
+                                = XmlDate): Enter the To Date for which boxes information to be displayed.</li></ul>
+        <h2>
+            Parameter Validation</h2>
+        No special validations.
+        <h2>
+            Query's documentation:</h2>
+        <ul>
+            <li>
+                <r:doc xmlns:mstns="http://tempuri.org/R99.900.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            The query will get all PO for passed Bucket_id , customer_id and customer_dc_id and date range.
+            <pre>
+              SELECT DISTINCT (ps.po_id) AS PO_ID
+              FROM dcms8.ps ps, dcms8.box box, dcms8.po po
+              WHERE ps.pickslip_id = box.pickslip_id
+              AND ps.customer_id = po.customer_id
+              AND ps.po_id = po.po_id
+              AND ps.iteration = po.iteration
+              AND (box.stop_process_date IS NULL OR
+              (box.stop_process_reason IS NOT NULL AND
+              box.stop_process_reason NOT IN ('$PSCANCEL', '$BOXCANCEL')))
+              AND ps.reporting_status is not null
+              AND po.start_date >= :from_date
+              AND po.start_date <= :to_date + 1 
+              AND ps.customer_dc_id = :customer_dc_id
+              AND ps.customer_id = :customer_id
+              AND ps.bucket_id = :bucket_id
+            </pre></r:doc></li></ul>
+        <ul>
+            <li>
+                <r:doc xmlns:mstns="http://tempuri.org/R99.900.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            The query will get all PO for passed customer_id, customer_dc_id, date range and ps_status_id 1.
+            <pre>
+              SELECT DISTINCT (dps.customer_order_id) AS PO_ID
+              FROM dcms8a.dem_pickslip dps
+              WHERE dps.ps_status_id = '1'
+              AND dps.upload_date IS NULL
+              AND dps.delivery_date >=:from_date
+              AND dps.delivery_date <=:to_date + 1 
+              AND dps.customer_dist_center_id = :customer_dc_id
+              AND dps.customer_id = :customer_id
+            </pre></r:doc></li></ul>
+        <h2>
+            Data Tables used in this report are:</h2>
+        <ul>
+            <li><b>PO: </b></li>
+            <ul>
+                <br>
+                <li><b>PO_ID: </b></li>
+                ( Type = xs:ID )
+                <ul>
+                    <li>Filled by the query (1) by the select clause <i><b>distinct(ps.po_id)</b></i></li></ul>
+                <ul>
+                    <li>Filled by the query (2) by the select clause <i><b>DISTINCT(dps.customer_order_id)</b></i></li></ul>
+                <br>
+            </ul>
+        </ul>
+        <h2>
+            Validation details</h2>
+        Bellow queries may have the where clause in the [] brackets. It means these are
+        the optional parameters. If you do not want to pass these parameters just remove
+        the [] section.
+        <br>
+        <br>
+        <b>Query:</b><pre><r:query xmlns:mstns="http://tempuri.org/R99.900.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            SELECT DISTINCT (ps.po_id) AS "PO_ID"
+            FROM dcms8.ps ps, dcms8.box box, dcms8.po po
+            WHERE ps.pickslip_id = box.pickslip_id
+            AND ps.customer_id = po.customer_id
+            AND ps.po_id = po.po_id
+            AND ps.iteration = po.iteration
+            AND (box.stop_process_date IS NULL OR
+            (box.stop_process_reason IS NOT NULL AND
+            box.stop_process_reason NOT IN ('$PSCANCEL', '$BOXCANCEL')))
+            AND ps.reporting_status is not null
+            AND po.start_date >= :from_date
+            AND po.start_date <= :to_date + 1 
+            AND ps.customer_dc_id = :customer_dc_id
+            AND ps.customer_id = :customer_id
+            AND ps.bucket_id = :bucket_id
+          </r:query></pre>
+        <b>Description:</b><pre><r:description xmlns:mstns="http://tempuri.org/R99.900.xsd"
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            This validiation query will validiate the all PO for
+            given Bucket_id , customer_id customer_dc_id and date range.
+          </r:description></pre>
+        <b>Query:</b><pre><r:query xmlns:mstns="http://tempuri.org/R99.900.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            SELECT DISTINCT (dps.customer_order_id) AS "PO_ID"
+            FROM dcms8a.dem_pickslip dps
+            WHERE dps.ps_status_id = '1'
+            AND dps.upload_date IS NULL
+            AND dps.delivery_date >= :from_date
+            AND dps.delivery_date <=:to_date + 1
+            AND dps.customer_dist_center_id = :customer_dc_id
+            AND dps.customer_id = :customer_id
+          </r:query></pre>
+        <b>Description:</b><pre><r:description xmlns:mstns="http://tempuri.org/R99.900.xsd"
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            This validiation query will validiate the all PO for
+            given Customer Id, Customer DC ID ,PS_STATUS_ID 1 and date range.
+          </r:description></pre>
+        <!--End divTechnical-->
+    </div>
+    </form>
+</body>
+</html> 

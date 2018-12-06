@@ -1,0 +1,277 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0086)http://w3chile/xtremereporter/ReportDoc.aspx?_Report=C:\DCMSLive1\Reports\R130.101.xsd -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+    </script>
+    <style type="text/css">
+        .style4
+        {
+            width: 247px;
+        }
+        .style5
+        {
+            width: 136px;
+        }
+        .style6
+        {
+            width: 144px;
+        }
+    </style>
+</head>
+<body>
+    <h1 align="center">
+        130.101:% Fill by Carton Area</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    Reviewed By : Manmohan Bisht<br />
+    Revision: 25341<br />
+    Status: Tested<br/>
+    Tested By :
+    <p>
+        This report displays the total number of cartons and total number of pieces for
+        each label in a specified area, virtual warehouse and warehouse location.
+    </p>
+    <h2>
+        Overview</h2>
+    This report displays the total number of cartons and pieces for the specified Area,
+    Virtual Warehouse and Warehouse Location.<br />
+    <br />
+    <h2>
+        Algorithm&nbsp;</h2>
+    For each label retrieved from master_style table, count of number of cartons from
+    src_carton and sum of number of pieces from src_carton_detail table are reterieved
+    on the basis of passed area, virtual warehouse and warehouse location. Table master_storage_location
+    used in the table for retrieving warehouse location in the report.
+    <br />
+    <table cellspacing="1" cellpadding="1" width="100%" border="1">
+        <tbody>
+            <tr>
+                <td align="middle" width="25%">
+                    <b>Item</b>
+                </td>
+                <td align="middle" width="20%">
+                    <b>Summary</b>
+                </td>
+                <td align="middle" width="10%">
+                    <b>Sort Sequence</b>
+                </td>
+                <td align="middle" width="35%">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Label
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    2
+                </td>
+                <td>
+                   Style Label of the SKU
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Quality
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                </td>
+                <td>
+                    Quality Code
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    #Cartons
+                </td>
+                <td>
+                    Count
+                </td>
+                <td align="middle">
+                    1
+                </td>
+                <td>
+                   Total number of Cartons having SKUs of the corresponding Label
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    #Pieces
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    Total number of SKUs in the corresponding Cartons.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Building</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    Warehouse location assigned for a given area in the warehouse.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table cellspacing="1" cellpadding="1" width="100%" border="1">
+        <tbody>
+            <tr>
+                <td align="middle" class="style6">
+                    <b>Name</b>
+                </td>
+                <td align="middle" class="style5">
+                    <b>Type</b>
+                </td>
+                <td align="middle">
+                    <b>Default</b>
+                </td>
+                <td align="middle">
+                    <b>Description</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="style6">
+                    Area
+                </td>
+                <td class="style5">
+                    String
+                </td>
+                <td class="style4">
+                    All
+                </td>
+                <td>
+                    Area, where the Carton is currently lying
+                </td>
+            </tr>
+            <tr>
+                <td class="style6">
+                    Virtual Warehouse
+                </td>
+                <td class="style5">
+                    String
+                </td>
+                <td class="style4">
+                    All
+                </td>
+                <td>
+                    Virtual Warehouse Id for the corresponding Area.
+                </td>
+            </tr>
+            <tr>
+                <td class="style6">
+                    Building</td>
+                <td class="style5">
+                    String
+                </td>
+                <td class="style4">
+                    All
+                </td>
+                <td>
+                    Building of Area
+                </td>
+            </tr>
+            <tr>
+                <td class="style6">
+                    Quality</td>
+                <td class="style5">
+                    &nbsp;</td>
+                <td class="style4">
+                    &nbsp;</td>
+                <td>
+                    Quality Code</td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 1</i> second</p>
+    This report will exhibit linear performance with respect to the number of records
+    in src_carton table which qualify for the passed area. There is index based scan
+    on the table src_carton, src_carton_detail, master_style and master_storage_location.
+    Index CTN_STORAGE_I is used in the table src_carton, CTNDET_CTN_FK_I is used in
+    the table src_carton_detail, STLOC_PK is used in the table master_storage_location
+    and STY_PK is used in the table table master_style. We observed that the average
+    query time of 1 second
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>
+        No behavior change</ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>
+        No known issue</ul>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are required</p>
+    <p>
+        src_carton,<br />
+        src_carton_detail,<br />
+        master_style,<br />
+        master_sku,<br />
+        master_storage_location</p>
+    <p>
+        <br />
+        Use the below script to create the synonyms<br />
+        <br />
+        <code>create or replace synonym src_carton for dcms4.src_carton;<br />
+            create or replace synonym src_carton_detail for dcms4.src_carton_detail;
+            <br />
+            create or replace synonym master_style for dcms4.master_style;
+            <br />
+              create or replace synonym master_sku for dcms4.master_sku;<br />
+            create or replace synonym master_storage_location for dcms4.master_storage_location;
+        </code>&nbsp;</p>
+    <p>
+        No AppSetting is required:</p>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <pre>
+     SELECT COUNT(DISTINCT src_carton.CARTON_ID) AS no_of_carton,
+       SUM(SRC_CARTON_DETAIL.QUANTITY) AS no_of_pieces,
+       MASTER_STYLE.LABEL_ID AS label_id,
+       NVL(ms.Warehouse_Location_Id,'Unknown') AS warehouse_loc,
+       src_carton.vwh_id as vwh_id,
+       src_carton.quality_code as quality_code
+  FROM src_carton src_carton
+  left outer join src_carton_detail src_carton_detail on
+   src_carton.carton_id = src_carton_detail.carton_id
+  LEFT OUTER JOIN MASTER_SKU  MSKU ON
+    SRC_CARTON_DETAIL.SKU_ID = MSKU.SKU_ID
+  LEFT OUTER JOIN MASTER_STYLE MASTER_STYLE
+    ON MSKU.STYLE = MASTER_STYLE.STYLE
+  left outer join master_storage_location ms on
+   src_carton.carton_storage_area = ms.storage_area
+     AND src_carton.location_id = ms.location_id
+ WHERE 1 = 1 
+ <if>AND src_carton.CARTON_STORAGE_AREA = :carton_storage_area</if>
+ <if>AND src_carton.vwh_id = :vwh_id</if>
+ <if c="$warehouse_location_id != 'Unknown'">AND ms.Warehouse_Location_Id = :warehouse_location_id</if>
+ <if c="$warehouse_location_id ='Unknown'">and ms.Warehouse_Location_Id is null</if>
+ <if>AND src_carton.quality_code = :quality_code</if>
+ GROUP BY MASTER_STYLE.LABEL_ID, ms.Warehouse_Location_Id, src_carton.vwh_id, src_carton.quality_code
+</pre>
+</body>
+</html>

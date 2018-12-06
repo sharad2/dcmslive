@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<GridViewExHeaderCell>
+  <doc name="class">
+    <remarks>
+      <para>
+        Normal grid view forces you to have one line headers. GridViewEx adds the ability to have two line headers.
+        You can specify a two line Header text using | as the seperator, e.g. Pieces|Created. If adjacent fields
+        have the same text in the first line, the header is spanned
+      </para>
+      <code>
+        <![CDATA[
+<jquery:GridViewEx ID="gvStyleColor" runat="server">
+    <Columns>
+        <eclipse:MultiBoundField DataFields="source_prefix,source_item_id"
+            HeaderText="Source" />
+        <asp:BoundField DataField="pieces_expected" HeaderText="# Pieces|Expected"
+            ReadOnly="true" >
+            <ItemStyle HorizontalAlign="Right" />
+        </asp:BoundField>
+        <asp:TemplateField HeaderText="# Pieces|Created">
+            <ItemTemplate>
+                <asp:Label ID="lbqtycreated" runat="server" Text='<%# Eval("qty_created", "{0:N0}")%>' />
+            </ItemTemplate>
+        </asp:TemplateField>
+        <asp:BoundField DataField="count_size" HeaderText="# Sizes" ReadOnly="true" />
+    </Columns>
+</jquery:GridViewEx>
+      ]]>
+      </code>
+      <table rules="all">
+        <thead>
+          <tr>
+            <th rowspan="2">
+              Source
+            </th>
+            <th colspan="2">
+              # Pieces
+            </th>
+            <th rowspan="2">
+              # Sizes
+            </th>
+          </tr>
+          <tr>
+            <th>
+              Expected
+            </th>
+            <th>
+              Created
+            </th>
+          </tr>
+        </thead>
+      </table>
+    </remarks>
+  </doc>
+</GridViewExHeaderCell>

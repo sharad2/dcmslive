@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<AutoSiteMapProvider>
+  <doc name="class">
+    <remarks>
+      <para>
+        The sitemap provider is initialized in <c>web.config</c> by adding the following entry.
+      </para>
+      <code language="html">
+        <![CDATA[
+ <system.web>
+    ...
+    <siteMap defaultProvider="Dcms">
+        <providers>
+          <clear/>
+          <add name="Dcms" type="EclipseLibrary.Web.SiteStructure.AutoSiteMapProvider" 
+            customAttributes="ReportId,Browsable" siteMapRoot="Reports" 
+            homePageUrl="Default.aspx" />        
+	      </providers>
+    </siteMap>   
+</system.web>          
+          ]]>
+      </code>
+      <para>
+        <c>customAttributes</c> is a comma seperated list of custom
+        meta attributes which you wish to read.
+        In this example, AutoSiteMap will look for a meta tags which looks like:
+      </para>
+      <code>
+        <![CDATA[
+<meta name="Browsable" content="true" />
+<meta name="ReportId" content="130.01" />
+          ]]>
+      </code>.
+      <para>
+        For each tag found, the SiteMapNode for the file will contain an attribute called
+        <c>ReportId</c> whose value will be 130.01.
+      </para>
+      <para>
+        <c>siteMapRoot</c>
+        is the folder which is to be used as a root i.e. all the aspx files within this folder
+        will be available in the SiteMap. If this is left empty then whole WebSite
+        will be available in SiteMap. It is useful if you want only part of the web site to
+        show up in the sitemap. In fact it is perfectly acceptable to configure two sitemap providers,
+        each with a different value for <c>siteMapRoot</c>.
+      </para>
+      <para>
+        <c>homePageUrl</c> is the page which is to be used as a
+        parent page for all the report pages. As mentioned, the generated sitemap has only one level
+        with this page at the top of the hierarchy.
+      </para>
+
+      <para>
+        The following tables lists how each property of <codeInline>SiteMapNode</codeInline>
+        is populated.
+      </para>
+      <list type="table">
+        <listheader>
+          <term>Property</term>
+          <description>How Populated</description>
+        </listheader>
+        <item>
+          <term>
+            <para>Key</para>
+          </term>
+          <description>
+            <para>
+              The name of the file, e.g. default.aspx. This means that you cannot have files of same name even
+              if they exist in different directories.
+            </para>
+          </description>
+        </item>
+        <item>
+          <term>
+            <para>Title</para>
+          </term>
+          <description>
+            <para>
+              The title of the page as parsed from the aspx file from the markup
+              <codeInline>
+                &lt;%@ Page
+                Language="C#" MasterPageFile="~/MasterPage.master" CodeFile="40_09.aspx.cs" Inherits="_40_09"
+                Title="Pickslips in a Wave" %&gt;
+              </codeInline>.
+              In this example the title is <embeddedLabel>Pickslips in a Wave</embeddedLabel>.
+            </para>
+          </description>
+        </item>
+        <item>
+          <term>
+            <para>Description</para>
+          </term>
+          <description>
+            <para>
+              The description specified in the Meta tag.
+            </para>
+            <code language="html">
+              <![CDATA[
+<head>
+   ...
+   <meta name="Description" content="This is the description of my report" />
+</head>              
+              
+              ]]>
+            </code>
+          </description>
+        </item>
+      </list>
+    </remarks>
+    <example>
+      <para>
+        In your home page, you may want to display links to all the pages in your project.
+        This is easily accomplished by setting the <c>ChildNodes</c> of the root node as
+        the data source of a grid view. The sample code below demonstrates this.
+      </para>
+      <code language="c#">
+        <![CDATA[
+    <asp:GridView runat="server" ID="gv" AutoGenerateColumns="false">
+    <Columns>
+        <asp:HyperLinkField  DataTextField="Title" DataNavigateUrlFields="Url" />
+        <asp:BoundField  DataField="Description"  />
+    </Columns>
+    </asp:GridView>          
+          ]]>
+      </code>
+      <code language="c#">
+        <![CDATA[
+protected override void OnLoad(EventArgs e)
+{
+    gv.DataSource = SiteMap.RootNode.ChildNodes;
+    gv.DataBind();
+    base.OnLoad(e);
+}
+]]>
+      </code>
+      <para>
+        In conjuction with support for <c>customAttributes</c>, you can show a subset
+        of the links by filtering using some of the custom attributes as filters.
+      </para>
+      <code language="c#">
+        <![CDATA[
+protected override void OnLoad(EventArgs e)
+{
+    // Display links belonging to Category 5.
+    gv.DataSource = SiteMap.RootNode.ChildNodes.Where(p => p["Category"] == "5");
+    gv.DataBind();
+    base.OnLoad(e);
+}
+]]>
+      </code>
+    </example>
+  </doc>
+</AutoSiteMapProvider>

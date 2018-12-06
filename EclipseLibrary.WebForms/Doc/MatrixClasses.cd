@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EclipseLibrary.Web.JQuery.MatrixField" BaseTypeListCollapsed="true">
+    <Position X="4" Y="0.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EAAAQABAQAIAAQggaREiAQAAAgBABIAAGMCCJBAAgAE=</HashCode>
+      <FileName>Web\JQuery\GridViewEx\MatrixField.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_currentMatrixCell" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_matrixColumns" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EclipseLibrary.Web.JQuery.MatrixColumn" BaseTypeListCollapsed="true">
+    <Position X="7.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAgAAAAAAAAAAEAIAAAAAAAAAAIAAIAACAECACAEA=</HashCode>
+      <FileName>Web\JQuery\GridViewEx\MatrixColumn.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EclipseLibrary.Web.JQuery.MatrixDataCell">
+    <Position X="0.5" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAQAAAAAAAAAAAAAQAAAQAAAAABEEAAIAAIA=</HashCode>
+      <FileName>Web\JQuery\GridViewEx\MatrixDataCell.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EclipseLibrary.Web.JQuery.MatrixHeaderCell" Collapsed="true">
+    <Position X="12" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAIAAAAAAAAAAAAAAAAAAACAAABAAAAAAAAA=</HashCode>
+      <FileName>Web\JQuery\GridViewEx\MatrixHeaderCell.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EclipseLibrary.Web.JQuery.MatrixBinder" Collapsed="true">
+    <Position X="10.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIABAIAAAAAQAAAAAAAAAAAAQAAAAAAIBAAAAAAA=</HashCode>
+      <FileName>Web\JQuery\GridViewEx\MatrixBinder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

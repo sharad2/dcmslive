@@ -1,0 +1,711 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>140.08 Title of the Report</title>
+    <style type="text/css">
+        .style1
+        {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <h1 style="text-align: center">
+        140.08 SKUs Which Are Locking Buckets(SKU Wise)</h1>
+    Author : Nilesh<br />
+    $Revision: 5979 $<br />
+    Status: Done<br />
+    Mentor: Pravin Kr. Awasthi<br />
+    Tested By: 
+    <br />
+    <p>
+        This report lists those SKUs whose demand exceeds number of pieces available in
+        the picking area. This allows supervisors to take preventive action and decide to
+        bump up some of replenishment priorities. The Supervisors will be able to view the
+        shortage SKUs along with their open pulls, required pieces and available pieces.
+        The available pieces are broken down by inventory area. 
+        This report does not display the SKUs if they are marked as underpitch. The 
+        report might take longer time to execute when tried to run for all labels.
+    </p>
+    <h2>
+        Overview</h2>
+    <p>
+        When expediting is done, sometimes the program refuses to create pitch carts 
+        because inventory does not exist for any of the boxes remaining in the bucket. 
+        We would like visibility of those SKUs which will possibly prevent expediting of 
+        some boxes. This report lists those SKUs whose demand exceeds number of pieces 
+        available in the pick area. This allows supervisors to take preventive action 
+        and decide to bump up some of replenishment priorities.It does not display the 
+        SKUs if they are marked as underpitch.
+    </p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        Identify the SKUs and total number of required pieces for these SKUs, for all the
+        Buckets( unavailable and available). All the buckets will be of Pitching Type. Also,
+        while calculating the required quantity for available buckets, only those boxes
+        will be fetched, which have not been directly pulled from BIR. For that one more
+        where clause box.carton_id is null will be included in the query which gets the
+        box pieces. Using this clause, the boxes of pull to dock bukcet which have been
+        directly pulled from BIR will be ignored. After this, calculate the total number
+        of pieces available in FPK Locations, considering the reserved pieces at the locations.
+        If the total required quantity for a SKU is more than the available quantity of
+        that SKU at FPK locations. Then, these SKUs are candidate to be displayed in the
+        report.</p>
+    <h2>
+        Definition</h2>
+    <ul>
+        <li><b><i>Req.Qty.: </i></b>Those skus which have not been assigned to an MPC
+            yet.</li></ul>
+    <ul>
+        <li><b><i>Req.Qty.: </i></b>Identify the SKUs and total number of required pieces 
+            for these SKUs, for all the Buckets( unavailable and available) and pickslip is 
+            not transfered. All the buckets will be of Pitching Type. Also, while 
+            calculating the required quantity for available buckets, only those boxes will 
+            be fetched, which have not been directly pulled from BIR.</li>
+        <li><b><i>Picking Area Qty.: </i></b>Total no. of&nbsp; Pieces available in FPK 
+            Locations.</li>
+        <li><b><i>Unalloc. Picking Area Qty.:</i></b>Total no. of&nbsp; Pieces avaiable in 
+            FPK Locations - Reserved Pieces at the locations.</li>
+        <li><i><b>Short Pcs.: </b> </i>Is calculate as follows:<ul>
+            <li>Required Qty - Unallocate Picking Area Qty.</li>
+            </ul>
+        </li>
+    </ul>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 25%; text-align: center">
+                <b>Item</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Summary</b>
+            </td>
+            <td style="width: 10%; text-align: center">
+                <b>Default
+                    <br />
+                    Sort Sequence</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                VWh
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                1
+            </td>
+            <td style="width: 45%;" class="style1">
+                The Virtual Warehouse ID. This can be fetched from any of the participating tables.
+                It can be box, psdet or master_raw_inventory.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Style
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                The style of SKUs.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Color
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                The Color of SKUs.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Dimension
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                The Dimension of SKUs.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Label
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                The Label Id of Style.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                UPC Code
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                2</td>
+            <td style="width: 45%;" class="style1">
+                The UPC Code of SKUs.
+            </td>
+        </tr>
+        <tr>
+            <td class="style1">
+                Req. Qty
+            </td>
+            <td style="width: 20%; text-align: center">
+                Sum
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                Required Quantity of SKUs.</td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Picking Area Qty
+            </td>
+            <td style="width: 20%; text-align: center">
+                Sum
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                Quantity in forward picking area.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Unalloc. Picking Area Qty
+            </td>
+            <td style="width: 20%; text-align: center">
+                Sum
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                Quantity in unallocated picking area
+                i.e.Total no. of&nbsp; Pieces available in FPK Locations - Reserved Pieces at 
+                the locations.</td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Short Pcs.
+            </td>
+            <td style="width: 20%; text-align: center">
+                Sum
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                Number of Pcs.short. It can be retrieved by subtracting the &quot;Required Pcs&quot;
+                from &quot;Unallocated picking area pcs.&quot;
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Open Pulls
+            </td>
+            <td style="width: 20%; text-align: center">
+                Sum
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;" class="style1">
+                The number of pieces for which pull requests have already been generated. This will
+                be fetched from the src_carton and src_req_detail using join on req_process_id.
+                Also, the columns CARTON_STORAGE_AREA=&#39;BIR&#39; of src_carton and DESTINATION_INV_STORAGE_AREA=&#39;RST&#39;
+                of src_req_detail, will be used. In this case the cartons, being pulled to ADR area
+                will not be counted.
+            </td>
+        </tr>
+        <tr>
+            <td class="style1">
+                Quantity In Inventory Storage Areas
+            </td>
+            <td style="text-align: center">
+                Sum
+            </td>
+            <td style="text-align: center">
+            </td>
+            <td class="style1">
+                The number of pieces of inventory available in the DC for the particular SKU. 
+                The pieces are shown broken down by inventory area. The areas included are BIR, 
+                RST, AWL, REW, AWS. This will be fetched from src_carton, src_carton_detail 
+                tables. While calculating the pieces of BIR area pieces which are assigned to 
+                any request will not be considered. <br />
+            </td>
+        </tr>
+        <tr>
+            <td class="style1">
+                Picking Area Cap.
+            </td>
+            <td style="text-align: center">
+                Sum
+            </td>
+            <td style="text-align: center">
+            </td>
+            <td class="style1">
+                Total capacity if the picking area.
+            </td>
+        </tr>
+        <tr>
+            <td class="style1">
+                Picking Area Loc.</td>
+            <td style="text-align: center">
+                &nbsp;</td>
+            <td style="text-align: center">
+                &nbsp;</td>
+            <td class="style1">
+                Location of SKUs in Forward Picking Area. If SKUs is assigned more than one 
+                location then we are showing ***** or if SKUs is not having assignement then we 
+                are showing No Location.</td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 20%; text-align: center">
+                <b>Name</b>
+            </td>
+            <td style="width: 15%; text-align: center">
+                <b>Type</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Default</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%;" class="style1">
+                Label
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                All
+            </td>
+            <td style="width: 45%;" class="style1">
+                This Parameter will be used to filter out, the records, based on a Particular Label
+                ID.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%;" class="style1">
+                Virtual Warehouse</td>
+            <td style="width: 15%; text-align: center">
+                String</td>
+            <td style="width: 20%; text-align: center">
+                All</td>
+            <td style="width: 45%;" class="style1">
+                This Parameter will be used to filter out, the records, based on a Particular 
+                Virtual warehouse.</td>
+        </tr>
+        <tr>
+            <td style="width: 20%;" class="style1">
+                Warehouse_location_id</td>
+            <td style="width: 15%; text-align: center">
+                String </td>
+            <td style="width: 20%; text-align: center">
+                All</td>
+            <td style="width: 45%;" class="style1">
+                This Parameter will be used to filter out, the records, based on a Particular 
+                Warehouse_location_id .</td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        The query will have a full scan on BUCKET, PS, BUCKETSKU, PSDET, BOX, BOXDET, SRC_CARTON,
+        SRC_CARTON_DETAIL, MASTER_STYLE, SRC_REQ_DETAIL, IALOC and 
+        IALOC_CONTENT table. There is an index range scan on table MASTER_SKU.Index 
+        SKU_UK used in the table MASTER_SKU. The query took 30 seconds when it was run for all labels.
+    </p>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Changed the columns heading from the Quantity in BIR to Quantity in Un-Assgn 
+            BIR. As per email Changes in the report 140.08 dataed 23 November 2009.</li>
+        <li>Added the virtual warehouse id as parameter in this report and Convert this 
+            report in master and detail on the basis of virtual warehouse. AS per email 
+            Changes in the report 140.08. Approval is pending 9th February 2010.</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        bucket,<br />
+        ps,<br />
+        bucketsku,<br />
+        psdet,<br />
+        box,<br />
+        boxdet,<br />
+        src_carton,<br />
+        src_carton_detail,<br />
+        master_style,<br />
+        src_req_detail,<br />
+        master_sku,<br />
+        ialoc,<br />
+        ialoc_content<br />
+    </p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>create or replace synonym BUCKET for dcms8.BUCKET;<br />
+            create or replace synonym PS for dcms8.PS;<br />
+            create or replace synonym BUCKETSKU for dcms8.BUCKETSKU;<br />
+            create or replace synonym PSDET for dcms8.PSDET;<br />
+            create or replace synonym BOX for dcms8.BOX;<br />
+            create or replace synonym BOXDET for dcms8.BOXDET;<br />
+            create or replace synonym SRC_CARTON for dcms4.SRC_CARTON;<br />
+            create or replace synonym SRC_CARTON_DETAIL for dcms4.SRC_CARTON_DETAIL;<br />
+            create or replace synonym MASTER_STYLE for dcms4.MASTER_STYLE;<br />
+            create or replace synonym SRC_REQ_DETAIL for dcms4.SRC_REQ_DETAIL;<br />
+            create or replace synonym MASTER_SKU for dcms4.MASTER_SKU;<br />
+            create or replace synonym IALOC for dcms8.IALOC;<br />
+            create or replace synonym IALOC_CONTENT for dcms8.IALOC_CONTENT;<br />
+            create or replace synonym RESVDET for dcms8.RESVDET;<br />
+        </code>
+    </p>
+    <p>
+        Following appSettings are required:</p>
+    &lt;add key="RestockingArea" value="RST" /&gt;<br />
+    &lt;add key="CartonReserveArea" value="BIR"/&gt;<br />
+    &lt;add key=&quot;AreaForAWSOperation&quot; value=&quot;AWS&quot;/&gt;<br />
+    &lt;add key=&quot;AwaitedToLocate&quot; value=&quot;AWL&quot; /&gt;<br />
+    &lt;add key=&quot;Pitching&quot; value=&quot;PITCHING&quot;/&gt;<br />
+    &lt;add key=&quot;AreaForReworkOperation&quot; value=&quot;REW&quot;/&gt;<br />
+    &lt;add key=&quot;PickingArea&quot; value=&quot;FPK&quot; /&gt;<br />
+    <br />
+    <h2>
+        Query&#39;s documentation:be commented while running the query.
+    <pre>The query may contain where clause in []. These are optional parameters and can
+    be commented while running the query.
+    <pre>
+   WITH SKU AS
+ (SELECT PS.VWH_ID         AS VWH_ID,
+         PD.UPC_CODE       AS UPC_CODE,
+         PD.PIECES_ORDERED AS REQUIRED_PIECES,
+         BKT.BUCKET_ID     AS NO_OF_BUCKETS
+    FROM PS PS
+   INNER JOIN PSDET PD
+      ON PS.PICKSLIP_ID = PD.PICKSLIP_ID
+   INNER JOIN BUCKET BKT
+      ON PS.BUCKET_ID = BKT.BUCKET_ID
+   WHERE BKT.AVAILABLE_FOR_MPC = 'Y'
+     AND BKT.AVAILABLE_FOR_PITCHING IS NULL
+     AND BKT.PICK_MODE = 'PITCHING'
+     <if>AND PS.VWH_ID=:vwh_id</if>
+     <if>AND PS.WAREHOUSE_LOCATION_ID=:warehouse_location_id</if>
+     AND BKT.BUCKET_ID NOT IN
+         (SELECT BK.BUCKET_ID
+            FROM BUCKETSKU BK
+           INNER JOIN BUCKET BKT
+              ON BK.BUCKET_ID = BKT.BUCKET_ID
+           WHERE BK.UNDERPITCH_FLAG = 'Y')
+  
+  UNION ALL
+  
+  SELECT B.VWH_ID           AS VWH_ID,
+         BD.UPC_CODE        AS UPC_CODE,
+         BD.EXPECTED_PIECES AS REQUIRED_PIECES,
+         BKT.BUCKET_ID      AS NO_OF_BUCKETS
+    FROM PS PS
+   INNER JOIN PSDET PD
+      ON PS.PICKSLIP_ID = PD.PICKSLIP_ID
+   INNER JOIN BUCKET BKT
+      ON PS.BUCKET_ID = BKT.BUCKET_ID
+   INNER JOIN BOX B
+      ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND PS.PICKSLIP_ID = BD.PICKSLIP_ID
+   WHERE BKT.AVAILABLE_FOR_PITCHING = 'Y'
+     AND BKT.AVAILABLE_FOR_MPC = 'Y'
+     AND BKT.PICK_MODE = 'PITCHING'
+     <if>AND B.VWH_ID=:vwh_id</if>
+     <if>AND PS.WAREHOUSE_LOCATION_ID=:warehouse_location_id</if>
+     AND BD.EXPECTED_PIECES &gt; 0
+     AND BKT.BUCKET_ID NOT IN
+         (SELECT BK.BUCKET_ID
+            FROM BUCKETSKU BK
+           INNER JOIN BUCKET BKT
+              ON BK.BUCKET_ID = BKT.BUCKET_ID
+           WHERE BK.UNDERPITCH_FLAG = 'Y')
+     AND B.IA_ID IS NULL
+     AND B.CARTON_ID IS NULL),
+
+GROUP_SKU AS
+ (SELECT S.VWH_ID AS VWH_ID,
+         MS.STYLE AS STYLE,
+         MS.COLOR AS COLOR,
+         MS.DIMENSION AS DIMENSION,
+         MS.SKU_SIZE AS SKU_SIZE,
+         MAX(S.UPC_CODE) AS UPC_CODE,
+         SUM(S.REQUIRED_PIECES) AS REQUIRED_PIECES,
+         COUNT(DISTINCT S.NO_OF_BUCKETS) AS NO_OF_BUCKETS
+    FROM SKU S
+   INNER JOIN MASTER_SKU MS
+      ON S.UPC_CODE = MS.UPC_CODE
+   GROUP BY S.VWH_ID, MS.STYLE, MS.COLOR, MS.DIMENSION, MS.SKU_SIZE),
+
+AREA_SKU AS
+ (SELECT (CASE
+           WHEN SC.CARTON_STORAGE_AREA = 'BIR' AND
+                MSL.WAREHOUSE_LOCATION_ID = 'FDC' THEN
+            'BIR_FDC'
+           WHEN SC.CARTON_STORAGE_AREA = 'BIR' AND
+                MSL.WAREHOUSE_LOCATION_ID = 'FDC1' THEN
+            'BIR_FDC1'
+           WHEN SC.CARTON_STORAGE_AREA = 'BIR' AND
+                MSL.WAREHOUSE_LOCATION_ID = 'ANNEX' THEN
+            'BIR_ANNEX'
+           ELSE
+            SC.CARTON_STORAGE_AREA
+         END) AS AREA,
+         SC.VWH_ID AS VWH_ID,
+         SCD.STYLE AS STYLE,
+         SCD.COLOR AS COLOR,
+         SCD.DIMENSION AS DIMENSION,
+         SCD.SKU_SIZE AS SKU_SIZE,
+         NVL(SUM(CASE
+                   WHEN SC.CARTON_STORAGE_AREA = 'BIR' AND
+                        SRD.DESTINATION_INV_STORAGE_AREA = 'RST' AND
+                        SCD.REQ_MODULE_CODE = 'RS' THEN
+                    SCD.QUANTITY
+                 END),
+             0) AS OPEN_PULL_QUANTITY,
+         NVL(SUM(SCD.QUANTITY), 0) AS QUANTITY
+  
+    FROM SRC_CARTON SC
+   INNER JOIN SRC_CARTON_DETAIL SCD
+      ON SC.CARTON_ID = SCD.CARTON_ID
+    LEFT OUTER JOIN SRC_REQ_DETAIL SRD
+      ON SCD.REQ_PROCESS_ID = SRD.REQ_PROCESS_ID
+     AND SCD.REQ_MODULE_CODE = SRD.REQ_MODULE_CODE
+     AND SCD.REQ_LINE_NUMBER = SRD.REQ_LINE_NUMBER
+    LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+      ON SC.LOCATION_ID = MSL.LOCATION_ID
+   GROUP BY (CASE
+              WHEN SC.CARTON_STORAGE_AREA = 'BIR' AND
+                   MSL.WAREHOUSE_LOCATION_ID = 'FDC' THEN
+               'BIR_FDC'
+              WHEN SC.CARTON_STORAGE_AREA = 'BIR' AND
+                   MSL.WAREHOUSE_LOCATION_ID = 'FDC1' THEN
+               'BIR_FDC1'
+              WHEN SC.CARTON_STORAGE_AREA = 'BIR' AND
+                   MSL.WAREHOUSE_LOCATION_ID = 'ANNEX' THEN
+               'BIR_ANNEX'
+              ELSE
+               SC.CARTON_STORAGE_AREA
+            END),
+            SC.VWH_ID,
+            SCD.STYLE,
+            SCD.COLOR,
+            SCD.DIMENSION,
+            SCD.SKU_SIZE),
+
+FPK_QUANTITY AS
+ (SELECT MS.STYLE AS STYLE,
+         MS.COLOR AS COLOR,
+         MS.DIMENSION AS DIMENSION,
+         MS.SKU_SIZE AS SKU_SIZE,
+         I.VWH_ID AS VWH_ID,
+         MAX(I.LOCATION_ID) AS LOCATION_ID,
+         SUM(I.ASSIGNED_UPC_MAX_PIECES) AS FPK_CAPACITY,
+         COUNT(DISTINCT I.LOCATION_ID) LOCATION_COUNT,
+         SUM(IC.NUMBER_OF_UNITS) AS FPK_QUANTITY,
+         SUM(RD.PIECES_RESERVED) AS RESERVED_PIECES
+    FROM IALOC I
+    LEFT OUTER JOIN IALOC_CONTENT IC
+      ON I.ASSIGNED_UPC_CODE = IC.IACONTENT_ID
+     AND I.LOCATION_ID = IC.LOCATION_ID
+     AND I.IA_ID = IC.IA_ID
+   INNER JOIN MASTER_SKU MS
+      ON I.ASSIGNED_UPC_CODE = MS.UPC_CODE
+    LEFT OUTER JOIN RESVDET RD
+      ON I.VWH_ID = RD.VWH_ID
+     AND I.ASSIGNED_UPC_CODE = RD.UPC_CODE
+   WHERE I.IA_ID = 'FPK'
+     AND I.VWH_ID = :VWH_ID
+     AND I.ASSIGNED_UPC_CODE IS NOT NULL
+   GROUP BY MS.STYLE, MS.COLOR, MS.DIMENSION, MS.SKU_SIZE, I.VWH_ID)
+
+SELECT GS.STYLE AS STYLE,
+ GS.COLOR AS COLOR, 
+ GS.DIMENSION AS DIMENSION, 
+ GS.SKU_SIZE AS SKU_SIZE,
+ GS.VWH_ID AS VWH_ID, 
+ MT.LABEL_ID AS LABEL_ID, 
+ GS.UPC_CODE AS UPC_CODE, 
+ ARS.AREA AS AREA, 
+ GS.REQUIRED_PIECES AS REQUIRED_QUANTITY, 
+ FQ.FPK_QUANTITY AS FPK_QUANTITY,
+  FQ.RESERVED_PIECES AS Unallocated_FPK_Quantity,
+   NVL(GS.REQUIRED_PIECES, 0) - (NVL(FQ.FPK_QUANTITY, 0) + NVL(FQ.RESERVED_PIECES, 0)) AS SHORTAGE_PIECES,
+    GS.NO_OF_BUCKETS AS BUCKETS, 
+    ARS.OPEN_PULL_QUANTITY AS OPEN_PULL_QUANTITY,
+     ARS.QUANTITY AS QUANTITY,
+      FQ.FPK_CAPACITY AS FPK_CAPACITY, 
+      FQ.LOCATION_ID AS PICKING_AREA_LOCATION
+
+  FROM GROUP_SKU GS
+
+ LEFT OUTER JOIN MASTER_STYLE MT
+    ON GS.STYLE = MT.STYLE
+  LEFT OUTER JOIN FPK_QUANTITY FQ
+    ON GS.STYLE = FQ.STYLE AND GS.COLOR = FQ.COLOR AND GS.DIMENSION = FQ.DIMENSION AND GS.SKU_SIZE = FQ.SKU_SIZE AND GS.VWH_ID = FQ.VWH_ID
+  LEFT OUTER JOIN AREA_SKU ARS
+    ON GS.STYLE = ARS.STYLE AND GS.COLOR = ARS.COLOR AND GS.DIMENSION = ARS.DIMENSION AND GS.SKU_SIZE = ARS.SKU_SIZE
+    AND GS.VWH_ID = ARS.VWH_ID
+
+ WHERE NVL (REQUIRED_PIECES, 0) &gt; (NVL(FPK_QUANTITY, 0) - NVL(RESERVED_PIECES,
+                                                               0))
+
+
+ <if> and MT.Label_id=:label_id</if>
+            </pre>
+            <h1>Validation Query show the All Detail Demand&nbsp; of Sku </h1>
+    <b>Description:</b>
+    <b>Query: All Area query without fpk</b>
+    <pre>
+           SELECT  SC.CARTON_STORAGE_AREA,
+            scd.style,
+            scd.color,
+            scd.dimension,
+            scd.sku_size,
+            SCD.QUANTITY,
+            MSL.WAREHOUSE_LOCATION_ID
+    FROM SRC_CARTON SC
+   INNER JOIN SRC_CARTON_DETAIL SCD
+      ON SC.CARTON_ID = SCD.CARTON_ID
+      LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+      ON SC.LOCATION_ID = MSL.LOCATION_ID
+      WHERE SCD.STYLE = :STYLE
+      AND SCD.COLOR = :COLOR
+      AND SCD.DIMENSION = :DIMENSION
+      AND SCD.SKU_SIZE = :SKU_SIZE
+      AND MSL.WAREHOUSE_LOCATION_ID = :WAREHOUSE_LOCATION_ID
+       </pre>
+    <b>Description:escription:</b>
+   <b>Query:Show the sku with label_id</b> 
+   <pre>SELECT PS.VWH_ID         AS VWH_ID,
+         PD.UPC_CODE       AS UPC_CODE,
+         PD.PIECES_ORDERED AS REQUIRED_PIECES,
+         BKT.BUCKET_ID     AS NO_OF_BUCKETS
+    FROM PS PS
+   INNER JOIN PSDET PD
+      ON PS.PICKSLIP_ID = PD.PICKSLIP_ID
+   INNER JOIN BUCKET BKT
+      ON PS.BUCKET_ID = BKT.BUCKET_ID
+   WHERE BKT.AVAILABLE_FOR_MPC = 'Y'
+     AND BKT.AVAILABLE_FOR_PITCHING IS NULL
+     AND BKT.PICK_MODE = 'PITCHING'
+     AND PS.VWH_ID=:vwh_id
+     AND PS.WAREHOUSE_LOCATION_ID=:warehouse_location_id
+     AND PD.UPC_CODE =:UPC_CODE
+     AND BKT.BUCKET_ID NOT IN
+         (SELECT BK.BUCKET_ID
+            FROM BUCKETSKU BK
+           INNER JOIN BUCKET BKT
+              ON BK.BUCKET_ID = BKT.BUCKET_ID
+           WHERE BK.UNDERPITCH_FLAG = 'Y')
+  
+  UNION ALL
+  
+  SELECT B.VWH_ID           AS VWH_ID,
+         BD.UPC_CODE        AS UPC_CODE,
+         BD.EXPECTED_PIECES AS REQUIRED_PIECES,
+         BKT.BUCKET_ID      AS NO_OF_BUCKETS
+    FROM PS PS
+   INNER JOIN PSDET PD
+      ON PS.PICKSLIP_ID = PD.PICKSLIP_ID
+   INNER JOIN BUCKET BKT
+      ON PS.BUCKET_ID = BKT.BUCKET_ID
+   INNER JOIN BOX B
+      ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND PS.PICKSLIP_ID = BD.PICKSLIP_ID
+   WHERE BKT.AVAILABLE_FOR_PITCHING = 'Y'
+     AND BKT.AVAILABLE_FOR_MPC = 'Y'
+     AND BKT.PICK_MODE = 'PITCHING'
+    AND B.VWH_ID=:vwh_id
+     AND PS.WAREHOUSE_LOCATION_ID=:warehouse_location_id
+     AND PD.UPC_CODE =:UPC_CODE
+     AND BD.EXPECTED_PIECES &gt; 0
+     AND BKT.BUCKET_ID NOT IN
+         (SELECT BK.BUCKET_ID
+            FROM BUCKETSKU BK
+           INNER JOIN BUCKET BKT
+              ON BK.BUCKET_ID = BKT.BUCKET_ID
+           WHERE BK.UNDERPITCH_FLAG = 'Y')
+     AND B.IA_ID IS NULL
+     AND B.CARTON_ID IS NULL </pre>
+
+    <b>query: Show the FPK Quantity</b>
+    <pre>SELECT MS.STYLE AS STYLE,
+         MS.COLOR AS COLOR,
+         MS.DIMENSION AS DIMENSION,
+         MS.SKU_SIZE AS SKU_SIZE,
+         I.VWH_ID AS VWH_ID,
+         MAX(I.LOCATION_ID) AS LOCATION_ID,
+         SUM(I.ASSIGNED_UPC_MAX_PIECES) AS FPK_CAPACITY,
+         COUNT(DISTINCT I.LOCATION_ID) LOCATION_COUNT,
+         SUM(IC.NUMBER_OF_UNITS) AS FPK_QUANTITY,
+         SUM(RD.PIECES_RESERVED) AS RESERVED_PIECES
+    FROM IALOC I
+    LEFT OUTER JOIN IALOC_CONTENT IC
+      ON I.LOCATION_ID = IC.LOCATION_ID
+   INNER JOIN MASTER_SKU MS
+      ON I.ASSIGNED_UPC_CODE = MS.UPC_CODE
+    LEFT OUTER JOIN RESVDET RD
+      ON I.ASSIGNED_UPC_CODE = RD.UPC_CODE
+   WHERE I.IA_ID = 'FPK'
+   AND I.VWH_ID = :VWH_ID
+   and i.assigned_upc_code = :assigned_upc_code
+     AND I.ASSIGNED_UPC_CODE IS NOT NULL
+   GROUP BY MS.STYLE, MS.COLOR, MS.DIMENSION, MS.SKU_SIZE, I.VWH_ID</pre>
+
+    </form>
+</body>
+</html>

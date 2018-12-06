@@ -1,0 +1,721 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>130.25 Report to show CFD or OUT SKUs</title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        &nbsp;130.25 SKUs In Shortage And Min Pullback Quantity</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <ul style="list-style: none">
+        <li><strong>Reviewed By :</strong> Manmohan Bisht</li>
+        <li><strong>$Revision: </strong> 13063$</li>
+        <li><strong>Status:</strong> Tested</li>
+        <li><strong>Tested By:</strong> Hemant K. Singh</li>
+    </ul>
+    <p>
+        Displays Shortage and Min pull back quantity of ordered skus</p>
+    <h2>
+        Overview</h2>
+    <p>
+        Displays Warehouse Location wise ordered SKUs and their quantities in various inventory
+        area along with the &quot;Min Pullback Quantity&quot; in CFD or OUT areas.Also 
+        you can see the ShortageSKU for specific customer. </p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        The query fetches quantity ordered from the PS, DEM_PICKSLIP_DETAIL and BOXDET tables.
+        Its available quantities in various carton areas is fetched from SRC_CARTON_DETAIL.
+        We are also showing quantity available in FPK from IA table.</p>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 25%; text-align: center">
+                <b>Item</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Summary</b>
+            </td>
+            <td style="width: 10%; text-align: center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                VWh
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%; text-align: left">
+                Virual Warehouse of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                STYLE
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                2&nbsp;
+            </td>
+            <td style="width: 45%; text-align: left">
+                SKU Style
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                COLOR
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                3&nbsp;
+            </td>
+            <td style="width: 45%; text-align: left">
+                SKU Color
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                DIM.
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                4
+            </td>
+            <td style="width: 45%; text-align: left">
+                SKU Dimension
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                SIZE
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                5
+            </td>
+            <td style="width: 45%; text-align: left">
+                SKU Size
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Label
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%; text-align: left">
+                Label Id to which SKU belongs.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Ordered Pieces
+            </td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;">
+                Pices Ordered of the SKU for the label and virtual warehouse
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                &lt;Carton Area&gt; Quantity
+            </td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%; text-align: left">
+                Quantity of the SKU in various carton areas(Matrix Column)
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Shortage
+            </td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%; text-align: left">
+                Short quantity = Ordered Quantity - (BIR Quantity + RST Quantity + FPK Quantity)
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Min Pull Back Qty in CFD
+            </td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                1
+            </td>
+            <td style="width: 45%; text-align: left">
+                Minimum Quantity that can be pulled. (Will be visible upons selecting &#39;CFD&#39;
+                in the filter parameter)
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Min Pull Back Qty in OUT
+            </td>
+            <td style="width: 20%; text-align: center">
+                Yes
+            </td>
+            <td style="width: 10%; text-align: center">
+                1
+            </td>
+            <td style="width: 45%; text-align: left">
+                Minimum Quantity that can be pulled.&nbsp; (Will be visible upons selecting &#39;OUT&#39;
+                in the filter parameter)
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 20%; text-align: center">
+                <b>Name</b>
+            </td>
+            <td style="width: 15%; text-align: center">
+                <b>Type</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Default</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Pull Back Area(CFD or OUT) 
+                </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                CFD
+            </td>
+            <td style="width: 45%; text-align: left">
+                Area for which &quot;Min Pullback Quantity&quot; to be shown.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Open Orders Of Building
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                (All)
+            </td>
+            <td style="width: 45%; text-align: left">
+                The
+                Building
+                for which you want to see the orders.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Virtual Warehouse
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                (All)
+            </td>
+            <td style="width: 45%; text-align: left">
+                The
+                Virtual Warehouse
+                for which you want to see the orders.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Orders Of Customer
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                None
+            </td>
+            <td style="width: 45%; text-align: left">
+                The customer for which you want to see the orders. 
+            </td>
+        </tr>
+        </table>
+        <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Showing areas along with their building.</li>
+        <li>Replaced building filter dropdown with checkbox list.</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No Known Issue</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+    <ul>
+        <li>
+            <h4>
+                Private synonyms requried for the tables:
+            </h4>
+            <pre>
+<code>SRC_CARTON, SRC_CARTON_DETAIL, MASTER_SKU, DEM_PICKSLIP, DEM_PICKSLIP_DETAIL,
+    PS, BOXDET, MASTER_STYLE, TAB_INVENTORY_AREA, IALOC, IALOC_CONTENT, IA</code></pre>
+            <ul>
+                <li>
+                    <h4>
+                        Script to create the synonyms:</h4>
+                    <pre>
+ <code>     create or replace synonym SRC_CARTON for dcms4.SRC_CARTON;<br />  
+            create or replace synonym SRC_CARTON_DETAIL for dcms8.SRC_CARTON_DETAIL;<br />  
+            create or replace synonym MASTER_SKU for dcms4.MASTER_SKU;<br/> 
+            create or replace synonym DEM_PICKSLIP for dcms4.DEM_PICKSLIP;<br/>
+            create or replace synonym DEM_PICKSLIP_DETAIL for dcms4.DEM_PICKSLIP_DETAIL;<br/> 
+            create or replace synonym PS for dcms8.PS; <br/>
+            create or replace synonym PSDET for dcms8.PSDET;<br/>
+            create or replace synonym BOXDET for dcms8.BOXDET; <br/>
+            create or replace synonym MASTER_STYLE for dcms4.MASTER_STYLE;<br/>
+            create or replace synonym TAB_INVENTORY_AREA for dcms4.TAB_INVENTORY_AREA;<br/>
+            create or replace synonym IALOC for dcms8.IALOC;<br/>
+            create or replace synonym IALOC_CONTENT for dcms8.IALOC_CONTENT; <br/>
+            create or replace synonym CUST for dcms8.CUST; <br/>
+            create or replace synonym IA for dcms8.IA;</code></pre>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <h4>
+                App-Settings required:</h4>
+                &lt;add key="StoreWhatForCarton" value="CTN"/&gt;<br />
+                &lt;add key="CartonReserveArea" value="BIR"/&gt;<br />
+                &lt;add key="RestockingArea" value="RST"/&gt;<br />
+                &lt;add key="BoxpickModuleCode" value="BOXPICK"/&gt;<br />
+                &lt;add key="SkuTypeStorageArea" value="SKU"/&gt;<br />
+                &lt;add key="ShipDocBoxArea" value="ADR"/&gt;<br />   
+          
+        </li>
+    </ul>
+    <h2>
+        Technical documentation:</h2>
+    <p>
+        Min Pullback Qty in CFD: if(pieces ordered -&nbsp; (quantity in &#39;BIR&#39; +
+        quantity in &#39;RST&#39; + quantity in &#39;FPK&#39;) &gt; 0<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        then<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        min(cfd_quantity, pieces ordered - (quantity in &#39;BIR&#39; + quantity in &#39;RST&#39; + quantity in &#39;FPK&#39;))<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        else<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        0 )
+        <br />
+        <br />
+        Min Pullback Qty in OUT: if(pieces ordered -&nbsp; (quantity in &#39;BIR&#39; +
+        quantity in &#39;RST&#39; + quantity in &#39;FPK&#39;)&gt; 0<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        then<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        min(out_quantity, pieces ordered -&nbsp; (quantity in &#39;BIR&#39; + quantity in
+        &#39;RST&#39; + quantity in &#39;FPK&#39;) )<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        else<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        0 )&nbsp;
+    </p>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <pre>
+ WITH ALL_ORDERED_SKU AS
+ (SELECT /*+ rule */
+   DPD.STYLE            AS STYLE,
+   DPD.COLOR            AS COLOR,
+   DPD.DIMENSION        AS DIMENSION,
+   DPD.SKU_SIZE         AS SKU_SIZE,
+   DP.PICKSLIP_TYPE     AS LABEL_ID,
+   DP.VWH_ID            AS VWH_ID,
+   DPD.QUANTITY_ORDERED AS QUANTITY_ORDERED
+    FROM DEM_PICKSLIP DP
+   INNER JOIN DEM_PICKSLIP_DETAIL DPD
+      ON DPD.PICKSLIP_ID = DP.PICKSLIP_ID
+   WHERE DP.PS_STATUS_ID = 1
+     <if>AND DP.VWH_ID =:VWH_ID</if>
+    <%-- <if>AND DP.WAREHOUSE_LOCATION_ID =:WAREHOUSE_LOCATION_ID</if>--%>
+             <if>AND <a pre="dp.WAREHOUSE_LOCATION_ID IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+      <if>and Dp.customer_id=:customer_id</if>
+  UNION ALL
+  SELECT MS.STYLE          AS STYLE,
+         MS.COLOR          AS COLOR,
+         MS.DIMENSION      AS DIMENSION,
+         MS.SKU_SIZE       AS SKU_SIZE,
+         P.LABEL_ID        AS LABEL_ID,
+         P.VWH_ID          AS VWH_ID,
+         PD.PIECES_ORDERED AS QUANTITY_ORDERED
+    FROM PS P
+   INNER JOIN PSDET PD
+      ON P.PICKSLIP_ID = PD.PICKSLIP_ID
+   INNER JOIN MASTER_SKU MS
+      ON MS.UPC_CODE = PD.UPC_CODE
+   INNER JOIN BUCKET BKT
+      ON P.BUCKET_ID = BKT.BUCKET_ID
+   WHERE BKT.AVAILABLE_FOR_MPC = 'Y'
+     AND BKT.AVAILABLE_FOR_PITCHING IS NULL
+     <if>AND P.VWH_ID = :VWH_ID</if>
+     <%--<if>AND P.WAREHOUSE_LOCATION_ID = :WAREHOUSE_LOCATION_ID</if>--%>
+             <if>AND <a pre="p.WAREHOUSE_LOCATION_ID IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+     <if>and p.customer_id=:customer_id</if>
+     AND P.TRANSFER_DATE IS NULL
+     AND PD.TRANSFER_DATE IS NULL
+  UNION ALL
+  SELECT MS.STYLE           AS STYLE,
+         MS.COLOR           AS COLOR,
+         MS.DIMENSION       AS DIMENSION,
+         MS.SKU_SIZE        AS SKU_SIZE,
+         P.LABEL_ID         AS LABEL_ID,
+         B.VWH_ID           AS VWH_ID,
+         BD.EXPECTED_PIECES AS QUANTITY_ORDERED
+    FROM BOX B
+   INNER JOIN BOXDET BD
+      ON B.PICKSLIP_ID = BD.PICKSLIP_ID
+     AND B.UCC128_ID = BD.UCC128_ID
+   INNER JOIN PS P
+      ON P.PICKSLIP_ID = B.PICKSLIP_ID
+   INNER JOIN BUCKET BKT
+      ON BKT.BUCKET_ID = P.BUCKET_ID
+   INNER JOIN MASTER_SKU MS
+      ON BD.UPC_CODE = MS.UPC_CODE
+   WHERE B.IA_ID IS NULL
+     <if>AND B.VWH_ID = :VWH_ID</if>
+     <%--<if>AND P.WAREHOUSE_LOCATION_ID = :WAREHOUSE_LOCATION_ID</if>--%>
+      <if>AND <a pre="p.WAREHOUSE_LOCATION_ID IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+      <if>and p.customer_id=:customer_id</if>
+     AND BKT.AVAILABLE_FOR_PITCHING = 'Y'
+     AND BKT.AVAILABLE_FOR_MPC = 'Y'
+     AND P.TRANSFER_DATE IS NULL
+     AND B.STOP_PROCESS_DATE IS NULL
+     AND BD.STOP_PROCESS_DATE IS NULL),
+ALL_GROUPED_SKU AS
+ (SELECT AO.STYLE AS STYLE,
+         AO.COLOR AS COLOR,
+         AO.DIMENSION AS DIMENSION,
+         AO.SKU_SIZE AS SKU_SIZE,
+         AO.VWH_ID AS VWH_ID,
+         SUM(AO.QUANTITY_ORDERED) AS QUANTITY_ORDERED,
+         MAX(mt.LABEL_ID) AS LABEL_ID
+    FROM ALL_ORDERED_SKU AO
+    left outer join  master_style mt on
+    AO.style=mt.style
+    GROUP BY AO.STYLE, AO.COLOR, AO.DIMENSION, AO.SKU_SIZE, AO.VWH_ID),
+ALL_INVENTORY_SKU AS
+ (SELECT TIA.SHORT_NAME AS INVENTORY_AREA,
+         MS.STYLE              AS STYLE,
+         MS.COLOR              AS COLOR,
+         MS.DIMENSION          AS DIMENSION,
+         MS.SKU_SIZE           AS SKU_SIZE,
+         SC.VWH_ID              AS VWH_ID,
+         SCD.QUANTITY           AS QUANTITY,
+         TIA.SHIPPABLE_STATUS   AS SHIPPABLE_STATUS,
+         COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                  MSL.WAREHOUSE_LOCATION_ID,
+                  'Unknown') as WAREHOUSE_LOCATION_ID
+    FROM SRC_CARTON_DETAIL SCD
+   INNER JOIN SRC_CARTON SC
+      ON SC.CARTON_ID = SCD.CARTON_ID
+    LEFT OUTER JOIN SRC_REQ_DETAIL SRD
+      ON SRD.REQ_PROCESS_ID = SCD.REQ_PROCESS_ID
+     AND SRD.REQ_MODULE_CODE = SCD.REQ_MODULE_CODE
+     AND SRD.REQ_LINE_NUMBER = SCD.REQ_LINE_NUMBER
+     LEFT OUTER JOIN MASTER_SKU MS
+     ON MS.SKU_ID=SCD.SKU_ID
+    LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+      ON SC.LOCATION_ID = MSL.LOCATION_ID
+   INNER JOIN TAB_INVENTORY_AREA TIA
+      ON SC.CARTON_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+   WHERE (TIA.SHORT_NAME =:area OR SCD.REQ_PROCESS_ID IS NULL OR
+         ((TIA.SHORT_NAME =:CartonReserveArea AND
+         (TIA.SHORT_NAME =:RestockingArea or TIA.SHORT_NAME =:ShipDocBoxArea) or scd.req_module_code=:BoxpickModuleCode)))
+     AND SC.SUSPENSE_DATE IS NULL
+     AND (TIA.SHIPPABLE_STATUS = 'I' OR
+         (TIA.SHIPPABLE_STATUS = 'R' AND TIA.SHORT_NAME = :area) or (TIA.SHIPPABLE_STATUS is null and TIA.stores_what=:store_what))
+         <if>AND SC.VWH_ID=:VWH_ID</if>
+  UNION ALL
+  SELECT IL.IA_ID AS INVENTORY_AREA,
+         IL.STYLE AS STYLE,
+         IL.COLOR AS COLOR,
+         IL.DIMENSION AS DIMENSION,
+         IL.SKU_SIZE AS SKU_SIZE,
+         IL.VWH_ID AS VWH_ID,
+         NVL(IL.NUMBER_OF_UNITS, 0) - NVL(R.NUMBER_OF_UNITS, 0) AS QUANTITY,
+         IL.SHIPPABLE_STATUS AS SHIPPABLE_STATUS,
+         IL.WAREHOUSE_LOCATION_ID
+    FROM (SELECT IAC.IA_ID      AS IA_ID,
+                 MSKU.STYLE     AS STYLE,
+                 MSKU.COLOR     AS COLOR,
+                 MSKU.DIMENSION AS DIMENSION,
+                 MSKU.SKU_SIZE  AS SKU_SIZE,
+                 I.VWH_ID AS VWH_ID,
+                 SUM(IAC.NUMBER_OF_UNITS) AS NUMBER_OF_UNITS,
+                 'I' AS SHIPPABLE_STATUS,
+                 I.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID
+            FROM IALOC_CONTENT IAC
+           INNER JOIN IALOC I
+              ON I.IA_ID = IAC.IA_ID
+             AND I.LOCATION_ID = IAC.LOCATION_ID
+           INNER JOIN MASTER_SKU MSKU
+              ON MSKU.UPC_CODE = IAC.IACONTENT_ID
+           WHERE I.IA_ID IN
+                 (SELECT IA.IA_ID FROM IA WHERE IA.PICKING_AREA_FLAG = 'Y')
+             AND IAC.IACONTENT_TYPE_ID =:SkuTypeStorageArea
+             <if>AND I.VWH_ID = :VWH_ID</if>
+           GROUP BY IAC.IA_ID,
+                    MSKU.STYLE,
+                    MSKU.COLOR,
+                    MSKU.DIMENSION,
+                    MSKU.SKU_SIZE,
+                    I.VWH_ID,
+                    I.WAREHOUSE_LOCATION_ID) IL
+    LEFT OUTER JOIN (SELECT RD.IA_ID AS IA_ID,
+                            MSKU.STYLE AS STYLE,
+                            MSKU.COLOR AS COLOR,
+                            MSKU.DIMENSION AS DIMENSION,
+                            MSKU.SKU_SIZE AS SKU_SIZE,
+                            SUM(RD.PIECES_RESERVED) NUMBER_OF_UNITS,
+                            RD.VWH_ID
+                       FROM RESVDET RD
+                      INNER JOIN MASTER_SKU MSKU
+                         ON RD.UPC_CODE = MSKU.UPC_CODE
+                      GROUP BY MSKU.STYLE,
+                               MSKU.COLOR,
+                               MSKU.DIMENSION,
+                               MSKU.SKU_SIZE,
+                               RD.VWH_ID,
+                               RD.IA_ID) R
+      ON IL.IA_ID = R.IA_ID
+     AND IL.STYLE = R.STYLE
+     AND IL.COLOR = R.COLOR
+     AND IL.DIMENSION = R.DIMENSION
+     AND IL.SKU_SIZE = R.SKU_SIZE
+     AND IL.VWH_ID = R.VWH_ID),
+GROUPED_INVENTORY_SKU AS
+ (SELECT AIS.STYLE AS STYLE,
+         AIS.COLOR AS COLOR,
+         AIS.DIMENSION AS DIMENSION,
+         AIS.SKU_SIZE AS SKU_SIZE,
+         AIS.INVENTORY_AREA AS INVENTORY_AREA,
+         AIS.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID,
+         AIS.VWH_ID AS VWH_ID,
+         SUM(AIS.QUANTITY) AS QUANTITY,
+         SUM(SUM(CASE
+                   WHEN AIS.SHIPPABLE_STATUS = 'R'
+                   AND AIS.WAREHOUSE_LOCATION_ID IN (:WAREHOUSE_LOCATION_ID) THEN
+                    AIS.QUANTITY
+                 END)) OVER(PARTITION BY AIS.STYLE, AIS.COLOR, AIS.DIMENSION, AIS.SKU_SIZE, AIS.VWH_ID) AS QUANTITY_REMOTE_AREAS,
+         SUM(SUM(CASE
+                   WHEN AIS.SHIPPABLE_STATUS = 'I'
+                   AND AIS.WAREHOUSE_LOCATION_ID IN (:WAREHOUSE_LOCATION_ID) THEN
+                    AIS.QUANTITY
+                 END)) OVER(PARTITION BY AIS.STYLE, AIS.COLOR, AIS.DIMENSION, AIS.SKU_SIZE, AIS.VWH_ID) AS QUANTITY_IMEDIATE_AREAS
+    FROM ALL_INVENTORY_SKU AIS
+   GROUP BY AIS.STYLE,
+            AIS.COLOR,
+            AIS.DIMENSION,
+            AIS.SKU_SIZE,
+            AIS.VWH_ID,
+            AIS.INVENTORY_AREA,
+            AIS.WAREHOUSE_LOCATION_ID), FINAL_QUERY AS (
+SELECT OS.STYLE AS STYLE,
+       OS.COLOR AS COLOR,
+       OS.DIMENSION AS DIMENSION,
+       OS.SKU_SIZE AS SKU_SIZE,
+       OS.LABEL_ID AS LABEL_ID,
+       OS.VWH_ID AS VWH_ID,
+       OS.QUANTITY_ORDERED AS ORDERED_QUANTITY,
+       GIS.INVENTORY_AREA AS INVENTORY_AREA,
+       GIS.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID,
+       GIS.QUANTITY AS PIECES_IN_AREA,
+       GIS.QUANTITY_REMOTE_AREAS AS QUANTITY_REMOTE_AREAS,
+       GIS.QUANTITY_IMEDIATE_AREAS AS QUANTITY_IMEDIATE_AREAS,
+       OS.QUANTITY_ORDERED - NVL(GIS.QUANTITY_IMEDIATE_AREAS, 0) AS SHORTAGE,
+       LEAST(OS.QUANTITY_ORDERED - NVL(GIS.QUANTITY_IMEDIATE_AREAS, 0),
+             NVL(GIS.QUANTITY_REMOTE_AREAS, 0)) AS MIN_PULLBACK_QUANTITY
+  FROM ALL_GROUPED_SKU OS
+  LEFT OUTER JOIN GROUPED_INVENTORY_SKU GIS
+    ON GIS.STYLE = OS.STYLE
+   AND GIS.COLOR = OS.COLOR
+   AND GIS.DIMENSION = OS.DIMENSION
+   AND GIS.SKU_SIZE = OS.SKU_SIZE
+   AND GIS.VWH_ID = OS.VWH_ID
+ WHERE OS.QUANTITY_ORDERED > NVL(GIS.QUANTITY_IMEDIATE_AREAS, 0))
+            SELECT * FROM FINAL_QUERY 
+pivot XML(sum(PIECES_IN_AREA) as PIECES_IN_AREA for (INVENTORY_AREA,WAREHOUSE_LOCATION_ID ) IN(ANY, ANY))
+
+</pre>
+  <h2>Validation Queries</h2>
+  <pre>select ms.label_id from master_style ms where ms.style = :style;</pre>
+   <h3>All Areas Quantity</h3>
+  <pre>select sc.carton_storage_area, scd.quantity
+  from src_carton sc
+  left outer join src_carton_detail scd
+    on sc.carton_id = scd.carton_id
+  INNER JOIN TAB_INVENTORY_AREA TIA
+    ON sc.CARTON_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+  left outer join master_storage_location msl
+    on sc.location_id = msl.location_id
+  LEFT OUTER JOIN SRC_REQ_DETAIL SRD
+    ON SRD.REQ_PROCESS_ID = SCD.REQ_PROCESS_ID
+   AND SRD.REQ_MODULE_CODE = SCD.REQ_MODULE_CODE
+   AND SRD.REQ_LINE_NUMBER = SCD.REQ_LINE_NUMBER
+ where scd.style =:style
+   and scd.color =:color
+   and scd.dimension =:dimension
+   and scd.sku_size =:sku_size
+   and sc.vwh_id =:vwh_id
+   and sc.suspense_date is null
+   and (SCD.REQ_PROCESS_ID IS NULL or
+       (SC.CARTON_STORAGE_AREA = 'BIR' AND
+       (SRD.DESTINATION_INV_STORAGE_AREA = 'RST' or
+       SRD.DESTINATION_INV_STORAGE_AREA = 'ADR' or
+       scd.req_module_code = 'BOXPICK')))
+     AND COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                MSL.WAREHOUSE_LOCATION_ID,
+                'Unknown') = 'ANX1';
+  </pre>
+ <h3>FPK Qauntity</h3>
+ <pre>select ialoc.number_of_units
+  from ialoc_content ialoc
+ INNER JOIN MASTER_SKU MSKU
+    ON MSKU.UPC_CODE = ialoc.IACONTENT_ID
+    INNER JOIN IALOC I
+              ON I.IA_ID = ialoc.IA_ID
+             AND I.LOCATION_ID = ialoc.LOCATION_ID
+ where msku.style =:style
+   and msku.color =:color
+   and msku.dimension =:dimension
+   and msku.sku_size =:sku_size
+   and I.IA_ID IN
+                 (SELECT IA.IA_ID FROM IA WHERE IA.PICKING_AREA_FLAG = 'Y')
+   AND ialoc.IACONTENT_TYPE_ID = 'SKU'
+   and I.Warehouse_Location_Id=:warehouse_location_id
+   and I.Vwh_Id=;vwh_id;
+  </pre>
+ <h3>Reserved Pieces</h3>
+ <pre>
+   SELECT RD.IA_ID AS IA_ID,
+          MSKU.STYLE AS STYLE,
+          MSKU.COLOR AS COLOR,
+          MSKU.DIMENSION AS DIMENSION,
+          MSKU.SKU_SIZE AS SKU_SIZE,
+          RD.PIECES_RESERVED NUMBER_OF_UNITS,
+          RD.VWH_ID
+     FROM RESVDET RD
+    INNER JOIN MASTER_SKU MSKU
+       ON RD.UPC_CODE = MSKU.UPC_CODE
+       where msku.style=:style
+       and msku.color=:color
+       and msku.dimension=:dimension
+       and msku.sku_size=:sku_size;
+  </pre> 
+<h3>Quanityt ordered from dempickslip</h3>
+ <pre>  
+select dpd.quantity_ordered
+  from dem_pickslip dps
+ inner join dem_pickslip_detail dpd
+    on dps.pickslip_id = dpd.pickslip_id
+ where dpd.style =:style
+   and dpd.color =:color
+   and dpd.dimension =:dimension
+   and dpd.sku_size =:sku_size
+   and dps.warehouse_location_id =:warehouse_location_id
+   and dps.vwh_id =:vwh_id
+   and DPs.PS_STATUS_ID = 1
+</pre>
+<h3>Ordered quantity from ps</h3>
+<pre>
+select psd.pieces_ordered
+  from ps p
+ inner join psdet psd
+    on p.pickslip_id = psd.pickslip_id
+
+ INNER JOIN BUCKET BKT
+    ON P.BUCKET_ID = BKT.BUCKET_ID
+ inner join master_sku msku
+    on psd.upc_code = msku.upc_code
+ where 
+    BKT.AVAILABLE_FOR_MPC = 'Y'
+   AND BKT.AVAILABLE_FOR_PITCHING IS NULL
+   and msku.style =:style
+   and msku.color =:color
+   and msku.dimension =:dimension
+   and msku.sku_size =:sku_size
+   and p.warehouse_location_id =:warehouse_location_id
+   and p.vwh_id = '15'
+   AND P.TRANSFER_DATE IS NULL
+   AND PSD.TRANSFER_DATE IS NULL;
+   </pre>
+<h3>Ordered Quantity from box</h3>     
+   <pre>
+   select bd.expected_pieces
+     from box B
+    INNER JOIN BOXDET BD
+       ON B.PICKSLIP_ID = BD.PICKSLIP_ID
+      AND B.UCC128_ID = BD.UCC128_ID
+    INNER JOIN PS P
+       ON P.PICKSLIP_ID = B.PICKSLIP_ID
+    INNER JOIN BUCKET BKT
+       ON BKT.BUCKET_ID = P.BUCKET_ID
+    INNER JOIN MASTER_SKU MS
+       ON BD.UPC_CODE = MS.UPC_CODE
+    where B.Ia_Id is null
+      AND BKT.AVAILABLE_FOR_PITCHING = 'Y'
+      AND BKT.AVAILABLE_FOR_MPC = 'Y'
+      AND P.TRANSFER_DATE IS NULL
+      AND B.STOP_PROCESS_DATE IS NULL
+      AND BD.STOP_PROCESS_DATE IS NULL
+      and ms.style =:style
+      and ms.color =:color
+      and ms.dimension =dimension
+      and ms.sku_size =:sku_size
+      and p.warehouse_location_id =warehouse_location_id
+      and p.vwh_id=:vwh_id;
+</pre>
+</body>
+</html>

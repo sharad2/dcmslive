@@ -1,0 +1,356 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        130<b>.</b>07<b> : </b>Inventory Summary Report</h1>
+    <h3>
+        Author :Sanjeev Kumar</h3>
+    <p>
+        $Revision: 6300 $<br />
+        Status: Tested&nbsp;
+        <br />
+        Reviewed by: Manmohan Bisht<br />
+        Tested by: Hemant Singh</p>
+    <p>
+        This report displays total inventory pieces available for each shelf area for each Virtual Warehouse. 
+    You can further drill down to see inventory pieces of SKUs by clicking on quantity shown for the respective virtual warehouse and  its area.
+    </p>
+    <h2>
+        Overview</h2>
+    <p>
+        This report displays the consolidated inventory totals of the inventory in 
+        shelf
+        storage areas of all the warehouses. The report excludes the inventory which is
+        not relevant, like inventory lying in the SSS area.
+    </p>
+    <p>
+        The drill-down report displays the following for the specified area and 
+        virtual warehouse:
+    </p>
+    <ul>
+        <li>Style</li>
+        <li>Color</li>
+        <li>Dimension</li>
+        <li>SKU size</li>
+        <li>Total quantity</li>
+    </ul>
+    <h2>
+        Algorithm</h2>
+    <p>
+        Inventory in the SHL and in the areas with SKU as content type is fetched. Then
+        inventory in unshipped boxes is fetched for each box area. Consolidated information
+        is presented for each shelf Area in each virtual warehouse.</p>
+    <h3>
+        Output</h3>
+    <table width="70%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 25%" align="center">
+                <b>Item</b>
+            </td>
+            <td style="width: 20%" align="center">
+                <b>Summary</b>
+            </td>
+            <td style="width: 10%" align="center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width: 35%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Area
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                The Inventory area in the virtual warehouse, where inventory is kept. If area does
+                not contain any inventory i.e. the inventory in area is zero, than the area will
+                not be displayed.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                VWh
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                The warehouse to which the area belongs.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Quantity
+            </td>
+            <td>
+                Yes
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                The Total number of SKUs present at the area.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="70%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 20%" align="center">
+                <b>Name</b>
+            </td>
+            <td style="width: 20%" align="center">
+                <b>Default</b>
+            </td>
+            <td style="width: 60%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                VWh</td>
+            <td>
+                All warehouse
+            </td>
+            <td>
+                The Virtual warehouse Id of the warehouse, whose inventory user wants to view.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 1</i> seconds.
+    </p>
+    <p>
+        This report performs a index full scan on the box table the index used is 
+        &quot;BOX_IA_ID_COPY_I&quot;. Thus the time taken by this report
+        will grow linearly with the number of records in the box table. It also performs
+        full scans of master_raw_inventory. Since this tables is not expected to grow significantly,
+        they should not cause scalability problems. In ialoc_content&nbsp; table indexed
+        range scan is performed, the index used is &quot;IACONT_IACONTENT_TYPE_ID_I&quot;. All full scans are necessary since the report computes inventory
+        of all SKUs, regardless of where they are.</p>
+    <h2>
+        Definitions</h2>
+    <dl>
+        <dt><i>SHL Quantity</i></dt>
+        <dd>
+            SHL Quantity refers to the total open inventory quantity in all areas of the warehouse.
+        </dd>
+        <dt><i>SHL-8 Quantity</i></dt>
+        <dd>
+            SHL-8 Quantity refers to the total open inventory quantity in all DCMS8 areas 
+            (as defined in 
+            ia table).
+        </dd>
+        <dt><i>SHL-A Quantity</i></dt>
+        <dd>
+            The concept of SHL-A area has been incorporated to keep track of missing inventory.
+            This is basically a conceptual area, which contains the inventory which is not accountable.
+            The inventory quantity in SHL-A area is calculated, based upon the formula: SHL
+            Quantity = SHL-8 Quantity + SHL-A Quantity. In ideal case the quantity in SHL-A
+            area should be equal to zero i.e there should not be any difference between SHL
+            quantity and SHL-8 quantity. If there is a difference, that will come under the
+            SHL-A area and will calculated by deducting the SHL-8 quantity from the SHL quantity.
+            Mathematically, it will be: SHL-A Quantity= SHL Quantity - SHL-8 Quantity.
+        </dd>
+    </dl>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>This report shows the inventory of a particular area on the one row per area 
+            basis. Through earlier approach the number of rows for an area grows with the 
+            number of virtual warehouse. Now, there will be only one row for any area and 
+            the inventory for that area will be shown in the respective columns of its 
+            virtual warehouse. </li></ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No Known Issue.</li>
+    </ul>
+    <br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are required</p>
+    <p>
+        ialoc,<br />
+        ialoc_content,<br />
+        box,<br />
+        boxdet,<br />
+        master_raw_inventory</p>
+    <p>
+        <br />
+        Use the below script to create the synonyms<br />
+        <br />
+        <code>create or replace synonym ialoc for dcms8.ialoc;
+            <br />
+            create or replace synonym ialoc_content for dcms8.ialoc_content;
+            <br />
+            create or replace synonym box for dcms8.box;
+            <br />
+            create or replace synonym boxdet for dcms8.boxdet;&nbsp;
+            <br />
+            create or replace synonym master_raw_inventory for dcms4.master_raw_inventory;<br />
+        </code>&nbsp;</p>
+    <p>
+        Following AppSettings are required:</p>
+    <p>
+        <code>&lt;add key="ScrapArea" value="SSS"/&gt;<br />
+            &lt;add key="SkuTypeStorageArea" value="SKU"/&gt;<br />
+            &lt;add key="ShelfArea" value="SHL" /&gt;<br />
+            &lt;add key=&quot;CancelArea&quot; value=&quot;CAN&quot; /&gt; </code>
+    </p>
+    
+    <div id="divTechnical">
+        <h2>
+            Parameter Technical Details</h2>
+        <ul>
+            <li>VWh : This is a list parameter control. By default, inventory of all Warehouse
+                is shown for each area. If your focus is on the inventory in a particular Warehouse,
+                Specify that Warehouse Id. Specify "All" irrespective of any virtual warehouse id.
+                <ul>
+                    <li>Query to fill list values =
+                        <pre>SELECT vwh_id AS vwh_id, description AS description FROM tab_virtual_warehouse ORDER BY vwh_id     </pre>
+                    </li>
+                </ul>
+            </li>
+            <li>ShelfArea&nbsp; = SHL</li>
+            <li>ScrapArea = &#39;SSS&#39;</li>
+            <li>SkuTypeStorageArea=&#39;SKU&#39;</li>
+            <li>CanArea=&#39;CAN&#39;</li></ul>
+        <h2>
+            Parameter Validation</h2>
+        No special validations.
+        <h2>
+            Query's documentation:<br />
+        </h2>
+        <b>Query</b>
+        <pre>
+            WITH shl8_inventory AS 
+        ( 
+        SELECT /*+index(iac iacont_iacontent_type_id_i) INDEX(ialoc ialoc_pk) */
+         max(i.short_name || ':' || i.short_description) as area,
+         iac.ia_id AS area_id,
+         ialoc.vwh_id AS vwh_id,
+         SUM(iac.number_of_units) AS TOTAL_QUANTITY
+          FROM ialoc ialoc
+           LEFT OUTER join ia i on
+            i.ia_id=ialoc.ia_id
+          RIGHT OUTER JOIN ialoc_content iac ON ialoc.ia_id = iac.ia_id
+                                                 AND ialoc.location_id =
+                                                     iac.location_id
+         WHERE NVL(I.SHORT_NAME,ialoc.ia_id) != :ScrapArea
+           AND iac.iacontent_type_id = :SkuTypeStorageArea
+           <if>AND ialoc.vwh_id=:vwh_id</if>
+         GROUP BY ialoc.vwh_id, iac.ia_id
+        UNION
+        SELECT /*+ INDEX(box box_ia_id_copy_i)*/
+         max(ia.short_name || ':' || ia.short_description) as area,
+         box.ia_id AS area_id,
+         box.vwh_id AS VWH_ID,
+         SUM(nvl(boxdet.current_pieces, 0)) AS TOTAL_QUANTITY
+          FROM box box
+          left outer join boxdet boxdet on box.ucc128_id = boxdet.ucc128_id
+                                             and box.pickslip_id = boxdet.pickslip_id
+         LEFT OUTER join ia on box.ia_id = ia.ia_id
+         WHERE box.ia_id IS NOT NULL
+           AND boxdet.stop_process_date IS NULL
+           AND NVL(IA.SHORT_NAME,box.ia_id) != :canArea
+           AND box.stop_process_date IS NULL
+           <if>AND box.vwh_id=:vwh_id</if>
+         GROUP BY box.ia_id, box.vwh_id
+        ), 
+        shl_inventory AS 
+        (
+        SELECT MAX(rawinv.sku_storage_area) AS area,
+               MAX(rawinv.sku_storage_area) AS area_id,
+                              rawinv.vwh_id AS vwh_id,
+                              SUM(rawinv.quantity) AS total_quantity
+        FROM master_raw_inventory rawinv
+        WHERE rawinv.sku_storage_area = :shelfArea
+        <if>AND rawinv.vwh_id=:vwh_id</if>
+        GROUP BY rawinv.vwh_id
+        )
+        SELECT  max(shl8.area) as area,
+                shl8.area_id as area_id,
+                shl8.vwh_id as vwh_id,
+                SUM(shl8.total_quantity)  AS total_quantity
+        FROM shl8_inventory shl8
+            GROUP BY shl8.area_id,
+                shl8.vwh_id
+        UNION
+        SELECT  shl.area,
+                shl.area_id,
+                shl.vwh_id,
+                shl.total_quantity
+        FROM shl_inventory shl
+        </pre>
+        <h2>
+            Validation details</h2>
+        <p>
+            Bellow queries may have the where clause in the [] brackets. It means these are
+            the optional parameters. If you do not want to pass these parameters just remove
+            the [] section.</p>
+        <br />
+        <b>Query:</b>
+        <pre>
+              SELECT rawinv.vwh_id AS VWH_ID,
+              MAX(rawinv.sku_storage_area) AS AREA,
+              SUM(rawinv.quantity) AS TOTAL_QUANTITY
+                 FROM master_raw_inventory rawinv
+              WHERE rawinv.sku_storage_area = 'SHL'
+              GROUP BY rawinv.vwh_id,rawinv.sku_storage_area            </pre>
+        <b>Description:</b>
+        <pre>
+              The above query can be used to validate the quantity in the SHL area of all the warehouse.
+</pre>
+        <b>Query:</b><pre>
+              SELECT ialoc.vwh_id AS VWH_ID,
+              iac.ia_id AS AREA,
+              SUM(iac.number_of_units) AS TOTAL_QUANTITY
+              FROM ialoc ialoc Left outer join ialoc_content iac on ialoc.ia_id = iac.ia_id
+              and ialoc.location_id = iac.location_id
+              WHERE 
+              iac.ia_id != 'SSS'
+              AND iac.iacontent_type_id = 'SKU'
+              GROUP BY ialoc.vwh_id, iac.ia_id
+</pre>
+        <b>Description:</b>
+        <pre>
+              Use the above query to get the quantity of the inventory which is lying there in location.</pre>
+        <b>Query:</b>
+        <pre>
+              SELECT /*+ INDEX(box box_ia_id_copy_i)*/
+              box.ia_id AS AREA,
+              box.vwh_id AS VWH_ID,
+              sum(boxdet.current_pieces) AS TOTAL_QUANTITY
+              FROM box Left outer join boxdet on box.ucc128_id = boxdet.ucc128_id 
+	                                        AND box.pickslip_id = boxdet.pickslip_id
+              WHERE
+              box.ia_id IS NOT NULL
+              AND box.ia_id_copy is not null
+              AND box.ia_id != 'CAN'
+              GROUP BY box.ia_id, box.vwh_id
+</pre>
+        <b>Description:</b>
+        <pre>
+             The above query can be used to validate the details of the inventory, which is lying in boxes.
+</pre>
+        <!--End divTechnical-->
+    </div>
+</body>
+</html>

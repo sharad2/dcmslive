@@ -1,0 +1,1280 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>Pickslips in Purchase Order</title>
+    </head>
+<body>
+    <div class="moz-text-html" lang="x-western">
+        <div class="WordSection1">
+            <h1 align="center" style="text-align:center">110.10 : Pickslip Details for given Customer/PO/Status <span style="font-size:24.0pt;font-family:&quot;Times New Roman&quot;,&quot;serif&quot;;color:windowtext"></span></h1>
+            <h3>Author : Sanjeev Kumar </h3>
+            <p>
+                $Revision: 7234 $<br />
+                Status: Reviewed<br />
+                Reviewed By : Hemant K. Varshney
+                <br />
+                Tested By : Sanjeev Kumar</p>
+            <p>
+                This report displays detail of the pickslips for the given Customer or PO or Status. You can also see VAS related pickslip details through&nbsp; this report. Same report can also be used for manual routing of EDI orders.Weight 
+                and Volume will only be displayed if boxes are already created for the orders. </p>
+            <h2>Overview</h2>
+            <p>
+                Open order details can be seen by this report. For running this report at least one filter is must from the following filters :- Customer, PO and Reporting Status*. Report can be modelled as per the need by using following filter combinations:- Pickslip Import Date, Ship Date, Virtual Warehouse, VAS and Building. As the list of open orders can be too huge so this report is limited to show only 1000 rows. There is also a summary grid “<b><i><span style="font-size:11.0pt">Summary of the customers</span></i></b>” available with this report where summary level information’s per customer can be seen. Comprehensive picture of Pickslips of all the PO# belonging to specific customer is presented by this report. 
+            </p>
+            <p>
+                <strong><em>Note&nbsp; :-</em></strong><em> <strong>Report will show only 1000 rows but while exporting data to excel all rows resulting from the applied filters will get exported.</strong></em></p>
+            <p>
+                The report is further helping in the following scenarios:- 
+            </p>
+            <ol start="1" type="1">
+                <li >Detail of orders in different status can be seen by this report.</li>
+                <li >VAS implementation and management can also be handled by using this report.</li>
+                <li >User can also plan manual routing for EDI custoemrs through this report.</li>
+            </ol>
+            <h2>Data retrieval for EDI Manual Routing:-</h2>
+            <p>
+                This report will help on data retrieval which is required for manual routing. For this user will have to choose the option <b><i><span style="font-size:11.0pt;font-family:&quot;Times New Roman&quot;,&quot;serif&quot;;color:windowtext;mso-fareast-language:EN-IN">“Orders Required Routing” </span></i></b>along with all other desired parameters. In this case this report will get switched to full data retrieval mode which means report will retrieve all the data because the limit of 1000 rows will not get applied when the option <b><i><span style="font-size:11.0pt;font-family:&quot;Times New Roman&quot;,&quot;serif&quot;;color:windowtext;mso-fareast-language:EN-IN">“Orders Required Routing” </span></i></b>remain checked. 
+            </p>
+            <p>
+                &nbsp;</p>
+            <h2>Algorithm</h2>
+            <p>
+                We are using the PO and DEM_PICKSLIP tables to fetch open pickslips and retrieving the box SKU details from tables BOX and BOXDET. We are using table SKUCASE to get the box case volume and empty weight. 
+            </p>
+            <p>
+                &nbsp;</p>
+            <p>
+                &nbsp;</p>
+            <p>
+                Details of the information being presented in the grid <b>Summary Of Customers</b>:-</p>
+            <p>
+                &nbsp;</p>
+            <table border="1" cellpadding="0" cellspacing="1" class="MsoNormalTable">
+                <tr>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            <b>Item</b> 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            <b>Summary</b> 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            <b>Default Sort Sequence</b> 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            <b>Detail</b> 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Customer</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            1 
+                        </p>
+                    </td>
+                    <td >
+                        <p>
+                            Customer ID with name. 
+                        </p>
+                    </td>
+                </tr>
+                <tr style="height:3.75pt">
+                    <td style="padding:.75pt .75pt .75pt .75pt;height:3.75pt">
+                        <p>
+                            No. Of Pickslip 
+                        </p>
+                    </td>
+                    <td style="padding:.75pt .75pt .75pt .75pt;height:3.75pt">
+                        <p align="center" style="text-align:center">
+                            Sum</p>
+                    </td>
+                    <td style="padding:.75pt .75pt .75pt .75pt;height:3.75pt">&nbsp;&nbsp;&nbsp; &nbsp;</td>
+                    <td style="padding:.75pt .75pt .75pt .75pt;height:3.75pt">
+                        <p>
+                            Total pickslip count of the customer. 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Ordered Pieces</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            Sum</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            &nbsp;</p>
+                    </td>
+                    <td >
+                        <p>
+                            Total ordered pieces for the customer.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Ordered Dollars</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            Sum</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            &nbsp;</p>
+                    </td>
+                    <td >
+                        <p>
+                            Total ordered dollars for the customer.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            No. Of Customer DCs</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            &nbsp;</p>
+                    </td>
+                    <td >
+                        <p>
+                            Total number of unique Distribution Centres belongs to the customer.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            No. Of Customer Stores</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            &nbsp;</p>
+                    </td>
+                    <td >
+                        <p>
+                            Total number of unique Stores belongs to the customer.</p>
+                    </td>
+                </tr>
+            </table>
+            <h3>&nbsp;</h3>
+            <p>
+                <span style="font-family:&quot;Verdana&quot;,&quot;sans-serif&quot;">&nbsp;</span></p>
+            <p>
+                Details of the information being presented in the grid <b>Detail of&nbsp; customers Output:-</b></p>
+            <p>
+                <b>&nbsp;</b></p>
+            <table border="1" cellpadding="0" cellspacing="1" class="MsoNormalTable">
+                <tr>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            <b>Item</b> 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            <b>Summary</b> 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            <b>Default Sort Sequence</b> 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            <b>Detail</b> 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Building</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            1 
+                        </p>
+                    </td>
+                    <td >
+                        <p>
+                            Building of the orders.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Customer</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            &nbsp;2 
+                        </p>
+                    </td>
+                    <td >
+                        <p>
+                            Id and name of the Customer. 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Status 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            3</p>
+                    </td>
+                    <td >
+                        <p>
+                            Indicates the processing stage of the pickslip - from In-Order bucket to Ready to ship. We are showing the status in the following sequence IN ORDER BUCKET, UNDER PROCESS, VALIDATED, READY TO SHIP and SHIPPED. 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Vwh 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+&nbsp; 
+                        </p>
+                    </td>
+                    <td >
+                        <p>
+                            Virtual Warehouse. 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Pickslip 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            4 
+                        </p>
+                    </td>
+                    <td >
+                        <p>
+                            Pickslip of the customer. 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            PO</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            &nbsp;</p>
+                    </td>
+                    <td >
+                        <p>
+                            Purchase order of the customer..</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        PO Attrib 1</td>
+                    <td >
+                        &nbsp;&nbsp;&nbsp;&nbsp; No</td>
+                    <td >
+                        &nbsp;</td>
+                    <td >
+                        This column is showing STO number.</td>
+                </tr>
+                <tr>
+                    <td >
+                        VAS</td>
+                    <td >
+                        &nbsp;&nbsp;&nbsp;&nbsp; No&nbsp;</td>
+                    <td >
+                        &nbsp;</td>
+                    <td >
+                        Displaying&nbsp; value added services of the order.</td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Ordered Pieces</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            Sum</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            &nbsp;</p>
+                    </td>
+                    <td >
+                        <p>
+                            Quantity ordered against the pickslip.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Ordered Dollars</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            Sum</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            &nbsp;</p>
+                    </td>
+                    <td >
+                        <p>
+                            Ordered dollars for the pickslip.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            No. Of&nbsp; Boxes</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            Sum</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            &nbsp;</p>
+                    </td>
+                    <td >
+                        <p>
+                            Total number of boxes for the pickslip.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            In Box Pieces</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            Sum</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            &nbsp;</p>
+                    </td>
+                    <td >
+                        <p>
+                            For pitched boxes this will show sum of pitched pieces against all the boxes for the pickslip. For non-pitched boxes this will show sum of expected pieces against&nbsp; all the boxes for the pickslip.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            In Box dollars</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            Sum</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            &nbsp;</p>
+                    </td>
+                    <td >
+                        <p>
+                            Actual estimated dollars of the pickslip.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Customer Store 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+&nbsp; 
+                        </p>
+                    </td>
+                    <td >
+                        <p>
+                            Customer Store id to which the pickslip belongs. 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Customer DC 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+&nbsp; 
+                        </p>
+                    </td>
+                    <td >
+                        <p>
+                            Customer Distribution Centre ID to which the SKUs will be shipped for the customer.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Delivery Date 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+&nbsp;&nbsp; 
+                        </p>
+                    </td>
+                    <td >
+                        <p>
+                            Earliest date on which the customer is willing to accept the shipment. 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            DC Cancel Date 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+&nbsp; 
+                        </p>
+                    </td>
+                    <td >
+                        <p>
+                            Latest date by which the pickslip must leave Distribution Centre in order to reach the customer on time. 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Cancel Date 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+&nbsp;&nbsp; 
+                        </p>
+                    </td>
+                    <td >
+                        <p>
+                            Date when the order will get cancelled. 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Print Date 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+&nbsp; 
+                        </p>
+                    </td>
+                    <td >
+                        <p>
+                            Date on which printing of the documents is done. 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            ONLOT Number 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+&nbsp; 
+                        </p>
+                    </td>
+                    <td >
+                        <p>
+                            Sequence number of the Pickslip against the bucket. 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Bucket Id</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            &nbsp;</p>
+                    </td>
+                    <td >
+                        <p>
+                            ID of the bucket</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            volume</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            &nbsp;</p>
+                    </td>
+                    <td >
+                        <p>
+                            Total volume of the SKUs of the pickslip in case no boxes are created. 
+                        </p>
+                        <p>
+                            If boxes are created then outer cube volume of the case.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            weight</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            No</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            &nbsp;</p>
+                    </td>
+                    <td >
+                        <p>
+                            Weight of the pickslip (SKU weight + Empty case weight)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            No. Of SKUs 
+                        </p>
+                    </td>
+                    <td >&nbsp;</td>
+                    <td >
+                        <p align="center" style="text-align:center">
+&nbsp;&nbsp;&nbsp; 
+                        </p>
+                    </td>
+                    <td >
+                        <p>
+                            Total no. of unique SKUs in the pickslip. 
+                        </p>
+                    </td>
+                </tr>
+            </table>
+            <h2>&nbsp;</h2>
+            <h2>Parameters</h2>
+            <table border="1" cellpadding="0" cellspacing="1" class="MsoNormalTable">
+                <tr>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            <b>Name</b> 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            <b>Default</b> 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            <b>Detail</b> 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            PO 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            None</p>
+                    </td>
+                    <td >
+                        <p>
+                            Purchase Order of the customer.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Customer Id 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            None</p>
+                    </td>
+                    <td >
+                        <p>
+                            Id of the customer for which you wants to see the details of the open orders. 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Reporting Status</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            All</p>
+                    </td>
+                    <td >
+                        <p>
+                            This column is showing status of the order as (In order bucket, Under Process, Validated, Ready to ship, Shipped.)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Pickslip Import Date <b>From -To</b> 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            None</p>
+                    </td>
+                    <td >
+                        <p>
+                            Date range for which you wants to see the orders imported.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Ship Date 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            None</p>
+                    </td>
+                    <td >
+                        <p>
+                            Date on which the orders are shipped.&nbsp; 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Virtual Warehouse 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            All</p>
+                    </td>
+                    <td >
+                        <p>
+                            Virtual Warehouse for that pickslip. 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        Ordered Required Routing</td>
+                    <td >
+                        Unchecked</td>
+                    <td >
+                        Check this option if you want to see EDI orders which are not routed yet.</td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Orders Required VAS</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            All VAS</p>
+                    </td>
+                    <td >
+                        <p>
+                            This is Value Added Service dropdown so that user can see the vas order for particular&nbsp; VAS tag.&nbsp; 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Building</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            All Checkbox checked</p>
+                    </td>
+                    <td >
+                        <p>
+                            Building of the pickslip.</p>
+                    </td>
+                </tr>
+            </table>
+            <h2>More Filters </h2>
+            <table border="1" cellpadding="0" cellspacing="1" class="MsoNormalTable" style="width:100.0%" width="100%">
+                <tr>
+                    <td style="width:20.0%;padding:.75pt .75pt .75pt .75pt" width="20%">
+                        <p align="center" style="text-align:center">
+                            <b>Name</b> 
+                        </p>
+                    </td>
+                    <td style="width:20.0%;padding:.75pt .75pt .75pt .75pt" width="20%">
+                        <p align="center" style="text-align:center">
+                            <b>Default</b> 
+                        </p>
+                    </td>
+                    <td style="width:60.0%;padding:.75pt .75pt .75pt .75pt" width="60%">
+                        <p align="center" style="text-align:center">
+                            <b>Detail</b> 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Customer Order Type 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            None</p>
+                    </td>
+                    <td >
+                        <p>
+                            Customer order type. 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Delivery Date</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            None</p>
+                    </td>
+                    <td >
+                        <p>
+                            Delivery date from which you want to display information</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            DC Cancel Date 
+                        </p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            None</p>
+                    </td>
+                    <td >
+                        <p>
+                            The DC Cancel date from which you want to display information. 
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <p>
+                            Label</p>
+                    </td>
+                    <td >
+                        <p align="center" style="text-align:center">
+                            All</p>
+                    </td>
+                    <td >
+                        <p>
+                            The Label Id of Style. 
+                        </p>
+                    </td>
+                </tr>
+            </table>
+            <h2>&nbsp;</h2>
+            <p>
+                <b><i>*Reporting Status: </i></b>The following reporting status are used in this report. The Definition of different reporting status is as follows:</p>
+            <ul type="disc">
+                <li><b><i>In Order Bucket: </i></b>Those pickslip for whom bucket is not created means processing of those pickslip is not started. i.e. status&nbsp; is 1.</li>
+                <li><b><i>Under Process: </i></b>Those pickslip which are in process and pickslip status is Pending or Hold or Null.</li>
+                <li><b><i>Validated: </i></b>Those pickslip which boxes are passed from validation program and but not added in the BOL. i.e. picking status is completed and shipping id is null.</li>
+                <li><b><i>Ready To Ship: </i></b>Those pickslip which is ready to ship i.e. picking status is completed and shipping id is not null.</li>
+                <li><b><i>Others: </i></b>Those pickslip which are not belong in above define status. i.e. Other-picking _status.</li>
+            </ul>
+            <p>
+                &nbsp;</p>
+            <h2>&nbsp;</h2>
+            <h2>Performance Detail</h2>
+            <p>
+                <i>Expected Time for the report output is </i>10 Sec.</p>
+            <h2>Behaviour Change</h2>
+            <ul type="disc">
+                <li>This report displays detail of the pickslips for the given Customer or PO or Status. You can also see VAS related pickslip details through this report. Same report can also be used for manual routing of EDI orders.</li>
+                <li>|Name of the report has been changed from &#39;Open Pickslip&#39; to &#39;Pickslip Details of Customer/PO/Status&#39;.</li>
+            </ul>
+            <h2>Issues</h2>
+            <p>
+                No Known Issue. 
+            </p>
+            <h2>Prerequisites</h2>
+            <p>
+                Private synonyms for the following tables are requried</p>
+            <p>
+                PS,<br />
+                BOX,<br />
+                BOXDET,<br />
+                PO,<br />
+                DEM_PICKSLIP,<br />
+                SHIP,<br />
+                CUST,<br />
+                PS_VAS,<br />
+                TAB_VAS,<br />
+                MASTER_SKU,<br />
+                PSDET,<br />
+                SKUCASE</p>
+            <p>
+                Use the below script to create the synonyms</p>
+            <p>
+                <code>create or replace synonym PS for DCMS8.PS;<br />
+                create or replace synonym PO for DCMS8.PO;<br />
+                create or replace synonym BOX for DCMS8.BOX;<br />
+                create or replace synonym BOXDET for DCMS8.BOXDET;<br />
+                create or replace synonym DEM_PICKSLIP for DCMS4.DEM_PICKSLIP;<br />
+                create or replace synonym ship FOR dcms8.ship;<br />
+                create or replace synonym cust for DCMS8.cust; 
+                <br />
+                create or replace synonym ps_vas for DCMS8.ps_vas; 
+                <br />
+                create or replace synonym tab_vas for DCMS8.tab_vas; 
+                <br />
+                create or replace synonym master_sku for DCMS8.master_sku; 
+                <br />
+                create or replace synonym psdet for DCMS8.psdet; 
+                <br />
+                create or replace synonym skucase for DCMS8.skucase;</code>
+            </p>
+            <p>
+                No appSettings is required:</p>
+            <h2>Parameter Validation</h2>
+            <p>
+                No special validations. 
+            </p>
+            <h2>Query&#39;s documentation</h2>
+            
+            <b>Detail grid query.</b>
+            <pre>
+  WITH OPEN_PICKSLIP_DATA AS
+ (SELECT PS.PICKSLIP_ID            AS PICKSLIP_ID,
+         PS.PO_ID                  AS PO_ID,
+         PS.CUSTOMER_ID            AS CUSTOMER_ID,
+         PS.CUSTOMER_STORE_ID      AS CUSTOMER_STORE_ID,
+         PS.CUSTOMER_DC_ID         AS CUSTOMER_DC_ID,
+         PS.REPORTING_STATUS       AS REPORTING_STATUS,
+         PS.PRINT_DATE             AS PRINT_DATE,
+         PS.ONLOT_NUMBER           AS ONLOT_NUMBER,
+         PS.VWH_ID                 AS VWH_ID,
+         PO.START_DATE             AS START_DATE,
+         PO.DC_CANCEL_DATE         AS DC_CANCEL_DATE,
+         PO.CANCEL_DATE            AS CANCEL_DATE,
+         PS.TOTAL_QUANTITY_ORDERED AS TOTAL_QUANTITY_ORDERED,
+         PS.TOTAL_DOLLARS_ORDERED  AS TOTAL_DOLLARS_ORDERED,
+         PS.WAREHOUSE_LOCATION_ID  AS WAREHOUSE_LOCATION_ID,
+         PD.UPC_CODE               AS UPC_CODE,
+         PS.BUCKET_ID              AS BUCKET_ID,
+         PS.SALES_ORDER_ID         AS STO
+    FROM PS
+   left outer JOIN PO
+      ON PS.PO_ID = PO.PO_ID
+     AND PS.CUSTOMER_ID = PO.CUSTOMER_ID
+     AND PS.ITERATION = PO.ITERATION
+   left outer JOIN PSDET PD
+      ON PS.PICKSLIP_ID = PD.PICKSLIP_ID
+   <if c="$ship_date">left outer join ship ship on ps.shipping_id = ship.shipping_id</if>
+   WHERE PS.TRANSFER_DATE IS NULL
+     and PD.transfer_date is null 
+     and PS.pickslip_cancel_date is null
+    <if>AND ps.po_id = :po_id</if>
+            <if c="$Customer_id">And ps.Customer_id = :Customer_id</if>
+            <if c="$FromDate">AND ps.pickslip_import_date &gt;= :FromDate AND ps.pickslip_import_date &lt; :ToDate + 1</if>
+	        <if c="$ship_date">AND ship.ship_date &gt;= :ship_date</if>
+            <if c="$ship_date">AND ship.ship_date &lt; :ship_date + 1</if>
+            <if>AND PO.START_DATE &gt;= :from_delivery_date</if>
+            <if>AND PO.START_DATE &lt; :to_delivery_date + 1</if>
+            <if>AND ps.vwh_id = :vwh_id</if>
+            <if c="$reporting_status != 'IN ORDER BUCKET'">AND PS.REPORTING_STATUS=:reporting_status</if>
+            <if c="$reporting_status = 'IN ORDER BUCKET'">AND 1 = 2</if>
+            <if>AND ps.iteration = :iteration</if>
+            <if>AND po.dc_cancel_date &gt;= :from_dc_cancel_date</if>
+            <if>AND po.dc_cancel_date &lt; :to_dc_cancel_date+1</if>
+            <if>AND ps.pickslip_prefix = :pickslip_prefix</if>
+            <if>AND ps.label_id = :label_id</if>
+            <if>AND <a pre="NVL(PS.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+            <if c="$customer_type='D'">AND ps.export_flag IS NULL</if>
+            <if c="$customer_type='I'">AND ps.export_flag = 'Y'</if>
+             <if c="$customer_dc_id">AND ps.customer_dc_id = :customer_dc_id</if> 
+            <if c="$customer_store_id">AND ps.customer_store_id = :customer_store_id</if>
+            <if c="$unrouted"> and not exists (select 1
+                            from edi_753_754_ps eps
+                             where eps.pickslip_id = ps.pickslip_id
+                               and eps.Edi753_Sent_On is not null)
+                            and ps.edi_pickslip = 'Y'
+            </if>  
+
+  UNION ALL
+  SELECT DP.PICKSLIP_ID AS PICKSLIP_ID,
+         DP.CUSTOMER_ORDER_ID AS PO_ID,
+         DP.CUSTOMER_ID AS CUSTOMER_ID,
+         DP.CUSTOMER_STORE_ID AS CUSTOMER_STORE_ID,
+         DP.CUSTOMER_DIST_CENTER_ID AS CUSTOMER_DC_ID,
+         'IN ORDER BUCKET' AS REPORTING_STATUS,
+         DP.PRINT_DATE AS PRINT_DATE,
+         DP.ONLOT_NUMBER AS ONLOT_NUMBER,
+         DP.VWH_ID AS VWH_ID,
+         DP.DELIVERY_DATE AS START_DATE,
+         DP.DC_CANCEL_DATE AS DC_CANCEL_DATE,
+         DP.CANCEL_DATE AS CANCEL_DATE,
+         DP.TOTAL_QUANTITY_ORDERED AS TOTAL_QUANTITY_ORDERED,
+         DP.TOTAL_DOLLARS_ORDERED AS TOTAL_DOLLARS_ORDERED,
+         DP.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID,
+         DPD.UPC_CODE AS UPC_CODE,
+         NULL AS BUCKET_ID,
+         DP.SALES_ORDER_ID AS STO
+    FROM DEM_PICKSLIP DP
+   INNER JOIN DEM_PICKSLIP_DETAIL DPD
+      ON DP.PICKSLIP_ID = DPD.PICKSLIP_ID
+   WHERE 1 = 1
+         <if c="$vas"> AND 1=2</if>
+     <if>AND dp.delivery_date &gt;= :from_delivery_date</if>
+    <if>AND dp.delivery_date &lt; :to_delivery_date + 1</if>
+            <if>AND DP.CUSTOMER_ORDER_ID = :po_id</if>
+            <if c="$Customer_id">And DP.Customer_id = :Customer_id</if>
+            <if c="$FromDate">AND DP.pickslip_import_date &gt;= :FromDate AND DP.pickslip_import_date &lt; :ToDate + 1</if>
+            <if>AND DP.vwh_id = :vwh_id</if>
+            <if>AND DP.dc_cancel_date &gt;= :from_dc_cancel_date</if>
+            <if>AND DP.dc_cancel_date &lt; :to_dc_cancel_date+1</if>
+            <if>AND DP.pickslip_prefix = :pickslip_prefix</if>
+            <if>AND DP.PICKSLIP_TYPE = :label_id</if>
+            <if c="$reporting_status != 'IN ORDER BUCKET'">AND 1=2</if>
+            <else>AND DP.PS_STATUS_ID = '1'</else>
+            <if c="$customer_type='D'">AND DP.export_flag IS NULL</if>
+            <if c="$customer_type='I'">AND DP.export_flag = 'Y'</if>  
+            <if c="$customer_dc_id">AND DP.customer_dist_center_id =:customer_dc_id</if>
+            <if c="$customer_store_id">AND DP.Customer_Store_Id =:customer_store_id</if>
+            <if>AND <a pre="NVL(dp.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if> 
+                 ),
+PICKSLIP_DETAIL AS
+ (SELECT OPD.PICKSLIP_ID,
+         MAX(OPD.STO) AS STO,
+         COUNT(UNIQUE OPD.UPC_CODE) AS UPC_CODE,
+         MIN(OPD.PO_ID) AS PO_ID,
+         MIN(OPD.CUSTOMER_ID) AS CUSTOMER_ID,
+         MIN(C.NAME) AS CUSTOMER_NAME,
+         MIN(OPD.CUSTOMER_STORE_ID) AS CUSTOMER_STORE_ID,
+         MIN(OPD.CUSTOMER_DC_ID) AS CUSTOMER_DC_ID,
+         MIN(OPD.REPORTING_STATUS) AS REPORTING_STATUS,
+         MIN(OPD.PRINT_DATE) AS PRINT_DATE,
+         MIN(OPD.ONLOT_NUMBER) AS ONLOT_NUMBER,
+         MIN(OPD.VWH_ID) AS VWH_ID,
+         MIN(OPD.START_DATE) AS START_DATE,
+         MIN(OPD.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+         MIN(OPD.CANCEL_DATE) AS CANCEL_DATE,
+         MIN(OPD.WAREHOUSE_LOCATION_ID) AS WAREHOUSE_LOCATION_ID,
+         MAX(OPD.TOTAL_QUANTITY_ORDERED) AS TOTAL_QUANTITY_ORDERED,
+         MAX(OPD.TOTAL_DOLLARS_ORDERED) AS TOTAL_DOLLARS_ORDERED,
+         RTRIM(SYS.STRAGG(UNIQUE(NVL2(TV.DESCRIPTION,
+                                      (TV.DESCRIPTION || ', '),
+                                      ''))),
+               ', ') AS VAS,
+         MAX(OPD.BUCKET_ID) AS BUCKET_ID
+    FROM OPEN_PICKSLIP_DATA OPD
+    LEFT OUTER JOIN PS_VAS PV
+      ON OPD.PICKSLIP_ID = PV.PICKSLIP_ID
+    LEFT OUTER JOIN TAB_VAS TV
+      ON PV.VAS_ID = TV.VAS_CODE
+    LEFT OUTER JOIN CUST C
+      ON OPD.CUSTOMER_ID = C.CUSTOMER_ID
+  WHERE 1=1
+      <if c="$vas"> 
+                and pv.vas_id is not null        
+                 <if c="$vas_id !='vas'">and pv.vas_id =:vas_id</if>    
+             </if>
+           <if c="$order_type='D' and contains($restrict_type, 'R')">ANd account_type NOT IN ('RTL')</if>      
+     <if c="$order_type='D' and contains($restrict_type, 'I')">AND account_type NOT IN ('IDC')</if>   
+   GROUP BY OPD.PICKSLIP_ID),
+BOX_DETAIL AS
+ (SELECT MAX(B.PICKSLIP_ID) AS PICKSLIP_ID,
+         B.UCC128_ID AS UCC128_ID,
+         SUM(BD.CURRENT_PIECES) AS TOTAL_PIECES_IN_BOX,
+         SUM(BD.CURRENT_PIECES * BD.EXTENDED_PRICE) AS ESTIMATED_DOLLARS,
+         MAX(SC.EMPTY_WT) +
+         SUM((MSKU.WEIGHT_PER_DOZEN / 12) * NVL(BD.CURRENT_PIECES,bd.expected_pieces)) AS TOTAL_BOX_WEIGHT,
+         MAX(SC.OUTER_CUBE_VOLUME) AS BOX_VOLUME
+    FROM BOX B
+   INNER JOIN SKUCASE SC
+      ON B.CASE_ID = SC.CASE_ID
+   INNER JOIN PS
+      ON B.PICKSLIP_ID = PS.PICKSLIP_ID
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+   INNER JOIN MASTER_SKU MSKU
+      ON BD.SKU_ID = MSKU.SKU_ID
+   WHERE ps.transfer_date is null 
+     AND  B.STOP_PROCESS_DATE IS NULL
+     AND BD.STOP_PROCESS_DATE IS NULL
+      <if>AND ps.vwh_id = :vwh_id</if>
+            <if c="$reporting_status != 'IN ORDER BUCKET'">AND PS.REPORTING_STATUS=:reporting_status</if>
+            <if c="$reporting_status = 'IN ORDER BUCKET'">AND 1 = 2</if>
+            <if>AND ps.iteration = :iteration</if>
+              <if>AND ps.po_id = :po_id</if>
+            <if c="$Customer_id">And ps.Customer_id = :Customer_id</if>
+            <if>AND ps.pickslip_prefix = :pickslip_prefix</if>
+            <if>AND ps.label_id = :label_id</if>
+            <if>AND ps.vwh_id = :vwh_id</if>
+            <if>AND <a pre="NVL(PS.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+            <if c="$customer_type='D'">AND ps.export_flag IS NULL</if>
+            <if c="$customer_type='I'">AND ps.export_flag = 'Y'</if>
+             <if c="$customer_dc_id">AND ps.customer_dc_id = :customer_dc_id</if> 
+            <if c="$customer_store_id">AND ps.customer_store_id = :customer_store_id</if>
+   GROUP BY B.UCC128_ID)
+SELECT PDET.PICKSLIP_ID as pickslip_id,
+       max(PDET.STO) AS STO,
+       MAX(PDET.UPC_CODE) AS TOTAL_UPC,
+       MAX(PDET.PO_ID) as po_id,
+       MAX(PDET.CUSTOMER_ID) as customer_id,
+       MAX(PDET.CUSTOMER_NAME) as customer_name,
+       MAX(PDET.CUSTOMER_STORE_ID) as customer_store_id,
+       MAX(PDET.CUSTOMER_DC_ID) as customer_dc_id,
+       MAX(PDET.REPORTING_STATUS) as reporting_status,
+       MAX(PDET.PRINT_DATE) as print_date,
+       MAX(PDET.ONLOT_NUMBER) as onlot_number,
+       MAX(PDET.VWH_ID) as vwh_id,
+       MAX(PDET.START_DATE) as start_date,
+       MAX(PDET.DC_CANCEL_DATE) as dc_cancel_date,
+       MAX(PDET.CANCEL_DATE) as cancel_date,
+       MAX(PDET.WAREHOUSE_LOCATION_ID) as warehouse_location_id,
+       MAX(PDET.VAS) as vas,
+       MAX(PDET.TOTAL_QUANTITY_ORDERED) as total_quantity_ordered,
+       MAX(PDET.TOTAL_DOLLARS_ORDERED) as total_dollars_ordered,
+       MAX(PDET.BUCKET_ID) as bucket_id,
+       COUNT(UNIQUE BDET.UCC128_ID) AS TOTAL_PICKSLIP_BOXES,
+       SUM(BDET.TOTAL_PIECES_IN_BOX) AS TOTAL_PIECES_IN_PICKSLIP,
+       SUM(BDET.ESTIMATED_DOLLARS) AS TOTAL_ESTIMATED_DOLLARS,
+       ROUND(SUM(BDET.TOTAL_BOX_WEIGHT), 4) AS TOTAL_PICKSLIP_WEIGHT,
+       ROUND(SUM(BDET.BOX_VOLUME), 4) AS PICKSLIP_VOLUME
+  FROM PICKSLIP_DETAIL PDET
+  LEFT OUTER JOIN BOX_DETAIL BDET
+    ON PDET.PICKSLIP_ID = BDET.PICKSLIP_ID
+ GROUP BY PDET.PICKSLIP_ID
+      </pre>
+                    
+            <h2>Validation details</h2>
+            <p>
+                <b>Query:</b>&nbsp; This query shoes the bucket, vwh, pieces and dollars, customer dc and Customer store basis of the pickslip. 
+            </p>
+            <pre>           
+SELECT PS.REPORTING_STATUS,
+       PS.CUSTOMER_ID,
+       PS.LABEL_ID,
+       PS.CUSTOMER_DC_ID,
+       PS.CUSTOMER_STORE_ID,
+       PS.TOTAL_QUANTITY_ORDERED,
+       PS.TOTAL_DOLLARS_ORDERED,
+       PS.BUCKET_ID,
+       PS.VWH_ID
+  FROM PS
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND PS.PICKSLIP_ID = '16459314'
+            </pre>
+            <p>
+                <b>Query: This query shoes VAS ID along with reporting status, label and customer for specific pickslip. </b>
+            </p>
+            <pre>
+             SELECT PS.REPORTING_STATUS, 
+                   PS.CUSTOMER_ID, 
+                   PS.LABEL_ID, 
+                   PV.VAS_ID
+              FROM PS
+        INNER JOIN PS_VAS PV
+                ON PS.PICKSLIP_ID = PV.PICKSLIP_ID
+             WHERE PS.TRANSFER_DATE IS NULL
+               AND PS.PICKSLIP_ID = ''
+                   </pre>          
+            <p>
+                <b>Description:</b> 
+            </p>
+            Enter the po_id, customer_id and pickslip_id to validate the delivery date, dc cancel date, cancel date and print date.
+            
+            <b>Below query is showing total weight of the pickslip.;
+            </b>
+
+
+<pre>
+
+
+WITH Q1 AS
+ (SELECT PS.PICKSLIP_ID,
+         SUM((MSKU.WEIGHT_PER_DOZEN / 12) * BD.CURRENT_PIECES) AS SKU_WEIGHT,
+         SUM((MSKU.VOLUME_PER_DOZEN / 12) * BD.CURRENT_PIECES) AS SKU_VOLUME
+    FROM PS
+   INNER JOIN BOX B
+      ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+   INNER JOIN MASTER_SKU MSKU ON BD.UPC_CODE = MSKU.UPC_CODE
+   WHERE PS.PICKSLIP_ID ='16548363'
+   GROUP BY PS.PICKSLIP_ID),
+WIGHT_BOX AS
+ (SELECT B.PICKSLIP_ID,
+         SUM(SC.EMPTY_WT) AS EMPTY_WIGHT,
+         SUM(SC.OUTER_CUBE_VOLUME)
+    FROM BOX B
+   INNER JOIN SKUCASE SC
+      ON B.CASE_ID = SC.CASE_ID
+   WHERE B.STOP_PROCESS_DATE IS NULL
+    and b.pickslip_id ='16548363'
+    GROUP BY B.PICKSLIP_ID)
+
+SELECT *
+  FROM Q1
+ LEFT OUTER JOIN WIGHT_BOX BW ON Q1.PICKSLIP_ID = BW.PICKSLIP_ID;
+
+    </pre>
+            <b>Query : Below query is shoiwng No. Of SKU  for specific pickslip_id.</b>
+           <pre>SELECT COUNT(UNIQUE DPD.UPC_CODE)
+  FROM DEM_PICKSLIP DP
+ INNER JOIN DEM_PICKSLIP_DETAIL DPD
+    ON DP.PICKSLIP_ID = DPD.PICKSLIP_ID
+ WHERE DP.PS_STATUS_ID = 1
+   and dp.pickslip_id ='';</pre> 
+            <b>Query: Below query is showing box pices and dollars for specific pickslip  </b>
+            <pre>SELECT COUNT(UNIQUE BD.UPC_CODE),COUNT(uNIQUE B.UCC128_ID),
+       SUM(BD.CURRENT_PIECES) PIECES,
+       SUM(BD.CURRENT_PIECES * BD.EXTENDED_PRICE) AS TOTAL_DOLARS
+  FROM PS
+ INNER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+ INNER JOIN BOXDET BD
+    ON B.UCC128_ID = BD.UCC128_ID
+   AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+ WHERE PS.PICKSLIP_ID = '16548363';</pre>
+
+            <b>Query : Displaying wieght and volumn of pickslip which status 'IN ORDER BUCKET'</b>
+            <pre>
+SELECT SUM((MSKU.WEIGHT_PER_DOZEN / 12) * DPD.QUANTITY_ORDERED) AS SKU_WEIGHT,
+       SUM((MSKU.VOLUME_PER_DOZEN / 12) * DPD.QUANTITY_ORDERED) AS SKU_VOLUME
+  FROM DEM_PICKSLIP DP
+ INNER JOIN DEM_PICKSLIP_DETAIL DPD
+    ON DP.PICKSLIP_ID = DPD.PICKSLIP_ID
+  LEFT OUTER JOIN MASTER_SKU MSKU
+    ON DPD.UPC_CODE = MSKU.UPC_CODE
+ WHERE DP.PICKSLIP_ID = '16484448'
+            </pre>
+        </div>
+    </div>
+</body>
+</html>

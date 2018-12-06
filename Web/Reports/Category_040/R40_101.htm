@@ -1,0 +1,422 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+
+    <form id="Form1" 
+    action="http://w3chile/XTremeReporter/ReportDoc.aspx?_Report=C%3a%5cDCMSLive1%5cReports%5cR40.101.xsd" 
+    method="post" name="Form1">
+        <input id="__VIEWSTATE" name="__VIEWSTATE" type="hidden" 
+            value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+    <h1 align="center" xmlns="http://www.w3.org/1999/xhtml">
+        40<b>.</b>101<b> : </b>Carton Aging Report
+    </h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    $Revision: 5601 $<br />
+        Reviewed By: Manmohan Bisht<br />
+        Tested By : Hemant K. Singh<br xmlns="http://www.w3.org/1999/xhtml" />
+        <p author="Laxman Singh" lastreviewdate="2006-12-12" reviewer="silky Sehgal" 
+        status="Completed" xmlns="http://www.w3.org/1999/xhtml">
+        For the specified period range, the report displays the cartons with their SKU 
+        details, which are lying in the specified area.
+    </p>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Overview</h2>
+    <p>
+        For the specific period (time period) and virtual warehouse, the report displays the 
+        label, season code, carton number, Area Location, receipt date and SKU details for 
+        a carton which are still lying in the specified area. the report displays the label, 
+        season code, carton number, location Id for the specified area, receipt date, style, color, 
+        size, dimension, and qty in broad categories:
+    </p>
+    <ul><li>
+                Last 89 days</li><li>
+                        90 to 179 days</li><li>
+                        180 to 269 days</li><li>
+                        270 to 359 days</li>
+        <li>360 to 539 days</li>
+        <li>540 to 719 days</li>
+        <li>720+ days</li>
+        </ul>
+    </li>
+           
+        <h2 xmlns="http://www.w3.org/1999/xhtml">
+            Algorithm</h2>
+        For the particular time period, get label Id, location(If location is there in 
+        the area), season code, carton 
+        number, receipt date and SKU details of cartons which are still lying in the 
+        passed 
+        area from src_carton, src_carton_detail and master_style table.
+        <h3 xmlns="http://www.w3.org/1999/xhtml">
+            Output</h3>
+        <table border="1" cellpadding="1" cellspacing="1" width="100%" 
+            xmlns="http://www.w3.org/1999/xhtml">
+            <tr>
+                <td align="middle" width="25%">
+                    <b>Item</b></td>
+                <td align="middle" width="20%">
+                    <b>Summary</b></td>
+                <td align="middle" width="10%">
+                    <b>Sort Sequence</b></td>
+                <td align="middle" width="35%">
+                    <b>Detail</b></td>
+            </tr>
+            <tr>
+                <td>
+                    <i><b>Carton </b></i></td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R40.101.xsd" Key="true" Term="Carton Id">Cartons lying in the BIR 
+                    area. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Quality</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    Quality code</td>
+            </tr>
+            <tr>
+                <td>
+                    Label</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R40.101.xsd" Term="Label ID">Label Id assigned to the SKUs in the 
+                    Carton. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Season Code</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R40.101.xsd" Term="Season Code">Price Season Code for the cartons. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Receipt Date</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    5</td>
+                <td>
+                    <r:item 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R40.101.xsd" Term="Receipt Date" 
+SortSequence="5">Date on which cartons were inserted. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                                        Location/Pallet</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R40.101.xsd" Term="BIR Location">Location ID or Pallet ID of the 
+                    carton at the storage area. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Style</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    1</td>
+                <td>
+                    <r:item 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R40.101.xsd" Term="Style" SortSequence="1">Style of the SKUs in the 
+                    carton. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Color</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    2</td>
+                <td>
+                    <r:item 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R40.101.xsd" Term="Color" SortSequence="2">Color of the SKUs in the 
+                    carton. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Dimension</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    3</td>
+                <td>
+                    <r:item 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R40.101.xsd" Term="Dimension" 
+SortSequence="3">Dimensions of the SKUs in the carton. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Size</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    4</td>
+                <td>
+                    <r:item 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R40.101.xsd" Term="Size" SortSequence="4">Size of the SKUs of the 
+                    carton. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Qty</td>
+                <td>
+                    Sum</td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R40.101.xsd" Term="Qty" Summary="Sum">Number of SKUs in the carton. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Vwh</td>
+                <td>
+                    No</td>
+                <td align="middle">
+                    &nbsp;</td>
+                <td>
+                    <r:item 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R40.101.xsd" Term="VWH ID">Virtual Warehouse ID. 
+</R:ITEM>
+                </td>
+                    </tr>
+            </table>
+        <h2 xmlns="http://www.w3.org/1999/xhtml">
+            Parameters</h2>
+        <table border="1" cellpadding="1" cellspacing="1" width="100%" 
+            xmlns="http://www.w3.org/1999/xhtml">
+            <tr>
+                <td align="middle" width="20%">
+                    <b>Name</b></td>
+                <td align="middle" width="20%">
+                    <b>Default</b></td>
+                <td align="middle" width="60%">
+                    <b>Detail</b></td>
+            </tr>
+            <tr>
+                <td>
+                    Specify Carton Area</td>
+                <td>
+                    Show All</td>
+                <td>
+                    Area against which the carton aging is requested
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Virtual Warehouse</td>
+                <td>
+                    All</td>
+                <td>
+                    Virtual Warehouse ID.</td>
+            </tr>
+            <tr>
+                <td>
+                    Day Range</td>
+                <td>
+                    Last 89 Days</td>
+                <td>
+                    The Category of the day range. </td>
+            </tr>
+            <tr>
+                <td>
+                    Quality Code</td>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    Quality Code</td>
+            </tr>
+        </table>
+        &nbsp;<br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are required</p>
+    <p>
+        src_carton,<br /> 
+        src_carton_detail,<br /> 
+        master_style</p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>create or replace synonym src_carton for dcms4.src_carton;             <br />
+            create or replace synonym src_carton_detail for dcms4.src_carton_detail;<br />
+            create or replace synonym master_style for dcms4.master_style;
+            </code></p>
+        <h2 xmlns="http://www.w3.org/1999/xhtml">
+            Behavior Change</h2>
+        <h2 xmlns="http://www.w3.org/1999/xhtml">
+            Issues</h2>
+        No Known Issue.
+        <br xmlns="http://www.w3.org/1999/xhtml" />
+        <div id="divTechnical" xmlns="http://www.w3.org/1999/xhtml">
+            <h2>
+                Parameter Validation</h2>
+            No special validations.
+            <h2>
+                Query&#39;s documentation:</h2>
+            <ul>
+                <li><r:doc xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R40.101.xsd">The query gets the carton detail from src_carton and 
+                    src_carton_detail as well as label Id from master_style table for the cartons 
+                    which are lying in passed area for specified period of time.
+                    <br />                                      
+            <pre>
+SELECT CTN.carton_storage_area AS carton_storage_area,
+       CTN.quality_code AS quality_code,
+       CTN.carton_id         AS carton_id,
+       CTN.price_season_code AS price_season_code,
+       CTN.insert_date       AS receipt_date,
+       DECODE(CTN.location_id,NULL,CTN.pallet_id,CTN.Location_Id)  AS carton_location,
+       CTN.vwh_id            AS vwh_id,
+       CTNDET.style          AS style,
+       CTNDET.color          AS color,
+       CTNDET.dimension      AS dimension,
+       CTNDET.sku_size       AS sku_size,
+       CTNDET.quantity       AS quantity,
+       STY.label_id          AS label_id
+FROM src_carton ctn
+       LEFT OUTER JOIN src_carton_detail ctndet ON ctndet.carton_id = ctn.carton_id
+       LEFT OUTER JOIN master_style sty ON sty.style = ctndet.style
+ WHERE 1=1
+   [$:carton_storage_area$AND ctn.carton_storage_area = :carton_storage_area$]
+   [$:vwh_id$AND ctn.vwh_id = :vwh_id$]
+   [$:EqualsTo != '8'$AND TRUNC((SYSDATE - ctn.insert_date) / 90) IN({0})$]
+   [$:quality_code$AND ctn.quality_code = :quality_code$]
+   [$:GreaterThan = '8' $AND TRUNC((SYSDATE - ctn.insert_date) / 90) &gt;= :quarterly_year$]                                         
+            </pre>
+                    </R:DOC></li>
+            </ul>
+            <h2>
+                Validation details</h2>
+            Bellow queries may have the where clause in the [] brackets. It means these are 
+            the optional parameters. If you do not want to pass these parameters just remove 
+            the [] section.
+            <br />
+            <br />
+            <b>Query:</b><pre><r:query 
+                xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+                xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+                xmlns:mstns="http://tempuri.org/R40.101.xsd">
+      SELECT CTN.carton_storage_area AS carton_storage_area,
+       CTN.carton_id         AS carton_id,
+       CTN.price_season_code AS price_season_code,
+       CTN.insert_date       AS receipt_date,
+       CTN.location_id       AS location_id,
+       CTN.vwh_id            AS vwh_id,
+       CTNDET.style          AS style,
+       CTNDET.color          AS color,
+       CTNDET.dimension      AS dimension,
+       CTNDET.sku_size       AS sku_size,
+       CTNDET.quantity       AS quantity,
+       STY.label_id          AS label_id
+FROM src_carton ctn
+       LEFT OUTER JOIN src_carton_detail ctndet ON ctndet.carton_id = ctn.carton_id
+       LEFT OUTER JOIN master_style sty ON sty.style = ctndet.style
+ WHERE 1=1
+   AND ctn.carton_storage_area = :carton_storage_area
+   AND ctn.vwh_id = :vwh_id
+   AND TRUNC((SYSDATE - ctn.insert_date) / 90) IN(:quarterly_year)
+  
+          </R:QUERY></pre>
+        <b>Query:</b><pre><r:query 
+            xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            xmlns:mstns="http://tempuri.org/R99.900.xsd">
+            SELECT count(ctn.carton_id) AS &quot;NO_OF_CARTONS&quot;,
+            sum(ctndet.quantity) AS &quot;PIECES&quot;
+            FROM dcms8.src_carton ctn, dcms8.src_carton_detail ctndet
+            WHERE ctn.carton_id = ctndet.carton_id(+)
+            AND ctn.carton_storage_area = :Area
+            and trunc(sysdate - ctn.insert_date)&gt;=180 
+            and trunc(sysdate - ctn.insert_date)&lt;270
+            AND ctn.vwh_id = :VWH_ID;
+          </R:QUERY></pre>
+        <b>Description:</b><pre><r:description 
+            xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            xmlns:mstns="http://tempuri.org/R99.900.xsd">
+            Run the above query to validate the number of cartons lying in the given area for last 180 to 269 days.
+            User can pass other combinations of day range and warehouse id as well.
+          </R:DESCRIPTION></pre>
+            <!--End divTechnical-->
+        </div>
+    </form>
+
+</body>
+</html>

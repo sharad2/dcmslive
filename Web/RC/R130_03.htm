@@ -1,0 +1,364 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style type="text/css">
+        .style1
+        {
+            height: 20px;
+        }
+        </style>
+</head>
+<body>
+<h1 style="text-align: center">
+        130<b>.</b>03<b> : </b>FPK inventory report</h1>
+    <strong>Author : Sanjeev Kumar</strong><br />
+    <b>Reviewed By : Ritesh Verma</b><br />
+    $Revision: 4259 $<br />
+    Status: Tested
+    <br />
+    Tested By : 
+    H.K. Singh<br />
+    <p>The report lists all FPK inventory for the passed&nbsp; Building.&nbsp;Report will also show the quantity&nbsp; in different carton areas irrespective of building 
+        for the passed .building Report will not consider cartons which are in suspense.
+</p>
+<h2>Overview</h2>
+    <p>This 
+        report can also be displayed with different combinations of the following 
+        filters:- Label , vwh_id and building.
+        Building filter will only be applied for FPK inventory but the report will also 
+        show quantity of SKU&#39;s against carton areas across building.</p>
+    <ul>
+        <li>If the building is not known then it will be addressed as unknown.</li>
+    </ul>
+<h2>Algorithm</h2>
+<p>The query retrieves&nbsp; picking area(s) [i.e FPK as of now] for the desired 
+    SKUs along with their details from 
+    IALOC,IALOC_CONTENT and IA, carton areas quantity from SRC_CARTON 
+    and SRC_CARTON_DETAIL with style , color ,dimension and size from 
+    master_sku and label of the sku from master_style table.</p>
+  <h2>OutPut</h2>
+  <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center">
+                <b>Item</b>
+            </td>
+            <td align="center">
+                <b>Summary</b>
+            </td>
+            <td align="center">
+                <b>Default Sort Sequence</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+         <tr>
+            <td>
+                <i><b>Location</b></i></td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1</td>
+            <td>
+                Location of the SKU.</td>
+        </tr> 
+        <tr>
+            <td>
+                UPC</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                The area where cartons are stored.
+            </td>
+        </tr> 
+        <tr>
+            <td>
+                Style</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Style of SKU</td>
+        </tr> 
+        <tr>
+            <td>
+                Color</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Color of SKU</td>
+        </tr>
+         <tr>
+            <td>
+                Dim</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Dimension of SKU</td>
+        </tr> 
+        <tr>
+            <td class="style1">
+                Size</td>
+            <td class="style1">
+                No
+            </td>
+            <td align="center" class="style1">
+                &nbsp;</td>
+            <td class="style1">
+                SIZE of SKU</td>
+        </tr> <tr>
+            <td>
+                Label</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Label of the SKU</td>
+        </tr> <tr>
+            <td>
+                Capacity</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Capacity of the location.</td>
+        </tr> <tr>
+            <td>
+                QuantityIn|FPK</td>
+            <td>
+                Sum</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                SKU quantity in the Picking area.</td>
+        </tr> <tr>
+            <td>
+                QuantityIn|Cartone Areas</td>
+            <td>
+                Sum</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                SKU quantity in 
+                all carton areas.</td>
+        </tr> 
+        <tr>
+            <td>
+                Building</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Building of the SKU.</td>
+        </tr> 
+        </table>
+        <h2>Parameter</h2>
+        <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center">
+                <b>Name</b>
+            </td>
+            <td align="center">
+                <b>Default</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+         <tr>
+            <td>
+                Label</td>
+            <td>
+                All</td>
+            <td>
+                Label of the SKU</td>
+        </tr>
+         <tr>
+            <td>
+                Vwh</td>
+            <td>
+                All</td>
+            <td>
+                SKU in&nbsp; Virtual Warehouse</td>
+        </tr>
+            <tr>
+            <td>
+                Building</td>
+            <td>
+                All</td>
+            <td>
+                SKU in&nbsp; 
+                buiding</td>
+            </tr>
+        </table>
+        <h2>Performance Detail
+</h2>
+<i>Expected Time for the report output is 3 sec approximately.</i>
+  <h2>Behavior</h2>
+  <ul>
+  <li> The report is the new upgraded version of R130_03.</li>
+  <li> Added the new Building filter to display the quantity of the picking area&nbsp; building wise.</li>
+  <li> Now the report will display all the carton areas quantity along with the 
+      picking area quantity.</li>
+  </ul>
+  <h2>issue</h2>
+    No Issue.
+    <h1>Prerequisites</h1>
+<p>Private synonyms for the following tables are required</p>
+
+<p>Use the below script to create the synonyms</p>
+<ul>
+<li>create or replace synonym src_carton for dcms4.src_carton </li>
+<li>create or replace synonym src_carton_detail for dcms4.src_carton_detail </li>
+<li>create or replace synonym master_style for dcms4.master_style </li>
+<li>create or replace synonym&nbsp; ia for dcms8.ia</li>
+    <li>create or replace ialoc for dcms8.ialoc</li>
+    <li>create or replace ialoc_content for dcms8.ialoc_content</li>
+    <li>create or replace master_sku for dcms8.master_sku</li>
+</ul>
+<h4>Following appSettings are required:</h4>
+
+<b>No Appsetting used</b>
+<h2>Parameter Validation</h2>
+<h4> No parameter Validation</h4>
+    <h2>Query's documentation:</h2>
+<pre>
+WITH ialoc_sku AS (
+SELECT MSKU.SKU_ID AS SKU_ID,
+       L.VWH_ID AS VWH_ID,
+       L.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID,
+       MIN(LC.LOCATION_ID) AS MIN_LOCATION_ID,
+       MAX(LC.LOCATION_ID) AS MAX_LOCATION_ID,
+       COUNT(LC.LOCATION_ID) AS COUNT_LOCATION_ID,
+       MAX(LC.IACONTENT_ID) UPC_CODE,
+       MAX(MSKU.STYLE) STYLE,
+       MAX(MSKU.COLOR) COLOR,
+       MAX(MSKU.DIMENSION) DIMENSION,
+       MAX(MSKU.SKU_SIZE) SKU_SIZE,
+       MAX(MSTYLE.LABEL_ID) LABEL_ID,
+       SUM(LC.NUMBER_OF_UNITS) AS NUMBER_OF_UNITS,
+       SUM(NVL(L.ASSIGNED_UPC_MAX_PIECES, MSKU.PIECES_PER_RAIL)) AS CAPACITY
+  FROM IALOC_CONTENT LC
+ INNER JOIN IALOC L
+    ON LC.IA_ID = L.IA_ID
+   AND LC.LOCATION_ID = L.LOCATION_ID
+ INNER JOIN MASTER_SKU MSKU
+    ON LC.IACONTENT_ID = MSKU.UPC_CODE
+  LEFT OUTER JOIN MASTER_STYLE MSTYLE
+    ON MSKU.STYLE = MSTYLE.STYLE
+ INNER JOIN IA IA
+    ON LC.IA_ID = IA.IA_ID
+ WHERE IA.PICKING_AREA_FLAG = 'Y'
+   AND LC.IACONTENT_TYPE_ID = 'SKU'
+   <if>AND L.VWH_ID = :vwh_id</if>
+   <if>AND MSTYLE.LABEL_ID = :label_id</if>
+   <if>AND l.warehouse_location_id = :warehouse_location_id</if>
+ GROUP BY MSKU.SKU_ID, L.VWH_ID,L.WAREHOUSE_LOCATION_ID
+HAVING SUM(LC.NUMBER_OF_UNITS) >0),
+carton_sku AS (SELECT *
+    from (SELECT MSKU.sku_id              AS sku_id,
+                 c.vwh_id              AS vwh_id,
+                 tia.SHORT_NAME as SHORT_NAME,
+                 NVL(NVL(tia.warehouse_location_id, msl.warehouse_location_id),'Unknown') as warehouse_location_id,
+                 d.quantity            as quantity
+            from src_carton c
+           INNER JOIN src_carton_detail d
+              on c.carton_id = d.carton_id
+            LEFT OUTER JOIN MASTER_SKU MSKU
+                 ON D.SKU_ID = MSKU.SKU_ID
+            LEFT OUTER JOIN MASTER_STYLE MS
+                 ON MSKU.STYLE = MS.STYLE
+           left outer join master_storage_location msl
+              on msl.storage_area = c.carton_storage_area
+             and msl.location_id = c.location_id
+           left outer join tab_inventory_area tia on 
+             c.carton_storage_area = tia.inventory_storage_area
+             WHERE C.suspense_date IS NULL
+              <if>AND C.vwh_id = :vwh_id</if>
+     <if>and ms.label_id = :label_id</if>
+             )
+          pivot XML(SUM(quantity) as quantity for(SHORT_NAME, WAREHOUSE_LOCATION_ID) in(ANY, ANY))
+
+)
+SELECT ISKU.SKU_ID AS SKU_ID,
+       ISKU.STYLE AS STYLE,
+       ISKU.COLOR AS COLOR,
+       ISKU.DIMENSION AS DIMENSION,
+       ISKU.SKU_SIZE AS SKU_SIZE,
+       ISKU.LABEL_ID AS LABEL_ID,
+       ISKU.CAPACITY AS CAPACITY,
+       ISKU.MIN_LOCATION_ID AS MIN_LOCATION_ID,
+       ISKU.MAX_LOCATION_ID AS MAX_LOCATION_ID,
+       ISKU.COUNT_LOCATION_ID AS COUNT_LOCATION_ID,
+       ISKU.NUMBER_OF_UNITS AS NUMBER_OF_UNITS,
+       ISKU.UPC_CODE AS UPC_CODE,
+       CSKU.SHORT_NAME_WAREHOUSE_LOCAT_XML AS area_xml
+       FROM ialoc_sku ISKU
+LEFT OUTER JOIN carton_sku CSKU ON
+ISKU.SKU_ID = CSKU.SKU_ID
+and isku.vwh_id = csku.vwh_id
+</pre>
+
+    <h2>validation Detail</h2>
+<p>Bellow queries may have the where clause in the [] brackets. It means these are the optional parameters. If you do not want to pass these parameters just remove the [] section. 
+</p>
+<b>Query: Below query will display the FPK quantity</b>
+<pre>
+SELECT * FROM IALOC I
+INNER JOIN IALOC_CONTENT IC ON
+I.IA_ID = IC.IA_ID
+INNER JOIN MASTER_SKU MSKU ON
+IC.IACONTENT_ID = MSKU.UPC_CODE
+LEFT OUTER JOIN MASTER_STYLE MS
+ON MSKU.STYLE = MS.STYLE
+AND I.LOCATION_ID = IC.LOCATION_ID
+WHERE I.WAREHOUSE_LOCATION_ID= :WAREHOUSE_LOCATION_ID
+AND IC.IACONTENT_TYPE_ID = 'SKU'
+AND MS.LABEL_ID = :LABEL_ID
+AND I.VWH_ID= :VWH_ID;
+</pre>
+<b>Query : Below query will display the carton area quantity </b>         
+<pre>
+SELECT MSKU.SKU_ID AS SKU_ID,
+       C.VWH_ID AS VWH_ID,
+       TIA.SHORT_NAME AS SHORT_NAME,
+       NVL(NVL(TIA.WAREHOUSE_LOCATION_ID, MSL.WAREHOUSE_LOCATION_ID),
+           'Unknown') AS WAREHOUSE_LOCATION_ID,
+       D.QUANTITY AS QUANTITY
+  FROM SRC_CARTON C
+ INNER JOIN SRC_CARTON_DETAIL D
+    ON C.CARTON_ID = D.CARTON_ID
+  LEFT OUTER JOIN MASTER_SKU MSKU
+    ON D.SKU_ID = MSKU.SKU_ID
+  LEFT OUTER JOIN MASTER_STYLE MS
+    ON MSKU.STYLE = MS.STYLE
+  LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+    ON MSL.STORAGE_AREA = C.CARTON_STORAGE_AREA
+   AND MSL.LOCATION_ID = C.LOCATION_ID
+  LEFT OUTER JOIN TAB_INVENTORY_AREA TIA
+    ON C.CARTON_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+ WHERE C.SUSPENSE_DATE IS NULL
+   AND C.VWH_ID = :VWH_ID 
+   AND MS.LABEL_ID = :LABEL_ID 
+</pre>
+</body>
+</html>

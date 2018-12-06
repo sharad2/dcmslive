@@ -1,0 +1,457 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="b929aad6-15fe-477c-9cb0-9df5ba638dca" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <summary>
+      <para>
+        Implementing authentication framework in your Web Application allows you to selectively control which pages are
+        visible to which users.
+      </para>
+    </summary>
+    <introduction>
+      <autoOutline xmlns="" />
+      <para>
+        This topic discusses how you can make some pages inaccessible to anonymous users. You will make pages in a particular directory
+        accessible to authenticated users only. Rest of the website will be accessible to everyone.
+      </para>
+    </introduction>
+    <section address="EnablingFormsAuth">
+      <title>Enabling Forms Authentication</title>
+      <content>
+        <para>
+          We will be using Forms Authentication for implementing authentication.
+          Forms authentication enables you to authenticate the user name and password of your users
+          using a login form.
+        </para>
+
+        <para>
+          Add the following configuration settings in the Web.config file to implement form authentication:
+        </para>
+
+        <code language="c#">
+          <![CDATA[
+<system.web>
+....
+    <authentication mode="Forms" >
+      <forms name="DcmsWeb" defaultUrl="Default.aspx" loginUrl="login.aspx"  />
+    </authentication>
+....
+</system.web>
+              ]]>
+        </code>
+
+        <para>
+          <system> defaultUrl: </system>Defines the default URL that is used for redirection after authentication.
+        </para>
+        <para>
+          <system> loginUrl: </system>Specifies the URL to which the request is redirected if the user clicks on a link
+          which is not accessible to him. You will be creating a login.aspx page later in this topic.
+        </para>
+
+      </content>
+    </section>
+    <section address="LoginLogoutLinks">
+      <title>Adding Login and Logout Links to Master Page</title>
+      <content>
+        <para>
+          Add the following code to your master page which will provide links to login/logout.
+          It will also show a welcome message to the logged-in user. The login.aspx
+          page will be created in the next step.
+        </para>
+        <code language="c#">
+          <![CDATA[
+  <asp:LoginView runat="server">
+    <LoggedInTemplate>
+      Welcome
+      <asp:LoginName runat="server" />
+      |
+      <asp:HyperLink runat="server" NavigateUrl="~/Login/Logout.aspx" Text="Logout" />
+    </LoggedInTemplate>
+    <AnonymousTemplate>
+      <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Login/Login.aspx" Text="Login" />
+    </AnonymousTemplate>
+  </asp:LoginView>
+              ]]>
+
+        </code>
+        <para>
+          The <codeInline>LoggedInTemplate</codeInline> welcomes the user by name and provides link to logout.
+          The <codeInline>AnonymousTemplate</codeInline> provides link to login.
+        </para>
+      </content>
+    </section>
+    <section address="LoginPage">
+      <title>Creating the Login Page</title>
+      <content>
+        <para>
+          You need to provide a
+          way for your users to log into your site by providing their user name and password.
+          The users can navigate to this page by clicking on the login link that you added to the master page.
+          They will also navigate to this page
+          because you specified the <codeInline>loginUrl</codeInline> attribute of the <![CDATA[<forms>]]> element
+          in <link xlink:href="#EnablingFormsAuth">Enabling Forms Authentication</link>.
+        </para>
+        <para>
+          Add a new file login.aspx to your project and copy the following markup to it.
+        </para>
+        <code language="c#">
+          <![CDATA[
+  <form id="Form1" runat="server">
+    <div>
+          <ecl:TwoColumnPanel runat="server">
+              <ecl:LeftLabel Text="User Name" />
+              <inp:TextBoxEx ID="tbUserName" runat="server" MaxLength="15" InitialFocus="true">
+                  <Validators>
+                      <inp:Required />
+                  </Validators>
+              </inp:TextBoxEx>
+              <ecl:LeftLabel runat="server" Text="Password" />
+              <inp:TextBoxEx ID="tbPassword" runat="server" CaseConversion="Password" MaxLength="15">
+                  <Validators>
+                      <inp:Required />
+                  </Validators>
+              </inp:TextBoxEx>
+              <ecl:LeftPanel runat="server">
+                  <inp:CheckBoxEx runat="server" ID="cbRememberMe" Text="Remember me on this computer" />
+              </ecl:LeftPanel>
+              <inp:ButtonEx ID="btnLogin" runat="server" Text="Log In" Action="Submit" CausesValidation="true"
+                  OnClick="btnLogin_Click" />
+          </ecl:TwoColumnPanel>
+          <inp:ValidationSummary runat="server" ID="valSummary" />
+    </div>
+  </form>
+                ]]>
+        </code>
+        <para>
+          The above markup contains two text boxes, one each for user name and password. Both are required.
+          When button <codeInline>btnLogin</codeInline> is clicked, the event handler <codeInline>btnLogin_Click</codeInline>
+          is responsible for asking the provider to validate the credentials entered. The code for the event handler is
+          as follows:
+        </para>
+        <code language="c#">
+          <![CDATA[
+  protected void btnLogin_Click(object sender, EventArgs e)
+  {
+    if (Membership.ValidateUser(tbUserName.Text, tbPassword.Text))
+    {
+      FormsAuthentication.RedirectFromLoginPage(tbUserName.Text, cbRememberMe.Checked);
+    }
+    else
+    {
+      valSummary.ErrorMessages.Add("Your login request was not successful. Please try again.");
+    }
+  }
+                ]]>
+        </code>
+        <para>
+          If validation is successful, we call <codeInline>FormsAuthentication.RedirectFromLoginPage()</codeInline>
+          which will redirect the user to the <codeInline>defaultUrl</codeInline> you specified with the
+          <![CDATA[ <forms> ]]> element in web.config. If authentication is not successful we display an error message in the
+          by adding it to <codeEntityReference>P:EclipseLibrary.Web.JQuery.Input.ValidationSummary.ErrorMessages</codeEntityReference>
+        </para>
+      </content>
+    </section>
+    <section address="MembershipProvider">
+      <title>Specifying the Membership Provider</title>
+      <content>
+        <para>
+          We used <codeInline>Membership.ValidateUser()</codeInline> method to validate a user and
+          this method uses MembershipProvider for this.
+          MembershipProvider gives the built-in ways to manage and authenticate user.
+        </para>
+        <para>
+          In order to use MembershipProvider, we have to make certain entries in the Web.config file.
+          For example we will take <system>OracleMembershipProvider</system> as our MembershipProvider.
+        </para>
+        <para>
+          Specify Membership Provider. The membership provider is responsible for validating the user name and password
+          entered by the user. It can be any membership provider.           This example uses a custom provider
+          <codeInline>OracleMembershipProvider</codeInline>.
+        </para>
+        <code language="c#">
+          <![CDATA[
+<system.web>
+....
+<membership defaultProvider="OracleMembershipProvider">
+  <providers>
+    <clear/>
+    <add name="OracleMembershipProvider" type="EclipseLibrary.Oracle.Web.Security.OracleMembershipProvider"
+      connectionStringName="dcms4" applicationName="DcmsWebMF" />
+  </providers>
+</membership>
+....
+</system.web>
+                  ]]>
+        </code>
+        <para>
+          Depending on the membership provider, you will need to specify provider specific initialization options.
+          <codeInline>connectionStringName</codeInline>
+          is needed to initialize this provider.
+        </para>
+      </content>
+    </section>
+    <section address="SecuringPages">
+      <title>Securing Pages</title>
+      <content>
+        <para>Your next step will be to secure some of the pages in the application from unauthenticated users.</para>
+        <para>
+          To enable security in your application, you need to set permissions for your website.
+          This example denies anonymous access to all files in the <system>Apps</system> folder. Everywhere else, anonymous access is allowed.
+          Specify following settings in the <system>web.config</system> file.
+        </para>
+        <code language="c#">
+          <![CDATA[
+<system.web>
+  ...
+  <authorization>
+    <allow users="*"/>
+  </authorization>
+  ...  
+</system.web>
+...
+<location path="Apps">
+  <system.web>
+    <authorization>
+      <deny users="?"/>
+    </authorization>
+  </system.web>
+</location>
+                  ]]>
+        </code>
+        <para>
+          We make the whole website accessible to everyone including anonymous users.
+          Then we override the permissions for the <system>Apps</system> directory
+          and deny access to anonymous users for the <system>Apps</system> directory only.
+          As a result only authenticated users will be able to see
+          the pages in the Apps directory.
+        </para>
+      </content>
+    </section>
+    <section address="LogoutPage">
+      <title>Adding a Logout Page</title>
+      <content>
+        <para>
+          Lastly, you need to add logout page which is invoked
+          when the user clicks the logout link on you master page. The logout page is responsible for looging out the user and displaying
+          the options the logged out user has. In this example we give him option to go the default page or to go to the
+          login page.
+        </para>
+        <para>
+          Add the following mark-up in the Logout.aspx to add controls to give user options to
+          relogin or go back to home page.
+        </para>
+        <code language="c#">
+          <![CDATA[
+<asp:HyperLink runat="server" NavigateUrl="~/Login/Login.aspx" Text="Sing In As Different User"/>   
+&nbsp;&nbsp;&nbsp;
+<asp:HyperLink runat="server" NavigateUrl="~/Default.aspx" Text="Home"/>
+              ]]>
+        </code>
+        <para>
+          Add the following code in the code-behind of the Logout.aspx page. This code will signout the logged-in user.
+        </para>
+        <code language="c#">
+          <![CDATA[
+  
+protected override void OnInit(EventArgs e)
+{
+  if (this.Context.User.Identity.IsAuthenticated)
+  {
+    FormsAuthentication.SignOut();
+    Response.Redirect(this.Request.RawUrl);
+  }
+  base.OnInit(e);
+}
+              ]]>
+        </code>
+        <para>Redirecting to the same page is necessary so that the 
+        <link xlink:href="#LoginLogoutLinks">links you added to the master page</link> are updated to display the
+        anonymous template.
+      </para>
+      </content>
+    </section>
+    <section address="AccessToSpecificUsers">
+      <title>Granting access only to specific users</title>
+      <content>
+        <para>
+          <!--TODO: How should the web.config be configred if Only Sharad should have rights on Apps.-->
+          Now if you intent to allow only a specific user to access <system>Apps</system> folder 
+          in your Web Appplication you need to modify the current settings of <link xlink:href="#SecuringPages">
+          Securing Pages</link> section. Modify this section with the settings specified as below:
+        </para>
+        <code language="c#">
+          <![CDATA[
+<system.web>
+...
+</system.web>
+...
+<location path="Apps">
+    <system.web>
+      <authorization>
+        <allow users="dcms4"/>
+        <deny users="*"/>        
+      </authorization>
+    </system.web>
+</location>
+          ]]>
+        </code>
+        <para>
+          In the above settings <codeInline><![CDATA[<allow users="dcms4"/>]]> </codeInline> 
+        will allow only <system>dcms4</system> to access the contents of <system>Apps</system> folder.
+          This setting will get precedence over the next setting i.e. <codeInline><![CDATA[<deny users="*"/>]]> </codeInline>.
+          The <codeInline><![CDATA[<deny users="*"/>]]></codeInline> will restrict all users from accessing 
+          the contents of <system>Apps</system> folder.
+      </para>
+        <para>Any other user trying to access the said location will be prompted to login again as an authorized user.</para>
+      </content>
+    </section>
+    <section address="GrantingAcessToSpecificRole">
+      <title>Granting access only to users belonging to specific group</title>
+      <content>
+        <para>
+          In reality, you want to provide rights to different folders to different groups of users. Specifying 
+          user names in web.config can accomplish this but this is a maintenance nightmare. As users come and go,
+          you will have to keep changing web.config. The Role provider solves this problem by allowing you
+          to provide rights to roles and add users to roles.
+        </para>
+        <para>Specified below is the configuration settings for the <system>RoleProvider</system> which needs to be specified in the <system>Web.config</system> file. 
+        </para>
+        <code>
+          <![CDATA[
+<roleManager defaultProvider="OracleProvider" enabled="true">
+  <providers>
+    <clear/>
+      <add name="OracleProvider" type="EclipseLibrary.Oracle.Web.Security.OracleRoleProvider" connectStringName="dcms4"/>
+  </providers>
+</roleManager>
+          ]]>
+        </code>
+        <para>
+          In the above configuration settings the <codeInline>defaultProvider</codeInline> will make sure 
+          that when multiple providers have been added then the <system>roleManager</system>
+          will use the provider specified for this property.
+        </para>
+        <para>To make the <system>roleManager</system> enabled, the 
+        <codeInline>enabled</codeInline> property need to be set to <system>true</system>, 
+          as the default value of this property is <system>false</system>.
+        </para>
+      </content>
+    </section>
+    <section address="AddingProfilePage">
+      <title>Adding Profile Page</title>
+      <content>
+        <para>
+          After configuration setting of the roleManager in <system>Web.config</system> is done,  
+          we need to show the logged-in users the roles he is currently assigned with.
+          For this we will add another page in the <system>Apps</system> folder,
+          we will call it as <system>Profile.aspx</system>. Add the following mark-up in it to add 
+          a list to view the assigned role of the logged-in user.
+        </para>
+        <code language="c#">
+          <![CDATA[
+<h3>The Current user belongs to following roles:</h3>
+ <asp:ListBox runat="server" ID="lbRoles" OnPreRender="blRoles_PreRender" Height="20em">
+</asp:ListBox>
+          ]]>
+        </code>
+        <para>
+            A listbox has been added to show the logged-in user, the roles he is current assigned with.
+        </para>
+        <para>
+          Add the following code-snippet in the code-behind:
+        </para>
+        <code language="c#">
+          <![CDATA[
+protected void blRoles_PreRender(object sender, EventArgs e)
+{
+    string[] roles = Roles.GetRolesForUser();
+    foreach (string  role in roles)
+    {
+        ListItem item = new ListItem(role);
+        lbRoles.Items.Add(item);
+    }
+}
+          ]]>
+        </code>
+        <para>
+          Here the <codeInline>Roles.GetRolesForUser()</codeInline>
+          will fetch a list of the roles that the currently logged-on user is in.
+          The rest of the code is adding fetched roles as items in the listbox.
+        </para>
+      </content>
+    </section>
+    <section address="GrantingAccessToLocationForSpecificRole">
+      <title>Granting access to a specific location only for a specific group/groups </title>
+      <content>
+        
+        <para>
+          Granting access to a location for a specific role or group of users can be achieved by
+          making configuration setting in <system>Web.config</system> file.
+        </para>
+        <procedure>
+          <title>Role Based Access</title>
+          <steps class="ordered">
+            <step>
+              <content>
+                <para>
+                  For illustration we will
+                  create a folder name <system>Admin</system> with an <system>AdminPage.aspx</system> file,
+                  which is supposed to be accessible only to the users having role of <system>DBA</system>.
+                 
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Make the following settings for <codeInline><![CDATA[<location>]]></codeInline> section
+                  in <system>Web.config</system> file.
+                </para>
+                <code language="c#">
+                  <![CDATA[
+<system.web>
+...
+</system.web>
+...                  
+<location path="Admin">
+    <system.web>
+      <authorization>
+        <allow roles="DBA"/>
+        <deny users="*"/>
+      </authorization>
+    </system.web>
+</location>
+                  ]]>
+                </code>
+                <para>The <codeInline> <![CDATA[<allow roles="DBA"/>]]> </codeInline>
+                  will allow only <system>DBAs</system> to access the content of <system>Admin</system> folder.
+                  And also this will have precedence over <codeInline> <![CDATA[<deny users="*"/>]]> </codeInline>
+                  which is denying the access to <system>Admin</system> folder for everyone.
+                </para> 
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Execute the Web Application and login as a user who doesn't have the role of a <system>DBA</system>.
+                </para>
+                <para>
+                Type the <system>URL</system> - <fictitiousUri>http://localhost/DcmsWebMF/Admin/AdminPage.aspx</fictitiousUri>
+                </para>
+                <para>The user will be asked to re-login because currently he doesn,t have rights to 
+                access the <system>AdminPage</system>. If the user re-login as user who have the <system>DBA</system>
+                  rights, then he will able to open the <fictitiousUri>http://localhost/DcmsWebMF/Admin/AdminPage.aspx</fictitiousUri>
+                  <system>URL</system>.
+                </para>
+              </content>
+            </step>
+          </steps>
+        </procedure>
+        
+      </content>
+    </section>
+    <relatedTopics>
+    </relatedTopics>
+  </developerConceptualDocument>
+
+
+</topic>

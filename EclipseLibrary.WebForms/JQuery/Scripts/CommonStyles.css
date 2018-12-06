@@ -1,0 +1,366 @@
+﻿/* These are styles which are always rendered by JQueryScriptManager */
+/* Displays an inline icon even in IE7. Specify this class immediately after ui-con class */
+
+
+/* We do not want to make the table dimmed if selctable is disabled */
+.ui-selectable-disabled
+{
+    filter: Alpha(Opacity=100);
+}
+
+
+.ui-selecting
+{
+    background: #FECA40 !important;
+}
+.ui-selected
+{
+    background: #F39814 !important;
+        color: white;
+}
+
+/* Class applied to the div containing expand all and collapse all buttons */
+.gvex-expandcollapse
+{
+    margin: 1em 1em 1em 1em;
+}
+
+/* Some space between expand all and collapse all buttons */
+.gvex-expandcollapse > span:first-child
+{
+    margin-right: 4em;
+}
+
+
+html > /**/ body .gvex-expandcollapse
+{
+    margin-top: .5em;
+    margin-left: 1em;
+    margin-bottom: 1em;
+}
+
+.gvex-table
+{
+    /*commented the code below because it was creating the problem in IE 7 and 	expanding the width of grid view cells equally*/ /*table-layout:fixed;*/
+    empty-cells: show;
+    border-collapse: collapse;
+}
+
+/* Removed the white space as it was taking more space on the screen */
+.gvex-table > caption
+{
+    font-size: 1.0em;
+    font-weight: 600;
+    caption-side: top;
+}
+
+.gvex-table .gvex-alternating-row
+{
+    background-color: #eee;
+}
+
+/* Style applied to the pager td */
+.gvex-table .gvex-pager-cell
+{
+    text-align: center;
+    height: 2em;
+}
+
+.gvex-table .gvex-masterrow td span.ui-icon
+{
+    cursor: pointer;
+}
+
+.gvex-table .gvex-masterrow .header-entry
+{
+    display: inline-block;
+    margin: 0px 4mm 0px 4mm;
+}
+
+
+@media print
+{
+    /* menu should not show while printing */
+    .gvex-rowmenu
+    {
+        display: none !important;
+    }
+}
+
+@media screen
+{
+    .gvex-rowmenu
+    {
+        z-index: 1000;
+    }
+
+    /* applied to the div containing row menu items */
+    .gvex-rowmenu > div
+    {
+        position: absolute;
+        margin-left: 1mm;
+        margin-top: 1mm;
+        border-style: solid;
+        border-width: 0.5mm;
+        padding: 0.5mm 0.5mm 0.5mm 0.5mm;
+    }
+
+    /* applied to menu item */
+    .gvex-rowmenu > div > div
+    {
+        width: 100%;
+        margin-left: 1mm;
+        margin-right: 1mm;
+        padding-bottom: 1mm;
+        border-bottom-style: groove;
+        border-bottom-width: 0.25mm;
+        cursor: pointer;
+    }
+}
+
+/* gvex-sort-icon is Applied to span containing icon and sort sequence. Makes the icon appear to be superscripted */
+.gvex-table .gvex-sort-icon
+{
+    white-space: nowrap;
+}
+
+.gvex-table .gvex-sort-link
+{
+    display: inline-block;
+    vertical-align: bottom;
+    text-decoration: underline !important;
+    font-size: 1em;
+}
+
+/* Jquery CSS bug fixes */
+/* datepicker shows up behind floating title panel */
+.ui-datepicker
+{
+    z-index: 9999;
+}
+
+/* date picker shows weekend days in red */
+.ui-datepicker-week-end a
+{
+    color: Red !important;
+}
+
+/* Picker dialog minimizes space used all arround it */
+.ui-pickerdialog .ui-dialog-titlebar, .ui-pickerdialog .ui-dialog-content
+{
+    padding: 0px 0px 0px 0px;
+}
+
+.ui-pickerdialog .ui-dialog-buttonpane
+{
+    padding-bottom: 0px;
+    padding-top: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.ui-fixeddialog
+{
+    position: fixed !important;
+}
+
+/* AppliedFilters styles */
+
+.ecl-appliedfilters
+{
+    margin: 1mm 1mm 1mm 0mm;
+    padding: 1mm 1mm 1mm 0mm;
+}
+
+.ecl-appliedfilters .ecl-appliedfilters_nofilters
+{
+    margin: 2mm 2mm 2mm 2mm;
+}
+
+.ecl-appliedfilters .ui-widget-content
+{
+    padding: 1mm;
+}
+
+/* Check box list */
+.cbl-container
+{
+    padding: 1mm 1mm 1mm 1mm;
+}
+
+.cbl-container > legend
+{
+    margin-bottom: 1mm;
+    border-style: solid;
+    border-width: 0.25mm;
+    padding-left: 1mm;
+    padding-right: 1mm;
+    padding-top: 0.5mm;
+    padding-bottom: 0.5mm;
+}
+
+.cbl-container > span > input
+{
+    vertical-align: top;
+}
+
+.cbl-container > span, .cbl-container > span > label
+{
+    display: inline-block;
+}
+
+/* The value of the icon field should not display on screen. Just the icon is sufficient */
+@media screen
+{
+    .iconfield-displayvalue
+    {
+        display: none;
+    }
+}
+
+/***** SortColumnChooser Styles ****/
+/* Outermost div */
+.ecl-sortcolumnchooser
+{
+    margin: 4px 4px 4px 4px;
+    padding: 4px 4px 4px 4px;
+}
+
+/* Left and right columns */
+div.ecl-sortcolumnchooser div.ui-widget
+{
+    padding-top: 4mm;
+    padding-left: 2mm;
+    width: 22em;
+}
+
+/* All Icons */
+
+
+div.ecl-sortcolumnchooser ul
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    margin-right: 10px;
+    min-height: 1in;
+}
+
+/* Icons within Available columns are hidden. We select it by sepecifying that it is immediately after the hidden input */
+div.ecl-sortcolumnchooser > div:first-child span.ui-icon
+{
+    visibility: hidden;
+}
+
+div.ecl-sortcolumnchooser li
+{
+    margin: 1mm 2mm 1mm 2mm;
+    padding: 1mm 1mm 1mm 1mm;
+    cursor: move;
+}
+
+/* All except group by marker */
+div.ecl-sortcolumnchooser li.ui-state-default
+{
+    padding-left: 3mm;
+}
+
+/*  TwoColumnPanel Styles */
+.tcp_CssClass
+{
+    border-collapse: collapse;
+    margin-top: 1mm;
+    margin-bottom: 1px;
+}
+
+.tcp_leftColumn, .tcp_rightColumn
+{
+    border: 1px solid #C0C0C0;
+    padding-left: 1mm;
+    padding-right: 1mm;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.tcp_leftColumn
+{
+    background-color: transparent;
+    vertical-align: top;
+}
+
+.ui-accordion-subheader
+{
+    font-size: 0.8em;
+    margin-left: 8px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+/* Sucker fish menu inspired by http://www.alistapart.com/articles/dropdowns/ */
+ul.menuex-outermost, .menuex-outermost ul
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* The top level list items float */
+ul.menuex-outermost > li
+{
+    float: left;
+    position: relative;
+    width: 10em;
+    display: block;
+    margin-right: 2mm;
+}
+
+/* Width of each anchor is 15em by default. Can be overridded with ChildItemWidth property */
+ul.menuex-outermost a
+{
+    width: 15em;
+    text-align: left;
+}
+
+/* Make the buttons thin so that they look like a menu */
+ul.menuex-outermost a span.ui-button-text
+{
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/* The nested menu is invisible by default */
+ul.menuex-outermost > li > ul
+{
+    display: none;
+    position: absolute;
+    top: 1.5em;
+    left: 0;
+    min-width: 10em;
+    z-index: 999;
+}
+
+/* Style to apply when autocomplete input is known to be valid */
+.ac-valid
+{
+    text-decoration: underline;
+}
+
+/* Display icon only buttons somewhat smaller */
+.ui-button-icon-only .ui-button-text
+{
+    line-height: normal;
+    padding: 0 0 0 0;
+}
+
+BUTTON.ui-button-icon-only
+{
+    width: 1.4em;
+}
+
+/* Autocomplete list will scroll vertically if necessary */
+.ui-autocomplete
+{
+    max-height: 300px;
+    overflow-y: auto;
+}

@@ -1,0 +1,276 @@
+<%@ Page Title="Label Season Codes for 7 days" Language="C#" MasterPageFile="~/MasterPage.master" %>
+
+<%--*
+ *  Programming: Eclipse Systems (P) Ltd., NOIDA, INDIA
+ *  E-mail: support@eclsys.com
+ *
+ *  $Revision: 5711 $
+ *  $Author: skumar $
+ *  *  $HeadURL: http://server/svn/dcmslive/Projects/DcmsLive/trunk/Web/Reports/Category_130/R130_16.aspxExclude $
+ *  $Id: R130_16.aspxExclude 5711 2013-07-19 07:05:38Z skumar $
+ * Version Control Template Added.
+ *
+--%>
+<%@ Import Namespace="System.Linq" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <meta name="Description" content="The report displays list of SKUs along with quantity for a particular label and season code which is scheduled to be delivered within next 7 days.
+     Additionally the specified customer can be ignored whenever required." />
+    <meta name="ReportId" content="130.16" />
+    <meta name="Browsable" content="true" />
+    <meta name="Version" content="$Id: R130_16.aspxExclude 5711 2013-07-19 07:05:38Z skumar $" />
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <jquery:Tabs runat="server" ID="tabs">
+        <%--  panel for filter controls --%>
+        <jquery:JPanel ID="JPanel" runat="server" HeaderText="Filters">
+            <eclipse:TwoColumnPanel ID="TwoColumnPanel1" runat="server">
+                <eclipse:LeftLabel runat="server" />
+                <d:StyleLabelSelector ID="ctlLabel" runat="server" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+                    QueryString="label_id" ShowAll="false" ProviderName="<%$ ConnectionStrings:dcmslive.ProviderName %>" />
+                <oracle:OracleDataSource ID="dsPriceSeasonCode" runat="server" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+                    ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>">
+                                       <SelectSql>
+                                       SELECT tps.price_season_code AS price_season_code,
+                                       tps.description AS descriptions from tab_price_season tps
+                                       ORDER BY 1
+                                       </SelectSql>
+                                       </oracle:OracleDataSource>             
+                <eclipse:LeftLabel runat="server" Text="Season Code" />
+                <i:DropDownListEx2 ID="ddlPriceSeasonCode" runat="server" DataSourceID="dsPriceSeasonCode"
+                    DataFields="price_season_code,descriptions" ToolTip="Select Season code"
+                    DataTextFormatString="{0} : {1}" />
+                <eclipse:LeftLabel runat="server" Text="Excluding Customer" />
+                <i:TextBoxEx ID="tbCustomerId" runat="server" QueryString="customer_id" ToolTip="Enter Customer Id" />
+                <br />
+                You can pass multiple Customer IDs separated by a comma (,).
+                <eclipse:LeftLabel runat="server" />
+                <d:VirtualWarehouseSelector ID="ctlVwh" runat="server" ShowAll="true" ProviderName="<%$ ConnectionStrings:dcmslive.ProviderName %>"
+                    ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>" ToolTip="Select virtual warehouse" />
+            </eclipse:TwoColumnPanel>
+        </jquery:JPanel>
+        <%--  panel for sort control --%>
+        <jquery:JPanel ID="JPanel1" runat="server" HeaderText="Sorting">
+            <jquery:SortColumnsChooser ID="SortColumnsChooser1" runat="server" GridViewExId="gv"
+                EnableGroupBy="true" />
+        </jquery:JPanel>
+    </jquery:Tabs>
+    <%--Button bar for validation summary and Applied Filter control--%>
+    <%--<uc:ButtonBar runat="server" />--%>
+    <uc2:ButtonBar2 runat="server" />
+    <%--Oracle data source--%>
+    <oracle:OracleDataSource ID="ds" runat="server" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+        ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>"
+        CancelSelectOnNullParameter="true">
+        <SelectSql>
+        WITH ps_order
+AS
+(SELECT ps.vwh_id,
+       p.upc_code,
+       max(sku.style) style,
+       max(sku.color) color,
+       max(sku.dimension) dimension,
+       max(sku.sku_size) sku_size,
+       sum(p.pieces_ordered) tot_pieces
+  FROM ps
+ INNER JOIN psdet p on ps.pickslip_id = p.pickslip_id
+ INNER JOIN po pol on pol.po_id = ps.po_id
+                  and pol.customer_id = ps.customer_id
+                  and pol.iteration = ps.iteration
+ INNER JOIN master_sku sku on p.upc_code = sku.upc_code
+ WHERE ps.reporting_status is not null
+   AND sku.style in (SELECT ms.style
+                       FROM master_style ms
+                      WHERE ms.label_id = CAST(:label_id as varchar2(255))) 
+                      <if c="$customer_Id">AND ps.customer_id not in(<a sep=','>:customer_Id</a>)</if>
+   AND pol.start_date &gt;= SYSDATE
+   AND pol.start_date &lt; SysDate + 8
+   AND PS.PICKSLIP_IMPORT_DATE &lt; (SYSDATE - 90)
+   <if>AND ps.vwh_id = CAST(:vwh_id as varchar2(255))</if>
+ GROUP BY ps.vwh_id, p.upc_code),
+box_order
+AS
+(SELECT box.vwh_id AS VWH_ID,
+        boxdet.upc_code,
+        max(sku.style) style,
+        max(sku.color) color,
+        max(sku.dimension) dimension,
+        max(sku.sku_size) sku_size,
+        SUM(boxdet.CURRENT_PIECES) AS PACKED_PIECES
+   from box box
+  inner join boxdet boxdet on box.pickslip_id = boxdet.pickslip_id
+                          and box.ucc128_id = boxdet.ucc128_id
+   LEFT OUTER JOIN ps on ps.pickslip_id = box.pickslip_id
+   INNER JOIN po pol on pol.po_id = ps.po_id
+                    and pol.customer_id = ps.customer_id
+                    and pol.iteration = ps.iteration
+  inner join master_sku sku on sku.upc_code = boxdet.upc_code
+  WHERE box.stop_process_date is null
+    AND boxdet.stop_process_date is null
+    AND sku.style in
+        (SELECT ms.style
+           FROM master_style ms
+          WHERE ms.label_id = CAST(:label_id as varchar2(255))) 
+          <if c="$customer_Id">AND ps.customer_id not in(<a sep=','>:customer_Id</a>)</if>
+    AND pol.start_date &gt;= SYSDATE
+    AND pol.start_date &lt; SysDate + 8
+    AND PS.PICKSLIP_IMPORT_DATE &gt; (SYSDATE - 90)
+    <if>AND box.vwh_id = CAST(:vwh_id as varchar2(255))</if>    
+  GROUP BY box.vwh_id, boxdet.upc_code
+),          
+ordered_pieces as  
+( 
+SELECT ps_order.vwh_id AS vwh_id,
+       ps_order.upc_code AS upc_code,
+       ps_order.style AS style,
+       ps_order.color AS color,
+       ps_order.dimension AS dim,
+       ps_order.sku_size AS sku_size,
+       (ps_order.tot_pieces - box_order.PACKED_PIECES) Pieces
+  FROM ps_order
+  LEFT outer join  box_order on ps_order.vwh_id = box_order.vwh_id
+                            and ps_order.upc_code = box_order.upc_code
+UNION
+SELECT dp.vwh_id,
+       dpd.upc_code,
+       max(dpd.style),
+       max(dpd.color),
+       max(dpd.dimension),
+       max(dpd.sku_size),
+       sum(dpd.quantity_ordered)
+  FROM dem_pickslip dp
+ INNER JOIN dem_pickslip_detail dpd on dp.pickslip_id = dpd.pickslip_id 
+ where dpd.style in (SELECT /*+index (ms STY_LBL_I)*/
+                            ms.style AS STYLE
+                       FROM master_style ms
+                      WHERE ms.label_id = CAST(:label_id as varchar2(255))) 
+   and dp.ps_status_id = 1
+   <if c="$customer_Id">AND dp.customer_id not in(<a sep=','>:customer_Id</a>)</if>
+   AND dp.DELIVERY_DATE &lt; SYSDATE + 8
+   AND dp.PICKSLIP_IMPORT_DATE &gt; (SYSDATE - 90)
+   <if>AND dp.vwh_id = CAST(:vwh_id as varchar2(255))</if> 
+ group by dp.vwh_id, dpd.upc_code
+ ),  
+ sku_area_wise AS ( 
+ /* pieces in picking area for the passed label*/
+ select loc.vwh_id AS vwh_id,
+        loccont.iacontent_id AS upc_code,
+        SUM(loccont.number_of_units) AS number_of_units,
+        loc.ia_id AS area
+   from ialoc_content loccont
+  inner join ialoc loc on loc.ia_id = loccont.ia_id 
+                      and loc.location_id = loccont.location_id
+  LEFT OUTER JOIN master_sku sku ON sku.upc_code = loccont.iacontent_id
+  LEFT OUTER JOIN master_style ms ON ms.style = sku.style
+ where loccont.iacontent_type_id = 'SKU'
+   AND loc.ia_id IN (SELECT ia.ia_id FROM ia WHERE picking_area_flag = 'Y')
+   AND ms.label_id=CAST(:label_id as varchar2(255))
+   <if>AND loc.vwh_id = CAST(:vwh_id as Varchar2(255))</if>
+  group by loc.vwh_id,
+           loccont.iacontent_id,
+           loc.ia_id
+  UNION
+  select ctn.vwh_id AS vwh_id,
+         ms.upc_code AS upc_code,
+         sum(ctndet.quantity) AS number_of_units,
+         ctn.carton_storage_area AS area
+    from src_carton_detail ctndet
+   inner join src_carton ctn on ctn.carton_id = ctndet.carton_id
+   inner join master_sku ms on ms.style = ctndet.style
+                           and ms.color = ctndet.color
+                           and ms.dimension = ctndet.dimension
+                           and ms.sku_size = ctndet.sku_size
+   inner join master_style sty on sty.style =  ctndet.style
+   where (ctn.carton_storage_area in  (SELECT tia.inventory_storage_area 
+                                       FROM tab_inventory_area tia 
+                                      where tia.location_numbering_flag = 'Y') 
+                                     OR ctn.carton_storage_area = CAST(:awaitedToLocate as varchar2(255)))
+     AND sty.label_id = CAST(:label_id as varchar2(255))
+     AND ctn.price_season_code = CAST(:price_season_code  as varchar2(255))
+     <if>AND ctn.vwh_id = CAST(:vwh_id as varchar2(255))</if>
+  group by ctn.vwh_id,
+           ms.upc_code,
+           ctn.carton_storage_area), 
+area_sku as (
+  select a.vwh_id AS vwh_id,
+         a.upc_code AS upc_code,
+         MAX(a.style) AS style,
+         MAX(a.color) AS color,
+         MAX(a.dim) AS dim,
+         MAX(a.sku_size) AS sku_size,
+         sum(a.pieces) AS pieces_ordered,
+         area_wise.area AS area,
+         max(area_wise.number_of_units) AS number_of_units
+    from ordered_pieces a
+    LEFT OUTER JOIN sku_area_wise area_wise ON area_wise.vwh_id = a.vwh_id
+                                           AND area_wise.upc_code = a.upc_code
+   group by a.vwh_id,
+            a.upc_code,
+            area_wise.area)
+select q1.vwh_id AS vwh_id,
+       q1.upc_code AS upc_code,
+       q1.style AS style,
+       q1.color AS color,
+       q1.dim AS dim,
+       q1.sku_size AS sku_size,
+       q1.pieces_ordered AS pieces_ordered,
+       nvl(q1.area,'AWL') AS area,
+       q1.number_of_units AS number_of_units,
+       sum(q1.number_of_units) over(partition by q1.vwh_id, q1.upc_code) as tot_pcs_area,
+       q1.pieces_ordered - sum(q1.number_of_units) over(partition by q1.vwh_id, q1.upc_code) AS order_diff
+  from area_sku q1
+        </SelectSql>
+        <SelectParameters>
+            <asp:ControlParameter ControlID="ctlVwh" Direction="Input" Type="String" Name="vwh_id" />
+            <asp:ControlParameter ControlID="ctlLabel" Direction="Input" Type="String" Name="label_id" />
+            <asp:ControlParameter ControlID="ddlPriceSeasonCode" Direction="Input" Type="String"
+                Name="price_season_code" />
+            <asp:ControlParameter ControlID="tbCustomerId" Direction="Input" Type="String" Name="customer_Id" />
+            <asp:Parameter Type="String" Name="awaitedToLocate" DefaultValue="<%$ Appsettings:AwaitedToLocate %>" />
+        </SelectParameters>
+    </oracle:OracleDataSource>
+    <%--GridView--%>
+    <jquery:GridViewEx ID="gv" runat="server" AutoGenerateColumns="false" AllowSorting="true"
+        ShowFooter="true" DataSourceID="ds" DefaultSortExpression="style;">
+        <Columns>
+            <eclipse:SequenceField />
+            <eclipse:MultiBoundField DataFields="style" HeaderText="Style" SortExpression="style"
+                HeaderToolTip="Style of the SKU" ToolTipFields="upc_code" ToolTipFormatString="UPC_CODE: {0}" />
+            <eclipse:MultiBoundField DataFields="color" HeaderText="Color" SortExpression="color"
+                HeaderToolTip="Color of the SKU" ToolTipFields="upc_code" ToolTipFormatString="UPC_CODE: {0}" />
+            <eclipse:MultiBoundField DataFields="dim" HeaderText="Dim" SortExpression="dim" HeaderToolTip="Dimension of the SKU"
+                ToolTipFields="upc_code" ToolTipFormatString="UPC_CODE: {0}" />
+            <eclipse:MultiBoundField DataFields="sku_size" HeaderText="Size" SortExpression="sku_size"
+                HeaderToolTip="Size of the SKU" ToolTipFields="upc_code" ToolTipFormatString="UPC_CODE: {0}" />
+            <eclipse:MultiBoundField DataFields="pieces_ordered" HeaderText="Ordered Pieces"
+                HeaderToolTip="Quantity of the ordered pieces" SortExpression="pieces_ordered"
+                DataSummaryCalculation="ValueSummation" DataFormatString="{0:N0}" DataFooterFormatString="{0:N0}"
+                FooterToolTip="Sum of all ordered pieces">
+                <ItemStyle HorizontalAlign="Right" />
+                <FooterStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+           <%-- <jquery:MatrixField DataMergeFields="style,color,dim,sku_size" RowTotalHeaderText="Total Pieces <br /> In AWL+BIR+FPK"
+                DataHeaderFields="area" DataValueFields="number_of_units" DisplayColumnTotals="true"
+                DisplayRowTotals="true" HeaderText="Quantity In Available Areas" DataValueFormatString="{0:N0}"
+                DataTotalFormatString="{0:N0}" />--%>
+            <m:MatrixField DataMergeFields="style,color,dim,sku_size,vwh_id" DataHeaderFields="area"
+                DataCellFields="number_of_units" RowTotalHeaderText="Total Pieces <br /> In AWL+BIR+FPK"
+                HeaderText="Quantity In Available Areas">
+                <MatrixColumns>
+                    <m:MatrixColumn ColumnType="CellValue" DisplayColumnTotal="true" />
+                </MatrixColumns>
+                <MatrixColumns>
+                    <m:MatrixColumn ColumnType="RowTotal" DisplayColumnTotal="true" />
+                </MatrixColumns>
+            </m:MatrixField>
+            <eclipse:MultiBoundField DataFields="order_diff" HeaderText="Order - Total Pcs (AWL+BIR+FPK)"
+                HeaderToolTip="Pcs ordered - Total Pcs in available areas" DataSummaryCalculation="ValueSummation"
+                DataFormatString="{0:N0}" ToolTipFields="pieces_ordered,tot_pcs_area,order_diff"
+                ToolTipFormatString="{0} - {1} = {2}" FooterToolTip="Total difference between total ordered pieces and total pieces in available areas.">
+                <ItemStyle HorizontalAlign="Right" />
+                <FooterStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+            <eclipse:MultiBoundField DataFields="vwh_id" HeaderText="VWh" HeaderToolTip="Virtual Warehouse"
+                SortExpression="vwh_id" />
+        </Columns>
+    </jquery:GridViewEx>
+</asp:Content>

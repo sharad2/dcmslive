@@ -1,0 +1,271 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+
+    <form id="Form1" 
+    action="http://w3chile/xtremereporter/ReportDoc.aspx?_Report=C%3a%5cDCMSLive1%5cReports%5cR150.103.xsd" 
+    method="post" name="Form1">
+    <div>
+        <input id="__VIEWSTATE" name="__VIEWSTATE" type="hidden" 
+            value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+    </div>
+    <h1 align="center">
+        150<b>.</b>103<b> : </b>Restock and Suspense Carton Report
+    </h1>
+    <h3>
+    Author : Dinesh Singh Panwar</h3>
+    $Revision: 1517 $<br />
+    Status: Reviewed<br/>
+    Reviewed By : Hemant K. Varshney<p author="Gaurav Agarwal" reviewer="PrabJyot Kour" 
+        status="Completed">
+        This Report display the details of Restock and Suspense cartons on the basis of 
+        particular restocker,virtual warehouse ID, date and process id.
+    </p>
+    <h2>
+        Overview</h2>
+    This report is drilled down from &quot;Restock Productivity Detail&quot; report to show 
+    the details of cartons, which was processed by a restocker.<br />
+&nbsp;<li ><h3>
+            Output</h3>
+        <table border="1" cellpadding="1" cellspacing="1" width="100%" >
+            <tr>
+                <td align="middle" width="25%">
+                    <b>Item</b></td>
+                <td align="middle" width="20%">
+                    <b>Summary</b></td>
+                <td align="middle" width="10%">
+                    <b>Sort Sequence</b></td>
+                <td align="middle" width="35%">
+                    <b>Detail</b></td>
+            </tr>
+                  <tr>
+                <td>
+                    Vwh </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                                        &nbsp;</td>
+                <td>
+                    <r:item  Term="VWH ID">Virtual Warehouse ID to which the restocker 
+                    belong. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Scan Time</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    1&nbsp;</td>
+                <td>
+                    <r:item  Term="Scan Time" 
+SortSequence="1">Operation end date of each restocked carton.</R:ITEM></td>
+            </tr>
+            <tr>
+                <td>
+                    Carton</td>
+                <td>
+                    No</td>
+                <td align="middle">
+                    &nbsp;</td>
+                <td>
+                    <r:item  Key="true" Term="Carton ID">This is the Carton ID, on 
+                    which restocker performed operation </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                                        Label</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item  Term="Label ID">Label of the restocked SKUs, which 
+                    exist in the current carton.</R:ITEM></td>
+            </tr>
+            <tr>
+                <td>
+                    Number of Pieces</td>
+                <td>
+                    Sum</td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item Term="Number of Pieces" 
+Summary="Sum">The number of Pieces, restocked by the restocker.</R:ITEM></td>
+            </tr>
+            <tr>
+                <td>
+                    Number of Units</td>
+                <td>
+                    Sum</td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item Term="Number of Units" 
+Summary="Sum">The number of Units, restocked by the restocker.</R:ITEM></td>
+            </tr>
+            </table>
+        <h2 >
+            Parameters</h2>
+        <table border="1" cellpadding="1" cellspacing="1" width="100%" >
+            <tr>
+                <td align="middle" width="20%">
+                    <b>Name</b></td>
+                <td align="middle" width="20%">
+                    <b>Default</b></td>
+                <td align="middle" width="60%">
+                    <b>Detail</b></td>
+            </tr>
+            <tr>
+                <td>
+                    Restocker</td>
+                <td>
+                    Any restocker code</td>
+                <td>
+                    The name of the restocker by whick restock operation was performed.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Process ID</td>
+                <td>
+                    Any process id</td>
+                <td>
+                    The id of the process against which restocker performed the operation
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Restock Date</td>
+                <td>
+                    The date on which the process was performed</td>
+                <td>
+                    This parameter has been made required in order to ensure that the query runs 
+                    efficiently. Since this report is primarily meant to be used as a drill down 
+                    report, a human should never need to specify it.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Virtual Warehouse</td>
+                <td>
+                    All</td>
+                <td>
+                    Warehouse ID to which the restocker belongs to.
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    Warehouse Location</td>
+                <td>
+                    All</td>
+                <td>
+                    Warehouse Location to which the restocker belongs to.
+                </td>
+            </tr>
+        </table>
+        &nbsp;<h2>
+            Details</h2>
+        Called by Report 150.101
+        <h2>
+            Behavior Change</h2>
+    </li>
+        <h2>
+            Issues</h2>
+        <div id="divTechnical">
+            <h2>
+                Query&#39;s documentation:</h2>
+            <ul>
+                <li><r:doc>This query retrieves carton ID, label Id, restocked 
+                    pieces and units from box productivity.
+                    <pre> 
+ SELECT /*+ index (bp BOXPROD_P_OPERTATION_START_I)*/
+ sum(bp.num_of_pieces) AS num_of_pieces,
+ bp.vwh_id AS vwh_id,
+ max(bp.warehouse_location_id) AS warehouse_location_id,
+ bp.ucc128_id AS ucc128_id,
+ sum(bp.num_of_units) AS num_of_units,
+ max(bp.label_id) AS label_id,
+ bp.operation_end_date AS operation_end_date
+  FROM box_productivity bp
+ WHERE bp.outcome = 'RESTOCKED'
+   AND bp.operation_code = '$RST'
+   AND bp.operation_start_date between :shift_start_date -1 and :shift_start_date + 2
+   <![CDATA[
+    $ShiftDateWhere$                     
+    ]]> 
+   AND bp.operator = :operator
+   AND bp.process_id = :process_id
+   <if>AND bp.vwh_id = :vwh_id</if>
+  <if>AND bp.warehouse_location_id = :warehouse_location_id</if>
+ GROUP BY bp.vwh_id, bp.ucc128_id, bp.operation_end_date
+            </pre>
+                    </R:DOC></li>
+            </ul>
+           
+            <h2>
+                Validation details</h2>
+            Bellow queries may have the where clause in the [] brackets. It means these are 
+            the optional parameters. If you do not want to pass these parameters just remove 
+            the [] section.
+            <br />
+            <br />
+            <b>Query:</b><pre><r:query ></pre>
+            <pre>              SELECT bp.vwh_id AS VWH_ID,
+              bp.ucc128_id AS CARTON_ID,
+              bp.num_of_pieces AS RESTOCKED_PIECES,
+              bp.num_of_units AS RESTOCKED_UNITS,
+              mstyle.label_id AS LABEL_ID,
+              bp.operation_end_date AS SCAN_TIME
+              FROM box_productivity bp
+              LEFT OUTER JOIN master_sku  msku on bp.upc_code = msku.upc_code
+              LEFT OUTER JOIN master_style mstyle on msku.style = mstyle.style
+              WHERE bp.outcome = &#39;RESTOCKED&#39;
+              AND bp.operation_code = &#39;$RST&#39;
+              AND bp.operator = :OPERATOR
+              AND bp.process_id = :PROCESS_ID
+              AND bp.operation_start_date &gt;=(:operation_start_date) 
+              AND bp.operation_start_date &lt; (:operation_start_date)+ 1
+            </pre>
+            </R:QUERY>
+            <pre></pre>
+            <b>Description:</b><pre><r:description>
+            Above query can be used to verify the Restocked pieces, units and label id.
+          </R:DESCRIPTION></pre>
+            <b>Query:</b><pre><r:query></pre>
+            <pre>              SELECT 	bp.vwh_id AS &quot;VWH_ID&quot;,
+              bp.ucc128_id AS &quot;CARTON_ID&quot;,
+              bp.num_of_pieces AS &quot;PIECES_IN_SUSPENSE&quot;,
+              bp.num_of_units AS &quot;UNITS_IN_SUSPENSE&quot;,
+              bp.operation_end_date AS &quot;SCAN_TIME&quot;
+              FROM box_productivity bp
+              WHERE bp.outcome = &#39;CARTON IN SUSPENSE&#39;
+              AND bp.operation_code = &#39;$RST&#39;
+              AND bp.operator = :OPERATOR
+              AND bp.process_id = :PROCESS_ID
+              AND bp.operation_start_date &gt;=(:operation_start_date) 
+              AND bp.operation_start_date &lt;(:operation_start_date) +1  
+            </pre>
+            </R:QUERY>
+            <pre></pre>
+            <b>Description:</b><pre><r:description>
+            Above query can be used to verify the suspense pieces and units.
+          </R:DESCRIPTION></pre>
+            <!--End divTechnical-->
+        </div>
+    </form>
+
+</body>
+</html>

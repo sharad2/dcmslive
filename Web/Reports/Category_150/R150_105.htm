@@ -1,0 +1,282 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+</head>
+<body>
+    <form name="Form1" method="post" action="ReportDoc.aspx?_Report=C%3a%5cDCMSLive%5cReports%5cR150.105.xsd"
+    id="Form1">
+    <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+    <h1 align="center" xmlns="http://www.w3.org/1999/xhtml">
+        150<b>.</b>105<b> : </b>Rework Productivity Report</h1>
+    <h3>
+            Author :Manmohan Bisht
+        </h3>
+        $Revision: 520 $<br xmlns="http://www.w3.org/1999/xhtml">
+        Status : Done
+        <br />
+        Reviewed By :Pravin Awasthi
+        <p author="Manmohan Bisht" status="Completed" reviewer="Manmohan Bisht" xmlns="http://www.w3.org/1999/xhtml">
+            This report displays the productivity information for specified reworker for specified
+            day and shift. It displays the rework codes along with the reworked cartons, units
+            and pieces. This will help in deciding on the Rework Bonus for reworkers.
+        </p>
+        <h2 xmlns="http://www.w3.org/1999/xhtml">
+            Overview</h2>
+        <body xmlns:mstns="http://tempuri.org/R150.105.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" xmlns="http://www.w3.org/1999/xhtml">
+            <p>
+                When the cartons are received in the warehouse, their contents are verified for
+                quality and quantity. If there is some packaging error in the content, then the
+                carton is marked yellow and sent to REW area (through K2P) along with the rework
+                code(s), so that the packaging errors can be reworked. In the rework area, reworker
+                works on cartons depending upon the rework code(s) assigned to them. This report displays
+                the information regarding the rework undertaken by a specified reworker on
+                a specified date and shift.
+            </p>
+            <p>
+                The report can be helpful
+            </p>
+            <ul>
+                <li>for monitoring the productivity of reworker. </li>
+                <li>for calculating Rework Bonus. </li>
+                <li>for identifying the star performers and the inefficient workers </li>
+            </ul>
+        </body>
+        &nbsp;<h3 xmlns="http://www.w3.org/1999/xhtml">
+            Output</h3>
+        <table width="100%" cellspacing="1" cellpadding="1" border="1" xmlns="http://www.w3.org/1999/xhtml">
+            <tr>
+                <td width="25%" align="center">
+                    <b>Item</b>
+                </td>
+                <td width="20%" align="center">
+                    <b>Summary</b>
+                </td>
+                <td width="10%" align="center">
+                    <b>Sort Sequence</b>
+                </td>
+                <td width="35%" align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Rework Codes
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    1
+                </td>
+                <td>
+                    <r:item term="Rework Codes" key="true" sortsequence="1" xmlns:mstns="http://tempuri.org/R150.105.xsd"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            The type of Rework undertaken.
+          </r:item>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Cartons
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="center">
+                </td>
+                <td>
+                    <r:item term="Cartons" summary="Sum" xmlns:mstns="http://tempuri.org/R150.105.xsd"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            The number of cartons on which the particular rework performed.
+          </r:item>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Units
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="center">
+                </td>
+                <td>
+                    <r:item term="Units" summary="Sum" xmlns:mstns="http://tempuri.org/R150.105.xsd"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Total number of units reworked.
+          </r:item>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pieces
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="center">
+                </td>
+                <td>
+                    <r:item term="Pieces" summary="Sum" xmlns:mstns="http://tempuri.org/R150.105.xsd"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Total number of pieces reworked.
+          </r:item>
+                </td>
+            </tr>
+        </table>
+        <h2 xmlns="http://www.w3.org/1999/xhtml">
+            Parameters</h2>
+        <table width="100%" cellspacing="1" cellpadding="1" border="1" xmlns="http://www.w3.org/1999/xhtml">
+            <tr>
+                <td width="20%" align="center">
+                    <b>Name</b>
+                </td>
+                <td width="20%" align="center">
+                    <b>Default</b>
+                </td>
+                <td width="60%" align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Reworker
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                    The Reworker for which you wish the see the information.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Process Date
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                    The date on which the rework process was undertaken.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Shift
+                </td>
+                <td>
+                    All
+                </td>
+                <td>
+                    The Shift for which, you wish to view the rework information.
+                </td>
+            </tr>
+        </table>
+        <h2 xmlns="http://www.w3.org/1999/xhtml">
+            Performance Detail</h2>
+        <p xmlns="http://www.w3.org/1999/xhtml">
+            <i>Expected Time for the report output is </i>1 seconds</p>
+        The query for this report will exhibit linear performance with respect to the number
+        of records in carton_productivity table for specified date range. The query also
+        implements a join with master_sku table. Since the records in master_sku are not
+        likely in increase over a period of time, the performance will not depend upon the
+        master_sku table.
+        <h2 xmlns="http://www.w3.org/1999/xhtml">
+            Details</h2>
+        This report displays the records according to shift timings. For example, if a Reworker
+        works on cartons on the 10-August-2006 at 11.59PM and works on another carton on
+        the 11-August-2006 at 12.01AM. This means both the cartons were reworked with in
+        same shift (second shift). The report will show both of these carton records in
+        single row against 10-August-2006.
+        <h2 xmlns="http://www.w3.org/1999/xhtml">
+            Behavior Change</h2>
+        <ul xmlns="http://www.w3.org/1999/xhtml">
+            <li>No change. </li>
+        </ul>
+        <h2 xmlns="http://www.w3.org/1999/xhtml">
+            Issues</h2>
+        No Known Issue.
+        <br xmlns="http://www.w3.org/1999/xhtml">
+        <h2>
+            Parameter Validation</h2>
+        No special validations.
+        <h2>
+            Query's documentation:</h2>
+        <ul>
+            <li>
+                <r:doc xmlns:mstns="http://tempuri.org/R150.105.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">This query will get the rework information for specified reworker on a specified date and shift.
+          All this information will be fetched from carton_productivity table.
+          <pre>
+ WITH carton_details AS( 
+ SELECT UPPER(cp.work_codes) AS work_codes,
+        CASE
+          WHEN (cp.process_start_date - TRUNC(cp.process_start_date)) * 24 <= 5.1 THEN
+           TRUNC(cp.process_start_date - 1)
+          ELSE
+           TRUNC(cp.process_start_date)
+        END AS shift_start_date,
+        cp.carton_id AS carton_id,
+        cp.carton_quantity AS carton_quantity,
+        (cp.carton_quantity / ms.pieces_per_package) AS pieces_per_package
+   FROM carton_productivity cp
+   LEFT OUTER JOIN master_sku ms ON cp.upc_code = ms.upc_code
+  WHERE cp.module_code = :module_code
+    AND cp.work_type = :work_type
+    AND cp.operator_id = :operator
+    AND cp.work_codes IS NOT NULL
+    AND cp.process_start_date >= (:process_start_date)
+    AND cp.process_end_date < (:process_start_date) + 2
+    AND CASE
+  WHEN(cp.process_start_date - TRUNC(cp.process_start_date)) * 24 BETWEEN 5.1 AND 15.5 THEN 1 ELSE 2 END = :shift_number)
+ SELECT cd.work_codes as work_codes,
+        cd.shift_start_date as shift_start_date,
+        count(cd.carton_id) as carton_id,
+        sum(NVL(cd.carton_quantity, 0)) as carton_quantity,
+        sum(NVL(cd.pieces_per_package, 0)) as pieces_per_package
+   FROM carton_details cd
+  WHERE cd.shift_start_date >= (:process_start_date)
+    AND cd.shift_start_date < (:process_start_date) + 1
+  GROUP BY work_codes, shift_start_date
+  ORDER BY work_codes ASC
+          </pre>
+        </r:doc>
+            </li>
+        </ul>
+        <h2>
+            Validation details</h2>
+        Bellow queries may have the where clause in the [] brackets. It means these are
+        the optional parameters. If you do not want to pass these parameters just remove
+        the [] section.
+        <br>
+        <br>
+        <b>Query:</b><pre><r:query xmlns:mstns="http://tempuri.org/R150.105.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            SELECT upper(work_codes) AS "REWORK_CODES",
+            cp.carton_id AS "CARTONS",
+            cp.carton_quantity AS "PIECES",
+            cp.carton_quantity / ms.pieces_per_package AS "UNITS"
+            FROM carton_productivity cp, dcms8a.master_sku ms
+            WHERE cp.upc_code = ms.upc_code(+)
+            AND cp.module_code = 'REW'
+            AND cp.work_type = 'REWORK'
+            AND cp.operator_id = :OPREATOR_ID
+            AND work_codes is not null
+            AND cp.process_start_date >= :PROCESS_DATE 
+            AND cp.process_start_date < :PROCESS_DATE + 1
+ 
+          </r:query></pre>
+        <b>Description:</b><pre><r:description xmlns:mstns="http://tempuri.org/R150.105.xsd"
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Run above query to validate the rework information for specified operator
+            and date. Provide the date and operator id of which you wish to validate 
+            the information. This query assumes that you wish to view the records for both
+            shifts. 
+          </r:description></pre>
+        <!--End divTechnical-->
+    </div>
+    </form>
+</body>
+</html>

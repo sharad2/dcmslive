@@ -1,0 +1,342 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+    <meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1" />
+    <meta name="CODE_LANGUAGE" content="C#" />
+    <meta name="vs_defaultClientScript" content="JavaScript" />
+    <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5" />
+
+    <script type="text/javascript">
+        /*
+        Toggles the visibility of the passed divToToggle object.
+        */
+        function toggleVisibility(oVisibilityToggle, oInnerTextToggle) {
+            if (oVisibilityToggle.style.display == 'none') {
+                oVisibilityToggle.style.display = '';
+                oInnerTextToggle.innerText = "Hide Technical Documentaion";
+            }
+            else {
+                oVisibilityToggle.style.display = 'none';
+                oInnerTextToggle.innerText = "View Technical Documentaion"
+            }
+        }
+ 
+    </script>
+
+</head>
+<body>
+    <form name="Form1" method="post" action="ReportDoc.aspx?_Report=C%3a%5cDCMSLive%5cReports%5cR150.07.xsd"
+    id="Form1">
+    <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+    <h1 align="center" xmlns="http://www.w3.org/1999/xhtml">
+        150<b>.</b>07<b> : </b>Kitter Productivity Report
+    </h1>
+    <h3>
+        Author : Manmohan Bisht</h3>
+    $Revision: 520 $<br xmlns="http://www.w3.org/1999/xhtml">
+    Status : Reviewed
+    <br />
+    Reviewed By : Pravin Awasthi<p author="Manmohan Bisht" status="Completed" reviewer="Manmohan Bisht"
+        xmlns="http://www.w3.org/1999/xhtml">
+        This report displays the productivity information of the kitters for specified period
+        of time and shift. This report can be drilled down on kitter field to see the carton
+        details.
+    </p>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Overview</h2>
+    <body xmlns="http://tempuri.org/R150.07.xsd" xmlns:mstns="http://tempuri.org/R150.07.xsd"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+        <p>
+            When the cartons are received in the warehouse, their contents are verified for
+            quality and quantity. If there is some packaging error then the carton is marked
+            yellow and rework codes are assigned as per the rework required. These cartons are
+            scanned by K2P and then sent to be reworked, so that the packaging errors can be
+            corrected. Kitter has option to un-scan a carton also. This un-scan are not captured
+            as productivity information; just the scans are captured. This report displays the
+            productivity of the kitters. This means, during a given period of time, how many
+            cartons were scanned by the kitters.
+        </p>
+        The report can be helpful
+        <ul>
+            <li>For monitoring the productivity of kitters.</li><li>For identifying the star performers
+                and the inefficient workers.</li></ul>
+    </body>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Algorithm</h2>
+    Get the kitter productivity information for specified time period from CARTON_PRODUCTIVITY
+    table.
+    <h3 xmlns="http://www.w3.org/1999/xhtml">
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1" xmlns="http://www.w3.org/1999/xhtml">
+        <tr>
+            <td width="25%" align="center">
+                <b>Item</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Summary</b>
+            </td>
+            <td width="10%" align="center">
+                <b>Default Sort Sequence</b>
+            </td>
+            <td width="35%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Kitter
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                <r:item term="Kitter" key="true" sortsequence="1" xmlns="http://tempuri.org/R150.07.xsd"
+                    xmlns:mstns="http://tempuri.org/R150.07.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Name of the kitter.
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Process Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2
+            </td>
+            <td>
+                <r:item term="Process Date" key="true" xmlns="http://tempuri.org/R150.07.xsd" xmlns:mstns="http://tempuri.org/R150.07.xsd"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Date when kitting was performed.
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Pallets
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                <r:item term="Total Pallets" summary="Sum" xmlns="http://tempuri.org/R150.07.xsd"
+                    xmlns:mstns="http://tempuri.org/R150.07.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Total number of pallets, whose cartons were scanned by the kitter.
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Cartons
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                <r:item term="Total Cartons" summary="Sum" xmlns="http://tempuri.org/R150.07.xsd"
+                    xmlns:mstns="http://tempuri.org/R150.07.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Total number of cartons scanned by the kitter.
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                <r:item term="Total Pieces" summary="Sum" xmlns="http://tempuri.org/R150.07.xsd"
+                    xmlns:mstns="http://tempuri.org/R150.07.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            Total number of pieces of cartons scanned by the kitter.
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                User Setup Date</td>
+            <td>
+                None</td>
+            <td align="middle">
+                &nbsp;&nbsp;</td>
+            <td>
+                Date on which the User or
+                <span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-ansi-language:EN-US;mso-fareast-language:
+EN-US;mso-bidi-language:AR-SA">operator </span>had been created.</td>
+        </tr>
+    </table>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1" xmlns="http://www.w3.org/1999/xhtml">
+        <tr>
+            <td width="20%" align="center">
+                <b>Name</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Default</b>
+            </td>
+            <td width="60%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Process date range
+            </td>
+            <td>
+                Last seven days
+            </td>
+            <td>
+                The date range for which, you wish to view the kitting productivity information.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Shift
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                The shift for which, you wish to view the kitting productivity information. There
+                are two shifts and each kitter can work in any shift or both the shifts. Specify
+                a shift if you interested in a particular shift.
+            </td>
+        </tr>
+    </table>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Performance Detail</h2>
+    <p xmlns="http://www.w3.org/1999/xhtml">
+        <i>Expected Time for the report output is </i>1 seconds</p>
+    The query of this report will exhibit linear performance with respect to number
+    of records in carton_productivity table qualified for a specified date range.
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Details</h2>
+    This report displays the records according to shift timings.
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Behavior Change</h2>
+    <ul xmlns="http://www.w3.org/1999/xhtml">
+        <li>Name of the report changed to Kitting Productivity Report from K2P productivity
+            report.</li>
+        <li>Add the new column User Setup Date in the last of report for showing date on 
+            which the User or operator had been created. By NM 13th July 2009 email subject 
+            &quot;Add the User created Date in all production reports&quot;</li>
+    </ul>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Issues</h2>
+    No Known Issue. <a href="javascript:void(0)" onclick="toggleVisibility(divTechnical, this)"
+        xmlns="http://www.w3.org/1999/xhtml"></a>
+    <div id="divTechnical" xmlns="http://www.w3.org/1999/xhtml">
+        <h2>
+            Parameter Technical Details</h2>
+        <ul>
+            <li>Process Start Date (Type = Date): You can specify the date or date range to see
+                the kitter productivity for this date or date range. This is a date range control.
+            </li>
+            <li>Shift (Type = NUMBER): This is a drop down list parameter control. Specify a shift
+                if you are interested in a particular shift. Default value text is &quot;All&quot;.
+                <ul>
+                    <li>Value = 1, Text = First </li>
+                    <li>Value = 2, Text = Second</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>
+            Parameter Validation</h2>
+        No special validations.
+        <h2>
+            Query&#39;s documentation:</h2>
+        <ul>
+            <li>
+                <r:doc xmlns="http://tempuri.org/R150.07.xsd" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mstns="http://tempuri.org/R150.07.xsd">This query will get the K2P productivity details from 
+                    table carton_productivity.
+           <pre> 
+  WITH kitter_prod AS         (         
+SELECT c.operator_id AS operator_id,
+       CASE
+         WHEN (c.process_start_date - TRUNC(c.process_start_date)) * 24 <= 5.1 THEN
+          TRUNC(c.process_start_date - 1)
+         ELSE
+          TRUNC(c.process_start_date)
+       END AS shift_start_date,
+       c.pallet_id AS pallet_id,
+       c.carton_id AS carton_id,
+       c.carton_quantity AS carton_quantity
+  FROM carton_productivity c
+ WHERE c.module_code = :module_code
+   AND c.action_code = :action_code
+   AND c.PROCESS_START_DATE >= (:process_start_date_from)
+   AND c.PROCESS_START_DATE < (:process_start_date_to) + 2
+   AND CASE
+ WHEN(c.process_start_date - TRUNC(c.process_start_date)) * 24 BETWEEN 5.1 AND 15.5 THEN 1 ELSE 2 END = :shift_number)
+SELECT kp.operator_id AS operator_id,
+       NVL(COUNT(DISTINCT kp.pallet_id), 0) AS count_pallet_id,
+       NVL(COUNT(kp.carton_id), 0) AS count_carton_id,
+       NVL(SUM(kp.carton_quantity), 0) AS sum_carton_quantity,
+       kp.shift_start_date as shift_start_date,
+       max(au.created) as user_setup_date
+  FROM kitter_prod kp
+  LEFT OUTER JOIN all_users au on au.username = kp.operator_id
+                              AND kp.shift_start_date >=
+                                  (:process_start_date_from)
+                              AND kp.shift_start_date <
+                                  (:process_start_date_to) + 1
+ GROUP BY kp.operator_id, shift_start_date
+ ORDER BY operator_id ASC, shift_start_date ASC  
+           </pre>
+                    </r:doc></li>
+        </ul>
+        <h2>
+            Validation details</h2>
+        <br />
+        <br />
+        <b>Query:</b><pre><r:query xmlns="http://tempuri.org/R150.07.xsd" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd"
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mstns="http://tempuri.org/R150.07.xsd">
+             WITH with_cp AS ( 
+                   SELECT c.operator_id AS operator_id,
+                   trunc(c.process_start_date) AS process_start_date,
+                   (c.pallet_id) AS pallet_id,
+                   (c.carton_id) AS carton_id,
+                   (c.carton_quantity) AS carton_quantity
+              FROM carton_productivity c
+             WHERE c.module_code = 'K2P'
+               AND c.action_code = 'K2P'
+               AND c.PROCESS_START_DATE >= (:min_process_date)
+               AND c.PROCESS_START_DATE < (::max_process_date) + 1)
+              SELECT with_cp.operator_id AS operator_id,
+               COUNT(DISTINCT with_cp.pallet_id) AS count_pallet_id,
+               COUNT(with_cp.carton_id) AS count_carton_id,
+               SUM(with_cp.carton_quantity) AS sum_carton_quantity,
+               with_cp.process_start_date as process_start_date
+                FROM with_cp
+               WHERE 1 = 1
+               GROUP BY operator_id, process_start_date
+               ORDER BY operator_id, process_start_date
+          </r:query></pre>
+        <b>Description:</b><pre><r:description xmlns="http://tempuri.org/R150.07.xsd" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd"
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mstns="http://tempuri.org/R150.07.xsd">
+          The above query will validate the report data.
+          </pre>
+    </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,248 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+</head>
+<body>
+    <form name="Form1" method="post" action="ReportDoc.aspx?_Report=C%3a%5cDCMSLive%5cReports%5cR40.30.xsd"
+    id="Form1">
+    <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+    <h1 align="center" xmlns="http://www.w3.org/1999/xhtml">
+        40<b>.</b>30<b> : </b>Carton Aging Report
+    </h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    $Revision: 5601 $<br/>
+        Reviewed By: Manmohan Bisht<br />
+       Tested By : Hemant K. Singh
+        <p>
+        Report displays the number of cartons and the quantity which are lying in the specified
+        carton area for a given virtual warehouse ID.
+    </p>
+        <h2 xmlns="http://www.w3.org/1999/xhtml">
+            Overview</h2>
+        <body xmlns:mstns="http://tempuri.org/R99.900.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" xmlns="http://www.w3.org/1999/xhtml">
+            <p>
+                This report helps in ensuring that inventory of any carton area does not become
+                excessively stale. It displays the number of cartons and number of pieces in broad
+                carton age categories. If there are no cartons in any of the following carton age
+                categories then that category will not get displayed in the report.</p>
+            <ul>
+                <li>Last 89 days </li>
+                <li>90 to 179 days</li><li>180 to 269 days</li><li>270 to 359 days</li>
+                <li>360 to 539 days</li>
+                <li>540 to 719 days</li>
+                <li>720+ days </li>
+            </ul>
+        </body>
+        <h3 xmlns="http://www.w3.org/1999/xhtml">
+            Output</h3>
+        <table width="100%" cellspacing="1" cellpadding="1" border="1" xmlns="http://www.w3.org/1999/xhtml">
+            <tr>
+                <td width="25%" align="center">
+                    <b>Item</b>
+                </td>
+                <td width="20%" align="center">
+                    <b>Summary</b>
+                </td>
+                <td width="10%" align="center">
+                    <b>Sort Sequence</b>
+                </td>
+                <td width="35%" align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Day Range
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    1
+                </td>
+                <td>
+                    <r:item term="Day Range" sortsequence="1" xmlns:mstns="http://tempuri.org/R99.900.xsd"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            The range of days from current date.
+          </r:item>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Quality
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    
+                </td>
+                <td>
+                    Quality.</td>
+            </tr>
+            <tr>
+                <td>
+                    No of Cartons
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="center">
+                </td>
+                <td>
+                    <r:item term="No of Cartons" summary="Sum" xmlns:mstns="http://tempuri.org/R99.900.xsd"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+                        The number of cartons lying in the specified carton area.
+          </r:item>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pieces
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="center">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item term="Pieces" summary="Sum" xmlns:mstns="http://tempuri.org/R99.900.xsd"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            The number of pieces in those cartons.
+          </r:item>
+                </td>
+            </tr>
+        </table>
+        <h2 xmlns="http://www.w3.org/1999/xhtml">
+            Parameters</h2>
+        <table width="100%" cellspacing="1" cellpadding="1" border="1" xmlns="http://www.w3.org/1999/xhtml">
+            <tr>
+                <td width="20%" align="center">
+                    <b>Name</b>
+                </td>
+                <td width="20%" align="center">
+                    <b>Default</b>
+                </td>
+                <td width="60%" align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Specify Carton Area
+                </td>
+                <td>
+                    All
+                </td>
+                <td>
+                    Area against which user wants to see the cartons.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Virtual Warehouse
+                </td>
+                <td>
+                    All
+                </td>
+                <td>
+                    Virtual Warehouse.
+                </td>
+            </tr>
+        </table>
+        &nbsp;<h2 xmlns="http://www.w3.org/1999/xhtml">
+            Definitions</h2>
+        <dl xmlns="http://www.w3.org/1999/xhtml">
+            <dt><i>Age of Carton</i></dt><dd><r:definition term="Age of Carton" xmlns:mstns="http://tempuri.org/R99.900.xsd"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+          The age of a carton is defined as the number of days which have elapsed since the carton was received.
+        </r:definition></dd></dl>
+        <h2 xmlns="http://www.w3.org/1999/xhtml">
+            Details</h2>
+        <h2>
+            Prerequisites</h2>
+        <p>
+            Private synonyms for the following tables are required</p>
+        <p>
+        src_carton,</br/>
+    src_carton_detail</p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>create or replace synonym src_carton for dcms4.src_carton;
+            <br />
+            create or replace synonym src_carton_detail for dcms4.src_carton_detail;</code></p>
+    <p xmlns="http://www.w3.org/1999/xhtml">
+        Following AppSetting is required:</p>
+    <code>
+        <br />
+        &lt;add key=&quot;CartonReserveArea&quot; value=&quot;BIR&quot;/&gt; </code>
+    <h2>
+        Behavior Change</h2>
+    <h2>
+        Issues</h2>
+    No issues.
+    <h2>
+        Query&#39;s documentation:</h2>
+    <ul>
+        <pre>
+WITH carton_aging_details as
+(SELECT CASE LEAST(TRUNC((SYSDATE - CTN.INSERT_DATE) / 90), 8)
+				 WHEN 5 THEN
+					4
+				 WHEN 7 THEN
+					6
+				 ELSE
+					LEAST(TRUNC((SYSDATE - CTN.INSERT_DATE) / 90), 8)
+			 END AS quarterly_year,
+       count(ctn.carton_id) AS no_of_cartons,
+       ctn.quality_code AS quality_code,
+       sum(ctndet.quantity) AS pieces
+  FROM src_carton ctn
+  LEFT OUTER JOIN src_carton_detail ctndet on ctn.carton_id = ctndet.carton_id
+ WHERE 1=1 
+   [$:carton_storage_area$AND ctn.carton_storage_area = :carton_storage_area$]
+   [$:vwh_id$AND ctn.vwh_id = :vwh_id$]
+ GROUP BY LEAST(trunc((sysdate - ctn.insert_date) / 90), 8), CTN.quality_code
+)
+ SELECT cad.quarterly_year as quarterly_year,
+        cad.quality_code as quality_code,
+        SUM(NVL(cad.no_of_cartons, 0)) as no_of_cartons,
+        SUM(NVL(cad.pieces, 0)) as pieces
+   FROM carton_aging_details cad
+   GROUP BY cad.quarterly_year, cad.quality_code
+                </pre>
+        </R:DOC> </li>
+    </ul>
+    <h2>
+        Validation details</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.
+    <br />
+    <br />
+    <b>Query:</b><pre><r:query xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mstns="http://tempuri.org/R99.900.xsd">
+            SELECT count(ctn.carton_id) AS &quot;NO_OF_CARTONS&quot;,
+            sum(ctndet.quantity) AS &quot;PIECES&quot;
+            FROM src_carton ctn, src_carton_detail ctndet
+            WHERE ctn.carton_id = ctndet.carton_id(+)
+            AND ctn.carton_storage_area = :Area
+            and trunc(sysdate - ctn.insert_date)&gt;=180 
+            and trunc(sysdate - ctn.insert_date)&lt;270
+            AND ctn.vwh_id = :VWH_ID;
+          </r:query></pre>
+    <b>Description:</b><pre><r:description xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mstns="http://tempuri.org/R99.900.xsd">
+            Run the above query to validate the number of cartons lying in the given area for last 180 to 269 days.
+            User can pass other combinations of day range and warehouse id as well.
+</pre>
+    <br xmlns="http://www.w3.org/1999/xhtml">
+    <br xmlns="http://www.w3.org/1999/xhtml">
+    </form>
+</body>
+</html>

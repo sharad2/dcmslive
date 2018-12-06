@@ -1,0 +1,470 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style type="text/css">
+        .style1
+        {
+            width: 111px;
+        }
+        .style2
+        {
+            width: 208px;
+        }
+    </style>
+    </head>
+<body>
+   <center> <h1>
+        10<b>.03 : All unshipped order 
+        details</b></h1></center>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <p><b>
+        $Revision: 6927 $<br />
+        Status: Reviewed<br />
+        Reviewed By : Ritesh Verma<br />
+        Tested by : Dinesh Singh Panwar</b>
+
+    </p>
+
+    <p>This report displays detail of all unshipped order with the help of style, color 
+        and customer filters and also shows the count of POs by cancel date and import date.</p>
+
+    <h2>
+        Overview</h2>
+        
+        <p>This report displays detail of all unshipped order by style, color and customer 
+            and&nbsp;&nbsp;how many pieces of SKU&#39;s for perticular PO for the passed filter 
+            as well as report&nbsp; will&nbsp; display the count of PO cancel date and 
+            import date wise. </p>
+    <p>We are displaying the three radio button&nbsp; </p>
+            <ol>
+                <li>If you can check the first radio button&nbsp; then report shows the detail PO wise 
+                    that how may pieces of the SKU in the perticular&nbsp; PO.</li>
+                <li>If you can check the second radio button (i.e cancel date)&nbsp; then report 
+                    shows&nbsp; the count of the PO per cancel date.</li>
+                <li>If you check the last radio button then report shows the count of PO per importr 
+                    date wise.</li>
+            </ol>
+    <h2>
+        Algorithm</h2>
+        <p>Information about the PO,pickslip,status within the specified is reterived from box table. We are reteriving the 
+            style, color,dimesion and sku_size information from the dem_pickslip_detail and 
+            retrieving name of the customer&nbsp; from master_customer table. </p>
+    <h3>
+       Output 
+        of SKU and customer</h3>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center" style="width: 25%">
+                <b>Item</b>
+            </td>
+            <td align="center" style="width: 20%">
+                <b>Summary</b>
+            </td>
+            <td align="center" style="width: 10%">
+                <b>Sort Sequence</b>
+            </td>
+            <td align="center" style="width: 35%">
+                <b>Detail</b>
+            </td>
+        </tr>
+               <tr>
+            <td>
+                Customer</td>
+            <td>
+                No</td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                Name of the customer</td>
+        </tr>
+       
+        <tr>
+            <td>
+                PO</td>
+            <td>
+                No</td>
+            <td align="center">
+                2</td>
+            <td>
+                Building of the box</td>
+        </tr>
+       
+        <tr>
+            <td>
+                Status</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Area of the box</td>
+        </tr>
+       
+        <tr>
+            <td>
+                Pickslip</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Id of the box.</td>
+        </tr>
+        <tr>
+            <td>
+                Style</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                This column dispalying the pallet on which put the boxes</td>
+        </tr>
+        <tr>
+            <td>
+                Color</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                location of the pallet.</td>
+        </tr>
+        <tr>
+            <td>
+                Dim</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Report displaying the pickslip of the customer</td>
+        </tr>
+        <tr>
+            <td>
+                Size</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Id of the box.</td>
+        </tr>
+        <tr>
+            <td>
+                Pieces|Total</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                This column dispalying the pallet on which put the boxes</td>
+        </tr>
+        <tr>
+            <td>
+                Pieces|Short</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                location of the pallet.</td>
+        </tr>
+        <tr>
+            <td>
+                Date|Delivery</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Report displaying the pickslip of the customer</td>
+        </tr>
+        <tr>
+            <td>
+                Date|Cancel</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Report displaying the pickslip of the customer</td>
+        </tr>
+        </table>
+        <h2>Output of cancel date wise</h2>
+        <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center" style="width: 25%">
+                <b>Item</b>
+            </td>
+            <td align="center" style="width: 20%">
+                <b>Summary</b>
+            </td>
+            <td align="center" style="width: 10%">
+                <b>Sort Sequence</b>
+            </td>
+            <td align="center" style="width: 35%">
+                <b>Detail</b>
+            </td>
+        </tr>
+       
+        <tr>
+            <td>
+                PO</td>
+            <td>
+                No</td>
+            <td align="center">
+                2</td>
+            <td>
+                Id of the purchase ordered</td>
+        </tr>
+       
+        <tr>
+            <td>
+                Quantity|Checked</td>
+            <td>
+                Sum</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Area of the box</td>
+        </tr>
+       
+        <tr>
+            <td>
+                Quantity||Ordered</td>
+            <td>
+                Sum</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                total quantity for the purchase ordered</td>
+        </tr>
+        <tr>
+            <td>
+                Quantity|Amount</td>
+            <td>
+                Sum</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                Cancel Date</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Cancel date of the PO</td>
+        </tr>
+        </table>
+        <h2>Output for import date wise</h2>
+        <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center" style="width: 25%">
+                <b>Item</b>
+            </td>
+            <td align="center" style="width: 20%">
+                <b>Summary</b>
+            </td>
+            <td align="center" style="width: 10%">
+                <b>Sort Sequence</b>
+            </td>
+            <td align="center" style="width: 35%">
+                <b>Detail</b>
+            </td>
+        </tr>
+               <tr>
+            <td>
+                PO</td>
+            <td>
+                No</td>
+            <td align="center">
+                1</td>
+            <td>
+                Name of the customer</td>
+        </tr>
+       
+        <tr>
+            <td>
+                Age</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Area of the box</td>
+        </tr>
+       
+        <tr>
+            <td>
+                Quantity|Ordered</td>
+            <td>
+                Sum</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Id of the box.</td>
+        </tr>
+        <tr>
+            <td>
+                Quantity|Amount</td>
+            <td>
+                Sum</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                This column dispalying the pallet on which put the boxes</td>
+        </tr>
+        <tr>
+            <td>
+                Import Date</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                location of the pallet.</td>
+        </tr>
+        </table>
+    <h3>
+        Parameter</h3>
+        <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center" class="style2">
+                <b>Name</b></td>
+            <td align="center" class="style1">
+                <b>Default</b>
+            </td>
+            <td align="center">
+                <b>Detail</b
+            </td>
+        </tr>
+            <tr>
+        <td class="style2">Style</td>
+        <td class="style1">None</td>
+       <td>Style of the SKU</td>
+            </tr>
+            <tr>
+        <td class="style2">Color</td>
+        <td class="style1">None</td>
+       <td>color of the SKU</td>
+            </tr>
+        <tr>
+        <td class="style2">Customer</td>
+        <td class="style1"None</td>
+            None<td>ID of the customer</td>
+        </tr>
+        <tr>
+        <td class="style2">Cancel Date</td>
+        <td class="style1">None</td>
+       <td>cancel date of the pickslip</td>
+        </tr>
+        <tr>
+        <td class="style2">Import Date</td>
+        <td class="style1">&nbsp;None</td>
+       <td>import date of the SKU&#39;s</td>
+        </tr>
+        </table>
+    <h2>
+        Performance Detaill</h2>
+    <p>
+        <i>Expected Time for the report output is 10</i Sec.</p>
+ <h2>
+Behavior Change</h2>
+    <p>
+        No behavior change because this is a new report.</p>
+
+ 
+    <h2>
+        Prerequisites     Prerequisites</h2>
+
+<ol>
+<li>Create or replace synonym dem_pickslip for dcms8.dem_pickslip</li>
+    <li>Create or replace synonym dem_pickslip_detail for dcms8.dem_pickslip_detail</li>
+    <li>Create or replace synonym master_customer for dcms8.master_customer</li>
+</ol>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.
+
+      <h2>Query documentation:</h2>
+      <b>This report displays the detail of the PO</b>
+    <pre>
+      SELECT /*+rule*/
+                PS.PICKSLIP_ID AS PICKSLIP_ID,
+       PSDET.UPC_CODE AS UPC_CODE,
+       MAX(PS.CUSTOMER_ORDER_ID) AS CUSTOMER_ORDER_ID,
+       MAX(PSDET.STYLE) AS STYLE,
+       MAX(PSDET.COLOR) AS COLOR,
+       MAX(PSDET.SKU_SIZE) AS SKU_SIZE,
+       MAX(PSDET.DIMENSION) AS DIMENSION,
+       MAX(PS.CUSTOMER_ID) || ':  ' ||
+       NVL(MAX(CD.NAME), 'Not in Customer Master') AS CUSTOMER_NAME,
+       MAX(PS.DELIVERY_DATE) AS DELIVERY_DATE,
+       MAX(PS.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+       MAX(PS.PS_STATUS_ID) AS STATUS,
+       SUM(PSDET.QUANTITY_ORDERED) AS TOTAL_PIECES,
+       SUM(NVL(PSDET.QUANTITY_ALLOCATED, PSDET.QUANTITY_ORDERED)) -
+       SUM(NVL(PSDET.QUANTITY_SHIPPED, 0)) AS SHORT_PIECES
+  FROM DEM_PICKSLIP_DETAIL PSDET
+ INNER JOIN DEM_PICKSLIP PS
+    ON PSDET.PICKSLIP_ID = PS.PICKSLIP_ID
+  LEFT OUTER JOIN MASTER_CUSTOMER CD
+    ON PS.CUSTOMER_ID = CD.CUSTOMER_ID
+ WHERE PS.PS_STATUS_ID IN (1, 99)
+   <if>AND PS.CUSTOMER_ID =:CUSTOMER_ID</if>
+   <if>AND PSDET.STYLE = :STYLE</if>
+  <if>and <a pre="PSDET.COLOR IN  (" sep="," post=")">(:COLOR)</a></if>
+ GROUP BY PS.PICKSLIP_ID, PSDET.UPC_CODEid
+    </pre>
+    <h3>This query shows the Count of POs import date wise</h3>
+    <pre>
+    SELECT /*+ RULE */
+ PS.PICKSLIP_IMPORT_DATE AS IMPORT_DATE,
+ SUM(PS.TOTAL_QUANTITY_ORDERED) AS ORDERED_QUANTITY,
+ SUM(PS.TOTAL_DOLLARS_ORDERED) AS AMOUNT,
+ TRUNC(SYSDATE) - TRUNC(PS.PICKSLIP_IMPORT_DATE) AS AGE,
+ COUNT(DISTINCT PS.CUSTOMER_ORDER_ID) AS NO_OF_POS
+  FROM DEM_PICKSLIP PS
+ WHERE PS.PS_STATUS_ID IN (1, 99)
+   AND PS.UPLOAD_DATE IS NULL
+   <if>AND ps.pickslip_import_date &gt;= CAST(:Import_from_date as DATE)</if>
+   <if>AND ps.pickslip_import_date &lt; CAST(:Import_to_date as DATE) + 1</if>
+ GROUP BY PS.PICKSLIP_IMPORT_DATE
+    </pre>
+    <h3>his query shows the Count of POs import date wise</h3>
+    <pre>
+    SELECT /*+ RULE */
+ PS.CANCEL_DATE AS CANCEL_DATE,
+ SUM(PSDET.QUANTITY_ORDERED) AS ORDERED_QUANTITY,
+ SUM(PSDET.QUANTITY_SHIPPED) AS CHECKED_QUANTITY,
+ SUM(PSDET.QUANTITY_ORDERED * EXTENDED_PRICE) AS AMOUNT,
+ COUNT(DISTINCT PS.CUSTOMER_ORDER_ID) AS NO_OF_POS
+  FROM DEM_PICKSLIP PS
+  INNER JOIN DEM_PICKSLIP_DETAIL PSDET
+  ON PS.PICKSLIP_ID = PSDET.PICKSLIP_ID
+ WHERE PS.PS_STATUS_ID IN (1, 99)
+  <if>AND ps.cancel_date &gt; = CAST(:from_date AS DATE)</if>
+ <if>AND ps.cancel_date &lt; CAST(:to_date AS DATE) +1 </if>
+ GROUP BY PS.CANCEL_DATE
+    </pre>
+    <h2>Validation Detail</h2>
+    <p>Bellow queries may have the where clause in the [] brackets. It means these are the optional parameters. If you do not want to pass these parameters just remove the [] section. 
+</p>
+<b>Query :</b>
+<pre>
+
+</pre>
+ <b>Description</b>
+<p>Execute the above query to find the Customer and PO from passed pickslip.
+</p>
+</body>
+</html>

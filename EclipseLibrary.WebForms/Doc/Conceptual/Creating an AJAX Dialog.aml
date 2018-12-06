@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="ff16f3a6-d63b-48cc-a0fb-438cd8c281a2" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <summary>
+      <para>
+        One of the major goals of EclipseLibrary.NET is to make it easy to create modern applications
+        which take full advantage of AJAX capabilities. This topic introduces how you can show content
+        loaded from a remote page within a <codeEntityReference>T:EclipseLibrary.Web.JQuery.Dialog</codeEntityReference>.
+      </para>
+    </summary>
+
+    <introduction>
+      <autoOutline xmlns="" />
+      <para>
+        You will create an ASP.NET WebForm page which will open a dialog when a button is clicked.
+        The contents in this dialog will be loaded from a different aspx page. The dialog will have OK and Cancel buttons.
+        The dialog will display a UI for selecting a customer from a drop down list. When Ok is pressed, the selected
+        customer will be populated in a textbox next to the clicked button and the dialog will close. Pressing Cancel will close
+        the dialog but do nothing else.
+      </para>
+    </introduction>
+    <section address="CalledPage">
+      <title>Creating the Page to be Called: CustomerPicker.aspx</title>
+      <content>
+        <para>
+          Create a remote page which will be loaded by the main page.
+          The page we will create for this example will simpy display
+          a drop down list filled with customers. The value to be initially selected will be passed as
+          query string <codeInline>customer_id</codeInline>. The value selected by the user is available
+          to the calling page by accessing a text box through
+          javascript code.
+        </para>
+        <alert class="important">
+          <para>
+            Each AJAX callable page must document clearly what the page can expect from it. This page makes the following promises:
+          </para>
+          <list class="ordered">
+            <listItem>
+              <para>
+                The intial value to be displayed will be read from the query string <codeInline>customer_id</codeInline>.
+              </para>
+            </listItem>
+            <listItem>
+              <para>
+                The value selected by the user can be read at any time by using the javascript code
+                <codeInline>$('#cp_ddlCustomers').val()</codeInline>
+              </para>
+            </listItem>
+          </list>
+        </alert>
+        <code language="xml">
+          <![CDATA[
+<form id="CustomerPicker">
+...
+<d:CustomerDropDownList runat="server" ID="cp_ddlCustomers" ClientIdSameAsId="true" />
+...
+</form>
+              ]]>
+        </code>
+        <list class="ordered">
+          <listItem>
+            <para>
+              To avoid spending time on data binding code, we simply assume
+              that there is a custom control <codeInline>CustomerDropDownList</codeInline>
+              derived from <codeEntityReference>T:EclipseLibrary.Web.JQuery.Input.DropDownListEx</codeEntityReference>
+              which is capable of displaying all customers.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              By specifying the <codeEntityReference>P:EclipseLibrary.Web.JQuery.Input.InputControlBase.QueryString</codeEntityReference>
+              property for <codeInline>CustomerDropDownList</codeInline>, we enable the control to automatically set
+              its initial value to the value of the query string <codeInline>customer_id</codeInline>.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              We have set <codeEntityReference>P:EclipseLibrary.Web.JQuery.WidgetBase.ClientIdSameAsId</codeEntityReference>
+              property to <codeInline>true</codeInline> for the drop down list <codeInline>cp_ddlCustomers</codeInline>
+              because it is part of our contract with the calling page.
+              This property guarantees that ASP.NET will not be able to mangle
+              the client id for this text box.
+            </para>
+          </listItem>
+        </list>
+        <para>
+          A remote page is just like any other aspx
+          page with very few additional considerations. Since the DOM of this page will be merged within the DOM of the
+          calling page, id duplication can be a problem. It is recommended that the use of IDs is minimized on the page.
+          All publicly accessible ids should have a unique prefix. All dialogs within a remote page must have
+          globally unique IDs. The same requirement exists for all JPanels with a
+          <codeEntityReference>P:EclipseLibrary.Web.JQuery.Tabs</codeEntityReference> control on an AJAX page.
+        </para>
+      </content>
+    </section>
+    <section address="CallingPage">
+      <title>Creating the Calling Page: CustomerDetails.aspx</title>
+      <content>
+        <para>
+          The calling page will have an AJAX <codeEntityReference>T:EclipseLibrary.Web.JQuery.Dialog</codeEntityReference>
+          in which the contents of <computerOutputInline>CustomerPicker.aspx</computerOutputInline>  will be loaded. This dialog will open when
+          the user presses a button placed next to the text box in which the user is supposed to enter the customer id
+          whose details he wishes to see. The value in the text box will be passed to the page <system>CustomerPicker.aspx</system>
+          as the value of query string <codeInline>customer_id</codeInline>. We already know that <system>CustomerPicker.aspx</system>
+          is designed to show this value as the initial value of the customer drop down.
+        </para>
+        <para>
+          The relevant portions of the markup in the <computerOutputInline>CustomerDetails.aspx</computerOutputInline>
+          is given below and is discussed immediately afterwards.
+        </para>
+        <code language="c#">
+          <![CDATA[
+<i:TextBoxEx ID="tbCustomer" runat="server" QueryString="customer_id" FriendlyName="Customer"
+    ClientIdSameAsId="true">
+</i:TextBoxEx>
+<i:ButtonEx ID="btnPick" runat="server" Icon="Search" OnClientClick="function(e) {
+$('#dlgCustomerPicker').dialog('open')
+  .ajaxDialog('load');
+}" />
+...
+<jquery:Dialog ID="dlgCustomerPicker" runat="server" ClientIdSameAsId="true" AutoOpen="false"
+    Title="Select Customer" DialogStyle="Picker" Width="400">
+    <Ajax Url="CustomerPicker.aspx" OnAjaxDialogLoading="function(e) {
+$(this).ajaxDialog('option', 'data', { customer_id: $('#tbCustomer').val() });
+    }" />
+    <Buttons>
+        <jquery:ActionButton OnClientClick="function(e) {
+$('#tbCustomer').val($('#cp_ddlCustomers', this).val());    
+$(this).dialog('close');        
+        }" Text="Ok" IsDefault="true" />
+        <jquery:CloseButton Text="Cancel" />
+    </Buttons>
+</jquery:Dialog>      
+       ]]>
+        </code>
+        <list class="ordered">
+          <listItem>
+            <para>
+              <codeInline>tbCustomer</codeInline> is the text box in which the user is supposed to enter the
+              <codeInline>customer_id</codeInline>. To help him select the right customer, there is a
+              <codeEntityReference>T:EclipseLibrary.Web.JQuery.Input.ButtonEx</codeEntityReference> right next to it
+              which he can click to open the customer picker dialog.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              <codeInline>dlgCustomerPicker</codeInline> is the customer picker dialog whose
+              <codeEntityReference>P:EclipseLibrary.Web.JQuery.AjaxDialogSettings.Url</codeEntityReference>
+             has been specified
+              as <codeInline>CustomerPicker.aspx</codeInline>.
+              <codeEntityReference>P:EclipseLibrary.Web.JQuery.Dialog.AutoOpen</codeEntityReference> has been set to
+              <codeInline>false</codeInline> so that the dialog will not open when the page loads.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              The javascript specified for <codeEntityReference>P:EclipseLibrary.Web.JQuery.Input.ButtonEx.OnClientClick</codeEntityReference> of
+              <codeInline>btnPick</codeInline> is <codeInline>
+                $('#dlgCustomerPicker').dialog('open').ajaxDialog('load');
+              </codeInline>.
+              This code opens the dialog whenever it is clicked and loads the ajax page <system>CustomerPicker.aspx</system>
+              page.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              The <codeEntityReference>P:EclipseLibrary.Web.JQuery.AjaxDialogSettings.OnAjaxDialogLoading</codeEntityReference>
+              of <codeInline>dlgCustomerPicker</codeInline> is called just before the contents of <system>CustomerPicker.aspx</system>
+              are loaded. The line <codeInline>$(this).ajaxDialog('option', 'data', { customer_id: $('#tbCustomer').val() });</codeInline>
+              says that <codeInline>customer_id</codeInline> should be passed to the page as query string and its value should be
+              the value of the textbox <codeInline>tbCustomer</codeInline>.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              Then the dialog opens and the user can see the customer drop down. The user selects the customer he is interested in
+              and presses the Ok button. This invokes the <codeEntityReference>P:EclipseLibrary.Web.JQuery.ActionButton.OnClientClick</codeEntityReference>
+              event handler of the Ok button which is <codeInline>
+                $('#tbCustomer').val($('#cp_ddlCustomers', this).val());
+                $(this).dialog('close');
+              </codeInline>.
+              This javascript code accesses the
+              value of the text box <codeInline>cp_tbCustomers</codeInline> on the remote page and sets it
+              as the value of the textbox <codeInline>tbCustomer</codeInline> on the main page. Thus the chosen
+              value gets displayed in the text box on the main page.
+            </para>
+          </listItem>
+        </list>
+      </content>
+    </section>
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

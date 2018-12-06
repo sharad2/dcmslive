@@ -1,0 +1,391 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html>
+<head>
+    <title>Report Documentation</title>
+    <style type="text/css">
+        .auto-style1 {
+            width: 9%;
+        }
+        .auto-style2 {
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <h1 align="center">
+        130<b>.</b>35<b> : </b>Perpetual Inventory</h1>
+    <h3>
+        Author :Neha Manhas</h3>
+    $Revision: 6858 $<br />
+    Status: Reviewed<br />
+    Reviewed By :Hemant k varshney<br />
+    Tested By :Hemant K. Singh <p>
+        Report lists Perpetual inventory of DCMS. User have options to restrict the report to a particular Label or Style.
+        <h2>
+        Overview</h2>
+    <p>
+       This report shows total inventory available in DC per SKU/VWH/Quality. Inventory manager can use this report to compare the inventory with host system.&nbsp; This report will display maximum 1000 rows to get all the rows use &quot;Export to Excel&quot;.</body><h2>
+    Algorithm</h2>
+   Retreiving carton inventory from src_carton and src_carton_detail tables, SKU invenory from master_raw_inventory and displaying total invneory SKU wise.
+<h3>
+    Output</h3>
+<table width="100%" cellspacing="1" cellpadding="1" border="1">
+    <tr>
+        <td width="25%" align="center">
+            <b>Item</b>
+        </td>
+        <td width="20%" align="center">
+            <b>Summary</b>
+        </td>
+        <td align="center" class="auto-style1">
+            <b>Sort Sequence</b>
+        </td>
+        <td width="35%" align="center">
+            <b>Detail</b>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Label</td>
+        <td>
+            No
+        </td>
+        <td align="center" class="auto-style1">
+            &nbsp;
+        </td>
+        <td>
+            <r:item term="Label_id">
+							Label of the Style.
+						</r:item>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Style
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center" class="auto-style1">
+           1</td>
+        <td>
+            <r:item term="Style">
+							Style of the SKUs.
+						</r:item>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Color
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center" class="auto-style1">
+          2</td>
+        <td>
+            <r:item term="Color">
+							Color of the SKUs.
+						</r:item>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Dimension
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center" class="auto-style1">
+         3 </td>
+        <td>
+            <r:item term="Dimension">
+							Dimension of the SKUs.
+						</r:item>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Size
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center" class="auto-style1">
+          4 </td>
+        <td>
+            <r:item term="SIze">
+							Size of the SKUs.
+						</r:item>
+        </td>
+    </tr>
+<tr>
+        <td>
+            UPC
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center" class="auto-style1">
+            &nbsp;
+        </td>
+        <td>
+            <r:item term="UPC Code">
+							UPC CODE of the SKUs.
+						</r:item>
+        </td>
+    </tr>
+<tr>
+        <td>
+            Vwh
+        </td>
+        <td>
+            No
+        </td>
+        <td align="center" class="auto-style1">
+            5</td>
+        <td>
+            <r:item term="VWH ID" key="true" xmlns:mstns="http://tempuri.org/R40.16.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" xmlns:namespace1="http://schemas.microsoft.com/intellisense/ie5">
+							The Virtual warehouse ID to which SKU belong.
+						</r:item>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Quality
+        </td>
+        <td>
+            No</td>
+        <td align="center" class="auto-style1">
+            &nbsp;
+        </td>
+        <td>
+            <r:item term="Quality">
+                Quality Of the SKU
+            </r:item></td>
+    </tr>
+    <tr>
+        <td>
+            Pieces
+        </td>
+        <td>
+            Yes
+        </td>
+        <td align="center" class="auto-style1">
+            &nbsp;
+        </td>
+        <td>
+            <r:item term="Pieces">
+						Quantity in pieces of SKU.
+					</r:item>
+        </td>
+    </tr>
+    </table>
+<h2>
+    Parameters</h2>
+<table border="1" cellpadding="1" cellspacing="1" width="100%">
+    <tr>
+        <td align="middle" width="20%">
+            <b>Name
+                <td align="middle" width="20%">
+                    <b>Default</b>
+                </td>
+                <td align="middle" width="60%">
+                    <b>Detail</b>
+                </td>
+    </tr>
+    <tr>
+        <td class="auto-style2">
+            Label</td>
+        <td class="auto-style2">
+            All
+        </td>
+        <td class="auto-style2">
+            Invenory for the selected Label will be retreived.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Style
+            <td>
+                None</td>
+            <td>
+                Invenory for the passed Style will be retreived.
+            </td>
+    </tr>
+    <tr>
+        <td>
+            Quality code<td>
+                All</td>
+            <td>
+                Quality code.</td>
+    </tr>
+    <tr>
+        <td>
+            Virtual Warehouse<td>
+                All</td>
+            <td>
+                Virtual&nbsp; Warehouse of the SKU.</td>
+    </tr>
+</table>
+<h2>
+    Performance Detail</h2>
+<p>
+    <i>Expected Time for the report output is 4-5</i> seconds</p>
+<h2>
+    Behavior Change</h2>
+        <p>Virtual Warehouse filter is now available in this report.</p>
+    <h2>
+    Issues.</h2>
+    <p>No known issues.</p>
+<h2>
+    Prerequisites</h2>
+<p>
+    Private synonyms for the following tables are requried</p>
+<p>
+    src_carton,<br />
+    src_carton_detail,<br />
+    master_sku,<br />
+    master_style,<br />
+    MASTER_RAW_INVENTORY,<br />
+    TAB_INVENTORY_AREA
+   
+    <P>Use the below script to create the synonyms</p>
+        <br />
+        create or replace synonym src_carton for dcms4.src_carton;
+        <br />
+        create or replace synonym src_carton_detail for dcms4.src_carton_detail;
+        <br />
+        create or replace synonym master_sku for dcms4.master_sku;
+        <br />
+        create or replace synonym master_style for dcms4.master_style;
+        <br />
+        create or replace synonym MASTER_RAW_INVENTORY for dcms4.MASTER_RAW_INVENTORY;
+        <br />
+        create or replace synonym TAB_INVENTORY_AREA for dcms4.TAB_INVENTORY_AREA; 
+    <br />
+    <br />
+    </code>
+Following appSettings is required:<br>
+&lt;add key="PageSize" value="200" /&gt;
+<h1>
+    Technical Documentation</h1><div id="divTechnical">
+    <h2>
+       Parameter Technical Details</h2>
+    <ul>
+        <li>Label (Type = ID): Label assigned to the SKU </li>
+        <li>Style(Type =ID):&nbsp; Style assigned to the SKU </li>
+            </ul>
+    <h2>
+        Parameter Validation</h2>
+    No special validations. Sub-Query&#39;s documentation:<h2>
+        Query&#39;s documentation:</h2>
+    <ul>
+        <li>
+            <r:doc>This Query displays the comprehensive details of each 
+                   sku.
+                    <pre>              
+                     WITH INV AS
+     (SELECT CTN.VWH_ID,
+             MAX(MSKU.STYLE) STYLE,
+             MAX(MSKU.COLOR) COLOR,
+             MAX(MSKU.SKU_SIZE) SKU_SIZE,
+             MAX(MSKU.DIMENSION) AS DIMENSION,
+             CTN.QUALITY_CODE AS QUALITY_CODE,
+             SUM(CTNDET.QUANTITY) DCMS_QUANTITY,
+             MAX(MSKU.UPC_CODE) AS UPC_CODE,
+             MSKU.SKU_ID
+        FROM SRC_CARTON CTN
+       INNER JOIN SRC_CARTON_DETAIL CTNDET
+          ON CTN.CARTON_ID = CTNDET.CARTON_ID
+       INNER JOIN MASTER_SKU MSKU
+          ON MSKU.SKU_ID = CTNDET.SKU_ID
+       GROUP BY CTN.VWH_ID, CTN.QUALITY_CODE, MSKU.SKU_ID
+      UNION ALL
+      SELECT MRI.VWH_ID,
+             MAX(MSKU.STYLE) STYLE,
+             MAX(MSKU.COLOR) COLOR,
+             MAX(MSKU.SKU_SIZE) SKU_SIZE,
+             MAX(MSKU.DIMENSION) AS DIMENSION,
+             MRI.QUALITY_CODE AS QUALITY_CODE,
+             SUM(MRI.QUANTITY) DCMS_QUANTITY,
+             MAX(MSKU.UPC_CODE) AS UPC_CODE,
+             MSKU.SKU_ID
+        FROM TAB_INVENTORY_AREA TIA
+       INNER JOIN MASTER_RAW_INVENTORY MRI
+          ON MRI.SKU_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+       INNER JOIN MASTER_SKU MSKU
+          ON MRI.SKU_ID = MSKU.SKU_ID
+       WHERE TIA.STORES_WHAT = 'SKU'
+         AND TIA.UNUSABLE_INVENTORY IS NULL
+       GROUP BY MRI.VWH_ID, MSKU.SKU_ID, MRI.QUALITY_CODE
+      HAVING SUM(MRI.QUANTITY) != 0),
+    Q2 AS
+     (SELECT VWH_ID AS VWH_ID,
+            MAX(MS.LABEL_ID) AS LABEL_ID,
+             I.STYLE AS STYLE,
+             I.COLOR AS COLOR,
+             I.DIMENSION AS DIMENSION,
+             I.SKU_SIZE AS SKU_SIZE,
+             I.QUALITY_CODE   AS QUALITY_code,
+             SUM(DCMS_QUANTITY) AS PIECES,
+             MAX(I.UPC_CODE) AS UPC_CODE
+        FROM INV I
+        LEFT OUTER JOIN MASTER_STYLE MS
+        ON I.STYLE = MS.STYLE
+   WHERE 1 = 1
+     <if>AND I.style = :style</if>
+     <if>AND ms.Label_ID = :LABEL_ID</if>
+       GROUP BY I.VWH_ID,
+                I.STYLE,
+                I.COLOR,
+                I.DIMENSION,
+                I.SKU_SIZE,
+                I.QUALITY_CODE)
+                SELECT * FROM q2    
+            </pre>
+                    </r:doc>
+        </li>
+    </ul>
+    <h2>
+        Validation details</h2>
+    <b>Query:1</b>
+    <pre>
+        SELECT SUM(mri.quantity) 
+  FROM master_raw_inventory mri
+  INNER JOIN tab_inventory_area tia
+     ON mri.sku_storage_area = tia.inventory_storage_area 
+ WHERE tia.stores_what = 'SKU'
+   AND tia.unusable_inventory IS NULL
+   AND mri.style = ''
+   AND mri.color = ''
+   AND mri.dimension = ''
+   AND mri.sku_size = '' 
+   AND mri.quality_code = ''
+   AND mri.vwh_id = '';
+					  </pre> 
+    <b>Description:</b> 
+     <pre>Execute the above query to get the total inventory of a particular sku from master_raw_inventory table.</pre>
+   
+    <b>Query:2</b>
+    <pre>
+        SELECT SUM(cd.quantity)
+  FROM src_carton c
+  INNER JOIN src_carton_detail cd
+     ON c.carton_id = cd.carton_id
+   WHERE cd.style = ''
+   AND cd.color = ''
+   AND cd.dimension = ''
+   AND cd.sku_size = '' 
+   AND c.quality_code = ''
+   AND c.vwh_id = '';
+
+</pre>
+<b>Description:</b>
+<pre> Execute the query to get the total inventory of a particular sku in src_carton table.
+					</pre>
+    <!--End divTechnical-->
+</div>
+</form> </body>
+</html>

@@ -1,0 +1,252 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Web", "Web\", "{4C2C3450-8038-405B-9A74-9A735378BDC4}"
+	ProjectSection(WebsiteProperties) = preProject
+		SccProjectName = ""
+		SccAuxPath = ""
+		SccLocalPath = ""
+		SccProvider = ""
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.1"
+		ProjectReferences = "{FBF67432-8156-44B0-A37D-2BFB8F6D2BDD}|DcmsDatabase.dll;{019EF3E3-B232-4A49-B05D-4C54FF73C4D0}|EclipseLibrary.Oracle.dll;{9B52E8F7-82A8-4F2D-967B-7CDD5C25E255}|EclipseLibrary.WebForms.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/Web"
+		Debug.AspNetCompiler.PhysicalPath = "Web\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Web\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/Web"
+		Release.AspNetCompiler.PhysicalPath = "Web\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\Web\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "51474"
+		SlnRelativePath = "Web\"
+	EndProjectSection
+	ProjectSection(SvnOrigin) = preProject
+		@Keys = Enlist,Svn.Uri
+		Enlist = Required
+		Svn.Uri = Web/
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DcmsDatabase", "DcmsDatabase\DcmsDatabase.csproj", "{FBF67432-8156-44B0-A37D-2BFB8F6D2BDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EclipseLibrary.Oracle", "EclipseLibrary.Oracle\EclipseLibrary.Oracle.csproj", "{019EF3E3-B232-4A49-B05D-4C54FF73C4D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EclipseLibrary.WebForms", "EclipseLibrary.WebForms\EclipseLibrary.WebForms.csproj", "{9B52E8F7-82A8-4F2D-967B-7CDD5C25E255}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Check List Log", "Check List Log", "{E8E2ADD4-1938-4778-9BBC-75541679E7ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Category_10", "Category_10", "{46F37126-690A-4F62-BB45-DF98EBD61D2E}"
+	ProjectSection(SolutionItems) = preProject
+		Check List Log\Category_10\10_07.htm = Check List Log\Category_10\10_07.htm
+		Check List Log\Category_10\10_101.htm = Check List Log\Category_10\10_101.htm
+		Check List Log\Category_10\10_14.htm = Check List Log\Category_10\10_14.htm
+		Check List Log\Category_10\10_15.htm = Check List Log\Category_10\10_15.htm
+		Check List Log\Category_10\10_84.htm = Check List Log\Category_10\10_84.htm
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Category_30", "Category_30", "{86673327-31C8-4EB7-A21A-FB36E5DFD2B8}"
+	ProjectSection(SolutionItems) = preProject
+		Check List Log\Category_30\30_03.htm = Check List Log\Category_30\30_03.htm
+		Check List Log\Category_30\30_06.htm = Check List Log\Category_30\30_06.htm
+		Check List Log\Category_30\30_08.htm = Check List Log\Category_30\30_08.htm
+		Check List Log\Category_30\30_101.htm = Check List Log\Category_30\30_101.htm
+		Check List Log\Category_30\30_11.htm = Check List Log\Category_30\30_11.htm
+		Check List Log\Category_30\30_11_TestedByGL.htm = Check List Log\Category_30\30_11_TestedByGL.htm
+		Check List Log\Category_30\30_19.htm = Check List Log\Category_30\30_19.htm
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Category_40", "Category_40", "{6C46C38D-592B-4B64-A4CA-8CDF4852A86E}"
+	ProjectSection(SolutionItems) = preProject
+		Check List Log\Category_40\40_04.htm = Check List Log\Category_40\40_04.htm
+		Check List Log\Category_40\40_07.htm = Check List Log\Category_40\40_07.htm
+		Check List Log\Category_40\40_09.htm = Check List Log\Category_40\40_09.htm
+		Check List Log\Category_40\40_101.htm = Check List Log\Category_40\40_101.htm
+		Check List Log\Category_40\40_102.htm = Check List Log\Category_40\40_102.htm
+		Check List Log\Category_40\40_103.htm = Check List Log\Category_40\40_103.htm
+		Check List Log\Category_40\40_104.htm = Check List Log\Category_40\40_104.htm
+		Check List Log\Category_40\40_16.htm = Check List Log\Category_40\40_16.htm
+		Check List Log\Category_40\40_23.htm = Check List Log\Category_40\40_23.htm
+		Check List Log\Category_40\40_24.htm = Check List Log\Category_40\40_24.htm
+		Check List Log\Category_40\40_25.htm = Check List Log\Category_40\40_25.htm
+		Check List Log\Category_40\40_30.htm = Check List Log\Category_40\40_30.htm
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Category_110", "Category_110", "{AC13B539-9F77-47B3-91EB-1737F84B9DA1}"
+	ProjectSection(SolutionItems) = preProject
+		Check List Log\Category_110\110_03.htm = Check List Log\Category_110\110_03.htm
+		Check List Log\Category_110\110_05.htm = Check List Log\Category_110\110_05.htm
+		Check List Log\Category_110\110_07.htm = Check List Log\Category_110\110_07.htm
+		Check List Log\Category_110\110_09.htm = Check List Log\Category_110\110_09.htm
+		Check List Log\Category_110\110_10.htm = Check List Log\Category_110\110_10.htm
+		Check List Log\Category_110\110_105.htm = Check List Log\Category_110\110_105.htm
+		Check List Log\Category_110\110_106.htm = Check List Log\Category_110\110_106.htm
+		Check List Log\Category_110\110_107.htm = Check List Log\Category_110\110_107.htm
+		Check List Log\Category_110\110_11.htm = Check List Log\Category_110\110_11.htm
+		Check List Log\Category_110\110_112.htm = Check List Log\Category_110\110_112.htm
+		Check List Log\Category_110\110_113.htm = Check List Log\Category_110\110_113.htm
+		Check List Log\Category_110\110_114.htm = Check List Log\Category_110\110_114.htm
+		Check List Log\Category_110\110_115.htm = Check List Log\Category_110\110_115.htm
+		Check List Log\Category_110\110_116.htm = Check List Log\Category_110\110_116.htm
+		Check List Log\Category_110\110_117.htm = Check List Log\Category_110\110_117.htm
+		Check List Log\Category_110\110_118.htm = Check List Log\Category_110\110_118.htm
+		Check List Log\Category_110\110_14.htm = Check List Log\Category_110\110_14.htm
+		Check List Log\Category_110\110_15.htm = Check List Log\Category_110\110_15.htm
+		Check List Log\Category_110\110_16.htm = Check List Log\Category_110\110_16.htm
+		Check List Log\Category_110\110_18.htm = Check List Log\Category_110\110_18.htm
+		Check List Log\Category_110\110_19.htm = Check List Log\Category_110\110_19.htm
+		Check List Log\Category_120\110_21.htm = Check List Log\Category_120\110_21.htm
+		Check List Log\Category_110\110_23.htm = Check List Log\Category_110\110_23.htm
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "R110_08", "R110_08", "{99BACA65-B093-4BA4-ACA3-4FA105149A95}"
+	ProjectSection(SolutionItems) = preProject
+		Check List Log\Category_110\R110_08\110_08.htm = Check List Log\Category_110\R110_08\110_08.htm
+		Check List Log\Category_110\R110_08\110_101.htm = Check List Log\Category_110\R110_08\110_101.htm
+		Check List Log\Category_110\R110_08\110_102.htm = Check List Log\Category_110\R110_08\110_102.htm
+		Check List Log\Category_110\R110_08\110_103.htm = Check List Log\Category_110\R110_08\110_103.htm
+		Check List Log\Category_110\R110_08\110_104.htm = Check List Log\Category_110\R110_08\110_104.htm
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Category_130", "Category_130", "{9C7ACE6A-2EFD-4805-A8B2-72F4155C8B84}"
+	ProjectSection(SolutionItems) = preProject
+		Check List Log\Category_130\130_01.htm = Check List Log\Category_130\130_01.htm
+		Check List Log\Category_130\130_03.htm = Check List Log\Category_130\130_03.htm
+		Check List Log\Category_130\130_04.htm = Check List Log\Category_130\130_04.htm
+		Check List Log\Category_130\130_05.htm = Check List Log\Category_130\130_05.htm
+		Check List Log\Category_130\130_06.htm = Check List Log\Category_130\130_06.htm
+		Check List Log\Category_130\130_07.htm = Check List Log\Category_130\130_07.htm
+		Check List Log\Category_130\130_08.htm = Check List Log\Category_130\130_08.htm
+		Check List Log\Category_130\130_101.htm = Check List Log\Category_130\130_101.htm
+		Check List Log\Category_130\130_102.htm = Check List Log\Category_130\130_102.htm
+		Check List Log\Category_130\130_103.htm = Check List Log\Category_130\130_103.htm
+		Check List Log\Category_130\130_104.htm = Check List Log\Category_130\130_104.htm
+		Check List Log\Category_130\130_105.htm = Check List Log\Category_130\130_105.htm
+		Check List Log\Category_130\130_106.htm = Check List Log\Category_130\130_106.htm
+		Check List Log\Category_130\130_107.htm = Check List Log\Category_130\130_107.htm
+		Check List Log\Category_130\130_108.htm = Check List Log\Category_130\130_108.htm
+		Check List Log\Category_130\130_109.htm = Check List Log\Category_130\130_109.htm
+		Check List Log\Category_130\130_11.htm = Check List Log\Category_130\130_11.htm
+		Check List Log\Category_130\130_13.htm = Check List Log\Category_130\130_13.htm
+		Check List Log\Category_130\130_16.htm = Check List Log\Category_130\130_16.htm
+		Check List Log\Category_130\130_17.htm = Check List Log\Category_130\130_17.htm
+		Check List Log\Category_130\130_17ByUmesh.htm = Check List Log\Category_130\130_17ByUmesh.htm
+		Check List Log\Category_130\130_18.htm = Check List Log\Category_130\130_18.htm
+		Check List Log\Category_130\130_21.htm = Check List Log\Category_130\130_21.htm
+		Check List Log\Category_130\130_25.htm = Check List Log\Category_130\130_25.htm
+		Check List Log\Category_130\130_28.htm = Check List Log\Category_130\130_28.htm
+		Check List Log\Category_130\130_29.htm = Check List Log\Category_130\130_29.htm
+		Check List Log\Category_130\130_30.htm = Check List Log\Category_130\130_30.htm
+		Check List Log\Category_130\130_31.htm = Check List Log\Category_130\130_31.htm
+		Check List Log\Category_130\130_32.htm = Check List Log\Category_130\130_32.htm
+		Check List Log\Category_130\130_34.htm = Check List Log\Category_130\130_34.htm
+		Check List Log\Category_130\130_35.htm = Check List Log\Category_130\130_35.htm
+		Check List Log\Category_130\L130_05.htm = Check List Log\Category_130\L130_05.htm
+		Check List Log\Category_130\L130_06.htm = Check List Log\Category_130\L130_06.htm
+		Check List Log\Category_130\L130_08.htm = Check List Log\Category_130\L130_08.htm
+		Check List Log\Category_130\L130_105.htm = Check List Log\Category_130\L130_105.htm
+		Check List Log\Category_130\L130_106.htm = Check List Log\Category_130\L130_106.htm
+		Check List Log\Category_130\R130_13.htm = Check List Log\Category_130\R130_13.htm
+		Check List Log\Category_130\R130_15.htm = Check List Log\Category_130\R130_15.htm
+		Check List Log\Category_130\R130_25.htm = Check List Log\Category_130\R130_25.htm
+		Check List Log\Category_130\R130_33.htm = Check List Log\Category_130\R130_33.htm
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Category_140", "Category_140", "{DEDA9DDB-289A-4F6F-9C98-BDA3C1D50F99}"
+	ProjectSection(SolutionItems) = preProject
+		Check List Log\Category_140\140.107.htm = Check List Log\Category_140\140.107.htm
+		Check List Log\Category_140\140_02.htm = Check List Log\Category_140\140_02.htm
+		Check List Log\Category_140\140_07.htm = Check List Log\Category_140\140_07.htm
+		Check List Log\Category_140\140_08.htm = Check List Log\Category_140\140_08.htm
+		Check List Log\Category_140\140_101.htm = Check List Log\Category_140\140_101.htm
+		Check List Log\Category_140\140_102.htm = Check List Log\Category_140\140_102.htm
+		Check List Log\Category_140\140_103.htm = Check List Log\Category_140\140_103.htm
+		Check List Log\Category_140\140_105.htm = Check List Log\Category_140\140_105.htm
+		Check List Log\Category_140\140_106.htm = Check List Log\Category_140\140_106.htm
+		Check List Log\Category_140\R140_07.htm = Check List Log\Category_140\R140_07.htm
+		Check List Log\Category_140\R140_104.htm = Check List Log\Category_140\R140_104.htm
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Category_150", "Category_150", "{63B971E4-D089-412E-8461-8BE18D24A61E}"
+	ProjectSection(SolutionItems) = preProject
+		Check List Log\Category_150\150_01.htm = Check List Log\Category_150\150_01.htm
+		Check List Log\Category_150\150_02.htm = Check List Log\Category_150\150_02.htm
+		Check List Log\Category_150\150_03.htm = Check List Log\Category_150\150_03.htm
+		Check List Log\Category_150\150_04.htm = Check List Log\Category_150\150_04.htm
+		Check List Log\Category_150\150_05.htm = Check List Log\Category_150\150_05.htm
+		Check List Log\Category_150\150_06.htm = Check List Log\Category_150\150_06.htm
+		Check List Log\Category_150\150_09.htm = Check List Log\Category_150\150_09.htm
+		Check List Log\Category_150\150_101.htm = Check List Log\Category_150\150_101.htm
+		Check List Log\Category_150\150_102.htm = Check List Log\Category_150\150_102.htm
+		Check List Log\Category_150\150_103.htm = Check List Log\Category_150\150_103.htm
+		Check List Log\Category_150\150_106.htm = Check List Log\Category_150\150_106.htm
+		Check List Log\Category_150\150_108.htm = Check List Log\Category_150\150_108.htm
+		Check List Log\Category_150\L150_04.htm = Check List Log\Category_150\L150_04.htm
+		Check List Log\Category_150\R150_07.htm = Check List Log\Category_150\R150_07.htm
+		Check List Log\Category_150\R150_08.htm = Check List Log\Category_150\R150_08.htm
+		Check List Log\Category_150\R150_104.htm = Check List Log\Category_150\R150_104.htm
+		Check List Log\Category_150\R150_105.htm = Check List Log\Category_150\R150_105.htm
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Category_170", "Category_170", "{3A87240C-0CEB-4C66-949C-59CE28202976}"
+	ProjectSection(SolutionItems) = preProject
+		Check List Log\Category_170\170_04.htm = Check List Log\Category_170\170_04.htm
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Category_160", "Category_160", "{83B7DB29-E16F-4D6C-BE4F-11C4D426F0EC}"
+	ProjectSection(SolutionItems) = preProject
+		Check List Log\Category_160\160_03.htm = Check List Log\Category_160\160_03.htm
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4C2C3450-8038-405B-9A74-9A735378BDC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C2C3450-8038-405B-9A74-9A735378BDC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C2C3450-8038-405B-9A74-9A735378BDC4}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C2C3450-8038-405B-9A74-9A735378BDC4}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{FBF67432-8156-44B0-A37D-2BFB8F6D2BDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBF67432-8156-44B0-A37D-2BFB8F6D2BDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBF67432-8156-44B0-A37D-2BFB8F6D2BDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBF67432-8156-44B0-A37D-2BFB8F6D2BDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{019EF3E3-B232-4A49-B05D-4C54FF73C4D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{019EF3E3-B232-4A49-B05D-4C54FF73C4D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{019EF3E3-B232-4A49-B05D-4C54FF73C4D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{019EF3E3-B232-4A49-B05D-4C54FF73C4D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B52E8F7-82A8-4F2D-967B-7CDD5C25E255}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B52E8F7-82A8-4F2D-967B-7CDD5C25E255}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B52E8F7-82A8-4F2D-967B-7CDD5C25E255}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B52E8F7-82A8-4F2D-967B-7CDD5C25E255}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{46F37126-690A-4F62-BB45-DF98EBD61D2E} = {E8E2ADD4-1938-4778-9BBC-75541679E7ED}
+		{86673327-31C8-4EB7-A21A-FB36E5DFD2B8} = {E8E2ADD4-1938-4778-9BBC-75541679E7ED}
+		{6C46C38D-592B-4B64-A4CA-8CDF4852A86E} = {E8E2ADD4-1938-4778-9BBC-75541679E7ED}
+		{AC13B539-9F77-47B3-91EB-1737F84B9DA1} = {E8E2ADD4-1938-4778-9BBC-75541679E7ED}
+		{99BACA65-B093-4BA4-ACA3-4FA105149A95} = {AC13B539-9F77-47B3-91EB-1737F84B9DA1}
+		{9C7ACE6A-2EFD-4805-A8B2-72F4155C8B84} = {E8E2ADD4-1938-4778-9BBC-75541679E7ED}
+		{DEDA9DDB-289A-4F6F-9C98-BDA3C1D50F99} = {E8E2ADD4-1938-4778-9BBC-75541679E7ED}
+		{63B971E4-D089-412E-8461-8BE18D24A61E} = {E8E2ADD4-1938-4778-9BBC-75541679E7ED}
+		{3A87240C-0CEB-4C66-949C-59CE28202976} = {E8E2ADD4-1938-4778-9BBC-75541679E7ED}
+		{83B7DB29-E16F-4D6C-BE4F-11C4D426F0EC} = {E8E2ADD4-1938-4778-9BBC-75541679E7ED}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E6D98D10-08F8-46A6-ACC9-0DB6B7EE79C6}
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+EndGlobal

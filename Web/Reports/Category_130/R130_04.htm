@@ -1,0 +1,437 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        130<b>.</b>04<b> : </b>Aging of Inactive SKU in Picking area</h1>
+    Author : <b>Sanjeev kumar</b><br />
+    Reviewed By : Manmohan Bisht <br />
+    $Revision: 6026 $<br />
+    Status: Tested
+    <br />
+    Tested By : Sanjeev Kumar<br />
+    <p>The report displays forward pick area locations which have not been touched 
+        within the specified time period. It lists SKUs at these locations and when the 
+        location was last touched. For each SKU, it lists the availability in various 
+        carton areas to&nbsp; building wise. </p>
+    <h2>Overview</h2>
+    <p>
+        This report is helpful in finding the details of those SKU's with virtual warehouse
+        and location details which are lying inactive in picking area for the given days
+        from Today. Also display label wise details of the SKU's lying inactive in picking
+        area for the given days from today. The report displays:</p>
+    <ul>
+        <li>SKU's along with Warehouse ID and location details.</li><li>We are 
+        displaying Quantity in carton areas from table src_carton and src_carton_deatil.</li><li>Date on which Last SKU picked from the location.</li>
+        <li>Number of SKU's in Carton Area.</li>
+        <li>we are showing&nbsp; the pieces of&nbsp; skus in the Picking area.</li>
+    </ul>
+    <h2>
+        Algorithm</h2>
+    For the specified days, detail about the Inactive SKU's in picking area is reterived
+    from ialoc_content , ia and ialoc table. Details about the SKUs lying on different location
+    along with the label details is reterived from master_sku and master_style tables.
+    Quantity of inactive sku's in different area is extracted from src_carton and src_carton_detail
+    tables.
+    <h3>
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center">
+                <b>Item</b>
+            </td>
+            <td align="center">
+                <b>Summary</b>
+            </td>
+            <td align="center">
+                <b>Default Sort Sequence</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Touch Date</td>
+            <td>
+                No</td>
+            <td align="center">
+                1</td>
+            <td>
+                Date in which the location was last touched</td>
+        </tr>
+        <tr>
+            <td>
+                VWh
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                3
+            </td>
+            <td>
+                Virtual Warehouse for the location of SKU.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Style
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                The Location Id for SKU.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Color
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Style of SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Dim</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Color of SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Size</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Dimension of SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Assigned UPC</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Size of SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Location
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                4</td>
+            <td>
+                Quantity in terms of Pieces
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Label
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Label Id of the inactive SKUs in FPK area
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pieces&nbsp; At location.</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2
+            </td>
+            <td>
+                Indicates if some SKU is assingned UPC.</td>
+        </tr>
+        <tr>
+            <td>
+                Quantity in each areas
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Carton Storage area&nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                &nbsp;Building of the SKU.&nbsp;</td>
+        </tr>
+        </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center">
+                <b>Name</b>
+            </td>
+            <td align="center">
+                <b>Default</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building</td>
+            <td>
+                All</td>
+            <td>
+                Building for the location of sku.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Inactive SKUs in Picking area</td>
+            <td>
+                4 set</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                But exclude locations touched before</td>
+            <td>
+                Date</td>
+            <td>
+                &nbsp;This report shows the by default&nbsp; null.&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                Label
+            </td>
+            <td>
+                Any Label
+            </td>
+            <td>
+                Label Id of the inactive SKUs in 
+                Picking area.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Virtual Warehouse
+            </td>
+            <td>
+                All&nbsp;
+            </td>
+            <td>
+                Virtual Warehouse for the location 
+                of sku.
+            </td>
+        </tr>
+        </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 2</i> second</p>
+    &nbsp;The query took 2.77 seconds
+    seconds for 1000 qualified SKUs. 
+    <h2>
+        Behavior Change</h2>
+   <ul>
+       <li>Showing areas along with their building. </li>
+       <li>Replaced building filter dropdown with checkbox list.</li>
+       <li>Now, Report is displaying building column as master column. </li>
+        </ul>
+    <h2>Issuess</h2>
+    No Known Issue.
+    <br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        ialoc,<br />
+        ia<br />
+        ialoc_content,<br />
+        master_sku,<br />
+        master_style,<br />
+        src_carton,<br />
+        src_carton_detail,<br />
+        tab_inventory_area<br />
+        master_storage_location</p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>create or replace synonym ialoc for dcms8.ialoc;<br />
+            create or replace synonym ialoc_content for dcms8.ialoc_content;<br />
+            create or replace synonym ia for dcms8.ia;<br />
+            create or replace synonym master_sku for dcms4.master_sku;<br />
+            create or replace synonym master_style for dcms4.master_style;<br />
+            create or replace synonym src_carton for dcms4.src_carton;<br />
+            create or replace synonym src_carton_detail for dcms4.src_carton_detail;<br />
+            create or replace synonym master_storage_location for dcms4.master_storage_location;<br />
+             create or replace synonym tab_inventory_area for dcms4.tab_inventory_area;<br />
+            </code></p>
+
+            <h4>AppSetting:---</h4>
+    <p>
+        No appSettings is required:</p>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <pre>
+   with location_skus as
+(SELECT  
+ROW_NUMBER() OVER(ORDER BY LEAST(MIN(lc.LAST_UNITS_REMOVED_DATE), MIN(lc.LAST_UNITS_ADDED_DATE))) as row_number,
+MSKU.sku_id AS sku_id,
+         l.VWH_ID AS VWH_ID,
+         l.warehouse_location_id as warehouse_location_id,
+         MIN(lc.LOCATION_ID) as min_LOCATION_ID,
+         MAX(lc.LOCATION_ID) as max_LOCATION_ID,
+         COUNT(lc.LOCATION_ID) as count_LOCATION_ID,
+         max(lc.IACONTENT_ID) IACONTENT_ID,
+         MAX(MSKU.STYLE) STYLE,
+         MAX(MSKU.COLOR) COLOR,
+         MAX(MSKU.DIMENSION) DIMENSION,
+         MAX(MSKU.SKU_SIZE) SKU_SIZE,
+         MAX(MSTYLE.LABEL_ID) LABEL_ID,
+         SUM(lc.NUMBER_OF_UNITS) as NUMBER_OF_UNITS,
+         max(l.assigned_upc_code) as assigned_upc_code,
+         MAX(lc.LAST_UNITS_REMOVED_DATE) LAST_PICK_DATE,
+         MAX(lc.LAST_UNITS_ADDED_DATE) LAST_ADDED_DATE,
+         MAX(GREATEST(NVL(lc.LAST_UNITS_REMOVED_DATE, lc.LAST_UNITS_ADDED_DATE), NVL(lc.LAST_UNITS_ADDED_DATE, lc.LAST_UNITS_REMOVED_DATE))) as touch_date
+    FROM IALOC_CONTENT lc
+   INNER JOIN IALOC l
+      ON lc.IA_ID = l.IA_ID
+     AND lc.LOCATION_ID = l.LOCATION_ID
+   INNER JOIN MASTER_SKU MSKU
+      ON lc.IACONTENT_ID = MSKU.UPC_CODE
+    LEFT OUTER JOIN MASTER_STYLE MSTYLE
+      ON MSKU.STYLE = MSTYLE.STYLE
+   inner JOIN ia ia
+      ON lc.ia_id = ia.ia_id
+   WHERE ia.picking_area_flag = 'Y'
+     AND lc.IACONTENT_TYPE_ID = 'SKU'
+     AND l.location_type = 'RAIL'
+     <if>AND (SYSDATE - GREATEST(NVL(lc.LAST_UNITS_REMOVED_DATE, lc.LAST_UNITS_ADDED_DATE), NVL(lc.LAST_UNITS_ADDED_DATE, lc.LAST_UNITS_REMOVED_DATE))) &gt;= (:Days *7)</if>
+     <if>AND GREATEST(NVL(lc.LAST_UNITS_REMOVED_DATE, lc.LAST_UNITS_ADDED_DATE), NVL(lc.LAST_UNITS_ADDED_DATE, lc.LAST_UNITS_REMOVED_DATE)) &gt;= CAST(:exclude_touched_before AS DATE)</if>
+     <if>AND l.vwh_id = :vwh_id</if>
+     <if>AND MSTYLE.label_id = :label_id</if> 
+     <%--<if>AND l.warehouse_location_id = :warehouse_location_id</if>--%>
+    <if>AND <a pre="l.WAREHOUSE_LOCATION_ID IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+   GROUP BY MSKU.sku_id, l.VWH_ID, l.warehouse_location_id
+   HAVING SUM(lc.NUMBER_OF_UNITS) &gt; 0
+   ),
+
+pivot_carton_sku AS
+(select *
+    from (SELECT d.sku_id              AS sku_id,
+                 c.vwh_id              AS vwh_id,
+                 TIA.SHORT_NAME AS CARTON_STORAGE_AREA,
+                 NVL(NVL(tia.warehouse_location_id, msl.warehouse_location_id),'Unknown') as warehouse_location_id,
+                 d.quantity            as quantity
+            from src_carton c
+           INNER JOIN src_carton_detail d
+              on c.carton_id = d.carton_id
+           left outer join master_storage_location msl
+              on msl.storage_area = c.carton_storage_area
+             and msl.location_id = c.location_id
+           left outer join tab_inventory_area tia on 
+             c.carton_storage_area = tia.inventory_storage_area
+             )
+          pivot XML(SUM(quantity) as quantity for(carton_storage_area, WAREHOUSE_LOCATION_ID) in(ANY, ANY)))
+select s.vwh_id,
+       s.warehouse_location_id   as warehouse_location_id,
+       s.min_location_id         AS min_location_id,
+       s.max_location_id         AS max_location_id,
+       s.count_location_id       AS count_location_id,
+       s.iacontent_id            AS iacontent_id,
+       s.style                   AS style,
+       s.color                   AS color,
+       s.dimension               AS dimension,
+       s.sku_size                AS sku_size,
+       s.touch_date AS touch_date,
+       s.LAST_PICK_DATE as LAST_PICK_DATE,
+       s.LAST_ADDED_DATE as LAST_ADDED_DATE,
+       s.label_id                AS label_id,
+       s.NUMBER_OF_UNITS         AS NUMBER_OF_UNITS,
+       s.assigned_upc_code       AS assigned_upc_code,
+       q.carton_storage_area_wareho_xml AS area_xml
+  from location_skus s
+  LEFT OUTER JOIN pivot_carton_sku q
+    on s.sku_id = q.sku_id
+   AND s.vwh_id = q.vwh_id
+   where s.row_number &lt;= 1000
+        </pre>
+    <h2>
+        Validation details</h2>
+    <br />
+    <b>Query: Below query use for see SKU</b><pre>
+    select m.style,
+           m.color,
+           m.sku_size,
+           m.dimension,
+           ms.label_id
+from master_sku m
+inner join master_style ms on
+m.style = ms.style
+where m.upc_code = :upc_code</pre>
+    <br />
+    <br />
+    <b>Query:Below Query use for display area and quality</b><pre>
+ SELECT sc.carton_storage_area
+       scd.quantity FROM src_carton sc
+INNER JOIN src_carton_detail scd
+ON scd.carton_id = sc.carton_id
+where scd.style = 'style'
+and scd.color ='color'
+and scd.dimension ='dimension'
+and scd.sku_size ='sku_size'</pre>
+    <br />
+    <b>Query: Use below query to see number of pieces and location for specific SKU.</b><pre>
+  SELECT sum(ia.number_of_units), ia.location_id 
+        FROM ialoc_content ia 
+        WHERE ia.iacontent_id =:iacontent_id 
+        group by ia.location_id </pre>
+</body>
+</html>

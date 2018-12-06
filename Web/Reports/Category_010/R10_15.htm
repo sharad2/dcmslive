@@ -1,0 +1,313 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0084)http://w3chile/xtremereporter/ReportDoc.aspx?_Report=C:\DCMSLive1\Reports\R10.15.xsd -->
+<HTML 
+xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>Report Documentation</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content="MSHTML 6.00.6000.16825" name=GENERATOR>
+<META content=C# name=CODE_LANGUAGE>
+<META content=JavaScript name=vs_defaultClientScript>
+<META content=http://schemas.microsoft.com/intellisense/ie5 
+name=vs_targetSchema>
+<SCRIPT type=text/javascript>
+		    /*
+		      Toggles the visibility of the passed divToToggle object.
+		    */
+			function toggleVisibility(oVisibilityToggle, oInnerTextToggle)
+			{
+                if (oVisibilityToggle.style.display=='none')
+
+                {
+                  oVisibilityToggle.style.display='';
+                  oInnerTextToggle.innerText = "Hide Technical Documentaion";
+                }
+                else
+                {
+                  oVisibilityToggle.style.display='none';
+                  oInnerTextToggle.innerText = "View Technical Documentaion" 
+                }
+            }
+
+		</SCRIPT>
+    <style type="text/css">
+
+	.HTML_TXT {color:#000000;}
+	.HTML_COM {color:#008000;}
+	</style>
+</HEAD>
+<BODY>
+<FORM id=Form1 name=Form1 
+action=ReportDoc.aspx?_Report=C%3a%5cDCMSLive1%5cReports%5cR10.15.xsd 
+method=post>
+<INPUT id=__VIEWSTATE type=hidden 
+value=/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT name=__VIEWSTATE> 
+<H1 align=center xmlns="http://www.w3.org/1999/xhtml">10<B>.</B>15<B> : 
+</B>Monthly Orders Report</H1>
+<H3>Author : Sanjeev Kumar</H3>$Revision: 2137<br />
+    Reviewed By: Manmohan Bisht<br />
+    Tested By : Hemant K. Singh<br />
+<P xmlns="http://www.w3.org/1999/xhtml" Reviewer="" 
+Status="In-Progress" Author="">This monthly orders report displays 
+the monthly orders on the basis of delivery date for the whole year with month 
+begin as on FDC calendar. Now all information will be shown for the current 
+calendar year. If there is any order for the last year in the system then it 
+will show the orders in the month of January. If there is any order for the 
+future year in the system then the orders will be shown in the month of 
+December. </P>
+<H2 xmlns="http://www.w3.org/1999/xhtml">Overview</H2>
+<P>This monthly orders report displays the monthly orders on the basis of 
+delivery date for the whole year with month begin as on FDC calendar. Now all 
+information will be shown for the current calendar year. If there is any order 
+for the last year in the system then it will show the orders in the month of 
+January. If there is any order for the future year in the system then the orders 
+will be shown in the month of December. </P>
+<H2 xmlns="http://www.w3.org/1999/xhtml">Algorithm</H2>Get all the unshipped orders from tables 
+dem_pickslip. Table tab_fdc_calendar is joined to get the fdc month, tab_customer_type 
+&amp; master_customer are joined to get the customer type and tab_style_label is 
+joined to get the label description. 
+<H3 xmlns="http://www.w3.org/1999/xhtml">Output</H3>
+<TABLE cellSpacing=1 cellPadding=1 width="100%" border=1 
+xmlns="http://www.w3.org/1999/xhtml">
+  <TBODY>
+  <TR>
+    <TD align=middle width="25%"><B>Item</B></TD>
+    <TD align=middle width="20%"><B>Summary</B></TD>
+    <TD align=middle width="10%"><B>Sort Sequence</B></TD>
+    <TD align=middle width="35%"><B>Detail</B></TD></TR>
+  <TR>
+    <TD>Item Type</TD>
+    <TD>No </TD>
+    <TD align=middle>1&nbsp;</TD>
+    <TD><r:item 
+      xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+      xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+      xmlns:mstns="http://tempuri.org/R10.15.xsd" SortSequence="1" Key="true" 
+      Term="Item Type">The Customer Type - Label Description</TD></TR>
+  <TR>
+    <TD>Virtual Warehouse</TD>
+    <TD>No </TD>
+    <TD align=middle>2</TD>
+    <TD><r:item 
+      xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+      xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+      xmlns:mstns="http://tempuri.org/R10.15.xsd" Term="VWH ID">Virtual 
+      warehouse for the order. </R:ITEM></TD></TR>
+  <TR>
+    <TD>Pcs/$(in Thousands)</TD>
+    <TD>Sum</TD>
+    <TD align=middle>&nbsp; </TD>
+    <TD><r:item 
+      xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+      xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+      xmlns:mstns="http://tempuri.org/R10.15.xsd" Term="Pcs/$" Summary="Sum">The 
+      sum of ordered Quantity and ordered dollars for each 
+  month</R:ITEM></TD></TR></TBODY></TABLE>
+<H2 xmlns="http://www.w3.org/1999/xhtml">Parameters</H2>
+<TABLE cellSpacing=1 cellPadding=1 width="100%" border=1 
+xmlns="http://www.w3.org/1999/xhtml">
+  <TBODY>
+  <TR>
+    <TD align=middle width="20%"><B>Name</B></TD>
+    <TD align=middle width="20%"><B>Default</B></TD>
+    <TD align=middle width="60%"><B>Detail</B></TD></TR>
+  <TR>
+    <TD>Customer Type</TD>
+    <TD>Checked those types which has the subgroup_flag as Y in tab_customer_type table.</TD>
+    <TD>The customer types will be presented as check boxes and by default only those 
+        customer type selected which has the subgroup flag as Y in tab_customer_type 
+        table.</TD>
+      </TR>
+      <tr>
+    <TD>Virtual Warehouse ID</TD>
+    <TD>All</TD>
+    <TD>Virtual warehouse ID for the orders. </TD>
+      </tr>
+    </TBODY></TABLE>
+<H2 xmlns="http://www.w3.org/1999/xhtml">Performance Detail</H2>
+<P xmlns="http://www.w3.org/1999/xhtml"><I>Expected Time for the report output 
+is </I>30 seconds</P>The average time taken by the query vary due to the number 
+of records in dem_pickslip. The query exhibits linear performance with respect 
+to the number of recods in dem_pickslip.There is hint for using the 
+PS_PDSTAT_FK_I index instead of full scan on table dem_pickslip. 
+<H2 xmlns="http://www.w3.org/1999/xhtml">Behavior Change</H2>
+    <p xmlns="http://www.w3.org/1999/xhtml">&nbsp;</p>
+<H2 xmlns="http://www.w3.org/1999/xhtml">Issues</H2>
+No issues<br />
+<br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        tab_customer_type,<br />
+        tab_fdc_calendar,<br />
+        dem_pickslip,<br />
+        master_customer,<br />
+        tab_style_label</p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>create or replace synonym tab_customer_type for dcms4.tab_customer_type;<br />
+create or replace synonym tab_fdc_calendar for dcms4.tab_fdc_calendar;<br />
+create or replace synonym dem_pickslip for dcms4.dem_pickslip;<br />
+create or replace synonym master_customer for dcms4.master_customer;<br />
+create or replace synonym tab_style_label for dcms4.tab_style_label;
+</code><create or replace synonym tab_style_label for dcms4.tab_style_label;
+</code></p>
+    <H2>Parameter Technical Details</H2><ul>
+<LI>Select Type (Type = Check Boxes)records for checked customer types and consolidated records for unchecked 
+        customer type.</LI>
+    <LI>Query to get the customer types = &quot;select tct.customer_type, tct.description, 
+        tct.subgroup_flag from tab_customer_type tct order by tct.description&quot;</LI>
+    </ul>
+</LI>
+<LI>Virtual Warehouse ID
+		(Type = Combo): This is a list parameter control.
+		By default, &quot;All&quot; warehouse is delected. To see the records for specific 
+    warehouse select that.<UL>
+        <LI>Query to fill list values = "select tab_virtual_warehouse.vwh_id, tab_virtual_warehouse.vwh_id from tab_virtual_warehouse"
+        ></UL>
+<H2>Parameter Validation</H2>
+		No special validations.
+		<h2>Query's documentation:</h2><UL><LI><r:Doc xmlns:mstns="http://tempuri.org/R10.15.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            This query will get the fdc start and end date for passed year</r:Doc></LI>
+<span class="HTML_TXT"><span class="HTML_COM"><pre style="color: #000000">select t.month_number, 
+    t.month_start_date from tab_fdc_calendar t where t.fiscal_year = extract(year 
+    from sysdate) order by t.month_start_date </pre>
+    </span></span>
+<r:Doc xmlns:mstns="http://tempuri.org/R10.15.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+</r:Doc>
+<r:Doc xmlns:mstns="http://tempuri.org/R10.15.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+&nbsp;</r:Doc>
+<LI>
+    <r:Doc xmlns:mstns="http://tempuri.org/R10.15.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            This query will get the all open orders.
+            <pre>
+              WITH  month_starts AS 
+(
+ SELECT min(t.month_start_date) AS YEAR_BEGIN_DATE,
+        max(t.month_start_date) AS YEAR_END_DATE
+   FROM tab_fdc_calendar t
+  WHERE t.fiscal_year = extract(year from sysdate)),
+   pickslip_info as (
+   SELECT /*+index (ps PS_PDSTAT_FK_I) */
+    LEAST(GREATEST(FDC.YEAR_BEGIN_DATE,
+                   (SELECT S.MONTH_START_DATE
+                      FROM TAB_FDC_CALENDAR S
+                     WHERE ps.DELIVERY_DATE BETWEEN S.MONTH_START_DATE AND
+                           S.MONTH_END_DATE)),
+          FDC.YEAR_END_DATE) AS effective_MONTH_BEGIN_DATE,
+    ps.total_quantity_ordered AS TOTAL_QUANTITY_ORDERED,
+    ps.total_dollars_ordered AS TOTAL_DOLLARS_ORDERED,
+    ps.vwh_id AS VWH_ID,
+    CASE
+      WHEN customer_type IN ('DOM') THEN
+       ps.pickslip_type
+      else
+       null
+    END AS PICKSLIP_TYPE,
+    ps.delivery_date AS DELIVERY_DATE,
+    custtype.description as custtype_description,
+    cust.customer_type AS CUSTOMER_TYPE
+     FROM dem_pickslip ps
+     left outer join master_customer cust on cust.customer_id =
+                                             ps.customer_id
+     left outer join tab_customer_type custtype on custtype.customer_type =
+                                                   cust.customer_type
+    cross join month_starts fdc
+    WHERE ps.ps_status_id IN (1, 99)
+)
+   SELECT mon.effective_MONTH_BEGIN_DATE AS effective_MONTH_BEGIN_DATE,
+    nvl(mon.CUSTOMER_TYPE, 'No_Customer_Type') AS CUSTOMER_TYPE,
+    mon.PICKSLIP_TYPE,
+    nvl(MAX(mon.custtype_description), 'No Customer Type') ||
+    nvl2(MAX(stylbl.description),
+         ' - ' || MAX(stylbl.description),
+         ' ') AS pickslip_type_description,
+    MAX(mon.DELIVERY_DATE) AS max_DELIVERY_date,
+    SUM(mon.TOTAL_QUANTITY_ORDERED) AS QUANTITY_ORDERED,
+    SUM(mon.TOTAL_DOLLARS_ORDERED) / 1000 AS DOLLARS_ORDERED,
+    mon.VWH_ID AS VWH_ID
+     FROM pickslip_info mon
+     left outer join tab_style_label stylbl on stylbl.label_id =
+                                               mon.pickslip_type
+    GROUP BY mon.effective_MONTH_BEGIN_DATE,
+       mon.CUSTOMER_TYPE,
+       mon.VWH_ID,
+       mon.PICKSLIP_TYPE
+    ORDER BY pickslip_type_description ASC, VWH_ID ASC
+</pre>
+    </r:Doc>
+</LI>
+</UL>
+<h2>Validation details</h2>
+  Bellow queries may have the where clause in the [] brackets. It means these are the optional parameters.
+  If you do not want to pass these parameters just remove the [] section. <br><br><b>Query:</b><r:Query xmlns:mstns="http://tempuri.org/R10.15.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd"><pre>
+              SELECT min(t.month_start_date) AS "YEAR_BEGIN_DATE",
+              max(t.month_start_date) AS "YEAR_END_DATE"
+              FROM tab_fdc_calendar t
+              WHERE t.fiscal_year = to_char(sysdate, 'yyyy')
+            </pre></r:Query><b>Description:</b><pre><r:Description xmlns:mstns="http://tempuri.org/R10.15.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">            The above query will get the currnt year begin date and year end date from tab_fdc_calender.</r:Description></pre><b>Query:</b><r:Query xmlns:mstns="http://tempuri.org/R10.15.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd"><pre>
+               WITH  month_starts AS 
+(
+ SELECT min(t.month_start_date) AS YEAR_BEGIN_DATE,
+        max(t.month_start_date) AS YEAR_END_DATE
+   FROM tab_fdc_calendar t
+  WHERE t.fiscal_year = extract(year from sysdate)),
+   pickslip_info as (
+   SELECT /*+index (ps PS_PDSTAT_FK_I) */
+    LEAST(GREATEST(FDC.YEAR_BEGIN_DATE,
+                   (SELECT S.MONTH_START_DATE
+                      FROM TAB_FDC_CALENDAR S
+                     WHERE ps.DELIVERY_DATE BETWEEN S.MONTH_START_DATE AND
+                           S.MONTH_END_DATE)),
+          FDC.YEAR_END_DATE) AS effective_MONTH_BEGIN_DATE,
+    ps.total_quantity_ordered AS TOTAL_QUANTITY_ORDERED,
+    ps.total_dollars_ordered AS TOTAL_DOLLARS_ORDERED,
+    ps.vwh_id AS VWH_ID,
+    CASE
+      WHEN customer_type IN ('DOM') THEN
+       ps.pickslip_type
+      else
+       null
+    END AS PICKSLIP_TYPE,
+    ps.delivery_date AS DELIVERY_DATE,
+    custtype.description as custtype_description,
+    cust.customer_type AS CUSTOMER_TYPE
+     FROM dem_pickslip ps
+     left outer join master_customer cust on cust.customer_id =
+                                             ps.customer_id
+     left outer join tab_customer_type custtype on custtype.customer_type =
+                                                   cust.customer_type
+    cross join month_starts fdc
+    WHERE ps.ps_status_id IN (1, 99)
+      and cust.customer_type= :Customer_Type   
+      and ps.pickslip_type = :Label
+)
+   SELECT mon.effective_MONTH_BEGIN_DATE AS effective_MONTH_BEGIN_DATE,
+    nvl(mon.CUSTOMER_TYPE, 'No_Customer_Type') AS CUSTOMER_TYPE,
+    mon.PICKSLIP_TYPE,
+    nvl(MAX(mon.custtype_description), 'No Customer Type') ||
+    nvl2(MAX(stylbl.description),
+         ' - ' || MAX(stylbl.description),
+         ' ') AS pickslip_type_description,
+    MAX(mon.DELIVERY_DATE) AS max_DELIVERY_date,
+    SUM(mon.TOTAL_QUANTITY_ORDERED) AS QUANTITY_ORDERED,
+    SUM(mon.TOTAL_DOLLARS_ORDERED) / 1000 AS DOLLARS_ORDERED,
+    mon.VWH_ID AS VWH_ID
+     FROM pickslip_info mon
+     left outer join tab_style_label stylbl on stylbl.label_id =
+                                               mon.pickslip_type                                     
+    GROUP BY mon.effective_MONTH_BEGIN_DATE,
+       mon.CUSTOMER_TYPE,
+       mon.VWH_ID,
+       mon.PICKSLIP_TYPE
+    ORDER BY pickslip_type_description ASC, VWH_ID ASC
+            </pre></r:Query><b>Description:</b><pre><r:Description xmlns:mstns="http://tempuri.org/R10.15.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd">
+            The above query will get the orderd quantity and ordered dollars
+            from dem_pickslip and dem_pickslip_detail  for the current year and pass the customer_type and label.
+            The query will show the labelwise detail for Domestic customer by default, if you want to see the labelwise 
+            detail for other customer type, pass the comma seperated customer types where DOM is written in query.
+          </r:Description></pre><!--End divTechnical--></div>
+		</form>
+	</body>
+</html>

@@ -1,0 +1,539 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style type="text/css">
+        .style1
+        {
+            height: 22px;
+        }
+    </style>
+</head>
+<body>
+
+    <form id="Form1" 
+    action="http://w3chile/XTremeReporter/ReportDoc.aspx?_Report=C%3a%5cDCMSLive%5cReports%5cR130.05.xsd" 
+    method="post" name="Form1">
+        <input id="__VIEWSTATE" name="__VIEWSTATE" type="hidden" 
+            value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+    <h1 align="center" xmlns="http://www.w3.org/1999/xhtml">
+        130<b>.</b>05<b> : </b>Pitch Location Report</h1>
+    
+    <h3>
+        Author : Sanjeev kumar</h3>
+    $Revision: 23380 $<br />
+        Status : Reviewed<br/>
+        Reviewed By : Hemant K. Varshney<br />
+        Tested By : Sanjeev Kumar<br />
+        <br />
+        This report shows those locations where SKU&#39;s are assigned and locations which 
+        are open for pitching i.e. unassigned locations which can be assigned and made 
+        available for pitching.
+        <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Overview</h2>
+    This report shows the details of all Locations in the specified warehouse, where 
+    the specified SKU is assigned i.e locations, from where pitching for the 
+    specifed SKU can be done. You can view the SKU Details of assigned location 
+    based on the following optional criterias:
+    <ul xmlns="http://www.w3.org/1999/xhtml" 
+        xmlns:mstns="http://tempuri.org/R130.xsd" 
+        xmlns:namespace1="http://www.w3.org/1999/xhtml" 
+        xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+        xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <li>Style </li>
+        <li>Color </li>
+        <li>Dimension </li>
+        <li>SKU Size </li>
+        <li>Label</li>
+    </ul>
+    If you wish to see the unassigned locations i.e location which are open for 
+    pitching (open for pitching means location can be assigned a SKU and 
+    consequently it will be a Pitch Location). You can select the unassigned tab and 
+        click Go button, in this case report will show only locations and thier capacity along 
+    with the Warehouse ID.
+    <br xmlns="http://www.w3.org/1999/xhtml" 
+        xmlns:mstns="http://tempuri.org/R130.xsd" 
+        xmlns:namespace1="http://www.w3.org/1999/xhtml" 
+        xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+    Note: Selecting unassigned only check box option will degrade the report 
+    performance.
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Algorithm</h2>
+    <h3 xmlns="http://www.w3.org/1999/xhtml">
+        Output for Assigned Location</h3>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%" 
+        xmlns="http://www.w3.org/1999/xhtml">
+        <tr>
+            <td align="middle" width="25%">
+                <b>Item</b></td>
+            <td align="middle" width="20%">
+                <b>Summary</b></td>
+            <td align="middle" width="10%">
+                <b>Sort Sequence</b></td>
+            <td align="middle" width="35%">
+                <b>Detail</b></td>
+        </tr>
+        <tr>
+            <td>
+                                VWh</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item xmlns="http://tempuri.org/R130.xsd" 
+xmlns:NameSpace1="http://www.w3.org/1999/xhtml" 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R130.xsd" Term="VWH ID">Virtual Warehouse for the Location</R:ITEM></td>
+        </tr>
+        <tr>
+            <td>
+                Style</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                1</td>
+            <td>
+                <r:item xmlns="http://tempuri.org/R130.xsd" 
+xmlns:NameSpace1="http://www.w3.org/1999/xhtml" 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R130.xsd" Term="Style" SortSequence="1">Style of SKU</R:ITEM></td>
+        </tr>
+        <tr>
+            <td>
+                Color</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item xmlns="http://tempuri.org/R130.xsd" 
+xmlns:NameSpace1="http://www.w3.org/1999/xhtml" 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R130.xsd" Term="Color">Color of SKU</R:ITEM></td>
+        </tr>
+        <tr>
+            <td>
+                Dimension</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item xmlns="http://tempuri.org/R130.xsd" 
+xmlns:NameSpace1="http://www.w3.org/1999/xhtml" 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R130.xsd" Term="Dimension">Dimension of SKU</R:ITEM></td>
+        </tr>
+        <tr>
+            <td class="style1">
+                Size</td>
+            <td class="style1">
+                No
+            </td>
+            <td align="middle" class="style1">
+                &nbsp;
+            </td>
+            <td class="style1">
+                <r:item xmlns="http://tempuri.org/R130.xsd" 
+xmlns:NameSpace1="http://www.w3.org/1999/xhtml" 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R130.xsd" Term="SKU Size">Size of SKU</R:ITEM></td>
+        </tr>
+        <tr>
+            <td>
+                Quantity</td>
+            <td>
+                Yes</td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item xmlns="http://tempuri.org/R130.xsd" 
+xmlns:NameSpace1="http://www.w3.org/1999/xhtml" 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R130.xsd" Term="Quantity" Summary="sum">Number of SKU pieces at 
+                Location</R:ITEM></td>
+        </tr>
+        <tr>
+            <td class="style1">
+                Std. Case Qty</td>
+            <td class="style1">
+                No</td>
+            <td align="middle" class="style1">
+                &nbsp;</td>
+            <td class="style1">
+                Standard Case Qty of the SKU</td>
+        </tr>
+        <tr>
+            <td class="style1">
+                Estimated Cartons</td>
+            <td class="style1">
+                Yes</td>
+            <td align="middle" class="style1">
+                &nbsp;</td>
+            <td class="style1">
+                Estimated cartons which can be repacked.</td>
+        </tr>
+        <tr>
+            <td>
+                Label</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item xmlns="http://tempuri.org/R130.xsd" 
+xmlns:NameSpace1="http://www.w3.org/1999/xhtml" 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R130.xsd" Term="Label ID">Label of the SKU</R:ITEM></td>
+        </tr>
+        <tr>
+            <td>
+                FPK Location</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item xmlns="http://tempuri.org/R130.xsd" 
+xmlns:NameSpace1="http://www.w3.org/1999/xhtml" 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R130.xsd" Term="FPK Location" 
+Key="true">Location ID where SKU is assigned</R:ITEM></td>
+        </tr>
+        <tr>
+            <td>
+                UPC</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item xmlns="http://tempuri.org/R130.xsd" 
+xmlns:NameSpace1="http://www.w3.org/1999/xhtml" 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R130.xsd" Term="UPC">UPC code</R:ITEM></td>
+        </tr>
+        <tr>
+            <td>
+                Capacity</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item xmlns="http://tempuri.org/R130.xsd" 
+xmlns:NameSpace1="http://www.w3.org/1999/xhtml" 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R130.xsd" Term="Capacity">Location Capacity</R:ITEM></td>
+        </tr>
+        <tr>
+            <td>
+                Weight Each</td>
+            <td>
+                No</td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item xmlns="http://tempuri.org/R130.xsd" 
+xmlns:NameSpace1="http://www.w3.org/1999/xhtml" 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R130.xsd" Term="Weight Each" 
+Summary="sum">Weight of each piece of SKU</R:ITEM></td>
+        </tr>
+        <tr>
+            <td>
+                Cube Each</td>
+            <td>
+                No</td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item xmlns="http://tempuri.org/R130.xsd" 
+xmlns:NameSpace1="http://www.w3.org/1999/xhtml" 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R130.xsd" Term="Cube Each" Summary="sum">Volumne of each piece SKU</R:ITEM></td>
+        </tr>
+    </table>
+<h4>Output For Un-assigned Location</h4>
+<table border="1" cellpadding="1" cellspacing="1" width="100%" 
+        xmlns="http://www.w3.org/1999/xhtml">
+        <tr>
+            <td align="middle" width="25%">
+                <b>Item</b></td>
+            <td align="middle" width="20%">
+                <b>Summary</b></td>
+            <td align="middle" width="10%">
+                <b>Sort Sequence</b></td>
+            <td align="middle" width="35%">
+                <b>Detail</b></td>
+        </tr>
+        <tr>
+            <td>
+                                Location</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                1</td>
+            <td>
+                <r:item xmlns="http://tempuri.org/R130.xsd" 
+xmlns:NameSpace1="http://www.w3.org/1999/xhtml" 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R130.xsd" Term="VWH ID">&nbsp;<r:item xmlns="http://tempuri.org/R130.xsd" 
+xmlns:NameSpace1="http://www.w3.org/1999/xhtml" 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R130.xsd" Term="FPK Location" 
+Key="true">Location ID where SKU is assigned</R:ITEM></td>
+        </tr>
+        <tr>
+            <td>
+                VWh</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;</td>
+            <td>
+                <r:item xmlns="http://tempuri.org/R130.xsd" 
+xmlns:NameSpace1="http://www.w3.org/1999/xhtml" 
+xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:mstns="http://tempuri.org/R130.xsd" Term="VWH ID">Virtual Warehouse for the Location</R:ITEM></td>
+        </tr>
+        </table>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Parameters</h2>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%" 
+        xmlns="http://www.w3.org/1999/xhtml">
+        <tr>
+            <td align="middle" width="20%">
+                <b>Name</b></td>
+            <td align="middle" width="20%">
+                <b>Default</b></td>
+            <td align="middle" width="60%">
+                <b>Detail</b></td>
+        </tr>
+        <tr>
+            <td>
+                Virtual Warehouse</td>
+            <td>
+                All</td>
+            <td>
+                Inventory of all warehouse is shown for each area</td>
+        </tr>
+        <tr>
+            <td>
+                Label</td>
+            <td>
+                Any label</td>
+            <td>
+                Label for SKU</td>
+        </tr>
+        <tr>
+            <td>
+                Style</td>
+            <td>
+                Any style</td>
+            <td>
+                SKU Style</td>
+        </tr>
+        <tr>
+            <td>
+                Color</td>
+            <td>
+                Any color</td>
+            <td>
+                SKU Color</td>
+        </tr>
+        <tr>
+            <td>
+                Dimension</td>
+            <td>
+                Any dimension</td>
+            <td>
+                SKU Dimension</td>
+        </tr>
+        <tr>
+            <td>
+                SKU
+                Size</td>
+            <td>
+                Any size</td>
+            <td>
+                SKU Size</td>
+        </tr>
+        <tr>
+            <td>
+                All unassigned locations</td>
+            <td>
+                false</td>
+            <td>
+                Select unassigned locations and click OK</td>
+        </tr>
+        </table>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Performance Detail</h2>
+    <p xmlns="http://www.w3.org/1999/xhtml">
+        <i>Expected Time for the report output is </i>1 second</p>
+    The query will exhibit sub linear performance with repect to number of records 
+    in ialoc and ialoc content. The query also does a index based search on 
+    master_sku and master_style table. Since records in these tables are not likely 
+    to increase drastically, the query will display good performance. The query took 
+    0.047 seconds for 18 qualified SKUs. When the query is run for unassigned 
+    location, it performs an index(IALOC_IA_FK_I) based search on ialoc table. This 
+    query will exhibit a logrithmic performance with respect to the number of 
+    records in ialoc table. Query took 0.047 seconds 650 qualified locations.
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Details</h2>
+    Since we are using outer join while joining ialoc and ialoc_content table, those 
+    location can also be retrieved, which are unassigned. Therefore, on extra where 
+    clause (ialoc.assigned_upc_code is not null) have been implemented in the query.
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Behavior Change </h2>
+            <ul>
+                <li>Provided two new columns &#39;Std. Case Qty&#39; and &#39;Estimated Cartons&#39;. &#39;Estimated Cartons&#39; column will show the maximum number of cartons which can be repacked with pieces at location, considering standard case quantity.</li>
+            </ul>
+                
+                
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Issues</h2>
+    No Known Issue.
+    <br xmlns="http://www.w3.org/1999/xhtml" />
+        <br />
+    <h2>Prerequisites</h2>
+    <p>Private synonyms for the following tables are requried</p>
+    <p>ialoc,
+    <br />
+    ialoc_content,
+    <br />
+    master_sku,
+    <br />
+    master_style,
+    <br />
+    ia
+    </p>
+        <p>Use the below script to create the synonyms<br />
+    <code>
+    create or replace synonym ialoc for dcms8.ialoc;
+    <br />
+    create or replace synonym ialoc_content for dcms8.ialoc_content;
+    <br />
+    create or replace synonym master_sku for dcms4.master_sku;
+    <br />
+    create or replace synonym master_style for dcms4.master_style;
+    <br />
+    create or replace synonym ia for dcms8.ia;
+    </code></p>
+    <h3>Query Documentation</h3>
+        <b>QUERY : Below is report Query.</b>
+        <pre>
+             select /*+index (sku sku_uk) index (ialoc_content IALOCCONT_PK)  */
+       ialoc.location_id as location_id,
+       max(ialoc.vwh_id) as vwh_id,
+       max(sku.style) as style,
+       max(sku.color) as color,
+       max(sku.dimension) as dimension,
+       max(sku.sku_size) as sku_size,
+       max(sku.standard_case_qty) as standard_case_qty,
+       max(trunc(ialoc_content.number_of_units / decode(sku.standard_case_qty, 0, null, sku.standard_case_qty))) as Estimated_Cartons,
+       max(ialoc_content.number_of_units) as number_of_units,
+       max(label_id) as label_id,
+       max(ialoc.assigned_upc_code) as assigned_upc_code,
+       max(ialoc.assigned_upc_max_pieces) as assigned_upc_max_pieces,
+       max(round((sku.weight_per_dozen / 12), 4)) as weight_each,
+       max(round((sku.volume_per_dozen / 12), 4)) as cube_each
+  from ialoc
+  LEFT outer join ialoc_content on ialoc_content.ia_id = ialoc.ia_id
+                               and ialoc_content.location_id =
+                                   ialoc.location_id
+     AND IALOC_CONTENT.IACONTENT_ID = IALOC.ASSIGNED_UPC_CODE
+  LEFT OUTER JOIN master_sku sku on ialoc.assigned_upc_code = sku.upc_code
+  left outer join master_style on master_style.style = sku.style
+  LEFT OUTER JOIN IA ia1 on ia1.ia_id = ialoc.ia_id
+ where assigned_upc_code is not null
+   AND ialoc.location_type = 'RAIL'
+   AND ia1.picking_area_flag = 'Y'
+   <if>AND sku.style = :style</if>
+   <if>AND sku.color = :color</if>                
+   <if>AND sku.dimension = :dimension</if>
+   <if>AND sku.sku_size = :sku_size</if>  
+   <if>AND master_style.label_id = :label_id</if>                                                    
+   <if>AND ialoc.vwh_id = :vwh_id</if>
+ group by ialoc.location_id
+</pre>
+    <h3>Validation Queries</h3>
+        <b>QUERY: Below query is showing SKU, label and Standard Case Qty. </b>
+        <pre>
+SELECT MST.LABEL_ID,
+       MS.STYLE,
+       MS.COLOR,
+       MS.DIMENSION,
+       MS.SKU_SIZE,
+       MS.UPC_CODE,
+       MS.STANDARD_CASE_QTY
+  FROM MASTER_SKU MS
+ INNER JOIN MASTER_STYLE MST
+    ON MS.STYLE = MST.STYLE
+ WHERE MS.UPC_CODE = '014671137873';
+        </pre>
+        <b>
+            QUERY: below query is showing&nbsp; VWH, Location, UPC and Capicity</b><pre>
+SELECT I.VWH_ID, I.LOCATION_ID, I.ASSIGNED_UPC_CODE, I.ASSIGNED_UPC_MAX_PIECES
+  FROM IALOC I
+ WHERE I.LOCATION_ID = '911BB14AB06';
+</pre>
+
+         <b>
+            QUERY: below query is showing quantity,Expected Carton, Weight and Cube
+        </b>
+        <pre>
+SELECT IC.NUMBER_OF_UNITS AS "Quantity",
+       trunc(ic.number_of_units / ms.standard_case_qty) as "Expected Cartons",
+       ROUND((MS.WEIGHT_PER_DOZEN / 12), 4) AS "Weight",
+       ROUND((MS.VOLUME_PER_DOZEN / 12), 4) AS "Cube"
+  FROM IALOC_CONTENT IC
+  LEFT OUTER JOIN MASTER_SKU MS
+    ON IC.IACONTENT_ID = MS.UPC_CODE
+ WHERE MS.UPC_CODE = '014671137873'
+   AND IC.LOCATION_ID = '911BB14AB06'
+
+</pre>
+    </form>
+
+</body>
+</html>

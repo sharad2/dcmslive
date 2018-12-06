@@ -1,0 +1,364 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>130.30 Non China Inventory in FDC</title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        130.30 Non China Inventory in FDC</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <ul style="list-style: none">
+        <li>$Revision: 5601 $</li>
+        <li>Reviewed By: Manmohan Bisht</li>
+        <li>Status: Tested</li>
+        <li>Tested By: Hemant K. Singh</li>
+    </ul>
+    <p>
+        Displays inventory details in warehouse except for inventory coming from china.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        Displays detail of all the inventory within carton area which haven&#39;t
+        been received from china, the inventory for which there is no current order and
+        is not in suspense.</p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        Get the quantity in different carton areas from src_carton,src_carton_detail for
+        the given SKUs with cartons which do not have the sewing_plant_code listed in the
+        table custctnresv
+    </p>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 25%; text-align: center">
+                <b>Item</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Summary</b>
+            </td>
+            <td style="width: 10%; text-align: center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                VWh
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;6
+            </td>
+            <td style="width: 45%; text-align: left">
+                Virtual Warehouse to which the SKU belong.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Sewing Plant Code
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp; 7</td>
+            <td style="width: 45%; text-align: left">
+                &nbsp;Sewing Plant where inventory coming from             </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Style
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                1
+            </td>
+            <td style="width: 45%; text-align: left">
+                SKU Style
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Color
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+                2</td>
+            <td style="width: 45%; text-align: left">
+                SKU Color
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Dim
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+                3</td>
+            <td style="width: 45%; text-align: left">
+                SKU Dimension
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Size
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+                4</td>
+            <td style="width: 45%; text-align: left">
+                SKU Size
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Quality Code</td>
+            <td style="width: 20%; text-align: center">
+                No</td>
+            <td style="width: 10%; text-align: center">
+                5</td>
+            <td style="width: 45%; text-align: left">
+                Quality Code of the carton</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Inventory Areas</td>
+            <td style="width: 20%; text-align: center">
+                &nbsp;</td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;</td>
+            <td style="width: 45%; text-align: left">
+                &nbsp;</td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 20%; text-align: center">
+                <b>Name</b>
+            </td>
+            <td style="width: 15%; text-align: center">
+                <b>Type</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Default</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Style
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 45%; text-align: left">
+                SKU Style
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Color
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 45%; text-align: left">
+                SKU Color
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Dimension
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 45%; text-align: left">
+                SKU Dimension
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                SKU Size
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 45%; text-align: left">
+                SKU Size
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Virtual Warehouse
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                All
+            </td>
+            <td style="width: 45%; text-align: left">
+                Virtual Warehouse ID
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        Expected time for report output is 0.19 second</p>
+    <p>
+        The report exhibits linear performance with respect to the number of records in
+        src_carton_detail. There is full scan on tables src_carton_detail,master_style,
+        tab_inventory_area.</p>
+    <h2>
+        Behavior Change</h2>
+    <h2>
+        Issues</h2>
+    <p>
+        There are no known issues.</p>
+    <h2>
+        Prerequisites</h2>
+    <ul>
+        <li>
+            <h4>
+                Private synonyms requried for the tables:
+            </h4>
+<code>SRC_SRC_CARTON, <br />
+SRC_CARTON_DETAIL, <br />
+TAB_INVENTORY_AREA, <br />
+CUSTCTNRESV</code>
+            <ul>
+                <li>
+                    <h4>
+                        Script to create the synonyms:>
+                        <pre>
+ <code>create or replace synonym SRC_CARTON for dcms4.SRC_CARTON; 
+create or replace synonym SRC_CARTON_DETAIL for dcms4.SRC_CARTON_DETAIL; 
+create or replace synonym TAB_INVENTORY_AREA for dcms4.TAB_INVENTORY_AREA; 
+create or replace synonym CUSTCTNRESV for dcms8.CUSTCTNRESV;</code></pre>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <h4>
+                App-Settings required:</h4>
+            <pre>There is no appSetting used in the report.</pre>
+        </li>
+    </ul>
+    <h2>
+        Query's documentation:</h2>
+    <ul>
+        <li>The query will get all the carton details along with warehouse Id from tables src_carton
+            and src_carton_detail. Quantity for numbered area is conditional and is fetched
+            only if required module code and suspense date is null for rest all areas whole
+            quantity is considered.
+            <pre>
+        SELECT CTN.SEWING_PLANT_CODE AS SEWING_PLANT_CODE,
+       CTN.CARTON_STORAGE_AREA AS CARTON_STORAGE_AREA,
+       CTN.VWH_ID AS VWH_ID,
+       SUM(CASE
+             WHEN (CTN.CARTON_STORAGE_AREA IN
+                  (SELECT TIA.INVENTORY_STORAGE_AREA
+                      FROM TAB_INVENTORY_AREA TIA
+                     WHERE TIA.LOCATION_NUMBERING_FLAG = 'Y') AND
+                  CTNDET.REQ_MODULE_CODE IS NULL
+                  AND CTN.SUSPENSE_DATE IS NULL) THEN
+              CTNDET.QUANTITY
+             WHEN (CTN.CARTON_STORAGE_AREA NOT IN
+                  (SELECT TIA.INVENTORY_STORAGE_AREA
+                      FROM TAB_INVENTORY_AREA TIA
+                     WHERE TIA.LOCATION_NUMBERING_FLAG = 'Y')) THEN
+              CTNDET.QUANTITY
+           END) AS QUANTITY,
+       CTNDET.STYLE AS STYLE,
+       CTNDET.COLOR AS COLOR,
+       CTNDET.DIMENSION AS DIMENSION,
+       CTNDET.SKU_SIZE AS SKU_SIZE
+  FROM SRC_CARTON CTN
+ RIGHT OUTER JOIN SRC_CARTON_DETAIL CTNDET ON CTNDET.CARTON_ID =
+                                              CTN.CARTON_ID
+ WHERE CTN.CARTON_STORAGE_AREA IN
+       (SELECT TIA.INVENTORY_STORAGE_AREA
+          FROM TAB_INVENTORY_AREA TIA
+         WHERE TIA.STORES_WHAT = 'CTN')
+    AND CTN.SEWING_PLANT_CODE NOT IN
+       (SELECT DISTINCT (RESV.SEWING_PLANT_CODE) AS SEWING_PLANT_CODE
+          FROM CUSTCTNRESV RESV)
+    AND CTNDET.STYLE = :style
+    AND CTNDET.color = :Color
+    AND CTNDET.dimension = :Dimension
+    AND CTNDET.SKU_SIZE = :sku_size
+    AND CTN.vwh_id = :vwh_id
+ GROUP BY CTN.SEWING_PLANT_CODE,
+          CTN.CARTON_STORAGE_AREA,
+          CTN.VWH_ID,
+          CTNDET.STYLE,
+          CTNDET.COLOR,
+          CTNDET.DIMENSION,
+          CTNDET.SKU_SIZE
+</pre>
+        </li>
+    </ul>
+    <h2>
+        Validation details</h2>
+    <p>
+        The below query gives detail of carton, its area, suspense date and request code.
+        This can be validated against the passed inputs.</p>
+    <pre>
+SELECT CTN.CARTON_ID,
+CTN.SUSPENSE_DATE,
+CTNDET.REQ_MODULE_CODE,
+CTN.CARTON_STORAGE_AREA
+FROM SRC_CARTON CTN
+INNER JOIN SRC_CARTON_DETAIL CTNDET ON CTN.CARTON_ID = CTNDET.CARTON_ID
+WHERE STYLE = :STYLE
+AND COLOR = :COLOR
+AND DIMENSION = :DIMENSION
+AND SKU_SIZE = :SKU_SIZE
+AND VWH_ID = :VWH_ID</pre>
+    <pre>
+&nbsp;</pre>
+    <pre>
+Discussion with mentor</pre>
+    <pre>
+1. Suspense philosophy needs to be changed. If suspense date is there do not consider it as valid inventory.
+2. In case of BIR inventory you can show a separate column for already requested quantity.
+3. Take approval for spec change: suspense inventory, dynamic carton areas, BIR hardwiring removal.
+        </pre>
+</body>
+</html>

@@ -1,0 +1,522 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        .style1
+        {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        130.105 SKU Inventory
+    </h1>
+    Author : <b>Sanjeev Kumar</b><br />
+    Mentor : <b>Hemant K. Varshney</b><br />
+    $Revision: 3574 $<br />
+    Status: Tested
+    <br />
+    Tested By :Dinesh Singh Panwar<br />
+    <p>
+        For a given SKU and virtual warehouse the report shows the quantity of active SKUs in
+        each SHL area.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        For a given SKU and virtual warehouse the report displays inventory of each SHL area.
+        Report shows total no. of pieces of active SKUs of each SHL area.Report shows only
+        those SKUs whose box has not been cancelled.
+    </p>
+    <p>
+        Further, it drills down on FPK (Forward Pick Area) quantity to show the details
+        of the locations. The output of drilldown report is:
+    </p>
+    <ul>
+        <li>Inventory Area </li>
+        <li>Location </li>
+        <li>Pieces at that location</li>
+    </ul>
+    <h2>
+        Algorithm</h2>
+    <p>
+        All invertory of SKU areas except CAN area will be retrived from box, boxdet and
+        master_sku tables. Inventory of SHL area will be retrived from master_raw_inventory
+        , tab_inventory_area and master_sku tables. Inventory of FPK and CAN area will be
+        retrived from ialoc, ialoc_content and master_sku table. Getting the inventory in
+        SHL-A area will be calculated as the inventory in SHL area minus all inventory in
+        SKU area.</p>
+    <h2>
+        Definitions</h2>
+    <dl>
+        <dt><i>SHL Quantity</i> </dt>
+        <dd>
+            SHL Quantity refers to the total open inventory quantity in all areas of the virtual warehouse.
+        </dd>
+        <dt><i>SHL-8 Quantity</i> </dt>
+        <dd>
+            SHL-8 Quantity refers to the total open inventory quantity in all DCMS8 areas.
+        </dd>
+        <dt><i>SHL-A Quantity</i> </dt>
+        <dd>
+            The concept of SHL-A area has been incoporated to keep track of missing inventory.
+            This is basically a conceptual area, which contains the inventory which is not accountable.
+            The inventory quantity in SHL-A area is calculated, based upon the formula: SHL
+            Quantity = SHL-8 Quantity + SHL-A Quantity. In ideal case the quantity in SHL-A
+            area should be equal to zero i.e there should not be any difference betweeen SHL
+            quantity and SHL-8 quantity. If there is a difference, that will come under the
+            SHL-A area and will calculated by deducting the SHL-8 quantity from the SHL quantity.
+            Mathematically, it will be: SHL-A Quantity= SHL Quantity - SHL-8 Quantity.
+        </dd>
+    </dl>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 25%; text-align: center">
+                <b>Item</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Summary</b>
+            </td>
+            <td style="width: 10%; text-align: center">
+                <b>Default Sort Sequence</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;">
+                Color
+            </td>
+            <td>
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                1
+            </td>
+            <td style="width: 45%;">
+                SKU Color
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Dim.
+            </td>
+            <td>
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                2
+            </td>
+            <td style="width: 45%;">
+                SKU Dimension
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Sku Size
+            </td>
+            <td>
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                3
+            </td>
+            <td style="width: 45%;">
+                SKU Size
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                UPC Code
+            </td>
+            <td>
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;">
+                UPC Code of SKU
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Quality</td>
+            <td>
+                No</td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;</td>
+            <td style="width: 45%;">
+                Quality of SKU</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Quantity in Area
+            </td>
+            <td>
+                Sum of pieces for each area
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%; text-align: left">
+                Inventory in each SKU area.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                Total(in Pieces)
+            </td>
+            <td>
+                Sum of Pieces
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%;">
+                Total Pieces in SHL area
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: left">
+                VWh
+            </td>
+            <td>
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                4
+            </td>
+            <td style="width: 45%; text-align: left">
+                Virtual Warehouse
+                Id(Only visible in case of All)
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 20%; text-align: center">
+                <b>Name</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Default</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Style
+            </td>
+            <td style="width: 20%;" class="style1">
+                No
+            </td>
+            <td style="width: 45%;">
+                SKU Style
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%;">
+                Color
+            </td>
+            <td style="width: 20%;" class="style1">
+                No
+            </td>
+            <td style="width: 45%; text-align: left">
+                SKU Color
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Dimension
+            </td>
+            <td style="width: 20%;" class="style1">
+                No
+            </td>
+            <td style="width: 45%; text-align: left">
+                SKU Dimension
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Size
+            </td>
+            <td style="width: 20%;" class="style1">
+                No
+            </td>
+            <td style="width: 45%; text-align: left">
+                SKU Size
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Quality Code</td>
+            <td style="width: 20%;" class="style1">
+                NO</td>
+            <td style="width: 45%; text-align: left">
+                Quality of the SKU</td>
+        </tr>
+        <tr>
+            <td style="width: 20%; text-align: left">
+                Virtual Warehouse
+            </td>
+            <td style="width: 20%;" class="style1">
+                All
+            </td>
+            <td style="width: 45%; text-align: left">
+                Virtual Warehouse Id
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        Expected time for report output is 0.50 seconds.</p>
+    <h2>
+        Behavior Change</h2>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No Known Issues</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+    <h4>
+        PrivPrivate synonyms requried for the tables:
+    </h4>
+    <code>IALOC_CONTENT<br />
+        IALOC<br />
+        MASTER_SKU<br />
+        MASTER_RAW_INVENTORY<br />
+        MASTER_SKU BOXDET<br />
+        BOX<br />
+        tab_quality_code
+        </code><h4>
+            Script to create the synonyms:</h4>  
+    <code>create or replace synonym IALOC_CONTENT for dcms8.IALOC_CONTENT;<br />
+        create or replace synonym IALOC for dcms8.IALOC;<br />
+        create or replace synonym MASTER_SKU for dcms4.MASTER_SKU;<br />
+        create or replace synonym tab_quality_code for dcms4.tab_quality_code;<br />
+        create or replace synonym MASTER_RAW_INVENTORY for dcms4.MASTER_RAW_INVENTORY;<br />
+        create or replace synonym MASTER_SKU for dcms4.MASTER_SKU;<br />
+        create or replace synonym BOXDET for dcms8.BOXDET;<br />
+        create or replace synonym BOX for dcms8.BOX;</code><h4>
+            App-Settings required:</h4>
+  <code>
+        &lt;add key="ShelfArea" value="SHL" /&gt;
+  
+
+        <br />
+    &lt;add key="PickingArea" value="FPK"/&gt;
+
+    <br />
+    &lt;add key="CancelArea" value="CAN"/&gt;
+
+        <br />
+    &lt;add key="SkuTypeStorageArea" value="SKU"/&gt;</code>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <pre>  WITH sku_inventory AS
+
+ (
+ SELECT /*+ INDEX(box box_ia_id_copy_i)*/
+         ms.upc_code AS UPC_CODE,
+         ms.color AS COLOR,
+         ms.dimension AS DIMENSION,
+         ms.sku_size AS sku_size,
+         max((select tq.quality_code from tab_quality_code tq
+        where tq.order_quality='Y'
+        )) as quality_code,
+         SUM(boxdet.current_pieces) AS QUANTITY,
+         NULL AS Pieces,
+         box.vwh_id AS WAREHOUSE_ID,
+         box.ia_id AS AREA
+    FROM boxdet boxdet
+   INNER JOIN box
+      ON BOX.UCC128_ID = BOXDET.UCC128_ID
+     AND BOX.PICKSLIP_ID = BOXDET.PICKSLIP_ID
+    LEFT OUTER JOIN master_sku ms
+      ON boxdet.upc_code = ms.upc_code
+      <if>CROSS JOIN (SELECT QUALITY_CODE
+                 FROM TAB_QUALITY_CODE A
+                WHERE A.ORDER_QUALITY = 'Y'
+                  AND ROWNUM &lt; 2
+                  AND QUALITY_CODE = :quality_code)</if>
+   WHERE ms.inactive_flag IS NULL
+     AND boxdet.STOP_PROCESS_DATE is null
+     AND box.ia_id &lt; &gt; CAST(:CancelArea as varchar2(255))
+     AND box.ia_id IS NOT NULL
+     AND box.ia_id_copy IS NOT NULL
+     AND ms.style = CAST(:style as varchar2(255))
+     <if>AND box.vwh_id = CAST(:vwh_id as varchar2(255))</if>
+     <if>AND ms.color = CAST(:color as varchar2(255))</if>
+     <if>AND ms.dimension = CAST(:dimension as varchar2(255))</if>
+     <if>AND ms.sku_size = CAST(:sku_size as varchar2(255))</if>
+   GROUP BY ms.upc_code,
+            ms.color,
+            ms.dimension,
+            ms.sku_size,
+            box.vwh_id,
+            box.ia_id
+
+  UNION ALL
+  
+ 
+  SELECT sku.upc_code AS UPC_CODE,
+         sku.color AS COLOR,
+         sku.dimension AS DIMENSION,
+         sku.sku_size AS sku_size,
+         max((select tq.quality_code from tab_quality_code tq
+        where tq.order_quality='Y'
+       )) as quality_code,
+         SUM(iacont.number_of_units) AS QUANTITY,
+         NULL AS Pices,
+         ia.vwh_id AS WAREHOUSE_ID,
+         iacont.ia_id AS AREA
+    FROM ialoc_content iacont
+    LEFT OUTER JOIN ialoc ia
+      ON ia.ia_id = iacont.ia_id
+     AND ia.location_id = iacont.location_id
+    LEFT OUTER JOIN master_sku sku
+      ON iacont.iacontent_id = sku.upc_code
+      <if>CROSS JOIN (SELECT QUALITY_CODE
+                 FROM TAB_QUALITY_CODE A
+                WHERE A.ORDER_QUALITY = 'Y'
+                  AND ROWNUM &lt; 2
+                  AND QUALITY_CODE = :quality_code)</if>
+   WHERE iacont.ia_id IN (CAST(:PickingArea as varchar2(255)), CAST(:CancelArea as varchar2(255)))
+     AND iacont.iacontent_type_id = CAST(:SkuArea as varchar2(255))
+     AND sku.style = CAST(:style as varchar2(255))
+     <if>AND ia.vwh_id = CAST(:vwh_id as varchar2(255))</if>
+     <if>AND sku.color = CAST(:color as varchar2(255))</if>
+     <if>AND sku.dimension = CAST(:dimension as varchar2(255))</if>
+     <if>AND sku.sku_size = CAST(:sku_size as varchar2(255))</if>     
+   GROUP BY iacont.ia_id,
+            ia.vwh_id,
+            sku.upc_code,
+            sku.color,
+            sku.dimension,
+            sku.sku_size,
+            sku.style
+
+union all
+  SELECT MAX(ms.upc_code) AS UPC_CODE,
+         rawinv.color AS COLOR,
+         rawinv.dimension AS DIMENSION,
+         rawinv.sku_size AS sku_size,
+         max(rawinv.quality_code) AS quality_code,
+         NULL AS quantity,
+         SUM(rawinv.quantity) AS Pieces,
+         rawinv.vwh_id AS WAREHOUSE_ID,
+         rawinv.sku_storage_area AS AREA
+    FROM master_raw_inventory rawinv
+    LEFT OUTER JOIN tab_inventory_area tabinv
+      ON tabinv.inventory_storage_area = rawinv.sku_storage_area
+    LEFT OUTER JOIN master_sku ms
+      ON rawinv.style = ms.style
+     AND rawinv.color = ms.color
+     AND rawinv.dimension = ms.dimension
+     AND rawinv.sku_size = ms.sku_size
+   WHERE rawinv.sku_storage_area = CAST(:Area as varchar2(255))
+     AND tabinv.unusable_inventory IS NULL
+     AND ms.inactive_flag IS NULL
+     AND rawinv.style = CAST(:style as varchar2(255))
+     <if>AND rawinv.vwh_id = CAST(:vwh_id as varchar2(255))</if>
+    <if>AND rawinv.color = CAST(:color as varchar2(255))</if>
+     <if>AND rawinv.dimension = CAST(:dimension as varchar2(255))</if>
+     <if>AND rawinv.sku_size = CAST(:sku_size as varchar2(255))</if>
+     <if>and rawinv.quality_code=:quality_code</if>
+   
+     
+   GROUP BY rawinv.color,
+            rawinv.dimension,
+            rawinv.sku_size,
+            rawinv.sku_storage_area,
+            rawinv.vwh_id,
+            rawinv.style           
+ 
+            )
+SELECT si.COLOR AS COLOR,
+       si.DIMENSION AS DIMENSION,
+       si.sku_size AS sku_size,
+       si.upc_code as upc_code,
+       si.quality_code as quality_code,
+       si.Area AS ia_id,
+       si.WAREHOUSE_ID AS vwh_id,
+       SUM(si.quantity) OVER(PARTITION BY si.upc_code, si.area,si.WAREHOUSE_ID) AS quantity,
+       SUM(si.Pieces) OVER(PARTITION BY si.upc_code,si.WAREHOUSE_ID) AS total_pieces,
+       SUM(nvl(si.Pieces, 0)) OVER(PARTITION BY si.upc_code,si.WAREHOUSE_ID) -SUM(nvl(si.quantity, 0)) OVER(PARTITION BY si.upc_code,si.WAREHOUSE_ID) AS SHLA,
+       i.process_flow_sequence AS process_flow_sequence
+  FROM sku_inventory SI
+  LEFT OUTER JOIN ia i ON i.ia_id = SI.area</pre>
+    <h2>
+        Validation details</h2>
+    <pre>
+Bellow queries may have the where clause in the [] brackets. It means these are the optional parameters. If you do not want to pass these parameters just remove
+the [] section.</pre>
+    <b>Query:</b>
+    <pre>
+     SELECT /*+ INDEX(box box_ia_id_copy_i)*/
+            BOX.IA_ID as AREA,
+            SUM(BOXDET.CURRENT_PIECES) AS INVENTORY_QUANTITY
+       FROM BOX, BOXDET, MASTER_SKU SKU
+      WHERE BOX.UCC128_ID = BOXDET.UCC128_ID
+        AND BOX.pickslip_id = BOXDET.pickslip_id
+        AND BOXDET.UPC_CODE = SKU.UPC_CODE
+        AND BOX.IA_ID_COPY IS NOT NULL
+        AND SKU.STYLE = :STYLE
+        AND SKU.COLOR = :COLOR
+        AND SKU.DIMENSION = :DIMENSION
+        AND SKU.SKU_SIZE = :SIZE
+        AND BOX.VWH_ID = :VWH_ID
+        AND SKU.INACTIVE_FLAG IS NULL
+      group by BOX.IA_ID;           </pre>
+    <b>Description:</b><pre>
+ Use above query to get the inventory quantity of box area.
+</pre>
+    <b>Query:</b><pre>
+      SELECT IALOCCO.IA_ID AS INVENTORY_AREA_ID,
+            SUM(IALOCCO.NUMBER_OF_UNITS) AS INVENTORY_QUANTITY
+       FROM IALOC_CONTENT IALOCCO, MASTER_SKU SKU, IALOC I
+      WHERE IALOCCO.IACONTENT_TYPE_ID = 'SKU'
+        AND IALOCCO.IACONTENT_ID = SKU.UPC_CODE
+        AND I.IA_ID = IALOCCO.IA_ID
+        AND I.LOCATION_ID = IALOCCO.LOCATION_ID
+        AND IALOCCO.IA_ID IN('FPK','CAN')
+        AND SKU.STYLE = :STYLE
+        AND SKU.COLOR = :COLOR
+        AND SKU.DIMENSION = :DIMENSION
+        AND SKU.SKU_SIZE = :SIZE
+        AND I.VWH_ID = :VWH_ID
+        AND SKU.INACTIVE_FLAG IS NULL
+      GROUP BY IALOCCO.IA_ID;
+</pre>
+    <b>Description:</b><pre>
+ Use above query to get the inventory of CAN and FPK area.
+</pre>
+    <b>Query:</b><pre>
+     SELECT  max(RAWINV.SKU_STORAGE_AREA) INVENTORY_AREA_ID,
+            MAX(RAWINV.VWH_ID) AS WAREHOUSE_ID,
+            SUM(RAWINV.QUANTITY) AS INVENTORY_QUANTITY
+       FROM MASTER_RAW_INVENTORY RAWINV, TAB_INVENTORY_AREA INVAREA
+      WHERE RAWINV.SKU_STORAGE_AREA = INVAREA.INVENTORY_STORAGE_AREA
+        AND INVAREA.UNUSABLE_INVENTORY IS NULL
+        AND RAWINV.SKU_STORAGE_AREA = 'SHL'
+        AND RAWINV.STYLE = :STYLE
+        AND RAWINV.COLOR = :COLOR
+        AND RAWINV.DIMENSION = :DIMENSION
+        AND RAWINV.SKU_SIZE = :SIZE
+        AND RAWINV.VWH_ID = :VWH_ID;
+</pre>
+    <b>Description:</b><pre>
+ Above Query retrives the quantity in SHL area.
+</pre>
+</body>
+</html>

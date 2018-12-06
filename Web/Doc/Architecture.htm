@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>XTremeReporter 3 Architecture</title>
+</head>
+<body>
+    <p>
+        Last Updated by Sharad Singhal on 12 Jan 2011</p>
+    <h2>
+        Connection Strings</h2>
+    <p>
+        DCMS Live reports operate under the login specified by the connection string <code>dcmslive</code>
+        in web.config. An example entry may look like:
+    </p>
+    <pre>
+  &lt;connectionStrings&gt;
+    &lt;add name="dcmslive" connectionString="Data Source=PREPROD9.eclipse.com;User ID=dcmslive;Password=dcmslive;Unicode=True"
+        providerName="System.Data.OracleClient" /&gt;
+  &lt;/connectionStrings&gt;
+</pre>
+    <p>
+        The login user must have private synonyms for all dcms4 and dcms8 tables in his
+        schema.
+    </p>
+    <h2>
+        Adding Custom Links to Home Page</h2>
+    <p>
+        Uou can add links to external reports to your home page. To do this, you need to
+        modify the ExternalLinks.sitemap file which is available in the root directory of
+        the web. A sample file may look like this:</p>
+    <pre>
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" &gt;
+  &lt;siteMapNode url=&quot;http://oldxtremereproter/"&gt;
+    &lt;siteMapNode url="http://oldxtremereproter/Report1.aspx" title="Report 1"  description="Description of Report 1" ReportId="99.1" /&gt;
+    &lt;siteMapNode url="http://oldxtremereproter/Report2.aspx" title="Report 2"  description="Description of Report 2" ReportId="99.2" /&gt;
+    &lt;siteMapNode url="http://realold/Report3.aspx" title="Report 3"  description="Description of Report 3" ReportId="99.3" /&gt;    
+  &lt;/siteMapNode&gt;
+&lt;/siteMap&gt;    
+    </pre>
+    <p>
+        You should only modify the siteMapNode elements. Each external report is represented
+        by a <i>child</i> siteMapNode element. We will talk about the importance of the
+        <i>parent</i> siteMapNode a little later. For each external report, you must specify
+        url, title, description and ReportId. The Url must be an absolute Url. This is the
+        Url which we will navigate to when the report is clicked. The title and description
+        attributes specify information which is displayed on the home page. ReportId represents
+        the report number which is also displayed on the home page. Do not include the ReportId
+        in your title, otherwise you will be seeing the ReportId twice. Each external report
+        will be shown with an external icon along side it.</p>
+    <p>
+        You have some control on the color of the external icon which is displayed with
+        each external link. If the Url of the child report begins with the Url of the parent
+        siteMapNode, then the external link icon is displayed in one color, otherwise it
+        is displayed in another color. In the example file above, what we have accomplished
+        is that all reports of oldextremereporter will have an icon of a particular color.
+        All other reports, such as the one whose url is http://realold/Report3.aspx will
+        have an icon of a different color. The color itself is theme specific.
+    </p>
+    <p>
+        Also note that if an external report has the same ReportId as one of the new reports,
+        then the external report would be ignored.
+    </p>
+    <h3>
+        How SiteMap works</h3>
+    <p>
+        web.config defines two sitemap providers. The AUtoSiteMap is responsible for automatically
+        creating the sitemap by parsing the reports in the current wen. The XmlSiteMap reads
+        the ExternalLinks.sitemap and builds the sitemap from there. Default.aspx page has
+        the login to query both of these sitemap providers and build a collection of nodes
+        which are then displayed on the home page.</p>
+    <pre>
+&lt;siteMap defaultProvider="Dcms"&gt;
+  &lt;providers&gt;
+    &lt;clear/&gt;
+    &lt;add name="Dcms" type="EclipseLibrary.Web.SiteStructure.AutoSiteMapProvider" securityTrimmingEnabled="true"
+         customAttributes="ReportId,Browsable" /&gt;
+    &lt;add name="ExternalLinksProvider"
+          description="SiteMap provider that reads in .sitemap files."
+          type="System.Web.XmlSiteMapProvider, System.Web, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+          siteMapFile="ExternalLinks.sitemap" /&gt;
+  &lt;/providers&gt;
+&lt;/siteMap&gt;        
+        </pre>
+    <h2>
+        Diagnostic features</h2>
+    <p>
+        To diagnose a report, you need to enable tracing in web.config as shown below.
+    </p>
+    <pre>
+&lt;trace enabled="true" localOnly="false" requestLimit="40" pageOutput="false" traceMode="SortByTime" /&gt;  
+</pre>
+    <p>
+        It is recommended that tracing is not enabled during normal production environment.
+        When tracing is enabled, you will see a <em>View Trace</em> link on each page. This
+        link will show you a list of pages which have been recently viewed. You click on
+        the page you want to diagnose to see complete details of what that page did. These
+        details also include every query which was executed.
+    </p>
+    <h2>
+        ODP.NET Profile Provider</h2>
+    <p>
+        The profile provider is responsible for persistently storing the recently visited
+        reports and favorite reports for each user. The preferred theme of each suer is
+        also stored persistently by the profile provider. Following is the web.config entry
+        which makes this functionality available.</p>
+    <pre>
+    &lt;profile defaultProvider="OracleProfileProvider" enabled="true" automaticSaveEnabled="false"&gt;
+      &lt;providers&gt;
+        &lt;clear/&gt;
+        &lt;add name="OracleProfileProvider" type="Oracle.Web.Profile.OracleProfileProvider, 
+             Oracle.Web, Version=2.112.1.2, Culture=neutral, 
+             PublicKeyToken=89b483f429c47342" connectionStringName="dcmslive"  applicationName="DcmsLive"/&gt;
+      &lt;/providers&gt;
+      &lt;properties&gt;
+        &lt;add name="ReportsInNewWindow" type="bool" defaultValue="true" /&gt;
+        &lt;add name="FavoriteReports" type="StringSet" /&gt;
+        &lt;group name="PreferredTheme"&gt;
+          &lt;add name="Theme"/&gt;
+          &lt;add name="Url"/&gt;
+        &lt;/group&gt;
+        &lt;add name="RecentReports" type="StringSet"/&gt;
+      &lt;/properties&gt;
+    &lt;/profile&gt;
+</pre>
+    <p>
+        This entry must not be modified in any significant way, otherwise it could result
+        in compilation errors. The file <code>Preference.aspx</code> modifies the single user preference: Whether reports should open in a 
+        seperate window when the link is clicked on the home page. The file <code>AjaxHelper.aspx</code> contains code to modify
+        user profiles. It is invoked through client script by:
+    </p>
+    <ul>
+        <li><code>Default.aspx</code>. Display, add and remove favorite reports.</li>
+        <li><code>MasterPage.master</code>. Display and change the preferred theme.</li>
+    </ul>
+    <h2>
+        Exporting Reports to Excel</h2>
+    <h2>
+        Future Enhancements</h2>
+    <ul>
+        <li>PDF export </li>
+    </ul>
+</body>
+</html>

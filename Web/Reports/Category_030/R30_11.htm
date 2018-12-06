@@ -1,0 +1,680 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0084)http://w3chile/xtremereporter/ReportDoc.aspx -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+</head>
+<body>
+    <center>
+   
+<h1>30<b>.</b>11<B> : </B>SKUs Return in a given time period</h1>
+</center>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    $Revision: 7191 $<br />
+    Status:Tested<br />
+    Reviewed By :Manmohan Singh Bisht<br />
+    Tested By :Sanjeev Kumar
+    <p>
+        This report lists all the SKUs which are returned back from customers on the specified
+        date range, partially entered returns and also displays the SKUs returned for one
+        Receipt Number.
+    </p>
+    <h2>
+        Overview</h2>
+    <p>
+        This report lists all the SKUs which are returned back from customers on the specified
+        date range, it also shows the partially entered returns and the returns for a specified
+        Receipt Number. This report aids in inventory planning of returns.
+    </p>
+    <ul>
+        <li>The parameter Partially Entered displays the partially received SKUs i.e. few SKUs
+            are still to be received back from Customer where returns is not entered completely.
+        </li>
+        <li>The date range parameter displays the details of those SKUs which are completely
+            returned within that specified date range. </li>
+        <li>The parameter Receipt number displays the SKU details for a particular given Receipt
+            Number.</li></ul>
+    <h2>
+        Algorithm</h2>
+    Get the quantity of each SKU returned within a specified date range, partially returned
+    SKUs or SKUs for a particular Receipt Number from table dem_returns_detail and dem_returns.
+    and the customer information from table cust. Label has been selected from master_sku.
+    <h3>
+        Master&#39;s Output</h3>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td style="width: 25%; text-align: center">
+                    <b>Item</b>
+                </td>
+                <td style="width: 20%; text-align: center">
+                    <b>Summary</b>
+                </td>
+                <td style="width: 10%; text-align: center">
+                    <b>Sort Sequence</b>
+                </td>
+                <td style="width: 35%; text-align: center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Return #
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Return Id of the returned SKUs.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Customer</td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Customer who returned the SKUs.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Return Date
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Date when recieved.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    DM Date
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Debit Memo Date
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Authorization #
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Authorization Number
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Reason
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Reason code
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Store
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Store ID
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Expected Pieces
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Expected Pieces that needs to be return
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Completed Date
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Date by&nbsp; which the SKUs are completely recieved.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    DM #
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Debit Memo Number
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>
+        Detail&#39; s Output</h3>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td style="width: 25%; text-align: center">
+                    <b>Item</b>
+                </td>
+                <td style="width: 20%; text-align: center">
+                    <b>Summary</b>
+                </td>
+                <td style="width: 10%; text-align: center">
+                    <b>Sort Sequence</b>
+                </td>
+                <td style="width: 35%; text-align: center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Label
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    2
+                </td>
+                <td>
+                    Lable Id
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Style
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    3
+                </td>
+                <td>
+                    Style of the SKU
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Color
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    4
+                </td>
+                <td>
+                    Color of the SKU
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Dimension
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    5
+                </td>
+                <td>
+                    Dimension of the SKU.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Size
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    6
+                </td>
+                <td>
+                    Size of the SKU
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Quantity
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Quantity returned of the SKUs
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Completed (if Receipt Number is selected)
+                </td>
+                <td>
+                    No
+                </td>
+                <td style="text-align: center">
+                    &nbsp;
+                </td>
+                <td>
+                    Report will show tick sign if&nbsp; return has been completed.</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+<h3>Output for return by Style</h3>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td style="width: 25%; text-align: center">
+                    <b>Item</b>
+                </td>
+                <td style="width: 20%; text-align: center">
+                    <b>Summary</b>
+                </td>
+                <td style="width: 10%; text-align: center">
+                    <b>Sort Sequence</b>
+                </td>
+                <td style="width: 35%; text-align: center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Label
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;</td>
+                <td>
+                    Label of the style</td>
+            </tr>
+            <tr>
+                <td>
+                    Style
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;2</td>
+                <td>
+                    Style of the SKU
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Quantity
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td style="text-align: center">
+                    1desc</td>
+                <td>
+                    Quantity returned of the SKUs
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    <h2>
+        Parameters</h2>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td width="20%" align="middle">
+                    <b>Name</b>
+                </td>
+                <td width="20%" align="middle">
+                    <b>Default</b>
+                </td>
+                <td width="60%" align="middle">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Customer ID</td>
+                <td>
+                    None</td>
+                <td>
+                    Id of the customer</td>
+            </tr>
+            <tr>
+                <td>
+                    All Partially Received 
+                </td>
+                <td>
+                    false
+                </td>
+                <td>
+                    It displays the partially received SKUs i.e. few SKUs are still to be received back
+                    from Customer and where the data is not entered completely.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                   Specific Receipt Number
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                    It shows the SKU details for the specified Receipt or Return number.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Authorization Number</td>
+                <td>
+                    None</td>
+                <td>
+                    Return Authorization number</td>
+            </tr>
+            <tr>
+                <td>
+                    Completed between dates
+                </td>
+                <td>
+                    Last seven days period
+                </td>
+                <td>
+                    Show the details of SKUs which were returned back for last seven days from the specified
+                    date.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Returns by Style</td>
+                <td>
+                    false</td>
+                <td>
+                For displaying the returns by style. </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>1 second</p>
+    <p>
+        The query exhibits linear performance with respect to the number of SKUs in dem_returns.
+        There is full scan on table dem_returns, dem_returns_detail, cust and master_style
+        and&nbsp; master_style for a particular Receipt Number. The need of join to detail
+        and join to master has been depreciated. We are using manual joins in this report.
+        The query selected the 67 qualified records in <b>.23</b> seonds for partially enetered
+        records.&nbsp;
+    </p>
+    <h2>
+        Behavior Change</h2>
+    <ol>
+        <li>
+            Completed date filter can now be used with other filters as well. </li>
+        <li>
+            Provided Customer id and Authorization number filters.</li>
+        <li>
+            Label column is removed from master.</li>
+        <li>
+            Now you can see returns by style.</li>
+        <li>
+            Now report can be exclusively run for the given Authorization Number. In previous version one additional filter was also required to see returns for an authorization number.</li>
+    </ol>
+    <h2>
+        Issues</h2>
+    <h2>
+        Prerequisites</h2>
+            <h4>
+                Private synonyms requried for the tables:
+            </h4>
+            <pre>
+<code>DEM_RETURNS,<br />DEM_RETURNS_DETAIL,<br /> MASTER_STYLE,<br />CUST </code></pre>
+            
+                    <h4>
+                        Script to create the synonyms:</h4>
+     <pre>
+CREATE OR REPLACE SYNONYM DEM_RETURNS FOR DCMS4.DEM_RETURNS; 
+CREATE OR REPLACE SYNONYM DEM_RETURNS_DETAIL FOR DCMS4.DEM_RETURNS_DETAIL;
+CREATE OR REPLACE SYNONYM MASTER_STYLE FOR DCMS4.MASTER_STYLE;
+CREATE OR REPLACE SYNONYM CUST FOR DCMS8.CUST;</pre>
+               
+            <h4>
+                App-Settings required:</h4>
+            <pre><code>No App-Settings required.</code></pre>
+      
+    <h2>
+        Parameter Technical Details</h2>
+    <ul>
+        <li>Partially Entered (Selected Date will be ignored): Check this to display the partially
+            received SKUs(SKUs which are still to be received from Customer and where the data
+            is not fully entered). </li>
+        <li>Specify Date: Completely entered on specified date this is a date range control.
+        </li>
+        <li>Receipt Number (Selected Date will be ignored): Enter the Receipt Number to see
+            SKU details</li></ul>
+    <h2>
+        Parameter Validation</h2>
+    <ul>
+        <li>
+        None:
+    </ul>
+        <h2>
+            Query&#39;s documentation:</h2>
+        <ul>
+            <li>Query: This single query retrieves the data for &#39;Partially Entered&#39; or &#39;New
+                Returns&#39; or &#39;Modified Returns&#39; and&nbsp; from tables dem_returns,dem_returns_detail,cust
+                and master_style for the specified date.
+                <pre> SELECT 
+       MAX(dem.received_date) AS received_date,
+       MAX(dem.returns_authorization_number) AS auth_number,
+       MAX(dem.complete_date) as complete_date,
+       MAX(dem.customer_id || ' : ' || mc.name) as customer_id,
+       MAX(dem.dm_date) as dm_date,
+       MAX(dem.reason_code) as reason_code,
+       MAX(dem.is_complete_return) as is_complete_return,
+       MAX(ms.label_id) as label_id,
+       MAX(dem.customer_store_id) as store_Id,
+       MAX(dem.dm_number) as dm_number,
+      <if c="$FROM_RECEIPT_DATE">MAX(dem.modified_complete_date)</if>
+      <else>NULL</else> AS modified_complete_date,
+       MAX(CASE
+              WHEN dem.is_complete_return IS NULL THEN
+              'No'
+              ELSE
+              'Yes'
+              END)AS STATUS,
+       MAX(dem.expected_pieces) AS expected_pieces,
+               <if c="$StyleValue='Y'">demdet.style as style,
+                   dem.receipt_number AS receipt_numbers,
+       null as color,
+       null as dimension,
+       null as sizes,
+               </if>
+               <else>dem.receipt_number AS receipt_numbers,
+       demdet.style as style,
+       demdet.color as color,
+       demdet.dimension as dimension,
+       demdet.sku_size as sizes,</else>
+       SUM(demdet.quantity) as quantity
+  FROM DEM_RETURNS dem
+  INNER JOIN DEM_RETURNS_DETAIL demdet ON DEM.RECEIPT_NUMBER = demdet.RECEIPT_NUMBER
+  LEFT OUTER JOIN MASTER_STYLE ms ON ms.STYLE = demdet.STYLE
+  LEFT OUTER JOIN cust mc ON dem.customer_id = mc.customer_id
+  WHERE 1 = 1
+   <if c="$is_partial='partial'">AND dem.is_complete_return IS NULL</if>
+   <if c="$FROM_RECEIPT_DATE">AND dem.is_complete_return IS NOT NULL AND 
+(trunc(dem.complete_date) between trunc(:FROM_RECEIPT_DATE) 
+   AND  trunc(:TO_RECEIPT_DATE))And dem.modified_complete_date is null</if>
+  <if>AND dem.receipt_number = :receipt_number</if>  
+  <if>and dem.customer_id = :customer_id</if>
+  <if>and dem.returns_authorization_number = :authorization_number</if>
+  GROUP BY <if c="$StyleValue='Y'">demdet.style, dem.receipt_number</if>
+               <else>dem.receipt_number,          
+           demdet.style,
+           demdet.color,
+           demdet.dimension,
+           demdet.sku_size</else>
+            </pre>
+
+            <h2>
+            Query&#39;s documentation:</h2>
+            <pre>
+             SELECT 
+       MAX(dem.received_date) AS received_date,
+       MAX(dem.returns_authorization_number) AS auth_number,
+       MAX(dem.complete_date) as complete_date,
+       MAX(dem.customer_id || ' : ' ||mc.name) as customer_id,
+       MAX(dem.dm_date) as dm_date,
+       MAX(dem.reason_code) as reason_code,
+       MAX(dem.is_complete_return) as is_complete_return,
+       MAX(ms.label_id) as label_id,
+       MAX(dem.customer_store_id) as store_Id,
+       MAX(dem.dm_number) as dm_number,
+      <if c="$FROM_RECEIPT_DATE">MAX(dem.modified_complete_date)</if>
+      <else>NULL</else> AS modified_complete_date,
+       MAX(CASE
+              WHEN dem.is_complete_return IS NULL THEN
+              'No'
+              ELSE
+              'Yes'
+              END)AS STATUS,
+       MAX(dem.expected_pieces) AS expected_pieces,
+               <if c="$StyleValue='Y'">demdet.style as style,
+                   dem.receipt_number AS receipt_numbers,
+       null as color,
+       null as dimension,
+       null as sizes,
+               </if>
+               <else>dem.receipt_number AS receipt_numbers,
+       demdet.style as style,
+       demdet.color as color,
+       demdet.dimension as dimension,
+       demdet.sku_size as sizes,</else>
+       SUM(demdet.quantity) as quantity
+  FROM DEM_RETURNS dem
+  INNER JOIN DEM_RETURNS_DETAIL demdet ON DEM.RECEIPT_NUMBER = demdet.RECEIPT_NUMBER
+  LEFT OUTER JOIN MASTER_STYLE ms ON ms.STYLE = demdet.STYLE
+  LEFT OUTER JOIN cust mc ON dem.customer_id = mc.customer_id
+  WHERE 1 = 1  
+   <if c="$FROM_RECEIPT_DATE">AND dem.is_complete_return IS NOT NULL AND 
+ (trunc(dem.modified_complete_date) between trunc(:FROM_RECEIPT_DATE) 
+   AND  trunc(:TO_RECEIPT_DATE) )</if> 
+   <if>and dem.customer_id = :customer_id</if>
+  <if>and dem.returns_authorization_number = :authorization_number</if>
+  GROUP BY <if c="$StyleValue='Y'">demdet.style,dem.receipt_number</if>
+               <else>dem.receipt_number,          
+               demdet.style,
+           demdet.color,
+           demdet.dimension,
+           demdet.sku_size</else>
+           </if>
+            </pre>
+            </li>
+        </ul>
+        <p>
+            The above query fetches the record for all types of&nbsp; filters (&#39;Partially
+            entered&#39; or &#39;Complete Returns&#39; and / or &#39;Modified Returns&#39; or
+            for a &#39;Receipt No.&#39;).
+        </p>
+        <h2>Validation details</h2>
+    <b>Query :</b> Below query is showing Return, return date, authorization number, Expected Pieces, customer id, DM Date, reason, Complete date, Store and DM# for specific Return number. 
+                <pre>
+SELECT DR.RECEIPT_NUMBER               AS "Return#",
+       DR.RECEIVED_DATE                AS "Return Date",
+       DR.RETURNS_AUTHORIZATION_NUMBER AS "Authorization",
+       DR.EXPECTED_PIECES              AS "Expected Pieces",
+       DR.CUSTOMER_ID                  AS "Customer id",
+       DR.DM_DATE                      AS "DM Date", 
+       DR.REASON_CODE                  AS "Reason", 
+       DR.COMPLETE_DATE AS "Completed Date",
+       DR.CUSTOMER_STORE_ID            AS "Store",
+       DR.DM_NUMBER AS "DM#"
+  FROM DEM_RETURNS DR
+ WHERE DR.RECEIPT_NUMBER = 'F90943';
+</pre>
+        <b>Query :</b> Bolow query is show only SKU and Label for specific Return  number. 
+        <pre>
+SELECT MST.LABEL_ID  AS "Label",
+       DRD.STYLE     AS "Style",
+       DRD.COLOR     AS "Color",
+       DRD.DIMENSION AS "Dimension",
+       DRD.SKU_SIZE  AS "SKU Size",
+       DRD.QUANTITY  AS "Qauntity"
+  FROM DEM_RETURNS_DETAIL DRD
+  LEFT OUTER JOIN MASTER_STYLE MST
+    ON DRD.STYLE = MST.STYLE
+ WHERE DRD.RECEIPT_NUMBER = 'F90943'
+        </pre>
+    <b>Query :</b>Below query is showing label Style wise label and quantity. If you checked checkbox of Show eturn by Style then we displays grid which will show only three column like Label , style and quantity column.
+<pre>
+ select d.style, 
+        sum(d.quantity) as "Quantity",
+        max(m.label_id) as "label"
+   from dem_returns_detail d
+   left outer join master_style m
+     on d.style = m.style
+  where d.receipt_number = 'F90938'
+  group by d.style
+</pre>
+</body>
+</html>

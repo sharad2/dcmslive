@@ -1,0 +1,363 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<GridViewEx>
+  <doc name="class">
+    <remarks>
+      <list type="table">
+        <listheader>
+          <term>Feature</term>
+          <description>Description</description>
+        </listheader>
+        <item>
+          <term>
+            Accessible Markup
+          </term>
+          <description>
+            Automatically generates THEAD, TBODY and TFOOT elements which are important for much of jquery functionality because
+            <see cref="UseAccessibleHeader"/> property is readonly and always true.
+          </description>
+        </item>
+        <item>
+          <term>
+            Two Row Headers
+          </term>
+          <description>
+            Normal grid view forces you to have one line headers. GridViewEx adds the ability to have two line headers.
+            The feature is implemented in <see cref="GridViewExHeaderCell" /> where you can find more details.
+          </description>
+        </item>
+        <item>
+          <term>
+            Automatic EmptyDataText
+          </term>
+          <description>
+            If the data source returns null, then no empty text is shown. If it returns a non null enumerable having no rows,
+            then the empty text is displayed. The default value of EmptyDataText is "No rows found".
+            You can override this automatic behavior by specifying an EmptyDataTemplate.
+
+          </description>
+        </item>
+        <item>
+          <term>
+            Single and multiple row selection
+          </term>
+          <description>
+            You can enable the user to select rows and then find out which rows were selected using javascript or after postback
+            by setting the <see cref="Selectable"/> property.
+          </description>
+        </item>
+        <item>
+          <term>
+            Matrix Columns.
+          </term>
+          <description>
+            You can transform the results of most queries into a matrix format.
+            
+          </description>
+        </item>
+        <item>
+          <term>
+            Enhanced Sorting.
+          </term>
+          <description>
+            You can sort on multiple columns. You can control the sort expression for descending sorts.
+            You can specify <see cref="DefaultSortExpression" /> which will automatically pass the sort expression
+            to your data source and also display sort icons in column header.
+          </description>
+        </item>
+        <item>
+          <term>
+            Master Detail Grids
+          </term>
+          <description>
+            <c>GridViewEx</c> can display the data in a master detail format. You specify the master columns and
+            the grid will display a header whenever the values within the master column changes. See
+            <see cref="ShowExpandCollapseButtons" /> for an explanation and example. The feature is implemented
+            in <see cref="GridViewExMasterRow" />.
+          </description>
+        </item>
+        <item>
+          <term>
+            Convenient Client Scripting
+          </term>
+          <description>
+            As applications become more ajaxified, client script manipulation of table data becomes important.
+            GridViewEx is able to generate client script functions to help you manipulate data in individual rows and cells.
+            For more information on this topic see <a href="a91c2ce7-8118-4bcf-ab6f-4f00a86cfd8d.htm">GridViewExWidget</a>.
+          </description>
+        </item>
+        <item>
+          <term>
+            PopupRowMenu
+          </term>
+          <description>
+            You associate a row menu with each row of the grid. The menu pops up when the user hovers on the row.
+            You decide what items the menu should contain and what should happen when the item is clicked.
+            For details <see cref="RowMenuItem"/> class.
+
+          </description>
+        </item>
+        <item>
+          <term>
+            Grand Totals and Subtotals
+          </term>
+          <description>
+            <see cref="EclipseLibrary.Web.UI.MultiBoundField" />,
+            <see cref="EclipseLibrary.Web.SiteStructure.SiteHyperLinkField" /> and most of the other custom <c>DataControlField</c>
+            derived classes implement the <see cref="INeedsSummaries" /> interface. This means that <c>GridViewEx</c>
+            can automatically display column totals for these fields. See <see cref="INeedsSummaries" /> for details and examples.           
+          </description>
+        </item>
+        <item>
+          <term>
+            View State
+          </term>
+          <description>
+By default <c>EnableViewState</c> is set false. If you turn it on then data keys and page index is saved along with
+view state of all embedded rows. This is a heavy expense so you should not normally turn it on. You need to turn it
+on only if you have editable controls within the grid; or you want to access <see cref="SelectedIndexes" /> after postback.
+Notice that if view state is not enabled (the default), you will always see the first page after postback unless your program
+changes the <c>PageIndex</c>. With view state enabled, you will see the last selected page after postback. This can be surprising
+if you are deleting rows because the last selected page may now no longer exist. Therefore you must remember to set PageIndex to 0
+after deleting rows.
+          </description>
+        </item>        
+      </list>
+
+      Sharad 24 Jul 2009: Displaying nothing when sum evaluates to null
+      Sharad 18 Aug 2009: Paging and sorting do not cause multiple data binds. We had to sacrifice OnSorting and OnPageIndexChanged
+      events to achieve this.
+      Sharad 3 Sep 2009: CreateCell() function now takes cell type as parameter
+      Sharad 5 Sep 2009: Added support for ValueAverage calculations
+      Sharad 22 Sep 2009: Setting EnableViewState=false by default
+      Sharad 7 Oct 2009: Automatically handling update exceptions.
+      Sharad 5 Nov 2009: SelectedValues property gives a comma seperated list of all selected data keys
+      Sharad 17 Dec 2009: If EnableViewState=true, grid must be within server form. DataKeys are not preserved after
+      postback if EnableViewState=false. This differs from the base class behavior which stores data keys in control
+      state.
+    </remarks>
+  </doc>
+  <doc name="Selectable">
+    <remarks>
+      <para>
+        Based on the jQuery UI Selectable plugin, it allows elements to be selected by dragging a box 
+        (sometimes called a lasso) with the mouse over the elements.
+        Also, elements can be selected by click or drag while holding the Ctrl/Meta key, 
+        allowing for multiple (non-contiguous) selections.
+        You can add a <see cref="SelectCheckBoxField"/> column to display a checkbox against each row
+        which can also be used to select the row.
+      </para>
+      <para>
+        For single row selection mode, you can set the <see cref="GridViewExSelectable.Cancel" /> property to
+        <c>*</c>. Special code exists in <c>gridViewEx</c> widget to enable this behavior.
+      </para>
+      <para>
+       If <c>EnableViewState</c> is true,
+        then the selected rows will be posted back and you can access it on the server side using the
+        <see cref="SelectedIndexes" /> property. This example button event handler deletes all selected rows.
+      </para>
+      <code>
+        <![CDATA[
+protected void btnDeleteSelected_Click(object sender, EventArgs e)
+{
+  foreach (int index in gv.SelectedIndexes)
+  {
+    // Assume that pickslip_id is a data key of this grid
+    string pickslipId = gv.DataKeys[index][0].ToString();
+    DeletePickslip(pickslipId);   // Helper function not shown here
+  }
+}
+        ]]>
+      </code>
+      <para>
+        You can prevent a row from becoming selectable by assigning the ui-state-disabled class to it.
+        This is useful if you do not want to allow the user to select boxes which have already been completed.
+        In this sample code, we assign the ui-state-disabled class to all those rows which correspond to picking status
+        TRANSFERED.
+        <code>
+          <![CDATA[
+protected void gvBoxes_RowDataBound(object sender, GridViewRowEventArgs e)
+{
+    switch (e.Row.RowType)
+    {
+        case DataControlRowType.DataRow:
+            string pickingStatus = DataBinder.Eval(e.Row.DataItem, "picking_status", "{0}");
+            if (pickingStatus == "TRANSFERED")
+            {
+                e.Row.CssClass = "ui-state-disabled";
+            }
+            break;
+    }
+}  
+  ]]>
+        </code>
+      </para>
+      <para>
+        We have noticed sluggish performance when the table contains more than a few hundred rows.
+        Avoid using this feature for large tables.
+      </para>
+    </remarks>
+  </doc>
+  <doc name="DefaultSortExpression">
+    <remarks>
+      <para>
+        The sorting features of GridViewEx have been built with these design goals in mind.
+      </para>
+      <list type="bullet">
+        <item>
+          <description>Every list displayed should be sorted in some reasonable way.</description>
+        </item>
+        <item>
+          <description>It should be abundantly clear to the user what the sort criterion is.</description>
+        </item>
+      </list>
+      <para>
+        To achieve these goals, <c>GridViewEx</c> allows you to specify which column or columns
+        it should be initially sorted on by setting the <c>DefaultSortExpression</c>. To enforce
+        this goal, GridViewEx passes this sort expression to the data source to ensure that
+        the sorting infact does happen. No error is raised
+        if you do not specify <c>DefaultSortExpression</c> but this should be a relatively rare occurence.
+      </para>
+      <para>
+        If <c>AllowSorting</c> property of the grid is <c>false</c>, the <c>DefaultSortExpression</c> is not passed to the data source.
+        In this case, it is used only to display sort icons in column headers.
+      </para>
+      <para>
+        The sort criterion is made obvious to the user by displaying sort icons in
+        the header text of columns on which the grid is sorted. The <c>DefaultSortExpression</c>
+        you specify is matched against the <see cref="SortExpression" /> of each individual column. Wherever
+        a match is found, the associated column displays a sort icon in its header text.
+      </para>
+      <para>
+        <c>DefaultSortExpression</c> is also used for enabling master detail output as explained in <see cref="ShowExpandCollapseButtons" />.
+      </para>
+    </remarks>
+    <example>
+      <para>
+        In the following example, descending sort icons will be displayed in the header
+        for columns Style, Color, Dimension and Size. You can also control where the <c>DESC</c>
+        clause will appear when your sort expression consists of multiple columns. In the
+        following example, the placeholder {0} will be replaced by DESC when descending
+        sort is requested. For ascending sorts, {0} will be replaced with an empty string.
+        Specifying {0} is optional and it is presumed to be at the end of
+        the sort expression if it is not explicitly specified.
+      </para>
+      <code>
+        <![CDATA[
+<jquery:GridViewEx runat="server" ID="gv" DataSourceID="ds"
+    AllowSorting="true" DefaultSortExpression="style {0},color {0:I},dimension {0},sku_size {0} NULLS LAST"
+	SortDirection="Ascending">
+    <Columns>
+        <eclipse:MultiBoundField DataFields="style,color,dimension,sku_size" HeaderText="SKU"
+        SortExpression="style {0},color {0:I},dimension {0},sku_size {0} NULLS LAST"
+	DataFormatString="..." />
+        ...
+    </Columns>
+</jquery:GridViewEx>        
+        ]]>
+      </code>
+      <para>
+        The sort icon is displayed in the column where <c>DefaultSortExpression</c> exactly matches the <c>SortExpression</c>.
+        Even extra spaces are not tolerated.
+      </para>
+      <para>
+        If your grid is displaying style and color in different columns, then the <c>DefaultSortExpression</c>
+        can specify the <c>SortExpression</c> of both columns seperated by semicolon. Then icons will display on both
+        columns.
+      </para>
+      <code>
+        <![CDATA[
+<jquery:GridViewEx runat="server" ID="gv" DataSourceID="ds"
+    AllowSorting="true" DefaultSortExpression="style;color"
+	SortDirection="Ascending">
+    <Columns>
+        <eclipse:MultiBoundField DataFields="style" HeaderText="Style"
+          SortExpression="style" />
+        <eclipse:MultiBoundField DataFields="color" HeaderText="Color"
+          SortExpression="color" />
+        ...
+    </Columns>
+</jquery:GridViewEx>         
+        
+        
+        ]]>
+      </code>
+    </example>
+  </doc>
+  <doc name="ShowExpandCollapseButtons">
+    <remarks>
+
+    </remarks>
+  </doc>
+  <doc name="PopupRowMenu">
+    <remarks>
+      <para>
+        Popup Row Menu is a replacement of Hover menu and it can be attached to any grid, to display additional items.
+        When the user moves the mouse cursor over a grid row the menu is displayed.
+      </para>
+    </remarks>
+    <example>
+      <para>
+        In the following example, it is used in a grid. The bucket_id is passed using the datakey.Ensure that you have specified
+        DataKeyNames property in GridViewEx. In the example below we have mentioned DataKeyNames="bucket_id".
+      </para>
+      <code>
+        <![CDATA[
+<jquery:GridViewEx ID="gvBucket" DataSourceID="dsBucket" AutoGenerateColumns="False"
+        runat="server" AllowSorting="true" AllowPaging="true"
+        DataKeyNames="bucket_id" ClientIdSameAsId="true">
+        <RowMenuItems>
+            <jquery:RowMenuItem Text="PO List" NavigateUrl="~/Apps/Bucket/PoList.aspx?bucket_id={0}" />
+            <jquery:RowMenuItem Text="Pickslip List" NavigateUrl="~/Apps/Bucket/PickslipList/PickslipList.aspx?bucket_id={0}" />
+        </RowMenuItems>        
+        <Columns>
+            <jquery:SelectCheckBoxField />
+            <eclipse:SequenceField />
+            <asp:TemplateField HeaderText="Wave" SortExpression="bucket_id">
+                <ItemTemplate>
+                    <%#Eval("bucket_id") %>
+                </ItemTemplate>
+            </asp:TemplateField>
+             </Columns>
+    </jquery:GridViewEx>        
+        ]]>
+      </code>
+      <para>
+        It also provides you client event "OnClientClick" to handle advanced schenarios.
+        For example you can load a dialog showing box details in following way.
+      </para>
+      <code>
+        <![CDATA[
+      
+ <jquery:GridViewEx runat="server" ID="gvBoxes" DataKeyNames="ucc128_id_key,pickslip_id"
+        DataSourceID="dsBoxes" AutoGenerateColumns="false" ClientIdSameAsId="true">
+            <Selectable EnableClientState="true" OnSelectableStop="/>
+            <RowMenuItems>
+                <jquery:RowMenuItem Text="Box Details...." OnClientClick="function(keys){
+            $(dlgBoxDetails).ajaxDialog('option', 'data', {ucc_id_list: keys[0]})
+            .dialog('option', 'title', 'Box Details')
+            .ajaxDialog('load');
+                                    }" />
+            </RowMenuItems>
+            <Columns>
+                <jquery:SelectCheckBoxField>
+                </jquery:SelectCheckBoxField>
+                <eclipse:SequenceField />
+                <asp:HyperLinkField DataTextField="pickslip_id" DataNavigateUrlFields="pickslip_id"
+                    DataNavigateUrlFormatString="~/Apps/Bucket/PickSlipDetails/PickSlipDetails.aspx?pickslip_id={0}"
+                    HeaderText="Pickslip" SortExpression="pickslip_id" ItemStyle-HorizontalAlign="Right" />
+                <asp:TemplateField HeaderText="UCC ID" ItemStyle-Wrap="false" SortExpression="ucc128_id_key"
+                    AccessibleHeaderText="ucc128_id">
+                    <ItemTemplate>
+                        <jquery:AjaxData runat="server" Name="ucc_id_list" RenderVisible="true">
+                            <%# Eval("ucc128_id_key") %>
+                        </jquery:AjaxData>
+                     
+                    </ItemTemplate>
+                </asp:TemplateField>
+            </Columns>
+</jquery:GridViewEx>       
+        ]]>
+      </code>
+    </example>
+  </doc>
+</GridViewEx>

@@ -1,0 +1,507 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0084)http://w3chile/xtremereporter/ReportDoc.aspx -->
+<html>
+<head>
+    <title>Report Documentation</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="GENERATOR" content="MSHTML 8.00.6001.18702">
+    <meta name="CODE_LANGUAGE" content="C#">
+    <meta name="vs_defaultClientScript" content="JavaScript">
+    <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
+
+    <script type="text/javascript">
+        /*
+        Toggles the visibility of the passed divToToggle object.
+        */
+        function toggleVisibility(oVisibilityToggle, oInnerTextToggle) {
+            if (oVisibilityToggle.style.display == 'none') {
+                oVisibilityToggle.style.display = '';
+                oInnerTextToggle.innerText = "Hide Technical Documentaion";
+            }
+            else {
+                oVisibilityToggle.style.display = 'none';
+                oInnerTextToggle.innerText = "View Technical Documentaion"
+            }
+        }
+
+    </script>
+
+    <style type="text/css">
+        .style1
+        {
+            font-weight: bold;
+        }
+        .style2
+        {
+            text-align: center;
+            font-weight: bold;
+        }
+        .style3
+        {
+            width: 110px;
+        }
+        .style4
+        {
+            text-align: center;
+            font-weight: bold;
+            width: 239px;
+        }
+        .style5
+        {
+            width: 239px;
+        }
+        .style6
+        {
+            text-align: center;
+            font-weight: bold;
+            width: 312px;
+        }
+        .style7
+        {
+            width: 312px;
+        }
+    </style>
+</head>
+<body>
+    <form id="Form1" method="post" name="Form1">
+    <h1 align="center">
+        &nbsp;</h1>
+        <h1 align="center">
+            30.19 : Manifest by Plant Report</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    $Revision: 5596 $<br />
+    Reviewed By: Manmohan Bisht<br />
+    Status : Reviewed<br />
+        Tested By : Hemant K. Singh
+    <p>
+        The report displays carton details coming from sewing plant for a specific date
+        or date range.
+    </p>
+    <h2>
+        Overview</h2>
+    <p>
+        The report displays inf4ormation about cartons and carton quantity coming from sewing
+        plant for a specify date or date range. This report gives all information about
+        cartons which are coming from sewing plant or already recieved from sewing plant.
+        This report will displays number of cartons and quantities of SKUs with it&#39;s
+        sewing plant, shipment id and process date. This report also displays the carton
+        information along with SKU details and pieces stored in the cartons against a particular
+        sewing plant code. by default this report is sorted on Sewing Plant Code and Shipment
+        Id in ascending order.</p>
+    <h2>
+        Algorithm</h2>
+    Get all information of manifest from the src_carton_intransit table.
+    <h3>
+        Output</h3>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td style="width: 25%" align="center">
+                    <b>Item</b>
+                </td>
+                <td style="width: 20%" align="center">
+                    <b>Summary</b>
+                </td>
+                <td style="width: 10%" align="center">
+                    <b>Sort Sequence</b>
+                </td>
+                <td style="width: 35%" align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Sewing Plant Code
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    1
+                </td>
+                <td>
+                    Sewing plant from where cartons are coming to DC. Sewing Plant is coming in master
+                    table when details of sku to be seen and showing as a ordinary column when non details
+                    information to be seen.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Shipment ID
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    2
+                </td>
+                <td>
+                    Shipment Id for which cartons shipped.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Process Date
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    &nbsp;
+                </td>
+                <td>
+                    Insert Date of this process.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    No. of Cartons
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="center">
+                    &nbsp;
+                </td>
+                <td>
+                    Number of cartons.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pieces
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="center">
+                    &nbsp;
+                </td>
+                <td>
+                    Quantity stored in cartons.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>
+        In Detail View</h3>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tr>
+            <td class="style6">
+                Item
+            </td>
+            <td class="style4">
+                Summary
+            </td>
+            <td align="center" class="style3">
+                <b>Sort Sequence</b>
+            </td>
+            <td class="style2">
+                Detail
+            </td>
+        </tr>
+        <tr>
+            <td class="style7">
+                Sewing Plant Code
+            </td>
+            <td class="style5">
+                No
+            </td>
+            <td align="center" class="style3">
+                1
+            </td>
+            <td>
+                Sewing plant from where cartons are coming to DC. Sewing Plant is coming in master
+                table when details of sku to be seen and showing as a ordinary column when non details
+                information to be seen.
+            </td>
+        </tr>
+        <tr>
+            <td class="style7">
+                Shipment
+            </td>
+            <td class="style5">
+                No
+            </td>
+            <td align="middle" class="style3">
+                2
+            </td>
+            <td>
+                Shipment Id for which cartons shipped.
+            </td>
+        </tr>
+        <tr>
+            <td class="style7">
+                Source Order
+            </td>
+            <td class="style5">
+                No
+            </td>
+            <td align="center" class="style3">
+                &nbsp;
+            </td>
+            <td>
+                Insert Date of this process.
+            </td>
+        </tr>
+        <tr>
+            <td class="style7">
+                Style
+            </td>
+            <td class="style5">
+                No
+            </td>
+            <td align="center" class="style3">
+                &nbsp;
+            </td>
+            <td>
+                Style of SKU.
+            </td>
+        </tr>
+        <tr>
+            <td class="style7">
+                Color
+            </td>
+            <td class="style5">
+                No
+            </td>
+            <td align="center" class="style3">
+                &nbsp;
+            </td>
+            <td>
+                Color of SKU.
+            </td>
+        </tr>
+        <tr>
+            <td class="style7">
+                Dimension
+            </td>
+            <td class="style5">
+                No
+            </td>
+            <td align="middle" class="style3">
+                &nbsp;
+            </td>
+            <td>
+                Dimension of SKU.
+            </td>
+        </tr>
+        <tr>
+            <td class="style7">
+                Size
+            </td>
+            <td class="style5">
+                No
+            </td>
+            <td align="center" class="style3">
+                &nbsp;
+            </td>
+            <td>
+                Size of SKU.
+            </td>
+        </tr>
+        <tr>
+            <td class="style7">
+                No. Of Cartons
+            </td>
+            <td class="style5">
+                Sum
+            </td>
+            <td align="center" class="style3">
+                &nbsp;
+            </td>
+            <td>
+                Carton count of the SKU in the shipment
+            </td>
+        </tr>
+        <tr>
+            <td class="style7">
+                Pieces
+            </td>
+            <td class="style5">
+                Sum
+            </td>
+            <td align="center" class="style3">
+                &nbsp;
+            </td>
+            <td>
+                Pieces in the cartons
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td style="width: 20%" align="center">
+                    <b>Name</b>
+                </td>
+                <td style="width: 20%" align="center">
+                    <b>Default</b>
+                </td>
+                <td style="width: 60%" align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    From Date
+                </td>
+                <td>
+                    Last 7 days.
+                </td>
+                <td>
+                    The date from which you want to display informaion about manifest.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    To Date
+                </td>
+                <td>
+                    Current Date.
+                </td>
+                <td>
+                    The date to which you want to display informaion about manifest.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Detail
+                </td>
+                <td>
+                    false
+                </td>
+                <td>
+                    This parameter will help you to see detail of SKUs.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>2 Sec.</p>
+    This report is showing linear performance with respect to table src_carton_intransit.
+    There is index range scan on insert_date in table src_carton_intransit table.
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>No behavior changed.</li></ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>None</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following table is requried</p>
+    <p>
+        src_carton_intransit<br />
+        <br />
+        Use the below script to create the synonyms<br />
+        <br />
+        create or replace synonym src_carton_intransit for dcms4.src_carton_intransit;<code>
+            <br />
+        </code>
+    </p>
+    <h2>
+        Query's documentation:</h2>
+    <p>
+        Master_table</p>
+    <ul>
+        <li>In this query, we are using src_carton_intransit tables to display sewing_plant_code,number_sewing_plant_code,shipment_id
+            ,insert_date,no_of_cartons and quantity.
+            <pre>SELECT /*+ index (src CTNINTRAN_INSERT_DATE_I)*/src.sewing_plant_code AS sewing_plant_code,
+       src.shipment_id AS shipment_id,
+       trunc(src.insert_date) AS insert_date,
+       count(distinct(src.carton_id)) AS no_of_cartons,
+       sum(src.quantity) AS quantity
+  FROM src_carton_intransit src
+ WHERE src.insert_date &gt;= :from_date
+   AND src.insert_date &lt; :to_date + 1
+ GROUP BY src.sewing_plant_code, src.shipment_id, trunc(src.insert_date)
+</pre>
+        </li>
+    </ul>
+    <p>
+        Child_table</p>
+    <ul>
+        <li>In this query, we are using src_carton_intransit tables to display sewing_plant_code,number_sewing_plant_code,shipment_id
+            ,no_of_cartons,pieces and SKUs.
+            <pre>SELECT /*+ index (src CTNINTRAN_INSERT_DATE_I)*/ src.sewing_plant_code AS sewing_plant_code,
+       src.shipment_id AS shipment_id,
+       COUNT(distinct(src.carton_id)) AS no_of_cartons,
+       SUM(src.quantity) AS pieces,
+       src.style AS style,
+       src.color AS color,
+       src.dimension AS dimension,
+       src.sku_size AS sku_size,
+       src.source_order_prefix || src.source_order_id AS source_order 
+  FROM src_carton_intransit src
+ WHERE src.insert_date &gt;= :FROM_DATE
+   AND src.insert_date &lt; :TO_DATE + 1
+ GROUP BY src.sewing_plant_code ,src.shipment_id ,src.style ,src.color , src.dimension ,src.sku_size , src.source_order_prefix || src.source_order_id 
+            </pre>
+        </li>
+    </ul>
+    <p>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </p>
+    <p>
+        &nbsp;</p>
+    <p>
+        &nbsp;</p>
+    <p>
+        &nbsp;</p>
+    <p style="margin-left: 40px">
+        <br />
+    </p>
+        <h3>Validation Query</h3>
+        <b>QUERY : below Query is showing Sewing_plant_code, carton count and Pieces.</b>
+        <pre>
+SELECT S.SHIPMENT_ID,
+       S.SEWING_PLANT_CODE,
+       TRUNC(S.INSERT_DATE),
+       COUNT(DISTINCT S.CARTON_ID) AS "No. Of Carton",
+       SUM(S.QUANTITY) AS "Pieces"
+  FROM SRC_CARTON_INTRANSIT S
+ WHERE S.INSERT_DATE > = TO_DATE('1/1/2011', 'MM/DD/YYYY')
+   AND S.INSERT_DATE < TO_DATE('1/3/2011', 'MM/DD/YYYY') + 1
+   and S.SHIPMENT_ID ='36572'
+ GROUP BY S.SEWING_PLANT_CODE, S.SHIPMENT_ID, TRUNC(S.INSERT_DATE)
+        </pre>
+        <b>
+            QUERY: Below query is displaying SKU
+        </b>
+        <pre>
+            SELECT /*+ index (src CTNINTRAN_INSERT_DATE_I)*/
+ src.sewing_plant_code AS sewing_plant_code,
+ src.shipment_id AS shipment_id,
+ src.source_order_prefix || src.source_order_id AS source_order,
+ COUNT(distinct(src.carton_id)) AS no_of_cartons,
+ SUM(src.quantity) AS pieces,
+ src.style AS style,
+ src.color AS color,
+ src.dimension AS dimension,
+ src.sku_size AS sku_size
+  FROM src_carton_intransit src
+ WHERE src.insert_date > = to_date('1/1/2011', 'mm/dd/yyyy')
+   AND src.insert_date < to_date('1/3/2011', 'mm/dd/yyyy') + 1
+   and src.sewing_plant_code = '17'
+   and src.shipment_id = '36572'
+ GROUP BY src.sewing_plant_code,
+          src.shipment_id,
+          src.style,
+          src.color,
+          src.dimension,
+          src.sku_size,
+          src.source_order_prefix || src.source_order_id
+
+        </pre>
+    </form>
+</body>
+</html>

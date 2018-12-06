@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<INeedsSummaries>
+  <doc name="class">
+    <remarks>
+      <para>
+        Many controls in Eclipse Library implement INeedsSummaries to show Totals. Some of these are MultiBoundField,
+        SiteHyperLinkField,and HyperLinkFieldEx.
+        First you specify <see cref="DataSummaryCalculation" /> property this will automatically show footer values depending
+        upon the option you specify.For example if you specify DataSummaryCalculation="ValueSummation" then it will sum up the
+        values in the fields and show the calculated value in the footer.See <see cref="SummaryCalculationType" /> for more details.
+        You can specify DataFooterFormatString to control the formatting of the output.
+      </para>
+      <para>
+        It is also useful to access the computed totals through server code and then perhaps perform other calculations
+        on these totals as demonstrated in <see cref="SummaryValues" />.
+      </para>
+    </remarks>
+  </doc>
+  <doc name="SummaryCalculationType">
+    <remarks>
+      <para>
+        When you specify SummaryCalculationType = "ValueSummation" then values
+        returned by the data source would be summed up to compute the total. In the example below there is a column in the grid
+        named Extended Price and we want to show its sum. All we have to do is set property DataSummaryCalculation="ValueSummation"
+        and grid automatically shows the sum in the footer.
+        <code>
+          <![CDATA[
+            <eclipse:MultiBoundField DataFields="extended_price" HeaderText="Extended Price"
+                    ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right" HeaderStyle-Wrap="false"
+                    DataSummaryCalculation="ValueSummation" />
+  ]]>
+        </code>
+      </para>
+      When you specify SummaryCalculationType = "DataSource" then GridViewEx will assume that that the summary calculation has alredy been performed by
+      the data source so the value of the field from one of the rows will be displayed as is in the footer cell.
+      In the example below the query selects footer_count_styles from src_carton table.
+
+      <para>
+
+        <code>
+          <![CDATA[
+       SELECT ctn.carton_id AS carton_id,
+       COUNT(DISTINCT ctndet.style) over() AS footer_count_styles,
+        FROM src_carton ctn;
+          
+          ]]>
+
+        </code>
+        <code>
+          <![CDATA[
+            <eclipse:MultiBoundField DataFields="style" HeaderText="Style" SortExpression="style"
+                DataFooterFields="footer_count_styles" DataFooterFormatString="{0:N0} styles"
+                DataSummaryCalculation="DataSource">
+            </eclipse:MultiBoundField>
+            
+  ]]>
+        </code>
+      </para>
+      <para>
+        If the SummaryCalculationType ="ValueWeightedAverage" you specify two footer fields. Grid computes sum(field1)/sum(field2).
+        It is useful for calculating percentages and weighted averages. Consider the query below which shows pieces ordered and
+        pieces shipped for each PO,customer. We want to show percentage of pieces shipped and pieces ordered for each row and also for
+        total pieces of the customer in the footer.
+      </para>
+      <code>
+        <![CDATA[
+          SELECT  ps.customer_order_id as po_id,		    
+			    sum(ps.total_quantity_ordered) as pieces_ordered,
+			    sum(ps.total_quantity_shipped)as pieces_shipped,
+			    cust.name as customer_name,
+			    round((sum(ps.total_quantity_shipped)/sum(ps.total_quantity_ordered)),4)as pct_pieces_shp_ord
+	       FROM dem_pickslip ps
+         where cust.customer_id = 2349
+         GROUP BY ps.customer_order_id,
+				  cust.NAME	
+          ]]>
+      </code>
+      <para>
+        Following is the markup for showing the % Pieces Shipped column.As you can see in example below we have specified
+        DataFooterFields="pieces_shipped,pieces_ordered"  because we want to show percentage of pieces shipped to the customer
+        against what was ordred, this will be shown in the footer of this column. Notice that property DataFields has been set as
+        DataFields="pct_pieces_shp_ord" and this is calculated in the query above, this will show percentages for each row.
+      </para>
+      <code>
+        <![CDATA[
+   <eclipse:MultiBoundField DataFields="pct_pieces_shp_ord" SortExpression="pct_pieces_shp_ord"
+          HeaderText="% Pieces Shipped" DataSummaryCalculation="ValueWeightedAverage" DataFormatString="{0:P2}"
+          DataFooterFields="pieces_shipped,pieces_ordered" DataFooterFormatString="{0:P2}"
+           <ItemStyle HorizontalAlign="Right" />
+           <FooterStyle HorizontalAlign="Right" />
+    </eclipse:MultiBoundField>           
+            ]]>
+      </code>
+    </remarks>
+  </doc>
+  <doc name="SummaryValues">
+    <remarks>
+    </remarks>
+    <example>
+      <para>
+        To access a total using server code, you should hook up to grid's DataBound event. The example below help you to access the
+        column with its specified "AccessibleHeaderText" property and then its total in the footer.
+      </para>
+      <para>
+        <c>col.SummaryValues[0]</c>
+        contains the array of summaries. In our case there is only one summary value, i.e. sum of the column-values, so we specified "[0]" as
+        array-index.
+      </para>
+      <code>
+        <![CDATA[
+        protected void gvCarriers_DataBound(object sender, EventArgs e)
+        {
+            var col = gvCarriers.Columns.OfType<MultiBoundField>().First(p => p.AccessibleHeaderText == "unassigned_pickslips");
+            imgAllAssigned.Visible = (col.SummaryValues[0] == 0);
+        }
+        ]]>
+      </code>
+    </example>
+  </doc>
+</INeedsSummaries>

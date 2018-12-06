@@ -1,0 +1,415 @@
+﻿<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        .style10
+        {
+            width: 159px;
+        }
+        .style11
+        {
+            text-align: center;
+        }
+        .style12
+        {
+            width: 159px;
+            text-align: center;
+        }
+        .style15
+        {
+            width: 136px;
+            text-align: center;
+        }
+        .style16
+        {
+            width: 136px;
+        }
+        .style17
+        {
+            width: 104px;
+            text-align: center;
+        }
+        .style18
+        {
+            width: 104px;
+        }
+        .style19
+        {
+            width: 68px;
+            text-align: center;
+        }
+        .style20
+        {
+            width: 68px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        R110<b>.106 
+        : Pickslip detail for specific customer</b></h1>
+    <h4>
+        Author : Sanjeev kumar</h4>
+    $Revision: 4632 $<br />
+    Status: Reviewed
+    <h2>
+        Overview</h2>
+    <p>
+        Report Shows the Detail of pickslip for passed customer and pickslip status</p>
+    <h4>
+        Algorithm</h4>
+    <p>
+        Get information of&nbsp; the pickslip, Retrieved the status,&nbsp; picklsip, 
+        PO ,order pieces and order dollars from ps. In order bucket status 
+        and its order quantity and order dollars form dem_picklsip and 
+        dem_pickslip_detail. count of SKU ,shipped pieces and shipped dollars from 
+        boxdet and box. table.</p>
+    <h3>
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td class="style15">
+                <b>Item</b>
+            </td>
+            <td class="style17">
+                <b>Summary</b>
+            </td>
+            <td class="style19">
+                <b>Sort Sequence</b>
+            </td>
+            <td class="style11">
+                <b>Details</b>
+            </td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Building</td>
+            <td class="style18">
+                No</td>
+            <td class="style20">
+                1</td>
+            <td>
+                Showing list of pickslip building wise.</td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Pickslip</td>
+            <td class="style18">
+                NO</td>
+            <td class="style20">
+                &nbsp;</td>
+            <td>
+                Pickslip of the customer.</td>
+        </tr>
+        <tr>
+            <td class="style16">
+                PO</td>
+            <td class="style18">
+                NO</td>
+            <td class="style20">
+                &nbsp;</td>
+            <td>
+                Purchase order of the customer</td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Ordered|Pieces</td>
+            <td class="style18">
+                SUM</td>
+            <td class="style20">
+                &nbsp;</td>
+            <td>
+                Number of Pieces Ordered
+            </td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Ordered|Dollars</td>
+            <td class="style18">
+                SUM</td>
+            <td class="style20">
+                &nbsp;</td>
+            <td>
+                Ordered amount
+            </td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Shipped|Pieces</td>
+            <td class="style18">
+                SUM</td>
+            <td class="style20">
+                &nbsp;</td>
+            <td>
+                Number of pieces shipped
+            </td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Shipped|Dollars</td>
+            <td class="style18">
+                SUM</td>
+            <td class="style20">
+                &nbsp;</td>
+            <td>
+                Shipped amount</td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Date|Start</td>
+            <td class="style18">
+                No</td>
+            <td class="style20">
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Date|DC Cancel </td>
+            <td class="style18">
+                No</td>
+            <td class="style20">
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td class="style16">
+                Date|Cancel</td>
+            <td class="style18">
+                No</td>
+            <td class="style20">
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        </table>
+    &nbsp;<h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td class="style12">
+                <b>Name</b>
+            </td>
+            <td class="style11">
+                <b>Default</b>
+            </td>
+            <td class="style11">
+                <b>Details</b>
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Customer
+                ID</td>
+            <td>
+                None
+            </td>
+            <td>
+                Id of the customer.&nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Customer DC</td>
+            <td>
+                None</td>
+            <td>
+                The DC of customer.</td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Customer Store</td>
+            <td>
+                None</td>
+            <td>
+                The store id of the customer.</td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Customer order type</td>
+            <td>
+                All</td>
+            <td>
+                    Order Type like 
+                All, Domestic,International </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Delivery Date</td>
+            <td>
+                Optional</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+    </table>
+    <h2>
+        Behavior Change</h2>
+    <h2>
+        Issues</h2>
+    No Known Issue. &nbsp;<br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        <strong>Private synonyms for the following table is requried</strong></p>
+    BOX,<br />
+    boxdet,<br />
+    PS,<br />
+    PO,<br />
+    Dem_pickslip,<br />
+    Dem_pickslip_detail<br />
+   <strong>The below script to create the synonyms</strong>
+       <p> Create or replace synonym box for dcms8.box;<br />
+        Create or replace synonym boxdet for dcms8.boxdet;<br />
+        Create or replace synonym PS for dcms8.PS;<br />
+        Create or replace synonym PO for dcms8.PO;<br />
+        Create or replace synonym Dem_pickslip for dcms4.Dem_pickslip;<br />
+        Create or replace synonym Dem_pickslip_detail for dcms4.Dem_pickslip_detail;<br />
+        </p>
+    <b>Following appSettings are required:</b>
+    <p>No used AppSetting in this report</p>
+    <h2>Parameter Validation</h2>
+    No special validations.
+    <h3>
+        Query&#39;s documentation:<br /></h3>
+        <pre>
+         WITH Q1 AS
+ (SELECT PS.PICKSLIP_ID AS PICKSLIP_ID,
+         MAX(PS.PO_ID) AS PO_ID,
+         SUM(BD.CURRENT_PIECES) AS SHIPPED_PIECES,
+         SUM((BD.CURRENT_PIECES * BD.EXTENDED_PRICE)) AS SHIPPED_DOLLARS,
+         MAX(PO.START_DATE) AS START_DATE,
+         MAX(PO.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+         MAX(PO.CANCEL_DATE) AS CANCEL_DATE,
+         MAX(PS.TOTAL_QUANTITY_ORDERED) AS ORDER_QUANTITY,
+         MAX(PS.TOTAL_DOLLARS_ORDERED) AS ORDER_DOLLARS
+    FROM PS
+    LEFT OUTER JOIN PO
+      ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+     AND PS.PO_ID = PO.PO_ID
+     AND PS.ITERATION = PO.ITERATION
+    LEFT OUTER JOIN BOX B
+      ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+    LEFT OUTER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+   WHERE PS.TRANSFER_DATE IS NULL
+     AND PS.PICKSLIP_CANCEL_DATE IS NULL
+     AND B.STOP_PROCESS_DATE IS NULL
+     AND BD.STOP_PROCESS_DATE IS NULL
+     <if>AND PS.CUSTOMER_ID = :customer_id</if>
+   <if c="$reporting_status != 'IN ORDER BUCKET'">and PS.REPORTING_STATUS =:REPORTING_STATUS</if> 
+   <if c="$reporting_status = 'IN ORDER BUCKET'"> and 1=2</if>
+   <if c="$customer_type='D'">AND PS.EXPORT_FLAG IS NULL</if>
+   <if c="$customer_type='I'">AND PS.EXPORT_FLAG = 'Y'</if>
+   <if c="$customer_type='B'"></if>
+   <if>AND po.start_date &gt;= CAST(:delivery_start_date AS DATE)</if>      
+   <if>AND po.start_date &lt;= CAST(:delivery_end_date AS DATE)</if>
+   GROUP BY PS.PICKSLIP_ID
+  
+  UNION ALL
+  
+  SELECT DP.PICKSLIP_ID AS PICKSLIP_ID,
+         MAX(DP.CUSTOMER_ORDER_ID) AS PO_ID,
+         NULL AS SHIPPED_PIECES,
+         NULL AS SHIPPED_DOLLARS,
+         MAX(DP.DELIVERY_DATE) AS START_DATE,
+         MAX(DP.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+         MAX(DP.CANCEL_DATE) AS CANCEL_DATE,
+         SUM(DPD.EXTENDED_PRICE * DPD.QUANTITY_ORDERED) AS ORDER_DOLLARS,
+         SUM(DPD.QUANTITY_ORDERED) AS ORDER_QUANTITY 
+    FROM DEM_PICKSLIP DP
+    LEFT OUTER JOIN DEM_PICKSLIP_DETAIL DPD
+      ON DP.PICKSLIP_ID = DPD.PICKSLIP_ID
+    WHERE DP.PS_STATUS_ID = 1 
+   <if c="$reporting_status != 'IN ORDER BUCKET'"> and 1=2</if>
+   <if c="$reporting_status = 'IN ORDER BUCKET'"> and 1=1</if>
+    AND DP.CUSTOMER_ID = :customer_id
+   <if c="$customer_type='D'">AND DP.EXPORT_FLAG IS NULL</if>
+   <if c="$customer_type='I'">AND DP.EXPORT_FLAG = 'Y'</if>
+   <if c="$customer_type='B'"></if>
+   <if>AND DP.delivery_date &gt;= CAST(:delivery_start_date AS DATE)</if>         
+   <if>AND DP.delivery_date &lt;= CAST(:delivery_end_date AS DATE)</if> 
+   GROUP BY DP.PICKSLIP_ID)
+SELECT Q1.PICKSLIP_ID     AS PICKSLIP_ID,
+       Q1.PO_ID           AS PO_ID,
+       Q1.ORDER_QUANTITY  AS ORDER_QUANTITY,
+       Q1.ORDER_DOLLARS   AS ORDER_DOLLARS,
+       Q1.SHIPPED_PIECES  AS SHIPPED_PIECES,
+       Q1.SHIPPED_DOLLARS AS SHIPPED_DOLLARS,
+       Q1.START_DATE      AS START_DATE,
+       Q1.DC_CANCEL_DATE  AS DC_CANCEL_DATE,
+       Q1.CANCEL_DATE     AS CANCEL_DATE
+  FROM Q1
+        </pre>
+    <h2>
+        Validation details</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.
+    <br />
+    <b>Query:Blow query displays the Total order quantity and Total order dollars </b><br />
+    <pre>
+    SELECT COUNT(DISTINCT PS.PICKSLIP_ID),
+         PS.REPORTING_STATUS,
+         SUM(PS.TOTAL_QUANTITY_ORDERED),
+         SUM(PS.TOTAL_DOLLARS_ORDERED),
+         COUNT(DISTINCT PS.PO_ID) AS COUNT_PO
+    FROM PS
+   WHERE PS.TRANSFER_DATE IS NULL
+     AND PS.PICKSLIP_CANCEL_DATE IS NULL
+     AND PS.CUSTOMER_ID = :customer_id
+ <if>AND PS.CUSTOMER_DC_ID = :customer_dc_id</if>
+ <if>AND ps.CUSTOMER_STORE_ID =:customer_store_id</if>
+   GROUP BY PS.REPORTING_STATUS
+    </pre>
+    <b>Description:&nbsp; </b>
+    <b>Query: Blow query displays the shipped order and dollars count of pickslip , total boxes and UPS scan boxes. </b>
+    <pre>
+    ELECT PS.REPORTING_STATUS,
+         COUNT(DISTINCT B.UCC128_ID),
+         COUNT(DISTINCT(CASE
+                          WHEN B.PRO_NUMBER IS NOT NULL THEN
+                           B.UCC128_ID
+                        END)),
+         COUNT(DISTINCT BD.UPC_CODE),
+         SUM(BD.CURRENT_PIECES),
+         SUM((BD.CURRENT_PIECES * BD.EXTENDED_PRICE))
+    FROM PS
+   INNER JOIN BOX B
+      ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+   WHERE PS.TRANSFER_DATE IS NULL
+     AND B.STOP_PROCESS_DATE IS NULL
+     AND BD.STOP_PROCESS_DATE IS NULL
+     AND PS.PICKSLIP_CANCEL_DATE IS NULL
+     AND PS.CUSTOMER_ID = :customer_id
+ <if>AND PS.CUSTOMER_DC_ID = :customer_dc_id</if>
+ <if>AND ps.CUSTOMER_STORE_ID =:customer_store_id</if>
+   GROUP BY PS.REPORTING_STATUS
+    </pre>
+    <b>Query:Blow query displays the In Order Bucket detail. </b>
+    <pre>
+    SELECT 'IN ORDER BUCKET' AS REPORTING_STATUS,
+         NULL AS TOTAL_BOXES,
+         NULL AS UPS_SCAN_COUNT,
+         COUNT(DISTINCT DPD.UPC_CODE) AS COUNT_SKU,
+         NULL AS SHIPPED_PIECES,
+         NULL AS SHIPPED_DOLLARS,
+         COUNT(DISTINCT DP.PICKSLIP_ID) AS COUNT_PICKSLIPS,
+         SUM(DP.TOTAL_DOLLARS_ORDERED) AS ORDER_DOLLARS,
+         COUNT(DISTINCT DP.CUSTOMER_ORDER_ID) AS COUNT_PO,
+         SUM(DP.TOTAL_QUANTITY_ORDERED) AS ORDER_QUANTITY
+    FROM DEM_PICKSLIP DP
+    LEFT OUTER JOIN DEM_PICKSLIP_DETAIL DPD
+      ON DP.PICKSLIP_ID = DPD.PICKSLIP_ID
+   WHERE DP.CUSTOMER_ID = :customer_id
+ <if>AND DP.customer_dist_center_id =:customer_dc_id</if>
+ <if>AND DP.CUSTOMER_STORE_ID =:customer_store_id</if>
+     AND DP.PS_STATUS_ID = 1
+    </pre>
+</body>
+</html>

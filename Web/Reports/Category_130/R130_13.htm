@@ -1,0 +1,418 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+		<title>Report Documentation</title>
+		
+        <style type="text/css">
+            .style1
+            {
+                width: 330px;
+            }
+            .style2
+            {
+                width: 132px;
+            }
+            .style3
+            {
+                height: 24px;
+            }
+        </style>
+  </head>
+	<body>
+		<form>
+			<h1 style="text-align:center">130<b>.</b>13<b> : </b>Inventory in Area SHL-A </h1>
+			<h3>Author : Sanjeev Kumar</h3>
+
+     <ul style="list-style: none">
+        <li>Reviewed By: Manmohan Bisht</li>
+        <li>$Revision: 6474 $</li>
+        <li>Status : DONE</li>
+         <li>Tested By : Sanjeev Kumar</li>
+    </ul> 
+        <p>The report displays the entire inventory in shelf area for a specified label or 
+            virtual warehouse. Additionally there is an option to see only negetive 
+            inventory in SHL-A.</p>
+            <h2>Overview</h2>
+            <p>
+              This report shows information about all the inventory which is less than 0 as well as inventory 
+                for specified label in the area SHL-A.
+              SHL-A area is basically a conceptual area, which contains the inventory
+              which is not accountable.
+            </p>
+            <h2>Algorithm</h2>
+            <p>Get all the SKU detail along  with SHL quantity are retrieved from table master_raw_inventory.SHL-8 Quantity  or quantity in 
+            ringscanner is retrieved by calculating the sum of quantities from boxdet and ialoc_content tables. 
+            SHL-A will be calculated by deducting the SHL-8 quantity(quantity in ringscanner) from the SHL quantity.</p>
+          <h3>Output</h3>
+          <table width="100%" cellspacing="1" cellpadding="1" border="1">
+          <tr>
+              <td style="width:25%; text-align:center"><b>Item</b></td>
+              <td style="width:20%; text-align:center"><b>Summary</b></td>
+              <td style="width:10%; text-align:center"><b>Sort Sequence</b></td>
+              <td style="width:35%; text-align:center"><b>Detail</b></td>
+          </tr>
+          <tr>
+              <td class="style3">VWh</td>
+              <td class="style3">No</td>
+              <td style="text-align:center" class="style3">1</td>
+              <td class="style3">The Virtual Warehouse ID for the inventory.</td>
+          </tr>
+          <tr>
+              <td>UPC Code</td>
+              <td>No</td>
+              <td style="text-align:center">2</td>
+              <td>The UPC Code for the inventory.</td>
+          </tr>
+          <tr>
+              <td>Style</td>
+              <td>No</td>
+              <td align="center">&nbsp;</td>
+              <td>Style of the SKU</td>
+          </tr>
+          <tr>
+              <td>Color</td>
+              <td>No</td>
+              <td style="text-align:center">&nbsp;</td>
+              <td>Color of the SKU.</td>
+          </tr>
+          <tr>
+              <td>Dim</td>
+              <td>No</td>
+              <td align="center">&nbsp;</td>
+              <td>Dimensions of the SKU.</td>
+          </tr>
+          <tr>
+              <td>Size</td>
+              <td>No</td>
+              <td align="center">&nbsp;</td>
+              <td>Size of the SKU.</td>
+          </tr>
+          <tr>
+              <td>Quantity in SHL</td>
+              <td>Sum</td>
+              <td align="center">&nbsp;</td>
+              <td>Quantity contained in area SHL.</td>
+          </tr>
+          <tr>
+              <td> Quantity in Ringscanner</td>
+              <td>Sum</td>
+              <td style="text-align:center">&nbsp;</td>
+              <td>Quantity in Ringscanner areas for e.g.FPK,CAN and GRN.</td>
+          </tr>
+          <tr>
+              <td>Quantity in SHL-A</td>
+              <td>Sum</td>
+              <td style="text-align:center">&nbsp;</td>
+              <td>(Quantity in SHL area - Quantity in Ringscanner)</td>
+          </tr>
+          <tr>
+              <td> Location</td>
+              <td>No</td>
+              <td align="center">&nbsp;</td>
+              <td>Displaying all location of the SKU.</td>
+          </tr>
+          </table>
+          <h2>Parameters</h2>
+          <table width="100%" cellspacing="1" cellpadding="1" border="1">
+          <tr>
+              <td style="width:20%; text-align:center"><b>Name</b></td>
+              <td style="width:20%; text-align:center"><b>Default</b></td>
+              <td style="text-align:center" class="style1"><b>Detail</b></td>
+              <td style="text-align:center" class="style2">Optional</td>
+          </tr>
+          <tr>
+              <td>Label</td>
+              <td>All</td>
+              <td class="style1">Label Assigned for the inventory </td>
+              <td class="style2">YES</td>
+          </tr>
+          <tr>
+              <td>Negative SHL-A</td>
+              <td>False</td>
+              <td class="style1">Inventory details which are not in area SHL-A </td>
+              <td class="style2">YES</td>
+          </tr>
+          <tr>
+              <td>
+                  <label accesskey="V" for="ctl00_ContentPlaceHolder1_ctlVwh">
+                  Virtual Warehouse&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label></td>
+              <td>All</td>
+              <td class="style1">Virtual warehouse ID for the inventory</td>
+              <td class="style2">YES</td>
+        </tr>
+        </table>
+        <h2>Performance Detail</h2><p><i>Expected Time for the report output is </i>1 second.</p>
+         <p> The query exhibits linear performance with respect to the number of records in 
+             boxdet,ialoc_content and master_raw_inventory.There is full scan on tables box, boxdet, 
+             master_raw_inventory, master_sku, ialoc and ialoc_content. The query takes 0.95 
+             seconds for &quot;FL&quot; as Style label, &quot;15&quot; as Vwh and for negeteive inventory, when 
+             specified as parameter.</p>
+        <h2>Definitions</h2>
+        <dl>
+        <dt><i>SHL Quantity</i></dt>
+        <dd>
+          SHL Quantity refers to the total SKU inventory in all areas of the warehouse.
+        </dd>
+        <dt><i>SHL-8 Quantity</i></dt>
+        <dd>
+          SHL-8 Quantity refers to the total SKU inventory in ringscanner areas for e.g.FPK,CAN and GRN.
+        </dd>
+        <dt><i>SHL-A Quantity</i></dt>
+        <dd>
+          The concept of SHL-A area has been incoporated to keep track of missing 
+            inventory. This is basically a conceptual area, which contains the inventory 
+            which is not accountable. The inventory&nbsp; in SHL-A area is calculated,
+          based upon the formula:  SHL Quantity = SHL-8 Quantity + SHL-A Quantity.
+
+          In ideal case the quantity in SHL-A  area should be equal to zero i.e there should
+          not be any difference betweeen SHL quantity and SHL-8 quantity. If there is a
+          difference, that will come under the SHL-A area and will calculated by
+          deducting the SHL-8 quantity from the SHL quantity. Mathematically, it will be:
+          SHL-A Quantity= SHL Quantity - SHL-8 Quantity.
+        </dd></dl>
+        <h2>Behavior Change</h2>
+        <ul>
+            <li>Fixed the bug, which was showing negative SHL-A for a particular VWH.</li>
+        </ul>
+        <h2>Issues</h2>
+        <ul>
+        <li>None</li>
+        </ul>
+    <h2>
+        Prerequisites</h2>
+        <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        ialoc,<br />
+        ia,<br />
+        ialoc_content,<br />
+        box,<br />
+        boxdet,<br />
+        master_sku,<br />
+        master_raw_inventory,<br />
+        master_style</p>
+        <p>
+            <br />
+        Use the below script to create the synonyms<br />
+        <br />
+        <code>create or replace synonym box for dcms8.box;
+            <br />
+            create or replace synonym boxdet for dcms8.boxdet;
+            <br />
+            create or replace synonym ialoc_content for dcms8.ialoc_content;
+            <br />
+            create or replace synonym ia for dcms8.ia;
+            <br />
+            create or replace synonym ialoc for dcms8.ialoc;
+            <br />
+            create or replace synonym master_sku for dcms4.master_sku;
+            <br />
+            create or replace synonym master_raw_inventory for dcms4.master_raw_inventory;<br />
+            create or replace synonym master_style for dcms4.master_style;<br />
+            </code>&nbsp;</p>
+    <p>
+        Following AppSettings are required:</p>
+            <code>
+            <br />
+    &lt;add key="ShelfArea" value="SHL" /&gt;<br />
+    &nbsp;&nbsp;</code><br/>
+
+            <h2>Parameter Technical Details</h2>
+            <ul>
+            <li>Label ID: This is a list parameter control. Label_id of inventory, "None" can be specified to see records for all labels.		
+	        </li>
+	        <li>Query to fill list values = <pre>select tsl.label_id as label_id,
+MAX(twl.warehouse_location_id) as max_warehouse_location_id,
+MAX(twl.description) as building_description,
+COUNT(DISTINCT twl.warehouse_location_id) as count_warehouse_location_id,
+MAX(tsl.description) as label_description
+from tab_style_label tsl
+left outer join tab_label_group tlg on tsl.label_id = tlg.label_id
+left outer join tab_warehouse_location twl on tlg.label_group = twl.label_group
+group by tsl.label_id
+order by tsl.label_id</pre>
+        </li>
+        <li>Negative SHL-A:
+		Check the checkbox to see the inventory details which are in area SHL-A and less than 0. </li><li>Warehouse ID
+		(Type = ID): This is a list parameter control.
+		By default, inventory of all Warehouse is shown for each area. If your focus is on the inventory in a particular Warehouse, 
+		Specify that Warehouse Id.
+		    Specify "All" to records for all Warehouses.		
+	</li>
+	<li>
+                Query to fill list values = <pre>SELECT vwh_id AS vwh_id, description AS description FROM tab_virtual_warehouse ORDER BY vwh_id
+</pre>
+        </li>
+        </ul>
+        <h2>Parameter Validation</h2>
+		No special validations.
+		<h2>Query's documentation:</h2>
+        <p>Following query has been used to fetch the SHL-A Quantity</p>
+        <pre>
+       WITH SHL AS
+ (SELECT mri.sku_id, MRI.VWH_ID AS VWH_ID, SUM(MRI.QUANTITY) AS SHL_QUANTITY
+    FROM MASTER_RAW_INVENTORY MRI
+   WHERE mri.sku_storage_area = CAST(:shelfArea as varchar2(255))
+   <if>AND mri.vwh_id=CAST(:vwh_id as varchar2(255))</if>
+   GROUP BY mri.sku_id, MRI.VWH_ID),
+ALL_SHL8 AS
+ (SELECT IO.VWH_ID AS VWH_ID,
+         msku.sku_id,
+         SUM(IOC.NUMBER_OF_UNITS) AS PIECES,
+         SYS.STRAGG(UNIQUE IOC.LOCATION_ID || ', ') AS LOCATION_ID
+    FROM IALOC IO
+   inner JOIN IALOC_CONTENT IOC
+      ON IOC.IA_ID = IO.IA_ID
+     AND IOC.LOCATION_ID = IO.LOCATION_ID
+   inner join master_sku msku
+      on msku.upc_code = ioc.iacontent_id
+    INNER JOIN IA ON 
+    IOC.IA_ID = IA.IA_ID
+  where IA.CONSOLIDATED_UPC_CODE IS NULL
+  <if>AND io.vwh_id = CAST(:vwh_id as varchar2(255))</if>
+       AND IOC.NUMBER_OF_UNITS &lt;&gt; 0
+   GROUP BY msku.sku_id, IO.VWH_ID
+  UNION ALL
+  SELECT B.VWH_ID AS VWH_ID,
+         BD.Sku_Id AS Sku_Id,
+         SUM(BD.CURRENT_PIECES) AS PIECES,
+         NULL AS LOCATION_ID
+    FROM BOX B
+   INNER JOIN BOXDET BD
+      ON BD.UCC128_ID = B.UCC128_ID
+     AND BD.PICKSLIP_ID = B.PICKSLIP_ID
+   WHERE BD.CURRENT_PIECES > 0
+     <if>AND B.vwh_id = CAST(:vwh_id as varchar2(255))</if>
+     AND B.IA_ID IS NOT NULL
+     AND B.STOP_PROCESS_DATE IS NULL
+     AND BD.STOP_PROCESS_DATE IS NULL
+   GROUP BY BD.sku_id, B.VWH_ID),
+SHL8 AS
+ (SELECT ALL_SHL8.sku_id AS sku_id,
+         MAX(ALL_SHL8.LOCATION_ID) AS LOCATION_ID,
+         ALL_SHL8.VWH_ID AS VWH_ID,
+         SUM(ALL_SHL8.PIECES) AS RINGSCANNER_QUANTITY
+    FROM ALL_SHL8
+   GROUP BY ALL_SHL8.sku_id, ALL_SHL8.VWH_ID)
+SELECT SHL.VWH_ID AS VWH_ID,
+       msku.UPC_CODE AS UPC_CODE,
+       NVL(SHL8.LOCATION_ID,'No Location Assigned') AS LOCATION_ID,
+       msku.STYLE AS STYLE,
+       msku.COLOR AS COLOR,
+       msku.DIMENSION AS DIMENSION,
+       msku.SKU_SIZE AS SKU_SIZE,
+       NVL(SHL.SHL_QUANTITY, 0) - NVL(SHL8.RINGSCANNER_QUANTITY, 0) AS SHL_A_QUANTITY,
+       SHL.SHL_QUANTITY AS SHL_QUANTITY,
+       NVL(SHL8.RINGSCANNER_QUANTITY, 0) AS RINGSCANNER_QUANTITY
+  FROM SHL
+ inner join master_sku msku
+    on msku.sku_id = shl.sku_id
+  inner join master_style mst on 
+ msku.style = mst.style
+  LEFT OUTER JOIN SHL8
+    ON SHL8.sku_id = SHL.sku_id
+   AND SHL8.VWH_ID = SHL.VWH_ID
+ WHERE 1=1
+<if>and mst.label_id =:label_id</if>
+ <if c="$showNegative">and (nvl(shl.SHL_QUANTITY, 0) - nvl(shl8.RINGSCANNER_QUANTITY, 0)) &lt; 0</if>
+   <else>and (nvl(shl.SHL_QUANTITY, 0) - nvl(shl8.RINGSCANNER_QUANTITY, 0)) &lt;&gt; 0</else>
+        </pre>
+        <h2>Validation details</h2>
+             <p> Bellow queries validates the SHL inventory. Pass the required parameter 
+        to validate the results.</p><b>Query:</b><pre>
+    
+            SELECT mri.vwh_id    AS "VWH_ID",
+            mri.style     AS "STYLE",
+            mri.color     AS "COLOR",
+            mri.dimension AS "DIMENSION",
+            mri.sku_size  AS "SKU_SIZE",
+            mri.quantity  AS "SHL_QUANTITY"
+            FROM master_raw_inventory mri
+            WHERE mri.style = :STYLE
+            AND mri.color = :COLOR
+            AND mri.dimension = :DIMENSION
+            AND mri.sku_size = :SKU_SIZE
+            AND mri.sku_storage_area = 'SHL'
+            AND mri.vwh_id = :VWH_ID
+          </pre><b>Description:</b><pre>
+            The above query retrives the  inventory from master_raw_inventory for SHL area.
+            It retrieves the data from tables from master_raw_inventory.
+          </pre><b>Query:</b>
+          <p>The queries below fetches inventory for SHL8</p>
+          <ol>
+          <li><b>Query:</b>
+          <pre>
+            SELECT BOXDET.UPC_CODE       AS "UPC_CODE",
+            boxdet.current_pieces AS "PIECES",
+            box.vwh_id            AS "VWH_ID"
+            FROM boxdet       boxdet,
+            box          box,
+            master_sku   sku,
+            master_style sty
+            WHERE boxdet.upc_code = sku.upc_code(+)
+            AND sku.style = sty.style(+)
+            AND BOXDET.CURRENT_PIECES &gt; 0
+            AND boxdet.ucc128_id = box.ucc128_id
+            AND BOX.STOP_PROCESS_REASON IS NULL
+            AND BOX.IA_ID IS NOT NULL
+            AND BOX.IA_ID &lt;&gt; 'CAN'
+            AND BOX.STOP_PROCESS_DATE IS NULL
+            AND box.vwh_id = :VWH_ID
+            AND boxdet.upc_code = :UPC_CODE
+          </pre><b>Description:</b>
+            <p>The above query retrives the  inventory from box and boxdet for SHL8 area.
+            It retrieves the data from tables box and boxdet.</p>
+          
+          </li>
+          <li>
+          <b>Query:</b><pre>
+            SELECT ioc.number_of_units  AS "PIECES",
+            io.assigned_upc_code AS "UPC_CODE",
+            io.vwh_id            AS "VWH_ID"
+            FROM ialoc_content ioc, ialoc io
+            WHERE io.ia_id = ioc.ia_id(+)
+            AND io.assigned_upc_code = :ASSIGNED_UPC_CODE
+            AND io.location_id=ioc.location_id
+            AND io.ia_id &lt;&gt; 'SSS'
+            AND ioc.iacontent_type_id = 'SKU'
+            AND io.vwh_id = :VWH_ID
+          </pre><b>Description:</b>
+            <p>The above query retrives the  inventory from ialoc and ialoc_content for SHL8 area.
+            It retrieves the data from tables ialoc and ialoc_content.</p>
+          </li>
+          <li>
+          <b>Query:</b><pre>
+            SELECT io.assigned_upc_code AS "UPC_CODE",
+            io.vwh_id            AS "VWH_ID",
+            max(io.location_id) AS "LOCATION_ID",
+            count(distinct io.location_id) AS "LOCATION_COUNT"
+            FROM ialoc io
+            WHERE io.ia_id = 'FPK' and
+             io.assigned_upc_code=:upc_code
+            and io.vwh_id = :vwh_id
+            GROUP BY io.assigned_upc_code, io.vwh_id
+            </pre><b>Description:</b>
+            <p>This query retrives the  location ID from ialoc SHL8 area.</p>
+          </li>
+          <li>
+          <b>Query:</b>
+          <pre>
+         
+              select i.location_id
+              from ialoc i
+              where i.assigned_upc_code IN (select i.assigned_upc_code
+              from ialoc i
+              where i.assigned_upc_code = ::UPC_CODE::
+              group by i.assigned_upc_code
+              having count(*) &gt;= 1)
+              group by i.location_id;
+            </pre><b>Description:</b>
+            <p>Enter the UPC code to know the number of location where that
+            sku present.</p>
+          </li>
+          </ol>
+       
+		</form>
+	</body>
+</html>

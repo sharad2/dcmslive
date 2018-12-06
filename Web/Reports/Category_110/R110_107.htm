@@ -1,0 +1,392 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>110.107 Unscanned Boxes At UPS Station</title>
+    <style type="text/css">
+        .style1
+        {
+            text-align: justify;
+        }
+        .style2
+        {
+            text-align: justify;
+            width: 25%;
+            height: 24px;
+        }
+        .style3
+        {
+            text-align: justify;
+            width: 20%;
+            height: 24px;
+        }
+        .style4
+        {
+            text-align: justify;
+            width: 10%;
+            height: 24px;
+        }
+        .style5
+        {
+            text-align: justify;
+            width: 45%;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        110.107 Unscanned Boxes At UPS Station</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <ul style="list-style: none">
+        <li>Mentor: Hemant K. Varshney</li>
+        <li>$Revision: 6812 $</li>
+        <li>Status: Tested</li>
+        <li>Reviewed By: Hemant K. Varshney</li>
+        <li>Tested By: Hemant K Singh</li>
+    </ul>
+    <h2>
+        Overview</h2>
+    <p class="MsoNormal">
+        This report is showing only those boxes which are not scanned at UPS station.</p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        UPS box details will be displayed in this report. For this retrieving pickslip and customer&nbsp; from table PS. UCC128 
+        ID, verfied date and 
+        area from&nbsp;table BOX. Delivery date and DC cancel dates are being retreived from table PO. UPS date and tracking number are being retreived from table load_smsups. 
+        UPS date is the date when box is scanned in the UPS station and tracking number 
+        is for tracking shipments. </p>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:25%; text-align:center">
+                <b>Item</b>
+            </td>
+            <td style="width:20%; text-align:center">
+                <b>Summary</b>
+            </td>
+            <td style="width:10%; text-align:center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Customer</td>
+            <td style="width:20%; " class="style1">
+                None</td>
+            <td style="width:10%; " class="style1">
+                1</td>
+            <td style="width:45%; " class="style1">
+                Name and ID of the customer.</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Area</td>
+            <td style="width:20%; " class="style1">
+                None</td>
+            <td style="width:10%; " class="style1">
+                2</td>
+            <td style="width:45%; " class="style1">
+                Area of box.</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Pallet</td>
+            <td style="width:20%; " class="style1">
+                None</td>
+            <td style="width:10%; " class="style1">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Pallet of the box.</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Pickslip</td>
+            <td style="width:20%; " class="style1">
+                None</td>
+            <td style="width:10%; " class="style1">
+                3&nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Pickslip of customer.</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Box</td>
+            <td style="width:20%; " class="style1">
+      None</td>
+            <td style="width:10%; " class="style1">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                UPS boxes that are shipped or being shipped.</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                #Tracking</td>
+            <td style="width:20%; " class="style1">
+                None</td>
+            <td style="width:10%; " class="style1">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Tracking number is pro number</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Boxes In Pickslip Total</td>
+            <td style="width:20%; " class="style1">
+                None</td>
+            <td style="width:10%; " class="style1">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Total boxes of the order</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Boxes In Pickslip Scanned At UPS</td>
+            <td style="width:20%; " class="style1">
+                None</td>
+            <td style="width:10%; " class="style1">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Displaying those boxes which are scanned at UPS</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Boxes In Pickslip verified</td>
+            <td style="width:20%; " class="style1">
+                None</td>
+            <td style="width:10%; " class="style1">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Displaying those boxes which are verified but not scanned at UPS Station</td>
+        </tr>
+        <tr>
+            <td class="style2">
+                Delivery Date</td>
+            <td class="style3">
+                None</td>
+            <td class="style4">
+                &nbsp;</td>
+            <td class="style5">
+                Date on/after which order can be delivered to customer</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                DC
+                Cancel Date</td>
+            <td style="width:20%; " class="style1">
+                None</td>
+            <td style="width:10%; " class="style1">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Date on which order will be cancelled</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Verify date</td>
+            <td style="width:20%; " class="style1">
+                None</td>
+            <td style="width:10%; " class="style1">
+                4</td>
+            <td style="width:45%; " class="style1">
+                Date on which the box 
+                is verified.</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Scanned At UPS On</td>
+            <td style="width:20%; " class="style1">
+                None</td>
+            <td style="width:10%; " class="style1">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Displaying Scan time OF UPS station. </td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                UPS Work Station</td>
+            <td style="width:20%; " class="style1">
+                None</td>
+            <td style="width:10%; " class="style1">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Name of the workstation the box was scanned at the UPS station.</td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:20% ; text-align:center">
+                <b>Name</b>
+            </td>
+            <td style="width:15% ; text-align:center">
+                <b>Type</b>
+            </td>
+            <td style="width:20%; text-align:center">
+                <b>Default</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td >
+                Customer</td>
+            <td>
+                String</td>
+            <td>
+                None</td>
+            <td>
+                Customer for which this report is being executed. </td>
+        </tr>
+        <tr>
+            <td >
+                PO</td>
+            <td>
+                String</td>
+            <td>
+                None</td>
+            <td>
+                Purchase order of the customer</td>
+        </tr>
+        </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+<i>Expected Time for the report output for retreiving one month data is 2 Sec.</i></p>
+    <h2>
+        Behavior Change</h2>
+    <ul><li>Bug fixed, report will not be crash when user drill to remaining boxes column of R110.23.</li></ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>None</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+                <h4>
+                Private synonyms requried for the following tables 
+                    under DCMSLIVE user: </h4>
+         
+PS,<br />
+PO,<br />
+BOX,<br />
+cust,<br />
+MASTER_CARRIER,<br />
+LOAD_SMSUPS   
+            <h4>
+                Script to create 
+                these synonyms:</h4>
+create or replace synonym box for dcms8.box; <br />      
+create or replace synonym ps for dcms8.ps;<br />
+create or replace synonym po for dcms8.po;<br />
+create or replace synonym Master_Carrier for dcms4.Master_Carrier;<br />
+create or replace synonym cust for dcms8.cust;<br />
+    create or replace synonym load_smsups for dcms4.load_smsups;
+         <h4>App-Settings required:</h4>
+           <ul><li>None</li></ul>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <pre>
+  WITH LOADED_BOXES AS
+ (SELECT UCC128_ID, MAX(PRO_NUMBER) AS PRO_NUMBER, MAX(WORKSTATION_NAME) AS WORKSTATION_NAME, MAX(Insert_Date) AS Insert_Date
+    FROM LOAD_SMSUPS
+   GROUP BY UCC128_ID),
+Q1 AS
+ (SELECT B.UCC128_ID,
+         B.VERIFY_DATE,
+         P.CUSTOMER_ID,
+         C.NAME,
+         B.PALLET_ID,
+         B.IA_ID,
+         PO.START_DATE,
+         PO.DC_CANCEL_DATE,
+         LB.WORKSTATION_NAME,
+         LB.Insert_Date,
+         NVL(B.PRO_NUMBER, LB.PRO_NUMBER) AS TRACKING_NUMBER,
+         COUNT(*) OVER(PARTITION BY B.PICKSLIP_ID) AS COUNT_BOXES_IN_PS,
+         COUNT(B.VERIFY_DATE) OVER(PARTITION BY B.PICKSLIP_ID) AS COUNT_VERIFIED_BOXES_IN_PS,
+         COUNT(NVL(B.PRO_NUMBER, LB.PRO_NUMBER)) OVER(PARTITION BY B.PICKSLIP_ID) AS COUNT_SCANNED_BOXES_IN_PS,
+         P.PICKSLIP_ID
+    FROM BOX B
+   INNER JOIN PS P
+      ON P.PICKSLIP_ID = B.PICKSLIP_ID
+   INNER JOIN PO
+      ON P.CUSTOMER_ID = PO.CUSTOMER_ID
+     AND P.PO_ID = PO.PO_ID
+     AND P.ITERATION = PO.ITERATION
+    LEFT OUTER JOIN CUST C
+      ON P.CUSTOMER_ID = C.CUSTOMER_ID
+   INNER JOIN MASTER_CARRIER MC
+      ON MC.CARRIER_ID = P.CARRIER_ID
+     AND MC.SMALL_SHIPMENT_FLAG = 'Y'
+    LEFT OUTER JOIN LOADED_BOXES LB
+      ON LB.UCC128_ID = B.UCC128_ID
+   WHERE B.STOP_PROCESS_DATE IS NULL
+    <if>AND P.customer_id =:customer_id</if>    
+    <if>and po.po_id =:po_id</if>    
+            )
+SELECT Q1.UCC128_ID,
+       Q1.CUSTOMER_ID,
+       Q1.NAME AS CUSTOMER_NAME,
+       Q1.VERIFY_DATE,
+       Q1.TRACKING_NUMBER,
+       Q1.PALLET_ID,
+       Q1.IA_ID,
+       Q1.START_DATE,
+       Q1.DC_CANCEL_DATE,
+       Q1.PICKSLIP_ID,
+       Q1.WORKSTATION_NAME,
+       Q1.Insert_Date,
+       Q1.COUNT_BOXES_IN_PS,
+       Q1.COUNT_VERIFIED_BOXES_IN_PS,
+       Q1.COUNT_SCANNED_BOXES_IN_PS
+  FROM Q1
+ WHERE COUNT_VERIFIED_BOXES_IN_PS &gt; 0
+   AND (COUNT_SCANNED_BOXES_IN_PS != COUNT_BOXES_IN_PS)</pre>
+    <h2>
+        Validation details</h2>
+    <pre>
+SELECT B.UCC128_ID, B.VERIFY_DATE, B.IA_ID, PS.CUSTOMER_ID
+  FROM PS
+ INNER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND B.STOP_PROCESS_DATE IS NULL
+   AND PS.PICKSLIP_ID = '16367005';
+    </pre>
+    <p>
+        Description:- 
+        Above Query is showing box, verify_date, area and customer for specific pickslip.</p>
+    <pre>
+SELECT PO.START_DATE AS &quot;Delivery Date", PO.DC_CANCEL_DATE AS "DC Cancel Date"
+  FROM PS
+ INNER JOIN PO
+    ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+   AND PS.PO_ID = PO.PO_ID
+   AND PS.ITERATION = PO.ITERATION
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND PS.PICKSLIP_ID = '16367005';
+    </pre>
+    <p>Description:- Above query is displaying Start and DC cancel Date for specific picklsip.</p>
+    <pre>
+   SELECT PS.CUSTOMER_ID, PS.PICKSLIP_ID, B.UCC128_ID, B.VERIFY_DATE, B.PALLET_ID, B.IA_ID
+  FROM PS
+ INNER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+  LEFT OUTER JOIN LOAD_SMSUPS LS
+    ON B.UCC128_ID = LS.UCC128_ID
+ WHERE NVL(LS.INDICATOR, 'N') = 'N'
+ AND PS.TRANSFER_DATE IS NULL
+ AND B.STOP_PROCESS_DATE IS NULL
+ AND PS.CUSTOMER_ID ='1095'
+ AND PS.PO_ID ='LY012412'
+    </pre>
+    <p>Description :- Above Query is displaying customer, pickslip, UCC128 id , verify, pallet and area.</p>
+</body>
+</html>

@@ -1,0 +1,597 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style type="text/css">
+        .style1
+        {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1 align="center">
+        150<b>.</b>01<b> : </b>Pitcher Productivity Summary Report
+    </h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    $Revision: 6749 $<br />
+    Status : Tested<br />
+    Mentor: Hemant K. Varshney<br/>
+    Tested By :&nbsp;H.K.Singh
+    <p>
+        Showing summary as well as details of each Pitcher for a given date or date range.
+        In summary it is showing the information for each pitcher for a day if you click
+        on pitcher it shows the detail of each MPC pitched by that pitcher on that date.
+    </p>
+    <h2>
+        Overview</h2>
+    <p>
+        This report can be helpful for
+    </p>
+    <ul>
+        <li>Monitoring the productivity. The productivity is measured by monitoring the average
+            units per hours pitched by a Pitcher. </li>
+        <li>For identifying the star performers and the black sheep. </li>
+    </ul>
+    <h2 >
+        Algorithm</h2>
+    <p>
+        We are getting all the information from box_productivity,mpc_productivity, 
+        mpcialoc
+        and mpc table. retrieve the ia_location_id from mpcialoc table and&nbsp; 
+        retrieve oprator, red_box ,green box ,repitch boxes ,pitcher date and vwh_id 
+        from table mpc_productivity .Retrieve the mpc_id from mpc table and location 
+        scan pieces&nbsp; and unit from box_productivity. </p>
+    <h3>
+        Output</h3>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center" width="25%">
+                <b>Item</b>
+            </td>
+            <td align="center" width="20%">
+                <b>Summary</b>
+            </td>
+            <td align="center" width="10%">
+                <b>Default Sort Sequence</b>
+            </td>
+            <td align="center" width="35%">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pitcher Name
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1</td>
+            <td>
+                Name of the Pitcher.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pitching Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2</td>
+            <td>
+                Date on which pitching operation was performed If a particular Pitcher pitched the
+                same MPC twice in one day, then in that case Pitching Start Date and Time will not
+                be accurate, which is going to be a rare case
+            </td>
+        </tr>
+        <tr>
+            <td>
+                System Hrs.
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                On a particular date the total time spend on pitching of all the MPC&#39;s.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of MPC
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total number of MPC pitched.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of GRN Boxes
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Number of Green Cartons pitched by the pitcher.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of Red Boxes
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Number of Red Cartons pitched by the pitcher. This will not include repitched cartons
+                which are marked as Red.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of Repitch Boxes
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Count of cartons re-pitched.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of Box Scans
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Number of times a pitcher scans carton.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of Loc. to be Visited</td>
+            <td>
+                None</td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Showing&nbsp; count of the distinct locations whcih suppose to be visited by a pitcher
+                to pitch a MPC.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of Loc. Scans
+            </td>
+            <td>
+                None</td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Number of Location Visited by pitcher.If a pitcher scans the same location while
+                pitching the same MPC, then in that case the pitcher scans that location second
+                time. So the count will increase to 2
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of Aisle Visited
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Number of Aisle Visited by a pitcher during a pitching session.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of&nbsp; Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Number of Pieces pitched by the pitcher.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of&nbsp; Units
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Number of units pitched by the pitcher.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                User Setup Date
+            </td>
+            <td>
+                None
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Date on which the User or operator had been created.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%" >
+        <tr>
+            <td align="center" width="20%">
+                <b>Name</b>
+            </td>
+            <td align="center" width="20%">
+                <b>Default</b>
+            </td>
+            <td align="center" width="60%">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pitching start date range
+            </td>
+            <td>
+                default date
+            </td>
+            <td>
+                Date range in which pitching operation was performed.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Shift
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                Pitching is done in shifts. This parameter can be used to specify the shift for
+                which information is to retrieved.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building</td>
+            <td>
+                All
+            </td>
+            <td>
+                Building in which pitching was done.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Virtual Warehouse
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                Virtual Warehouse of the SKU.
+            </td>
+        </tr>
+        </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>1 second</p>
+    <h2>
+        Parameter Technical Details</h2>
+    <ul>
+        <li>Pitching Start Date (Type = Date): You can specify the date or date range to see
+            the pitching productivity for this date or date range. This is a date range control.
+        </li>
+        <li>Shift (Type = Number): This is a list parameter control. You can select shift to
+            see the pitching productivity for the selected shift. Null value text is &quot;Both&quot;.
+            <ul>
+                <li>Value = 1, </li>
+                <li>Value = 2 </li>
+            </ul>
+        </li>
+        <li>
+        Building (Type = String): This is a list parameter control. By default,
+            pitcher productivity of all Building is shown . If your focus is on the
+            productivity in a particular Building, Specify that Building.
+            Default Value is All
+                    </li>
+        <li>
+        Virtual Warehouse (Type =String): This is a list parameter control. By default,
+            pitcher productivity of all Virtual Warehouse is shown . If your focus is on the productivity
+            in a particular Virtual Warehouse, Specify that Virtual Warehouse Id. Null value text is &quot;All&quot;.
+           </li>
+    </ul>
+    <h2>
+        Parameter Validation</h2>
+    No special validations<br />
+    <br />
+    <h2>behavior Change</h2>
+    <ol>
+        <li>When you drill to an user resulting report will show actual start time instead of calculated start time.</li>
+        <li>Vwh column has been removed.</li>
+        <li>Summary for columns &#39;Loc. to be Visited&#39; and &#39;Loc. Scans&#39; have been removed.</li>
+    </ol>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+ <code>
+        mpc_productivity,<br />
+        box_productivity,<br />
+        mpc,<br />
+        mpcialoc
+        </code>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>create or replace synonym mpc_productivity for dcms8.mpc_productivity;
+            <br />
+            create or replace synonym box_productivity for dcms8.box_productivity;<br />
+            create or replace synonym mpc for dcms8.mpc;<br />
+            create or replace synonym mpcialoc for dcms8.mpcialoc;
+            </code></p>
+    <p>
+        <strong>Following appSettings are required:</strong></p>
+    <p>
+        Report is not using AppSetting </p>
+    <br />
+    <h2>
+        Query&#39;s documentation:</h2>
+    <pre>
+     WITH mpc_prod_info AS
+ (SELECT 
+   mpprod.operator AS pitcher_name,
+   mpprod.mpc_id AS mpc_id,
+   round(SUM(mpprod.seconds_worked), 4) AS system_hours,
+   SUM(decode(mpprod.repitch_mpc, NULL, mpprod.num_of_green_cartons, 0)) AS green_cartons,
+   SUM(decode(mpprod.repitch_mpc, NULL, mpprod.num_of_red_cartons, 0)) AS red_cartons,
+   SUM(decode(mpprod.repitch_mpc,
+              'Y',
+              ((mpprod.num_of_green_cartons) + (mpprod.num_of_red_cartons)),
+              0)) AS repitch_cartons,
+   COUNT(DISTINCT(mpprod.mpc_id)) AS mpc_count<%--,
+   mpprod.vwh_id AS vwh_id, --%>,
+  <![CDATA[$ShiftDateSelectClause1$]]>
+    FROM mpc_productivity mpprod
+   WHERE mpprod.operation_code = 'MPC'
+     AND mpprod.operation_date &gt;= CAST(:operation_start_date_from as DATE)
+     AND mpprod.operation_date &lt; CAST(:operation_start_date_to as DATE) + 2
+     <if>AND mpprod.VWh_ID=:vwh_id </if>
+     <if>AND mpprod.warehouse_location_id=:warehouse_location_id</if>
+     <![CDATA[$ShiftNumberWhereClause1$]]>
+   GROUP BY mpprod.operator,
+           <![CDATA[$ShiftDateGroupClause1$]]>,
+            mpprod.mpc_id),
+mpc_info AS
+ (SELECT mpi.pitcher_name AS pitcher_name,
+         mpi.shift_start_date AS pitching_date,
+         max(mpi.mpc_count) AS mpc_count,
+         round(max(mpi.system_hours / 3600), 4) AS system_hours,
+         max(mpi.green_cartons) AS green_cartons,
+         max(mpi.red_cartons) AS red_cartons,
+         max(mpi.repitch_cartons) AS repitch_cartons,
+         mpi.mpc_id AS mpc_id,
+         COUNT(DISTINCT mia.ia_location_id) AS mpc_location
+    FROM mpc_prod_info mpi
+    LEFT OUTER JOIN mpcialoc mia
+      ON mpi.mpc_id = mia.mpc_id
+   WHERE mpi.shift_start_date &gt;= CAST(:operation_start_date_from as DATE)
+     AND mpi.shift_start_date &lt; CAST(:operation_start_date_to as DATE)+ 1
+   GROUP BY mpi.pitcher_name, mpi.shift_start_date, mpi.mpc_id),
+box_prod_info AS
+ (SELECT 
+   bp.operator AS pitcher_name,
+   bp.process_id AS process_id,
+   <![CDATA[$ShiftDateSelectClause2$]]>,
+   COUNT(bp.ucc128_id) AS num_cartons_scan,
+   COUNT(DISTINCT(bp.mpc_iteration || bp.location_sequence)) AS num_location_scan,
+   SUM(bp.num_of_pieces) AS num_of_pieces,
+   SUM(bp.num_of_units) AS num_of_units,
+   COUNT(DISTINCT ial.pitch_aisle_id) AS num_aisle_visited
+    FROM box_productivity bp
+    LEFT OUTER JOIN ialoc ial
+      ON bp.to_location_id = ial.location_id
+   WHERE bp.operation_code = 'PITCH'
+     AND bp.operation_start_date &gt;= CAST(:operation_start_date_from As DATE)
+     AND bp.operation_start_date &lt; CAST(:operation_start_date_to as DATE) + 2
+     <if>AND bp.Vwh_id=:vwh_id</if>
+     <if>AND bp.warehouse_location_id=:warehouse_location_id</if>
+     <![CDATA[$ShiftNumberWhereClause2$]]>
+   GROUP BY bp.operator,
+            bp.process_id,
+            <![CDATA[$ShiftDateGroupClause2$]]>),
+box_info AS
+ (SELECT bpi.pitcher_name AS pitcher_name,
+         bpi.shift_start_date AS pitching_date,
+         SUM(bpi.num_cartons_scan) AS num_cartons_scan,
+         SUM(bpi.num_location_scan) AS num_location_scan,
+         SUM(bpi.num_of_pieces) AS num_of_pieces,
+         SUM(bpi.num_of_units) AS num_of_units,
+         nvl(SUM(num_aisle_visited), 0) AS num_aisle_visited,
+         bpi.process_id AS process_id
+    FROM box_prod_info bpi
+   WHERE bpi.shift_start_date &gt;= CAST(:operation_start_date_from as DATE)
+     AND bpi.shift_start_date &lt; CAST(:operation_start_date_to as DATE)+ 1
+   GROUP BY bpi.pitcher_name,
+            bpi.shift_start_date,
+            bpi.process_id)
+SELECT mi.pitcher_name AS pitcher_name, 
+       mi.pitching_date AS shift_start_date, SUM(mi.system_hours) AS system_hours, SUM(mi.mpc_count) AS mpc_count, SUM(mi.green_cartons) AS green_cartons, SUM(mi.red_cartons) AS red_cartons, SUM(mi.repitch_cartons) AS repitch_cartons, nvl(SUM(mi.mpc_location), 0) AS mpc_location, nvl(SUM(bi.num_cartons_scan), 0) AS num_cartons_scan, nvl(SUM(bi.num_location_scan), 0) AS num_location_scan, nvl(SUM(bi.num_aisle_visited), 0) AS num_aisle_visited, nvl(SUM(bi.num_of_pieces), 0) AS num_of_pieces, nvl(SUM(bi.num_of_units), 0) AS num_of_units, MAX(au.created) AS user_setup_date
+  FROM mpc_info mi
+  LEFT OUTER JOIN box_info bi
+    ON mi.pitcher_name = bi.pitcher_name AND mi.pitching_date = bi.pitching_date  AND mi.mpc_id = bi.process_id
+  LEFT OUTER JOIN all_users au
+    ON au.username = mi.pitcher_name
+ GROUP BY mi.pitcher_name, mi.pitching_date
+
+       </pre>
+    <h2>
+        Validation details</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.
+    <br />
+    <br />
+    <b>Query:</b>
+    <pre>
+            SELECT m.operator AS pitcher_name, 
+                   m.shift_start_date AS pitching_date,
+                   count(DISTINCT m.mpc_id) AS mpc_id, 
+                   m.vwh_id AS vwh_id, 
+                   round((SUM(m.seconds_worked)/ 3600),4) 
+                   AS system_hours, SUM(m.green_cartons) AS green_cartons, 
+                   SUM(m.red_cartons) AS red_cartons, 
+                   SUM(m.repitch_cartons) AS repitch_cartons, 
+                   COUNT(DISTINCT(m.mpc_id)) AS mpc_count 
+             FROM (SELECT /*+INDEX(mpprod mpcprod_operation_date_i) INDEX(MPC MPC_PK)*/ 
+                          mpprod.operator AS operator, mpprod.mpc_id AS mpc_id, 
+                          mpprod.seconds_worked AS seconds_worked, 
+                          decode(mpc.repitch_mpc, NULL, 
+                          mpprod.num_of_green_cartons, 0) AS green_cartons, 
+                          decode(mpc.repitch_mpc, NULL, mpprod.num_of_red_cartons, 0) AS red_cartons, 
+                          decode(mpc.repitch_mpc, 'Y', 
+                          ((mpprod.num_of_green_cartons) + (mpprod.num_of_red_cartons))) AS repitch_cartons, 
+                          mpprod.mpc_id AS mpc_count, 
+                          mpc.vwh_id AS vwh_id, 
+                          CASE WHEN (mpprod.operation_date - trunc(mpprod.operation_date)) * 24 BETWEEN 5.1 AND 15.5 THEN 
+                                 1 
+                               ELSE 
+                                 2 
+                           END AS shift_number, 
+                          CASE WHEN (mpprod.operation_date - trunc(mpprod.operation_date)) * 24 <= 5.1 THEN 
+                                 trunc(mpprod.operation_date - 1) 
+                               ELSE trunc(mpprod.operation_date) 
+                           END AS shift_start_date 
+                      FROM mpc_productivity mpprod 
+                      LEFT OUTER JOIN mpc mpc ON mpprod.mpc_id = mpc.mpc_id 
+                     WHERE mpprod.operation_code = 'MPC&#39; 
+                       AND mpprod.operation_date >= to_date('3/5/2009', 'mm/dd/yyyy') 
+                       AND mpprod.operation_date < to_date('3/5/2009', 'mm/dd/yyyy') + 2) m 
+              GROUP BY m.operator, 
+                       m.vwh_id, 
+                       m.shift_start_date
+         </pre>
+    <b>Description:</b><pre>The above query is used to verfiy the pitching date,system hours, the count of mpc_id ,green or red boxes scanned and the count of repitched boxes.</pre>
+    <b>Query:</b><div class="style1">
+        <div class="style1">
+            <div class="style1">
+                <div class="style1">
+                    <div class="style1">
+                        <div class="style1">
+                            <div class="style1">
+                                <div class="style1">
+                                    <pre>
+        SELECT b.pitcher_name AS pitcher_name,
+       b.shift_start_date AS shift_start_date,
+       max(b.shift_number) AS shift_number,
+       b.vwh_id AS vwh_id,
+       SUM(b.num_cartons_scan) AS num_cartons_scan,
+       SUM(b.num_location_scan) AS num_location_scan,
+       SUM(b.num_of_pieces) AS num_of_pieces,
+       SUM(b.num_of_units) AS num_of_units
+      
+  FROM (SELECT bprod.pitcher_name AS pitcher_name,
+               bprod.process_id AS process_id,
+               COUNT(bprod.ucc128_id) AS num_cartons_scan,
+               COUNT(DISTINCT(bprod.mpc_iteration || bprod.location_sequence)) AS num_location_scan,
+               SUM(bprod.num_of_pieces) AS num_of_pieces,
+               SUM(bprod.num_of_units) AS num_of_units,
+             
+               bprod.vwh_id AS vwh_id,
+               bprod.shift_start_date AS shift_start_date,
+               bprod.shift_number AS shift_number
+          FROM (SELECT /*+INDEX(bp boxprod_operation_start_date_i) */
+                 bp.operator AS pitcher_name,
+                 bp.process_id AS process_id,
+                 bp.ucc128_id AS ucc128_id,
+                 bp.mpc_iteration AS mpc_iteration,
+                 bp.location_sequence AS location_sequence,
+                 bp.num_of_pieces AS num_of_pieces,
+                 bp.num_of_units AS num_of_units,
+                 bp.vwh_id AS vwh_id,
+             
+                 bp.upc_code AS upc_code,
+                 CASE
+                   WHEN (bp.operation_start_date -
+                        trunc(bp.operation_start_date)) * 24 BETWEEN 5.1 AND 15.5 THEN
+                    1
+                   ELSE
+                    2
+                 END AS shift_number,
+                 CASE
+                   WHEN (bp.operation_start_date -
+                        trunc(bp.operation_start_date)) * 24 <= 5.1 THEN
+                    trunc(bp.operation_start_date - 1)
+                   ELSE
+                    trunc(bp.operation_start_date)
+                 END AS shift_start_date
+                  FROM box_productivity bp
+                  WHERE bp.operation_code = 'PITCH'
+                   AND bp.operation_start_date >=
+                       to_date('3/5/2012', 'mm/dd/yyyy')
+                   AND bp.operation_start_date <
+                       to_date('3/22/2012', 'mm/dd/yyyy') + 2) bprod
+         GROUP BY bprod.pitcher_name,
+                  bprod.process_id,
+                  bprod.vwh_id,
+                  bprod.shift_start_date,
+                  bprod.shift_number) b
+ GROUP BY b.pitcher_name, b.shift_start_date, b.vwh_id
+
+</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <b>Description:</b><pre>The above query is used to verify the number of Boxes,Location scanned,Number of units/Pieces pitched and the virtual warehouse details of the pitcher.</pre>
+</body>
+</html>

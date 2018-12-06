@@ -1,0 +1,298 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>110.19 Routed Orders Information</title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        110.19 Routed Orders Information</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <ul style="list-style: none">
+        <li>Reviewed By : Manmohan Bisht</li>
+        <li>$Revision: 5601 $</li>
+        <li>Status: Done</li>
+        <li>Tested By: Hemant K. Singh </li>
+    </ul>
+    <p>
+        Report displays the orders along with number of boxes which are marked for 
+        routing and pickup date is assigned for passed carrier and pickup date.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        Report displays the purchase order information along with customer, DC, pickup 
+        date, warehouse location, virtual warehouse and number of boxes for the passed 
+        carrier and pickup date or date range. </p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        Report retrieves the order information from ps table for passed carrier and 
+        pickup date. Report is also using the cust table for retrieving the customer 
+        name and box table for retrieving the total number of boxes. Report is showing 
+        the number of boxes for Customer_ID, PO, DC, Pickup_Date, Warehouse_Location 
+        and virtual warehouse.</p>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:25%; text-align:center">
+                <b>Item</b>
+            </td>
+            <td style="width:20%; text-align:center">
+                <b>Summary</b>
+            </td>
+            <td style="width:10%; text-align:center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:25%; text-align:center">
+                Customer ID</td>
+            <td style="width:20%; text-align:center">
+                No</td>
+            <td style="width:10%; text-align:center">
+                2</td>
+            <td style="width:45%; text-align:center">
+                Customer ID</td>
+        </tr>
+        <tr>
+            <td style="width:25%; text-align:center">
+                Customer Name</td>
+            <td style="width:20%; text-align:center">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; text-align:center">
+                Name of the Customer</td>
+        </tr>
+        <tr>
+            <td style="width:25%; text-align:center">
+                PO</td>
+            <td style="width:20%; text-align:center">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; text-align:center">
+                Purchase Order Number</td>
+        </tr>
+        <tr>
+            <td style="width:25%; text-align:center">
+                DC</td>
+            <td style="width:20%; text-align:center">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; text-align:center">
+                Customer DC ID</td>
+        </tr>
+        <tr>
+            <td style="width:25%; text-align:center">
+                # of Boxes</td>
+            <td style="width:20%; text-align:center">
+                Yes</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; text-align:center">
+                Total number of boxes for Customer_ID, PO, DC, Pickup_Date, Warehouse_Location 
+                and virtual warehouse</td>
+        </tr>
+        <tr>
+            <td style="width:25%; text-align:center">
+                Pickup Date</td>
+            <td style="width:20%; text-align:center">
+                No</td>
+            <td style="width:10%; text-align:center">
+                1</td>
+            <td style="width:45%; text-align:center">
+                After routing user assign the pickup date for particular order</td>
+        </tr>
+        <tr>
+            <td style="width:25%; text-align:center">
+                Warehouse Location</td>
+            <td style="width:20%; text-align:center">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; text-align:center">
+                Warehouse Location of the Order</td>
+        </tr>
+        <tr>
+            <td style="width:25%; text-align:center">
+                Vwh</td>
+            <td style="width:20%; text-align:center">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; text-align:center">
+                Virtual Warehouse of the Order</td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:20% ; text-align:center">
+                <b>Name</b>
+            </td>
+            <td style="width:15% ; text-align:center">
+                <b>Type</b>
+            </td>
+            <td style="width:20%; text-align:center">
+                <b>Default</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:20% ; text-align:center">
+                Carrier</td>
+            <td style="width:15% ; text-align:center">
+                Combo Box</td>
+            <td style="width:20%; text-align:center">
+                First Carrier return by the query</td>
+            <td style="width:45%; text-align:center">
+                The carrier list is being retrieved from master_carrier table by using the 
+                below query
+                <br />
+                SELECT M.Carrier_ID, M.DESCRIPTION ||&#39; - &#39;|| M.Carrier_ID as DESCRIPTION FROM 
+                V_CARRIER M WHERE M.INACTIVE_FLAG IS NULL ORDER BY M.DESCRIPTION</td>
+        </tr>
+        <tr>
+            <td style="width:20% ; text-align:center">
+                Pickup Date</td>
+            <td style="width:15% ; text-align:center">
+                Date Control
+            </td>
+            <td style="width:20%; text-align:center">
+                Date range from current Date to next 7 days</td>
+            <td style="width:45%; text-align:center">
+                Pickup Date From and To</td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p xmlns="http://www.w3.org/1999/xhtml">
+        <i>Expected Time for the report output is </i>1 sec</p>
+    This Report displays the sub linear performance with respect to table ps, box and
+    cust. There is full scan on the table ps and cust. Index BOX_PS_FK_I&nbsp; 
+is being used with table box.<h2>
+        Behavior Change</h2>
+    <ul>
+        <li>None</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>None</li>
+    </ul>
+    <h2>
+        Prerequisites </h2>
+        <ul>
+                <li>
+                <h4>
+                PrivPrivate synonyms requried for the tables: </h4>
+            <pre>
+PS<code> ,
+Cust ,
+Box </code></pre>
+                <ul>
+                <li>
+            <h4>
+                Script to create the synonyms:</h4>
+                <pre>
+ <code>create or replace synonym PS for dcms8.PS;       
+create or replace synonym Cust for dcms8.Cust;
+create or replace synonym Box for dcms8.Box;</code></pre>
+        </li>
+                </ul>
+                </li>
+         <li>
+         <h4>App-Settings required:</h4>
+                    </li>
+   </ul>
+                    <p style="margin-left: 80px">
+                        No app-setting is required for this report.</p>
+    <h2>
+        Query&#39;s documentation:</h2>
+        <pre>
+SELECT PS.CUSTOMER_ID AS CUSTOMER_ID,
+       MAX(CUST.NAME) AS CUSTOMER_NAME,
+       PS.PO_ID AS PO,
+       PS.CUSTOMER_DC_ID AS DC,
+       COUNT(BOX.UCC128_ID) AS NUMBER_OF_BOXES,
+       PS.PICKUP_DATE AS PICKUP_DATE,
+       PS.VWH_ID AS VWH_ID,
+       PS.WAREHOUSE_LOCATION AS WAREHOUSE_LOCATION
+  FROM PS PS, BOX BOX, CUST CUST
+ WHERE PS.PICKSLIP_ID = BOX.PICKSLIP_ID(+)
+   AND CUST.CUSTOMER_ID = PS.CUSTOMER_ID
+   AND BOX.SUSPENSE_DATE IS NULL
+   AND BOX.STOP_PROCESS_DATE IS NULL
+   AND BOX.STOP_PROCESS_REASON IS NULL
+   AND PS.CARRIER_ID = :CARRIER_ID
+   AND PS.PICKUP_DATE >= :FromDate
+   AND PS.PICKUP_DATE < :ToDate + 1
+   AND ps.cancel_reason_code IS NULL
+ GROUP BY PS.CUSTOMER_ID,
+          PS.PO_ID,
+          PS.CUSTOMER_DC_ID,
+          PS.PICKUP_DATE,
+          PS.WAREHOUSE_LOCATION,
+          PS.VWH_ID
+ ORDER BY PICKUP_DATE ASC, CUSTOMER_ID ASC      </pre>
+    <h2>
+        Validation details</h2>
+    <b>QUERY: below query is showing count of boxes.</b>
+    <pre>
+        SELECT COUNT(DISTINCT B.UCC128_ID)
+  FROM PS
+ INNER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+ INNER JOIN BOXDET BD
+    ON B.UCC128_ID = BD.UCC128_ID
+   AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND B.STOP_PROCESS_DATE IS NULL
+   AND PS.CUSTOMER_ID = '70090'
+   AND PS.PO_ID = '0023-5258586-3803'
+   AND PS.CARRIER_ID = '0001'
+   AND PS.CUSTOMER_DC_ID = '3803'
+   AND ps.cancel_reason_code IS NULL
+   AND B.SUSPENSE_DATE IS NULL
+  
+   AND PS.PICKUP_DATE >= TO_DATE('5/1/2013', 'MM/DD/YYYY')
+   AND PS.PICKUP_DATE < TO_DATE('5/1/2013', 'MM/DD/YYYY') + 1
+    </pre><b>QUERY: Below query is showing All Columns</b>
+    <pre>
+        SELECT COUNT(DISTINCT B.UCC128_ID),
+       ps.vwh_id,
+       ps.warehouse_location_id,
+       ps.po_id,
+       ps.customer_dc_id,
+       ps.customer_id
+  FROM PS
+ INNER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND B.STOP_PROCESS_DATE IS NULL
+   AND PS.CUSTOMER_ID = '70090'
+   AND PS.CARRIER_ID = '0001'
+   AND ps.cancel_reason_code IS NULL
+   AND B.SUSPENSE_DATE IS NULL
+   AND PS.PICKUP_DATE >= TO_DATE('5/1/2013', 'MM/DD/YYYY')
+   AND PS.PICKUP_DATE < TO_DATE('5/1/2013', 'MM/DD/YYYY') + 1
+ group by ps.vwh_id,
+          ps.warehouse_location_id,
+          ps.po_id,
+          ps.customer_dc_id,
+          ps.customer_id
+    </pre>
+    <p>
+        None</p>
+</body>
+</html>
+

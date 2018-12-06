@@ -1,0 +1,720 @@
+﻿<html>
+<head>
+    <title>Location of Box in DC</title>
+    <style type="text/css">
+        .style1
+        {
+            height: 33px;
+        }
+        .style2
+        {
+            width: 257px;
+        }
+        .style3
+        {
+            width: 108px;
+        }
+        .auto-style1 {
+            width: 165px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        110<b>.</b>105<b> : </b>Location of Box in DC</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    $Revision: 6543 $<br />
+    Status: Reviewed<br />
+    Reviewed By : ManMohan Bisht<br />
+    Tested By :Binay Bhushan<br />
+    <p>
+        This report displays boxes of unshipped pickslips lying in specified area along
+        with their SKU detail. Several optional filters are available to help you focus
+        on your orders of interest: PO, Pickslip, Customer, bucket, MPC, Label ,DC , DC
+        Cancel date, BOL, Customer Store and ATS date. Only in process pickslips will be
+        considered in this report. You also have the option to focus on validated pickslips
+        only.
+        Now you get to know list of&nbsp; boxes specific VAS in different areas with the helps of VAS filter.</p>
+    <p>
+        Please Note: Box Id is repeated in PO Consolidation case when one box belongs to
+        more than one PO.
+    </p>
+    <h2>
+        Overview</h2>
+    The goal of this report is to make visible the progress of all unshipped pickslips.
+    As a pickslip is processed within the DC, boxes get created and these boxes move
+    from one area to another and eventually reach the shipping area. This report shows
+    the number of boxes along with detail of each box in the specified box area. The
+    box detail includes the SKUs in box and respective expected pieces and current pieces
+    in each box.
+    <p>
+        If you want to focus on a smaller subset of unshipped pickslips, you can do this
+        by using optionally specifying one or more following filters:
+    </p>
+    <ul>
+        <li><b>Area:</b> Select a specific area to view the information. There are 3 conceptual
+            areas also showing the box&#39;s condition in the DC.These 3 conceptual areas are
+            described below</li>
+        <li><i><b>Expediter Bucket:</b></i>Those boxes which have not been assigned to an MPC
+            yet.&nbsp;&nbsp;&nbsp; </li>
+        <li><i><b>Unstarted Cancelled:</b></i> Those boxes which were cancelled before they
+            were assigned to an MPC.</li>
+        <li><i><b>MPC Unstarted:</b></i> Unpitched boxes which belong to some MPC. By contrast,
+            area PIT contains boxes for which pitching has started. After pitching is complete
+            for a box, it moves to RED or GRN area.</li>
+        <li><b>PO</b>. The purchase order which you wish to track.</li>
+        <li><b>Pickslip</b>. A specific pickslip id if you are interested in the progress of
+            a single pickslip.</li>
+        <li><b>Customer</b>. This allows you to track order progress of a specific customer.</li>
+        <li><b>MPC.</b> This allows you to track the progress of a specific MPC.</li>
+        <li><strong>Bill Of Lading. </strong>This parameter is for filtering the report on the
+            basis of passed BOL</li>
+        <li><strong>Store</strong>. This parameter can be passed if user wants to see the report
+            for a particular Store. </li>
+        <li><b>Label</b>. To track progress of a boxes containing SKUs of a specific label.</li>
+        <li><b>DC</b>. To track boxes destined for a specific DC. If you specify this parameter,
+            it is highly recommended that you specify customer id as well. This is because different
+            customers can have same DC Id.</li>
+        <li><b>Validated Only</b>. Choosing this option includes only those boxes which have
+            successfully passed through the validation station.</li>
+        <li><b>Customer Type</b>. You can use this parameter the see the box detail of Domestic
+            or international customers. By default, the box detail for all customer will be
+            displayed.</li>
+        <li><strong>ATS Date</strong>. For EDI customers, user can use this parameter to know
+            the details of the boxes in the orders that are assigned with the passed ATS(Avaliable
+            To Ship) date.</li>
+        <li><strong>DC Cancel Date. </strong>On the basis of this parameter user can filter
+            the data based on dc cancel date.</li>
+    </ul>
+    <p>
+        Note that some combination of parameters do not make any sense. For example, if
+        a pickslip is specified, specifying a PO adds no value since only a single pickslip
+        will be displayed anyway. In fact, if the specified PO does not contain the specified
+        pickslip, no rows will be displayed. It is up to you to specify a sensible combination
+        of parameters.
+    </p>
+    <p>
+        For the purpose of this report, unshipped pickslip is defined as that pickslip for
+        which information has not been sent to Richter yet. This means that even if you
+        ship the pickslip, it will be visible to this report until data for this pickslip
+        is transferred to Richter.
+    </p>
+    <h2>
+        Algorithm</h2>
+    Get the box detail from box, boxdet, master_sku and ps for passed area.
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td align="center">
+                    <b>Item</b>
+                </td>
+                <td align="center">
+                    <b>Summary</b>
+                </td>
+                <td align="center">
+                    <b>Sort Sequence</b>
+                </td>
+                <td align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Customer
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    1
+                </td>
+                <td>
+                    The ID of customer
+                </td>
+            </tr>
+            <tr>
+                <td class="style1">
+                    PO
+                </td>
+                <td class="style1">
+                    No
+                </td>
+                <td align="center" class="style1">
+                    2
+                </td>
+                <td class="style1">
+                    Purchase Order ID of customer
+                </td>
+            </tr>
+            <tr>
+                <td class="style1">
+                    Pallet</td>
+                <td class="style1">
+                    No</td>
+                <td align="center" class="style1">
+                    3</td>
+                <td class="style1">
+                Pallet on which boxes are placed
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Box
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    4
+                </td>
+                <td>
+                    UCC128 ID of the Box.(This column name has been changed from Carton ID to Box.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VAS</td>
+                <td>
+                    No</td>
+                <td align="center">
+                    5</td>
+                <td>
+                    Report is displaying VAS description.</td>
+            </tr>
+            <tr>
+                <td>
+                    Location
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    6</td>
+                <td>
+                    Location where box is right now.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Carton</td>
+                <td>
+                    No</td>
+                <td align="center">
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    Bucket
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    &nbsp;
+                </td>
+                <td>
+                    The Bucket ID which contains the pickslip
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Style
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    &nbsp;
+                </td>
+                <td>
+                    Style of SKU in box
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Color
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    &nbsp;
+                </td>
+                <td>
+                    Color of SKU in box
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Dim
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    &nbsp;
+                </td>
+                <td>
+                    Dimension of SKU in box
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Size
+                </td>
+                <td>
+                    No
+                </td>
+                <td align="center">
+                    &nbsp;
+                </td>
+                <td>
+                    Size of SKU in box
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pieces|Expected
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="center">
+                    &nbsp;
+                </td>
+                <td>
+                    Number of pieces to be picked for complete the box.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pieces|Current
+                </td>
+                <td>
+                    Sum
+                </td>
+                <td align="center">
+                    &nbsp;
+                </td>
+                <td>
+                    Number of pieces already picked for the box.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td align="center" class="auto-style1">
+                    <b>Name</b>
+                </td>
+                <td align="center" class="style2">
+                    <b>Default</b>
+                </td>
+                <td align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1">
+                    Inventory Area
+                </td>
+                <td class="style2">
+                    no default
+                </td>
+                <td>
+                    The inventory area in warehouse. This dropdown box also includes conceptual areas
+                    which are 'Expediter Bucket', MPC Unstarted and Unstarted Cancelled.
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1">
+                    PO
+                </td>
+                <td class="style2">
+                    no default
+                </td>
+                <td>
+                    Customer&#39;s PO ID
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1">
+                    PickSlip
+                </td>
+                <td class="style2">
+                    no default
+                </td>
+                <td>
+                    Pickslip ID
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1">
+                    Customer
+                </td>
+                <td class="style2">
+                    no default
+                </td>
+                <td>
+                    ID of Customer
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1">
+                    Bucket
+                </td>
+                <td class="style2">
+                    no default
+                </td>
+                <td>
+                    Id of Bucket
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1">
+                    MPC
+                </td>
+                <td class="style2">
+                    no default
+                </td>
+                <td>
+                    MPC ID
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1">
+                    Store
+                </td>
+                <td class="style2">
+                    None
+                </td>
+                <td>
+                    Store Id of the customer
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1">
+                    Bill Of Lading
+                </td>
+                <td class="style2">
+                    None
+                </td>
+                <td>
+                    ID of BOL
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1">
+                    Appointment ID</td>
+                <td class="style2">
+                    None</td>
+                <td>
+                    Provided appointment filter to view unshipped boxes of given appointment number.</td>
+            </tr>
+            <tr>
+                <td class="auto-style1">
+                    Status</td>
+                <td class="style2">
+                    None</td>
+                <td>
+                    Pickslip status</td>
+            </tr>
+            <tr>
+                <td class="auto-style1">
+                    Label
+                </td>
+                <td class="style2">
+                    no default
+                </td>
+                <td>
+                    Style Label
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Ordered Required
+                    VAS</td>
+                <td>
+                    All VAS</td>
+                <td>
+                    Any VAS(Value Added Service) applied on order.</td>
+            </tr>
+            <tr>
+                <td class="auto-style1">
+                    Customer DC
+                </td>
+                <td class="style2">
+                    None</td>
+                <td>
+                    Customer&#39;s DC Id
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1">
+                    Validated Only
+                </td>
+                <td class="style2">
+                    false
+                </td>
+                <td>
+                    To view the only validated pickslips
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1">
+                    Customer Type
+                </td>
+                <td class="style2">
+                    All
+                </td>
+                <td>
+                    To view pickslip of domestic or international Customer
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1">
+                    ATS Date
+                </td>
+                <td class="style2">
+                    None
+                </td>
+                <td>
+                    This parameter is for selecting the ATS(Available to Ship) date. This parameter
+                    is only for EDI customer orders.
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1">
+                    DC Cancel Date
+                </td>
+                <td class="style2">
+                    Date range from date = current date, To date = current date + 7 days.
+                </td>
+                <td>
+                    This parameter is for selecting the Dc Cancel Date range for which user wants to
+                    see the report. There is a checkbox which is near to this date parameter. For applying
+                    this date filter this checkbox must be checked.
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1">
+                    Building
+                </td>
+                <td class="style2">
+                    Building check box checked
+                </td>
+                <td>
+                    Warehouse location id for which you wants to run the report
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>20 seconds</p>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Now Pickslip parameter is able to take 10 digit pickslip Id.</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ol>
+        <li>After pitching if a VAS box is under pitched and marked for RED area then report will show this box in VAS area. </li>
+    </ol>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        box,<br />
+        boxdet,<br />
+        ps,<br />
+        PO,<br />
+        mpcloc,<br />
+        mpc,<br />
+        master_sku,<br />
+        edi_753_754_ps,<br />
+        ps_vas,<br />
+        tab_vas
+    </p>
+    <p>
+        &nbsp;</p>
+    <p>
+        <br />
+        Use the below script to create the synonyms
+    </p>
+    <pre>create or replace synonym box for dcms8.box;
+create or replace synonym boxdet for dcms8.boxdet;
+create or replace synonym ps for dcms8.ps;
+create or replace synonym po for dcms8.po;
+create or replace synonym mpcloc for dcms8.mpcloc;
+create or replace synonym mpc for dcms8.mpc;
+create or replace synonym master_sku for dcms4.master_sku;
+create or replace synonym EDI_753_754_PS for dcms8.EDI_753_754_PS;
+create or replace synonym ps_vas for dcms8.ps_vas;
+create or replace synonym tab_vas for dcms8.tab_vas;
+</pre>
+    <pre>&nbsp;</pre>
+    <p>
+        Following appSettings are required.<br />
+        &lt;!--Report R110_03 WIPBoxArea specified--&gt;<br />
+        &lt;add key="WIPAreaForBox" value="PIT"/&gt;<br />
+    </p>
+    <h1>
+        Technical Documentaion</h1>
+    <h2>
+        Parameter Technical Detail</h2>
+    <ul>
+        <li>Inventory Area (Type = String): This is a list parameter control. Inventory Area
+            of distribution center. Null value text is "".</li></ul>
+    <ul>
+        <li>Value = EB, Text = Expediter Bucket</li>
+        <li>Value = MU, Text = MPC Unstarted</li>
+        <li>Value = UC, Text = Unstarted Cancelled</li>
+        <li>Query to fill list values = &quot;select distinct (ia_id) as ia_id, &#39;(&#39;
+            || ia_id || &#39;) &#39; || short_description as short_description, &#39;Physical
+            Areas&#39; AS option_group, ia.process_flow_sequence as area_sequence from ia ia
+            order by area_sequence&quot;</li>
+        <li>PO (Type = String): To see box count of a specific PO(Purchase order) plesae provide
+            PO ID.</li>
+        <li>Pickslip (Type = String): To see box count of a specific pickslip please provide
+            Pickslip ID</li>
+        <li>Customer (Type = String): To see box count of a specific Customer please provide
+            Customer ID</li>
+        <li>Bucket (Type = String): To see box count of a specific Bucket please provide Bucket
+            ID</li>
+        <li>MPC (Type = String): To see box count of a specific MPC please provide MPC ID</li>
+        <li>Label (Type = String): To see box count of a specific Label please provide Label
+            ID</li>
+        <li>Customer DC (Type = String): To see box count of a specific distribution center
+            please provide DC ID</li>
+        <li>Validated Only (Type = Boolean): Check the checkbox to see the box count of only
+            validated pickslips</li>
+        <li>Customer Type (Type = String): This is a list parameter control. Select the customer
+            type Null value text is "All".</li></ul>
+    <ul>
+        <li>Value = DOM, Text = Domestic</li>
+        <li>Value = EXP, Text = International</li></ul>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.
+    <h2>
+        Query's documentation:</h2>
+    <p>
+        The report query is as follows:</p>
+    <pre>
+ SELECT BOX.UCC128_ID AS UCC128_ID,
+         MAX(BOX.LOCATION_ID) AS LOCATION_ID,
+         MAX(BOX.PALLET_ID) AS PALLET_ID,
+         MAX(BOX.CARTON_ID) AS CARTON_ID,
+         SUM(BOXDET.EXPECTED_PIECES) AS EXPECTED_PIECES,
+         SUM(BOXDET.CURRENT_PIECES) AS CURRENT_PIECES,
+         SKU.STYLE AS STYLE,
+         SKU.COLOR AS COLOR,
+         SKU.DIMENSION AS DIMENSION,
+         SKU.SKU_SIZE AS SKU_SIZE,
+         PS.CUSTOMER_ID AS CUSTOMER_ID,
+         PS.PO_ID AS PO_ID,
+         SYS.STRAGG(UNIQUE(NVL2(TV.DESCRIPTION, (TV.DESCRIPTION || ','), ''))) AS VAS_ID,
+         MAX(PS.BUCKET_ID) AS BUCKET_ID
+    FROM BOX BOX
+    LEFT OUTER JOIN BOXDET BOXDET
+      ON BOX.UCC128_ID = BOXDET.UCC128_ID
+     AND BOX.PICKSLIP_ID = BOXDET.PICKSLIP_ID
+    LEFT OUTER JOIN PS
+      ON BOX.PICKSLIP_ID = PS.PICKSLIP_ID
+    LEFT OUTER JOIN EDI_753_754_PS EDIPS
+      ON PS.PICKSLIP_ID = EDIPS.PICKSLIP_ID
+    LEFT OUTER JOIN PO
+      ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+     AND PS.PO_ID = PO.PO_ID
+     AND PS.ITERATION = PO.ITERATION
+    LEFT OUTER JOIN PS_VAS PV
+      ON PS.PICKSLIP_ID = PV.PICKSLIP_ID
+    LEFT OUTER JOIN TAB_VAS TV
+      ON PV.VAS_ID = TV.VAS_CODE
+    LEFT OUTER JOIN SHIP S
+      ON PS.SHIPPING_ID = S.SHIPPING_ID
+    LEFT OUTER JOIN MASTER_SKU SKU
+      ON BOXDET.UPC_CODE = SKU.UPC_CODE
+  
+   WHERE PS.TRANSFER_DATE IS NULL
+     AND NVL(PS.WAREHOUSE_LOCATION_ID, 'UNKNOWN') IN
+         (:WAREHOUSE_LOCATION_ID0, :WAREHOUSE_LOCATION_ID1)
+        
+     AND BOX.PITCHING_END_DATE IS NOT NULL
+     AND BOX.VERIFY_DATE IS NULL
+     AND PV.VAS_ID IS NOT NULL
+  
+   GROUP BY BOX.UCC128_ID,
+            SKU.STYLE,
+            SKU.COLOR,
+            SKU.DIMENSION,
+            SKU.SKU_SIZE,
+            PS.CUSTOMER_ID,
+            PS.PO_ID
+        </pre>
+    <h2>
+        Validation detail</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.
+    <br />
+    <br />
+    <b>Query:</b>
+    <pre>
+            select sku.style AS "STYLE",
+            sku.color AS "COLOR",
+            sku.dimension AS "DIMENSION",
+            sku.sku_size AS "SKU_SIZE",
+            max(box.ia_id)as IA_ID,
+            sum(boxdet.expected_pieces) AS "EXPECTED_PIECES",
+            sum(boxdet.current_pieces) AS "CURRENT_PIECES"
+            from box, boxdet, master_sku sku
+            where box.ucc128_id = boxdet.ucc128_id
+            AND boxdet.upc_code = sku.UPC_CODE
+            AND box.ucc128_id = :BOX_ID
+            group by box.ucc128_id, sku.style, sku.color, sku.dimension, sku.sku_size;
+          </pre>
+    <b>Description:</b><pre>
+            Run the above query to validate the SKU details for specified box.</pre>
+    <pre>
+Following Query is for validating the details of the passed box for the passed ATS date</pre>
+    <pre>
+SELECT MAX(ps.po_id),
+       B.UCC128_ID,
+       max(b.location_id),
+       MAX(ms.style),
+       MAX(ms.color),
+       MAX(ms.dimension),
+       MAX(ms.sku_size),
+       sum(bd.expected_pieces),
+       SUM(bd.current_pieces)
+  FROM BOX b
+  LEFT OUTER JOIN ps  ps ON
+  PS.PICKSLIP_ID = B.PICKSLIP_ID
+  LEFT OUTER JOIN BOXDET bd ON
+  b.ucc128_id = bd.ucc128_id
+  AND b.pickslip_id = bd.pickslip_id
+ LEFT OUTER JOIN EDI_753_754_PS EPS
+    ON PS.PICKSLIP_ID = EPS.PICKSLIP_ID
+ LEFT OUTER JOIN MASTER_SKU ms 
+ ON ms.sku_id = bd.sku_id   
+   WHERE PS.TRANSFER_DATE IS NULL
+   AND B.STOP_PROCESS_DATE IS NULL
+   AND ps.customer_id ='11160'
+   AND EPS.ATS_DATE >= TO_DATE('4/10/2012','MM/DD/YYYY')
+   AND EPS.ATS_DATE < TO_DATE('4/10/2012','MM/DD/YYYY') + 1
+GROUP BY b.ucc128_id,bd.sku_id
+ORDER BY b.ucc128_id
+</pre>
+</body>
+</html>

@@ -1,0 +1,430 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style type="text/css">
+        .style1
+        {
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1 style="text-align: center">
+        130<b>.</b>01<b> : </b>Pull Carton Suspense Report</h1>
+    <strong>Author : Sanjeev Kumar</strong><br />
+    <b>Mentor : Hemanth Sir</b> <br />
+    $Revision: 2135 $<br />
+    Status: Tested
+    <br />
+    Tested By : <br />
+    <p>This report lists all suspense cartons with SKU details for the specified pull date range in the pulling process or the detail of all the cartons which are currently in suspense, i.e. which can't be traced in Distribution Centre for specified days. 
+</p>
+<h2>Overview</h2>
+    <p>This report lists all suspense cartons with SKU and quantity for the specified pull date range in the pulling process 
+        and building wise.
+     This report also displays the detail of all cartons which are currently in suspense,
+     i.e. which can't be traced in Distribution Center for the specified days. 
+     This report provides the Location and Pallet IDs where the carton was supposed to be when it was found missing.
+      The SKU details contained in such cartons will be retrieved. Report is helpful in tracking the missing cartons.
+      The report shows suspense carton details while pulling process for the specified date. </p>
+<h2>Algorithm</h2>
+<p>The query will get all the carton details from src_carton_process_detail and src_carton_detail tables.
+ The warehouse location will be retrieved from table warehouseloc on the basis of label_id of the SKU which is there in table tab_label_group.
+  </p>
+  <h2>OutPut</h2>
+  <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center">
+                <b>Item</b>
+            </td>
+            <td align="center">
+                <b>Summary</b>
+            </td>
+            <td align="center">
+                <b>Default Sort Sequence</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+         <tr>
+            <td>
+                <i><b>Carton ID</b></i></td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                The ID given the carton.
+            </td>
+        </tr> 
+        <tr>
+            <td>
+                Carton Storage Area</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                The rea where cartons are stored.
+            </td>
+        </tr> 
+        <tr>
+            <td>
+                Style</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Style of sku</td>
+        </tr> 
+        <tr>
+            <td>
+                Color</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Color of Sku</td>
+        </tr>
+         <tr>
+            <td>
+                Dimension</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Dimension of sku</td>
+        </tr> 
+        <tr>
+            <td class="style1">
+                SKU Size</td>
+            <td class="style1">
+                No
+            </td>
+            <td align="center" class="style1">
+                &nbsp;</td>
+            <td class="style1">
+                SKU_SIZE of sku</td>
+        </tr> <tr>
+            <td>
+                Quantity</td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Total quantity stored in cartons.
+            </td>
+        </tr> <tr>
+            <td>
+                Location ID</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                The location where cartons are assigned.
+            </td>
+        </tr> <tr>
+            <td>
+                Pallet ID</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                The ID given to the pallet on which cartons are put.</td>
+        </tr> <tr>
+            <td>
+                Suspense Date</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                The date on which cartons were put in suspense.</td>
+        </tr> <tr>
+            <td>
+                Puller and Operator</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                One who does the pulling. this report shows the Puller column date wise and day 
+                wise show the operator column.</td>
+        </tr> <tr>
+            <td>
+                Building</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Location for the cartons in warehouses</td>
+        </tr>
+        <tr>
+            <td>
+                Operator</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Operator name.</td>
+        </tr>
+        </table>
+        <h2>Parameter</h2>
+        <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center">
+                <b>Name</b>
+            </td>
+            <td align="center">
+                <b>Default</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+         <tr>
+            <td>
+                Suspense date range</td>
+            <td>
+                None</td>
+            <td>
+                Date or date range when pulling takes place to give carton details</td>
+        </tr>
+         <tr>
+            <td>
+                Cartons currently in suspense for more than days</td>
+            <td>
+                None</td>
+            <td>
+                The Cartons which are in suspense for more than days.</td>
+        </tr>
+         <tr>
+            <td>
+                Building</td>
+            <td>
+                all</td>
+            <td>
+                Location in Warehouse</td>
+        </tr>
+        </table>
+        <h2>Performance Detail
+</h2>
+<i>Expected Time for the report output is 3 sec</i>
+  <h2>Behavior</h2>
+  <p>
+1. The new report parameters&nbsp; have radiobuttons on it for selecting either "Suspense date" or "Cartons currently in suspense for more than days".At one time query will run for a single parameter and report will display results accordingly.The "From suspense Date" and "To suspense date" parameters are null by default.
+  </p>
+  <h2>issue</h2>
+  NO Issue
+    <h1>Prerequisites</h1>
+<p>Private synonyms for the following tables are required</p>
+
+<p>Use the below script to create the synonyms</p>
+<ul>
+<li>create or replace synonym src_carton for dcms4.src_carton </li>
+<li>create or replace synonym src_carton_detail for dcms4.src_carton_detail </li>
+<li>create or replace synonym master_storage_location for dcms4.master_storage_location </li>
+<li>create or replace synonym master_style for dcms4.master_style </li>
+<li>create or replace synonym tab_label_group for dcms4.tab_label_group </li>
+<li>create or replace synonym warehouseloc for dcms8.warehouseloc </li>
+<li>create or replace synonym src_carton_process_detail for dcms4.src_carton_process_detail </li>
+</ul>
+<h4>Following appSettings are required:</h4>
+&lt;!-- For Report 130.01 and its drill down--&gt;<br />
+ &lt;add key="CartonReserveArea" value="BIR"/&gt;
+<h2>Tecnichal Detail</h2>
+                    <h4>
+                        Parameter Technical Details</h4>
+                    <ul>
+<li>Suspense Date (Type = Date): You can specify the date or date range to perform 
+pulling to see carton details. This is a date range control. </li>
+<li>Cartons currently in suspense for more than days (Type = ID): Eneter the days 
+for which you want to display Cartons currently in suspense for more than given 
+days </li>
+<li>Warehouse Location (Type = ID): This is a list parameter control. By default, 
+inventory of all Warehouse is shown for each area. If your focus is on the 
+inventory in a particular Warehouse, Specify that Warehouse Location. Null value 
+text is &quot;All&quot;.</li>
+<li>Query to fill list values = &quot;select 
+warehouseloc.warehouse_location_id,warehouseloc.warehouse_location_id from 
+warehouseloc&quot; </li>
+</ul>
+<h2>Parameter Validation</h2>
+<h4> No parameter Validation</h4>
+    <h2>Query's documentation:</h2>
+<pre>
+&lt;if c="$SUSPENSE_DAYS"&gt;
+     SELECT ctndet.style AS STYLE,
+       ctndet.color AS  COLOR ,
+       ctndet.dimension AS  DIMENSION ,
+       ctndet.sku_size AS  SKU_SIZE ,
+       sum(ctndet.quantity) AS  QUANTITY ,
+       ctn.carton_id AS  carton_id ,
+       max(ctn.location_id) AS  LOCATION_ID ,
+       max(ctn.pallet_id) AS  PALLET_ID ,
+       trunc(max(ctn.suspense_date)) AS  SUSPENSE_DATE ,
+       max(ctn.modified_by) AS  Operator_name ,
+       max(ctn.carton_storage_area) AS  CARTON_STORAGE_AREA ,
+       null AS  LABEL_ID, 
+       MSLOC.warehouse_loc AS warehouse_location_id
+ FROM src_carton ctn 
+ inner join src_carton_detail ctndet
+    on ctn.carton_id = ctndet.carton_id
+  LEFT OUTER JOIN master_storage_location msloc
+      ON CTN.LOCATION_ID = MSLOC.LOCATION_ID
+      AND CTN.CARTON_STORAGE_AREA = MSLOC.STORAGE_AREA
+       where 1=1
+       <if> AND msloc.warehouse_loc = :warehouse_location_id</if>
+       <if>AND trunc(ctn.suspense_date) &lt;= trunc(SYSDATE) - :SUSPENSE_DAYS</if>
+       and ctn.carton_storage_area=:carton_storage_area
+        GROUP BY ctndet.style,
+          ctndet.color,
+          ctndet.dimension,
+          ctndet.sku_size,
+          ctn.carton_id,
+          msloc.warehouse_loc    
+      union
+SELECT ctndet.style AS STYLE,
+       ctndet.color AS  COLOR ,
+       ctndet.dimension AS  DIMENSION ,
+       ctndet.sku_size AS  SKU_SIZE ,
+       sum(ctndet.quantity) AS  QUANTITY ,
+       ctn.carton_id AS  CARTON_ID ,
+       max(ctn.location_id) AS  LOCATION_ID ,
+       max(ctn.pallet_id) AS  PALLET_ID ,
+       trunc(max(ctn.suspense_date)) AS  SUSPENSE_DATE ,
+       max(ctn.modified_by) AS  Operator_name ,
+       max(ctn.carton_storage_area) AS  CARTON_STORAGE_AREA ,
+       min(ms.label_id) AS  LABEL_ID, 
+       wloc.warehouse_location_id AS  warehouse_location_id    
+ FROM src_carton ctn 
+ inner join src_carton_detail ctndet
+    on ctn.carton_id = ctndet.carton_id
+  inner join master_style ms
+    on ms.style = ctndet.style
+ left outer join tab_label_group tbl
+    on ms.label_id = tbl.label_id
+    and ctn.vwh_id = tbl.vwh_id
+ inner join warehouseloc wloc
+    on wloc.label_group = tbl.label_group
+ WHERE ctn.suspense_date IS NOT NULL
+ <if>AND trunc(ctn.suspense_date) &lt;= trunc(SYSDATE) - :SUSPENSE_DAYS</if>
+ <if>AND wloc.warehouse_location_id=:warehouse_location_id</if>
+ and ctn.carton_storage_area !=:carton_storage_area
+ GROUP BY ctndet.style,
+          ctndet.color,
+          ctndet.dimension,
+          ctndet.sku_size,
+          ctn.carton_id,
+          wloc.warehouse_location_id
+          &lt;/if&gt;
+  &lt;else&gt;
+    SELECT ctnprodet.carton_id AS carton_id,
+       max(ctnprodet.to_carton_area) AS CARTON_STORAGE_AREA,
+       max(ctnprodet.insert_date) AS SUSPENSE_DATE,
+       max(ctnprodet.to_location_id) AS LOCATION_ID,
+       max(ctnprodet.to_pallet_id) AS PALLET_ID,
+       max(ctnprodet.inserted_by) AS Operator_name,
+       ctndet.style AS STYLE,
+       ctndet.color AS COLOR,
+       ctndet.dimension AS DIMENSION,
+       ctndet.sku_size AS SKU_SIZE,
+       sum(ctndet.quantity) AS QUANTITY,
+       wloc.warehouse_location_id AS warehouse_location_id
+  FROM src_carton_process_detail ctnprodet 
+   INNER JOIN src_carton_detail ctndet ON
+   CTNPRODET.CARTON_ID = CTNDET.CARTON_ID
+   INNER JOIN master_style ms ON 
+   CTNDET.STYLE = MS.STYLE
+   INNER JOIN tab_label_group tbl ON
+   MS.LABEL_ID = TBL.LABEL_ID
+   AND CTNPRODET.VWH_ID = TBL.VWH_ID
+   INNER JOIN warehouseloc wloc ON
+   TBL.LABEL_GROUP = WLOC.LABEL_GROUP
+      
+ WHERE ctnprodet.old_suspense_date is null
+   AND ctnprodet.new_suspense_date is not null
+   AND ctnprodet.module_code = 'PUL'
+     And ctnprodet.insert_date &gt;= CAST(:FROM_SUSPENSE_DATE as DATE)
+     AND ctnprodet.insert_date &lt; CAST(:TO_SUSPENSE_DATE as DATE)+ 1
+     <if>AND wloc.warehouse_location_id=:warehouse_location_id</if>
+ GROUP BY ctnprodet.carton_id,
+          ctndet.style,
+          ctndet.color,
+          ctndet.dimension,
+          ctndet.sku_size,
+          wloc.warehouse_location_id
+          &lt;/else&gt;
+</pre>
+
+    <h2>validation Detail</h2>
+<p>Bellow queries may have the where clause in the [] brackets. It means these are the optional parameters. If you do not want to pass these parameters just remove the [] section. 
+</p>
+<b>Query:</b>
+<pre>select ctndet.carton_id AS "CARTON_ID",
+              ctn.carton_storage_area,
+              ctndet.style AS "STYLE",
+              ctndet.color AS "COLOR",
+              ctndet.dimension AS "DIMENSION",
+              ctndet.sku_size AS "SKU_SIZE",
+              ctndet.quantity AS "Quantity",
+              ctn.location_id AS "Location Id",
+              ctn.pallet_id AS "Pallet Id",
+              ctn.suspense_date AS "Suspense Date",
+              ctn.modified_by as "Operator"
+              from src_carton ctn, src_carton_detail ctndet
+              where ctndet.carton_id = :CARTON_ID
+              and ctn.carton_id = ctndet.carton_id;
+</pre>
+<b>description</b>
+<p>This query will get the SKU details for a given carton ID when run for parameter Suspense cartons in DC till days</p>
+<b>Query:</b>
+<pre>select ctndet.carton_id AS "CARTON_ID",
+              ctn.to_carton_area,
+              ctndet.style AS "STYLE",
+              ctndet.color AS "COLOR",
+              ctndet.dimension AS "DIMENSION",
+              ctndet.sku_size AS "SKU_SIZE",
+              ctndet.quantity AS "Quantity",
+              ctn.to_location_id AS "Location Id",
+              ctn.to_pallet_id AS "Pallet Id",
+              ctn.insert_date AS "Suspense Date",
+              ctn.inserted_by as "Puller"
+              from SRC_CARTON_PROCESS_DETAIL ctn, src_carton_detail ctndet
+              where ctndet.carton_id = :CARTON_ID
+              and ctn.carton_id = ctndet.carton_id
+              AND ctn.OLD_SUSPENSE_DATE IS NULL
+              AND ctn.NEW_SUSPENSE_DATE IS NOT NULL
+              AND ctn.Module_Code = 'PUL';
+</pre>
+<b>Description</b>
+<p>This query  will validate the report data when you will run report for a date range i.e. Suspense Date parameter.
+            Eneter the carton Id, Validiation query will give you some data, validiate this data with report's data.
+          
+</p>
+</body>
+</html>

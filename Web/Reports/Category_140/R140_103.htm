@@ -1,0 +1,337 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>140.103 Red Carton Detail Report</title>
+    <style type="text/css">
+        .style1
+        {
+            text-align: left;
+        }
+        .style2
+        {
+            text-align: left;
+            width: 20%;
+            height: 23px;
+        }
+        .style3
+        {
+            width: 15%;
+            height: 23px;
+        }
+        .style4
+        {
+            width: 39%;
+            height: 23px;
+        }
+        .style5
+        {
+            text-align: left;
+            width: 45%;
+            height: 23px;
+        }
+        .style6
+        {
+            width: 39%;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        140.103 Red Carton Detail Report</h1>
+    <h3>
+        Author : Hemant K. Varshney</h3>
+    <ul style="list-style: none">
+        <li>Mentor: Pravin Awasthi</li>
+        <li>$Revision: 1778 $</li>
+        <li>Status: Done</li>
+        <li>Tested By: Pravin Awasthi</li>
+    </ul>
+    <p>
+        The report displays the SKU details along with the pieces which are expected to 
+        be lying in the box as well as the actual pieces lying in that area.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        This report is a drill down in Open Bucket Summary Report on Number of RED 
+        boxes column that displays the SKU details of Red marked boxes. The report 
+        displays the SKU details along with the pieces which are expected to be lying in 
+        the box as well as the actual pieces lying in that box. </p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        Get all the sku details from master_sku and pieces(expected as well as current) 
+        from boxdet.</p>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:25%; text-align:center">
+                <b>Item</b>
+            </td>
+            <td style="width:20%; text-align:center">
+                <b>Summary</b>
+            </td>
+            <td style="width:10%; text-align:center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Carton Id</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                1</td>
+            <td style="width:45%; text-align:left">
+                UCC128 Id of carton</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                UPC Code</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                2</td>
+            <td style="width:45%; " class="style1">
+                UPC code of the SKU contained by the carton</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Style</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;&nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Style of the SKU</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Color</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Color of the SKU</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Dimension</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Dimension of the SKU</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Size</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                SKU Size of the SKU</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Expected Pieces</td>
+            <td style="width:20%; " class="style1">
+                Sum</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Expected pieces of the SKU</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Current Pieces</td>
+            <td style="width:20%; " class="style1">
+                Sum</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Current pieces of the SKU</td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:20% ; text-align:center">
+                <b>Name</b>
+            </td>
+            <td style="width:15% ; text-align:center">
+                <b>Type</b>
+            </td>
+            <td style="text-align:center" class="style6">
+                <b>Default</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td class="style2">
+                Bucket</td>
+            <td style="text-align:left" class="style3">
+                Integer</td>
+            <td style="text-align:left" class="style4">
+                None</td>
+            <td class="style5">
+                Bucket Id for which you would like to run the report</td>
+        </tr>
+        <tr>
+            <td style="width:20%; " class="style1">
+                Label           Label</td>
+            <td style="width:15%; text-align:left">
+                String</td>
+            <td style="text-align:left" class="style6">
+                All</td>
+            <td style="width:45%; " class="style1">
+                Label of the SKU for which you wish to run the report</td>
+        </tr>
+        <tr>
+            <td style="width:20%; " class="style1">
+                Virtual Warehouse</td>
+            <td style="width:15%; text-align:left">
+                String</td>
+            <td style="text-align:left" class="style6">
+                All</td>
+            <td style="width:45%; " class="style1">
+                The particular virtrual warehouse for which you would like to run the report</td>
+        </tr>
+        <tr>
+            <td style="width:20%; " class="style1">
+                Warehouse location id</td>
+            <td style="width:15%; text-align:left">
+                String</td>
+            <td style="text-align:left" class="style6">
+                All</td>
+            <td style="width:45%; " class="style1">
+                The particular warehouse location id for which you would like to run the report</td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p xmlns="http://www.w3.org/1999/xhtml">
+        <i>Expected Time for the report output is </i>1 second</p>
+    The query will exhibit linear performance with respect to the number of Skus in 
+    boxes of a pickslip. There is a full scan on table box as well as there is index 
+    based scans on tables ps,boxdet and master_sku
+    <p>
+        &nbsp;</p>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>No behaviour change.</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No known issue</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+        <ul>
+                <li>
+                <h4>
+                Private synonyms requried for the tables: </h4>
+            <pre>
+master_sku<code>,
+boxdet,
+box,
+ps,
+PO,
+bucket</code></pre>
+                <ul>
+                <li>
+            <h4>
+                Script to create the synonyms:</h4>
+                <pre>
+ create or replace synonym master_sku for dcms4.master_sku;
+create or replace synonym boxdet for dcms8.boxdet;
+create or replace synonym box for dcms8.box;
+create or replace synonym ps for dcms8.ps;
+create or replace synonym po for dcms8.po;
+create or replace synonym bucket for dcms8.bucket;
+</pre>
+        </li>
+                </ul>
+                </li>
+         <li>
+         <h4>App-Settings required:</h4>
+           <pre><code>No appSetting is required</code></pre></li>
+   </ul>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <pre>
+SELECT /*+index (box BOX_PS_FK_I) index(boxdet BOXDET_PK) index(sku SKU_UK)*/sku.style AS style,
+       sku.color AS color,
+       sku.dimension AS dimension,
+       sku.sku_size AS sku_size,
+       sku.upc_code AS upc_code,
+       SUM(boxdet.expected_pieces) AS expected_pieces,
+       SUM(boxdet.current_pieces) AS current_pieces,
+       box.ucc128_id AS ucc128_id,
+       ps.vwh_id AS vwh_id
+  FROM ps ps
+  LEFT OUTER JOIN po po
+            ON ps.customer_id = po.customer_id
+           AND ps.po_id = po.po_id
+   INNER JOIN box box
+    ON ps.pickslip_id = box.pickslip_id
+ INNER JOIN boxdet boxdet
+    ON box.pickslip_id = boxdet.pickslip_id
+   AND box.ucc128_id = boxdet.ucc128_id
+ inner join master_sku sku    
+    ON sku.upc_code = boxdet.upc_code
+ WHERE box.ia_id = CAST(:RedBoxArea as varchar2(255))
+         <if>AND ps.vwh_id = CAST(:vwh_id as varchar2(255))</if>
+         <if>AND ps.label_id = CAST(:label_id as varchar2(255))</if>
+         <if>and ps.warehouse_location_id =:WhLoc</if>
+         <if>AND po.start_date &gt;= CAST(:delivery_start_date AS DATE)</if>      
+         <if>AND po.start_date &lt;= CAST(:delivery_end_date AS DATE)</if>       
+         <if>AND po.dc_cancel_date &gt;=CAST(:dc_cancel_start_date AS DATE)</if>
+         <if>AND po.dc_cancel_date &lt;=CAST(:dc_cancel_end_date AS DATE)</if> 
+         <if>AND ps.bucket_id = cast(:bucket_id as number(5))</if>
+ GROUP BY sku.style,
+          sku.color,
+          sku.dimension,
+          sku.sku_size,
+          sku.upc_code,
+          box.ucc128_id,
+          ps.vwh_id</pre>
+    <h2>
+        Validation details</h2>
+    <p>
+        Description</p>
+        <p style="font-weight:bold">Query:</p>
+        <pre>
+        select sku.style,        
+       sku.color AS color,
+       sku.dimension AS dimension,
+       sku.sku_size AS sku_size,
+       sku.upc_code AS upc_code,
+       boxdet.expected_pieces AS expected_pieces,
+       boxdet.current_pieces AS current_pieces,
+       box.ucc128_id AS ucc128_id,
+       ps.vwh_id AS vwh_id 
+       from boxdet boxdet
+inner join box box on
+boxdet.pickslip_id = box.pickslip_id
+inner join ps ps on
+box.pickslip_id = ps.pickslip_id
+inner join master_sku sku on
+sku.upc_code = boxdet.upc_code
+where boxdet.ucc128_id = 'ucc128_id'
+and box.ia_id ='RED'
+and ps.bucket_id ='bucket_id'
+        </pre>
+</body>
+</html>

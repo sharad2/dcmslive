@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+
+    <form id="Form1" 
+    action="http://w3chile/xtremereporter/ReportDoc.aspx?_Report=C%3a%5cDCMSLive1%5cReports%5cR150.102.xsd" 
+    method="post" name="Form1">
+    <div>
+        <input id="__VIEWSTATE" name="__VIEWSTATE" type="hidden" 
+            value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+    </div>
+    <h1 align="center">
+        150<b>.</b>102<b> : </b>Expeditor Productivity Report per MPC
+    </h1>
+    <h3>
+        Author : Manmohan Bisht</h3>
+    <br />
+    $Revision: 520 $<br />
+    Status: Done<br/>
+    Reviewed By :     Hemant K. Varshney     <p author="PrabJyot Kour" reviewer="" status="Completed">
+        The report displays the details about the Operator for the Specified date and 
+        shift.
+    </p>
+    <h2>
+        Overview</h2>
+    For specified Expeditor the report displays the details about the MPC created by 
+    the Expeditor. The Time when Expeditor started the work total time taken by 
+    Expeditor for creating the MPC.
+    <h2>
+        Algorithm</h2>
+    Expeditor details are retrieved from the BOX_PRODUCTIVITY table.
+    <h3>
+        Output</h3>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="middle" width="25%">
+                <b>Item</b></td>
+            <td align="middle" width="20%">
+                <b>Summary</b></td>
+            <td align="middle" width="10%">
+                <b>Sort Sequence</b></td>
+            <td align="middle" width="35%">
+                <b>Detail</b></td>
+        </tr>
+        <tr>
+            <td>
+                MPC</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                1&nbsp;</td>
+            <td>
+                <r:item Term="MPC ID" SortSequence="1" 
+Key="true">MPC created by the Expeditor.</R:ITEM></td>
+        </tr>
+        <tr>
+            <td>
+                Start Time</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item Term="Start Time">Date and Time when expeditor started work 
+                on MPC </R:ITEM>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                End Time</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item  Term="End Time">Date and Time when expeditor finished work 
+                on MPC </R:ITEM>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Hrs Worked</td>
+            <td>
+                Sum
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item  Term="Total Hrs Worked">Total time (in hours) operator worked 
+                on MPC </R:ITEM>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No of Carton</td>
+            <td>
+                Sum
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item  Term="No of carton">Total cartons in MPC </R:ITEM>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No of Underpitch cartons</td>
+            <td>
+                Sum
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item
+Term="No of UnderPitch carton">Total cartons in which there is a shortage of inventory. </R:ITEM>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No of Unexcepted Scans</td>
+            <td>
+                Sum
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item
+Term="No of Unexcepted Scans">Total Unexcepted cartons Scanned by the operator 
+</R:ITEM>
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%" 
+        xmlns="http://www.w3.org/1999/xhtml">
+        <tr>
+            <td align="middle" width="20%">
+                <b>Name</b></td>
+            <td align="middle" width="20%">
+                <b>Default</b></td>
+            <td align="middle" width="60%">
+                <b>Detail</b></td>
+        </tr>
+        <tr>
+            <td>
+                Expeditor</td>
+            <td>
+                None</td>
+            <td>
+                One who creates MPCs             </td>
+        </tr>
+        <tr>
+            <td>
+                Operation Date</td>
+            <td>
+                None</td>
+            <td>
+                Date when MPCs was created.             </td>
+        </tr>
+        <tr>
+            <td>
+                Shift</td>
+            <td>
+                None</td>
+            <td>
+                An Expeditor can work in any shift. Also a Expeditor can perform the operation in 
+                multiple shifts. Specify if you are interested in a specific shift.             </td>
+        </tr>
+        <tr>
+            <td>
+                Warehouse Location</td>
+            <td>
+                All</td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>1 second</p>
+    The query perform the index range scan on the table Box_Productivity.Index 
+    BOXPROD_OPERATION_START_DATE_I used in the table box_productivity table.
+    <h2>
+        Definitions</h2>
+    <dl>
+        <dt><i>UnderPitch</i> </dt>
+        <dd>
+            <r:definition Term="UnderPitch">There may be situations in 
+            warehouse/DC when there is not sufficient inventory in stock to process the 
+            order. In such a case Shipping Manager, depending upon the order cancel dates, 
+            may decide to wait for the stock to be received in warehouse/DC or UnderPitched 
+            the order. </R:DEFINITION>
+        </dd>
+    </dl>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>No Change</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No Issue</li>
+    </ul>
+    <div id="divTechnical">
+        <h2>
+            Query&#39;s documentation:</h2>
+        <ul>
+            <li><r:doc>This query extracts the details about the MPC 
+                created by the operator.
+                <pre>
+  with operator as
+ (select
+  max(bp.warehouse_location_id) as warehouse_location_id,
+         bp.mpc_id as mpc_id,
+         <![CDATA[
+         $ShiftDateSelectClause$
+         ]]>,
+         min(bp.operation_start_date) AS operation_start_date,
+         max(bp.operation_end_date) AS operation_end_date,
+         (max(bp.operation_end_date) - min(bp.operation_start_date)) * 24 AS total_time_worked,
+        
+         COUNT(DISTINCT(CASE
+                          WHEN bp.outcome = 'COMPLETED' THEN
+                           bp.ucc128_id
+                        END)) AS count_cartons,
+         COUNT(DISTINCT(CASE
+                          WHEN bp.outcome = 'UNDERPITCH' THEN
+                           bp.ucc128_id
+                        END)) AS underpitch_cartons,
+         COUNT(CASE
+                 WHEN bp.outcome = 'INVALIDSCAN' THEN
+                  bp.ucc128_id
+               END) AS unexpected_scans
+  
+    FROM box_productivity bp
+   WHERE bp.operation_code = '$CTNEXP'
+     AND bp.operator = :operator
+     AND bp.operation_start_date &gt;= CAST(:operation_date AS DATE) 
+     AND bp.operation_start_date &lt; CAST(:operation_date AS DATE)  + 2
+     <![CDATA[
+     $ShiftNumberWhere$
+     ]]>
+     <if>AND bp.warehouse_location_id =:warehouse_location_id</if>
+   group by  bp.operation_start_date, bp.mpc_id)
+select 
+max(operator.warehouse_location_id) as warehouse_location_id,
+       operator.mpc_id as mpc_id,
+       min(operator.operation_start_date) as operation_start_date,
+       max(operator.operation_start_date) as operation_end_date,
+        max(operator.shift_start_date) as shift_start_date,
+       round(sum(operator.total_time_worked), 4) as total_time_worked,
+       sum(operator.count_cartons) as count_cartons,
+       sum(operator.underpitch_cartons) as underpitch_cartons,
+       sum(operator.unexpected_scans) as unexcepted_scans
+  from operator 
+ WHERE operator.shift_start_date &gt;=CAST(:operation_date AS DATE) 
+   AND operator.shift_start_date &lt; CAST(:operation_date AS DATE)  + 1
+ group by operator.mpc_id
+               </pre>
+                </R:DOC></li>
+        </ul>
+        <h2>
+            Validation details</h2>
+        Bellow queries may have the where clause in the [] brackets. It means these are 
+        the optional parameters. If you do not want to pass these parameters just remove 
+        the [] section.
+        <br />
+        <br />
+        <b>Query:</b><pre><r:query >SELECT min(bp.process_id) AS MPC_ID,
+count(distinct(CASE
+        WHEN bp.outcome = 'COMPLETED' THEN
+         bp.ucc128_id
+      END)) AS "COUNT_CARTONS",
+COUNT(DISTINCT(CASE
+        WHEN bp.outcome = 'UNDERPITCH' THEN
+         bp.ucc128_id
+      END)) AS "UNDERPITCH_CARTONS",
+COUNT(CASE
+WHEN bp.outcome = 'INVALIDSCAN' THEN
+bp.ucc128_id
+END) AS "UNEXCEPTED_SCANS"
+FROM box_productivity bp, box box
+WHERE bp.ucc128_id = box.ucc128_id
+AND bp.operation_code = '$CTNEXP'
+AND bp.operator = 'MPC'
+AND bp.operation_start_date >= (:operation_date)
+AND bp.operation_start_date < (:operation_date) + 1
+AND bp.process_id = ::process_id::
+					</R:QUERY></pre>
+        <b>Description:</b><pre><r:description >Execute the above query to display the details about the MPC for a specified date. </R:DESCRIPTION></pre>
+        <!--End divTechnical-->
+    </div>
+    </form>
+
+</body>
+</html>

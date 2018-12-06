@@ -1,0 +1,532 @@
+﻿<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        .style1
+        {
+            width: 83px;
+        }
+        .style2
+        {
+            width: 83px;
+            text-align: center;
+        }
+        .style3
+        {
+            width: 802px;
+        }
+        .style4
+        {
+            width: 144px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        110<b>.14 : Box QC Report</b></h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    $Revision: 4887 $<br />
+    Status: Done<br />
+    Reviewed By: Hemant K. Varshney<br />
+    Tested By:&nbsp;Hemant K. Singh<p>
+        This report displays the information of QC boxes for the specified operation date/date
+        range with shift or both shift and particular customer.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        This report can be helpful for
+    </p>
+    <ul>
+        <li>Monitoring the productivity. The productivity is measured by monitoring the average
+            units per hours pitched by a Pitcher</li>
+        <li>For identifying the star performers and the black sheep.</li>
+    </ul>
+    <h2>
+        Algorithm</h2>
+    <p>
+        Get all the box qc information (&nbsp; from the tables box_productivity ). Retreiving
+        the &#39;error description&#39; from QCO table and user setup date from all_user
+        view.</p>
+    <h2>
+        Definition</h2>
+    <ul>
+        <li><b><i>Pitched Pieces: </i></b>Total no. of Pieces in boxes which is pitched by the
+            pitcher.</li>
+        <li><b><i>Scanned Pieces : </i></b>Total no. of pieces which will scan by QC operator.</li>
+        <li><b><i>Accurate: </i></b>% accurate is calculate as follows:<br />
+            (Pitched pieces - Scanned Pieces/ Pitched Pieces)&nbsp; * 100 </li>
+    </ul>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center" width="20%">
+                <b>Name</b>
+            </td>
+            <td align="center" width="20%">
+                <b>Default</b>
+            </td>
+            <td align="center" width="60%">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Customer
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                The customer id which you see the records
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Operation Date
+            </td>
+            <td>
+                Last seven days period
+            </td>
+            <td>
+                Date range in which quality operation was performed.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Shift
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                Quality Checking is done in shifts. This parameter can be used to specify the shift
+                for which information is to retrieved.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building</td>
+            <td>
+                Checked</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+    </table>
+    <h2>
+        Output</h2>
+    <table border="1" cellpadding="0" cellspacing="1">
+        <tr>
+            <td class="style4">
+                <b>Item</b>
+            </td>
+            <td>
+                <p>
+                    Summary</p>
+            </td>
+            <td class="style1">
+                <b>Default Sort Sequence</b>
+            </td>
+            <td class="style3">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td class="style4">
+                Customer ID
+            </td>
+            <td>
+                None
+            </td>
+            <td class="style2">
+                1
+            </td>
+            <td class="style3">
+                This column displays&nbsp; id of&nbsp; the customer.
+            </td>
+        </tr>
+        <tr>
+            <td class="style4">
+                <p>
+                    Customer Name</p>
+            </td>
+            <td>
+                <p>
+                    None
+                </p>
+            </td>
+            <td class="style2">
+                2
+            </td>
+            <td class="style3">
+                This column displays name of the customer.
+            </td>
+        </tr>
+        <tr>
+            <td class="style4">
+                Box
+            </td>
+            <td>
+                None
+            </td>
+            <td class="style2">
+                &nbsp;&nbsp;
+            </td>
+            <td class="style3">
+                The Box Id which is passed through quality check process.
+            </td>
+        </tr>
+        <tr>
+            <td class="style4">
+                PO
+            </td>
+            <td>
+                None
+            </td>
+            <td class="style2">
+                &nbsp;
+            </td>
+            <td class="style3">
+                displays id of the purchase order
+            </td>
+        </tr>
+        <tr>
+            <td class="style4">
+                Label
+            </td>
+            <td>
+                None
+            </td>
+            <td class="style2">
+                &nbsp;&nbsp;
+            </td>
+            <td class="style3">
+                The label Id.
+            </td>
+        </tr>
+        <tr>
+            <td class="style4">
+                Date Operation
+            </td>
+            <td>
+                None
+            </td>
+            <td class="style2">
+                &nbsp;
+            </td>
+            <td class="style3">
+                The Opertaion date on which the Quality check will perform.
+            </td>
+        </tr>
+        <tr>
+            <td class="style4">
+                Date Pitching
+            </td>
+            <td>
+                None
+            </td>
+            <td class="style2">
+                &nbsp;
+            </td>
+            <td class="style3">
+                Last Pitch date on which the pitching operation will perform.
+            </td>
+        </tr>
+        <tr>
+            <td class="style4">
+                QC Operator
+            </td>
+            <td>
+                None
+            </td>
+            <td class="style2">
+                &nbsp;
+            </td>
+            <td class="style3">
+                The QC Operator name which will perform quality check operation.
+            </td>
+        </tr>
+        <tr>
+            <td class="style4">
+                <p>
+                    Scan Result</p>
+            </td>
+            <td>
+                <p>
+                    None</p>
+            </td>
+            <td class="style1">
+                &nbsp;&nbsp;
+            </td>
+            <td class="style3">
+                <p>
+                    Outcome after the quality check operation.</p>
+            </td>
+        </tr>
+        <tr>
+            <td class="style4">
+                Error Descriptions
+            </td>
+            <td>
+                None
+            </td>
+            <td class="style1">
+                &nbsp;
+            </td>
+            <td class="style3">
+                Error descriptions of outcome.
+            </td>
+        </tr>
+        <tr>
+            <td class="style4">
+                Pieces Pitched
+            </td>
+            <td>
+                Sum
+            </td>
+            <td class="style1">
+                &nbsp;
+            </td>
+            <td class="style3">
+                Total No. of pieces in an box which will pitch by pitcher.
+            </td>
+        </tr>
+        <tr>
+            <td class="style4">
+                Pieces Scanned
+            </td>
+            <td>
+                Sum
+            </td>
+            <td class="style1">
+                &nbsp;
+            </td>
+            <td class="style3">
+                Total No. of pieces in an box which will scan by QC operator.
+            </td>
+        </tr>
+        <tr>
+            <td class="style4">
+                Accurate
+            </td>
+            <td>
+                None
+            </td>
+            <td class="style1">
+                &nbsp;
+            </td>
+            <td class="style3">
+                Percentage of accurate which is calculated as ((pitched pieces - scanned pieces)/pitched
+                pieces)*100.
+            </td>
+        </tr>
+        <tr>
+            <td class="style4">
+                Pitcher
+            </td>
+            <td>
+                None
+            </td>
+            <td class="style1">
+                &nbsp;
+            </td>
+            <td class="style3">
+                The last pitcher name who is perform pitching operation. If more than two pitcher
+                will pitch the pieces in single box then
+                <br />
+                we will show *****.in this column.
+            </td>
+        </tr>
+        <tr>
+            <td class="style4">
+                User Setup date
+            </td>
+            <td>
+                None
+            </td>
+            <td class="style1">
+                &nbsp;
+            </td>
+            <td class="style3">
+                Date on which the User or operator had been created.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        Expected Time for the report output is 50 Sec.</p>
+    <h2>
+        Behavior Change</h2>
+    <ol><li>
+        Replaced building filter dropdown with checkbox list.</li>
+    </ol>
+    <h2>
+        Issues</h2>
+    No Known Issue.
+    <br />
+    <h3>
+        Prerequisites</h3>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        QCO,<br />
+        CUST,<br />
+        BOX_PRODUCTIVITY</p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <code>CREATE OR REPLACE SYNONYM QCO FOR dcms8.qco;
+        <br />
+        CREATE OR REPLACE SYNONYM BOX_PRODUCTIVITYFOR dcms8.BOX_PRODUCTIVITY;
+        <br />
+        CREATE OR REPLACE SYNONYM cust FOR dcms8.cust;
+        <br />
+    </code>
+    <h3>
+        AppSettings</h3>
+    <p>
+        No appSettings are required.
+    </p>
+    <h3>
+        Parameter Technical Detail</h3>
+    <ul>
+        <li>Customer Id (Type = String): The customer ID</li>
+        <li>Operation Date (Type = Date): You can specify the date or date range to see the
+            quality check productivity for this date or date range. This is a date range control.
+        </li>
+        <li>Shift (Type = Number): This is a list parameter control. You can select shift to
+            see the pitching productivity for the selected shift. Null value text is &quot;Both&quot;.
+            <ul>
+                <li>Value = 1, </li>
+                <li>Value = 2 </li>
+            </ul>
+        </li>
+    </ul>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.
+    <h2>
+        Query's documentation:</h2>
+    <ul>
+        <li>For each customer each virtual warehouse with in the no. of pickslip import date
+            from today, gets all required information: </li>
+        <li>
+            <pre>
+   WITH BOX_QC_PROD_INFO AS
+ (SELECT /*+ index(bp boxprod_operation_start_date_i) */
+   BP.OPERATOR AS OPERATOR,
+   BP.UCC128_ID AS BOX,
+   MAX(BP.CUSTOMER_ID) AS CUSTOMER_ID,
+   MAX(C.NAME) AS CUSTOMER_NAME,
+   MAX(BP.PO_ID) AS PO_ID,
+   MAX(BP.LABEL_ID) AS LABEL_ID,
+   BP.OPERATION_START_DATE AS OPERATION_START_DATE,
+   MAX(BP.LAST_PITCHED_DATE) AS LAST_PITCH_DATE,
+   SUM(BP.NUM_OF_PIECES) AS PITCHED_PIECES,
+   SUM(BP.NUM_OF_ABNORMAL_PIECES) AS ABNORMAL_PIECES,
+   SUM(BP.NUM_OF_EPC_SCANS) AS TOTAL_EPC_PIECES,
+   CASE
+     WHEN COUNT(DISTINCT BP.LAST_PITCHED_BY) > 1 THEN
+      '*****'
+     ELSE
+      MAX(BP.LAST_PITCHED_BY)
+   END AS PITCHER,
+   MAX(BP.OUTCOME) AS SCAN_RESULT,
+   CASE
+     WHEN MAX(BP.OUTCOME) = 'PASSED QC' THEN
+      NULL
+     ELSE
+      MAX(Q.DESCRIPTION)
+   END AS ERROR_DESCRIPTIONS,
+    <![CDATA[
+                    $ShiftDateSelectClause$                 
+                  ]]>
+    FROM BOX_PRODUCTIVITY BP
+    LEFT OUTER JOIN CUST C
+      ON BP.CUSTOMER_ID = C.CUSTOMER_ID
+    LEFT OUTER JOIN QCO Q
+      ON BP.QCO_ID = Q.QCO_ID
+   WHERE BP.OPERATION_CODE = '$BOXQC'
+    <if>AND BP.customer_id = cast(:customer_id as varchar2(255))</if>
+  AND bp.operation_start_date &gt;= cast(:operation_start_date_from as date)
+             AND bp.operation_start_date &lt; cast(:operation_start_date_to as date) + 2
+             <![CDATA[
+                    $ShiftNumberWhere$                 
+              ]]>
+   GROUP BY BP.OPERATOR, BP.UCC128_ID, BP.OPERATION_START_DATE)
+SELECT Q1.OPERATOR             AS OPERATOR,
+       Q1.CUSTOMER_ID          AS CUSTOMER_ID,
+       Q1.CUSTOMER_NAME        AS CUSTOMER_NAME,
+       Q1.BOX                  AS BOX,
+       Q1.PO_ID                AS PO_ID,
+       Q1.LABEL_ID             AS LABEL_ID,
+       Q1.OPERATION_START_DATE AS OPERATION_START_DATE,
+       Q1.shift_start_date AS shift_start_date,
+       Q1.LAST_PITCH_DATE      AS LAST_PITCH_DATE,
+       Q1.PITCHED_PIECES       AS PITCHED_PIECES,
+       Q1.ABNORMAL_PIECES      AS ABNORMAL_PIECES,
+       Q1.TOTAL_EPC_PIECES     AS TOTAL_EPC_PIECES,
+       Q1.PITCHER              AS PITCHER,
+       Q1.SCAN_RESULT          AS SCAN_RESULT,
+       (Q1.PITCHED_PIECES - Q1.ABNORMAL_PIECES) AS SCANED_PIECES,
+       Q1.ERROR_DESCRIPTIONS   AS ERROR_DESCRIPTIONS,
+       AU.CREATED AS USER_SETUP_DATE
+  FROM BOX_QC_PROD_INFO Q1
+  LEFT OUTER JOIN ALL_USERS AU
+    ON Q1.OPERATOR = AU.USERNAME
+ WHERE Q1.SHIFT_START_DATE &gt;= cast(:operation_start_date_from as date)
+AND Q1.SHIFT_START_DATE &lt; cast(:operation_start_date_to as date) + 1                                 
+         </pre>
+        </li>
+    </ul>
+    <h2>
+        Validation detail</h2>
+    <h5>
+        Validation Query 1: Below query shows the label, QC operator, box, scan result,
+        PO and pitcher.</h5>
+    <pre>
+    SELECT BP.LABEL_ID AS LABELS,
+       BP.OPERATOR AS "QC OPERATOR",
+       BP.UCC128_ID AS BOX,
+       BP.OUTCOME AS "Scan Result",
+       BP.PO_ID AS PO,
+       BP.LAST_PITCHED_BY AS PITCHER
+  FROM BOX_PRODUCTIVITY BP
+ WHERE BP.OPERATION_CODE = '$BOXQC'
+   AND BP.CUSTOMER_ID = '10120'
+   AND BP.OPERATION_START_DATE > = TO_DATE('1/9/2012', 'mm/dd/yyyy')
+   AND BP.OPERATION_START_DATE < TO_DATE('1/9/2012', 'mm/dd/yyyy') + 1
+    </pre>
+    <h5>
+        Validation Query 2: Below query shows the Error Description.</h5>
+    <pre>
+      SELECT CASE
+         WHEN MAX(BP.OUTCOME) = 'PASSED QC' THEN
+          NULL
+         ELSE
+          MAX(QCO.DESCRIPTION)
+       END AS ERROR_DESCRIPTIONS
+       BP.LAST_PITCHED_BY
+  FROM BOX_PRODUCTIVITY BP
+  LEFT OUTER JOIN QCO
+    ON BP.QCO_ID = QCO.QCO_ID
+ WHERE BP.OPERATION_CODE = '$BOXQC'
+   AND BP.CUSTOMER_ID = '10120'
+   AND BP.OPERATION_START_DATE > = TO_DATE('1/9/2012', 'mm/dd/yyyy')
+   AND BP.OPERATION_START_DATE < TO_DATE('1/9/2012', 'mm/dd/yyyy') + 1
+    </pre>
+    <h5>
+        Validation Query 3: Below query shows the Pieces pitched, scanned and EPC scanned.</h5>
+    <pre>
+        SELECT SUM(BP.NUM_OF_PIECES) AS "Pitched Pieces",
+       SUM(BP.NUM_OF_PIECES - BP.NUM_OF_ABNORMAL_PIECES) AS "Scanned Pieces",
+       SUM(BP.NUM_OF_EPC_SCANS) AS "EPC Scanned"
+  FROM BOX_PRODUCTIVITY BP
+ WHERE BP.OPERATION_CODE = '$BOXQC'
+   AND BP.CUSTOMER_ID = '10120'
+   AND BP.OPERATION_START_DATE > = TO_DATE('1/9/2012', 'mm/dd/yyyy')
+   AND BP.OPERATION_START_DATE < TO_DATE('1/9/2012', 'mm/dd/yyyy') + 1
+        </pre>
+</body>
+</html>

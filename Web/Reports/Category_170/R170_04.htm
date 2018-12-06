@@ -1,0 +1,323 @@
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        170<b>.</b>04<b> : Transmitted DC and State info for EDI754 customers </b>
+    </h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <ul>
+        <li>$Revision: 5659 $ </li>
+        <li>Status : Done</li>
+        <li>Tested By : Shivani Bist</li>
+    </ul>
+    <p>
+        This report shows the old and new transmitted DC, PO, Customer Store, Load Id and 
+        ATS Date by Carrier for EDI
+        customers when carrier has changed.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        This report shows details of old and new transmitted DC, PO, Customer Store, 
+        Load Id and ATS Date&nbsp; which are to
+        be reprinted due to the change in carrier for EDI customers. Customer Id and ATS
+        Date are used as an optional parameter.&nbsp; Report showing old and new transmitted DC
+        whose import date is last that no. of days which you provided.(by default it is
+        assumed as 90 days)&nbsp;</p>
+    <h2>
+        Algorithm</h2>
+    No of boxes for whose UCC labels need to be reprinted will be retrieved from box
+    table. Old and New Customer DC ID, LOAD and ATS Date will come from edi_753_754_ps. Carrier id
+    information and their describtion will come from view v_carrier. PO and Customer 
+    Store will come from PS table.&nbsp;
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center">
+                <b>Item</b>
+            </td>
+            <td align="center">
+                <b>Summary</b>
+            </td>
+            <td align="center">
+                <b>Default Sort Sequence</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Carrier
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                The ID of changed carrier (New Carrier transmitted through EDI).&nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Customer
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2
+            </td>
+            <td>
+                Report is displaying id and name of the customer.</td>
+        </tr>
+        <tr>
+            <td>
+                DC ID Old
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Original Customer DC ID.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                DC ID New
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Changed DC ID.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Po#
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                PO ID
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Store#
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Customer Store Id
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Load#
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Load Id.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                ATS Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Available To Shipment Date for given pickslip.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center">
+                <b>Name</b>
+            </td>
+            <td align="center">
+                <b>Default</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Customer
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                Customer for which you want to see details when carrier is changed
+            </td>
+        </tr>
+        <tr>
+            <td>
+                ATS Date
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                Available to Shippment date.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Import_Date_From_Today
+            </td>
+            <td>
+                90
+            </td>
+            <td>
+                Last number of days for which pickslips to be considered. by default,it's given
+                90 days from today.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>2 Sec.</p>
+    The Query exhibits linear performance with respect to the no. of records in table
+    edi_753_754_ps, v_carrier. edi_753_754_ps and v_carrier is scanning full.&nbsp; 
+    Index PS_PICKSLIP_IMPORT_DATE_I is used on PS Table. As compared
+    to old report, This Report is showing good performance.For Displaying 374 rows,
+    this report take only 1 second.
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Provided customer column for displaying count of boxes per customer.</li>
+        <li>Showing box count which will hrlp user to ensure if all labels are reprinted.</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    No Known Issue.
+    <br />
+    <h2>
+        Prequisites</h2>
+    <p>
+        Private synonym for the following tables are required.</p>
+    <p>
+        edi_753_754_ps,<br />
+        ps,<br />
+                v_carrier</p>
+    <p>
+        Use the script below to create the synonyms.</p>
+    <p>
+        create or replace synonym edi_753_754_ps for dcms8.edi_753_754_ps;<br />
+        create or replace synonym ps for dcms8.ps;<br />
+        create or replace synonym v_carrier for dcms4.v_carrier;<br />
+    </p>
+    <div>
+        <h2>
+            Parameter Technical Details</h2>
+        <ul>
+            <li>Customer ID (Type = String): Enter the CustATS Date (Type = Date): Please specify
+                the ATS Date for which you wish to see detail of changed information through EDI.
+                This is a date range control. </li>
+            <li>Pickslip import date from today (Type = Integer): Please enter the number of days
+                from today for which you wish see the information.</li></ul>
+        <h2>
+            Parameter Validation</h2>
+        No special validations.<br />
+        <br />
+        <h2>
+            Query Documentation
+        </h2>
+        <pre>
+SELECT EDIPS.ORIGINAL_CUSTOMER_DC_ID AS ORIGINAL_DC_ID,
+       EDIPS.CUSTOMER_DC_ID AS DC_ID,
+       PS.CUSTOMER_ID AS CUSTOMER_ID,
+       PS.PO_ID AS PO_ID,
+       COUNT(DISTINCT B.UCC128_ID) AS BOXES,
+       PS.CUSTOMER_STORE_ID AS STORE_ID,
+       MAX(C.NAME) AS CUSTOMER_NAME,
+       MAX(EDIPS.CARRIER_ID) AS CARRIER_ID,
+       MAX(CARR.DESCRIPTION) AS DESCRIPTION,
+       MAX(EDIPS.LOAD_ID) AS LOAD_ID,
+       MAX(EDIPS.ATS_DATE) AS ATS_DATE
+  FROM EDI_753_754_PS EDIPS
+ INNER JOIN MASTER_CARRIER CARR
+    ON EDIPS.CARRIER_ID = CARR.CARRIER_ID
+ INNER JOIN PS
+    ON EDIPS.PICKSLIP_ID = PS.PICKSLIP_ID
+  LEFT OUTER JOIN CUST C
+    ON PS.CUSTOMER_ID = C.CUSTOMER_ID
+  LEFT OUTER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+ WHERE (NVL(EDIPS.CARRIER_ID, 0) != NVL(EDIPS.ORIGINAL_CARRIER_ID, 0))
+   AND PS.PICKSLIP_CANCEL_DATE IS NULL
+   AND PS.CANCEL_REASON_CODE IS NULL
+  <if>AND edips.ats_date &gt;= (CAST(:ATS_FROM_DATE AS DATE)) and edips.ats_date &lt; (CAST(:ATS_TO_DATE AS DATE) + 1)</if>
+  <if>AND ps.customer_id = CAST(:CUSTOMER_ID AS VARCHAR2(255))</if>
+  <if>AND (ps.pickslip_import_date &gt;= SYSDATE - CAST(:Import_Date_From_Today AS NUMBER) AND
+            ps.pickslip_import_date &lt; (SYSDATE + 1))</if>
+   AND PS.TRANSFER_DATE IS NULL
+   AND B.STOP_PROCESS_DATE IS NULL
+ GROUP BY PS.CUSTOMER_ID,
+          EDIPS.ORIGINAL_CUSTOMER_DC_ID,
+          EDIPS.CUSTOMER_DC_ID,
+          PS.PO_ID,
+          PS.CUSTOMER_STORE_ID
+
+        </pre>
+        <h2>
+            Validation details</h2>
+        <pre>SELECT EDIPS.ORIGINAL_CUSTOMER_DC_ID AS OldDC,
+       edips.customer_dc_id          as NewDC,
+       B.UCC128_ID
+  FROM EDI_753_754_PS EDIPS
+ INNER JOIN PS
+    ON EDIPS.PICKSLIP_ID = PS.PICKSLIP_ID
+  LEFT OUTER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+ WHERE (NVL(EDIPS.CARRIER_ID, 0) != NVL(EDIPS.ORIGINAL_CARRIER_ID, 0))
+   AND EDIPS.CARRIER_ID = '0005'
+   AND EDIPS.CUSTOMER_DC_ID = '94508'
+   AND (ps.pickslip_import_date > = SYSDATE - 300 AND
+       ps.pickslip_import_date < (SYSDATE + 1))
+       and ps.customer_id ='10120'
+       and ps.po_id ='19200524'
+   AND NVL(B.STOP_PROCESS_REASON, 0) NOT IN ('$BOXCANCEL')
+
+         </pre>
+        <!--End divTechnical-->
+    </div>
+</body>
+</html>

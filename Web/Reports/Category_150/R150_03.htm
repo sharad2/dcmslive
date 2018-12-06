@@ -1,0 +1,456 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>150.03 : Validation Productivity Report</title>
+</head>
+<body>   
+    <h1 style="text-align: center">
+        150.03 : Validation Productivity Report</h1>
+    <p>
+        Author : Sanjeev Kumar<br />
+        $Revision: 5211 $<br />
+        Status : Reviewed<br />
+        Reviewed By : Hemant K. Varshney<br />
+        Tested By : Ritesh verma
+    </p>
+    <h2>
+        Overview</h2>
+    <p>
+        This report shows the Validation productivity of each validator for date or date
+        range. Data can also be filltered on the basis shifts . Validation
+        productivity is measured by monitoring average cartons per hours validated by a
+        validator.
+    </p>
+    <p>
+        <b>Note :--</b> </p>
+    <ol><li>
+        If same box is marked as INVALIDATED through Validation program consistantly again and again then in this scenario for productivity this report will consider only the first occurance of such box.
+    </li>
+        <li>
+            If a box which is already INVALIDATED and it comes again to Validation station after some time and again gets INVALIDATED then in this scenario this box will be considered for the productivity. </li></ol>
+        <p>
+        The report is helpful for:
+    </p>
+    <ul>
+        <li>For monitoring the validator's productivity. </li>
+        <li>For identifying the star performers and the black sheep. </li>
+        <li>For monitoring the validator's productivity for shift bases also. </li>
+    </ul>
+    <h2>
+        Algorithm</h2>
+    <p>
+        Calculating&nbsp; the counts of green box by work station, operator, operation 
+        date, case id&nbsp; and process id&nbsp; and the counts other then the green box 
+        count&nbsp; by work station, operator, operation date and process id from 
+        Box_productity table.</p>
+    <p>
+        We are calculating system hours as diffrence of&nbsp; max operation_end_date and 
+        min of opertaion_start_date by each work station, operator, operation start date 
+        and process id.</p>
+    <h2>
+        Output
+    </h2>
+    <p>
+        The report displays one row per workstation, user and validation date.
+    </p>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="25%" align="center">
+                <b>Item</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Summary</b>
+            </td>
+            <td width="10%" align="center">
+                <b>Default
+                    <br />
+                    Sort Sequence</b>
+            </td>
+            <td width="35%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Work Station
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1</td>
+            <td>
+                System on which validation was done.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                User
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2</td>
+            <td>
+                Validator name.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Validation Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                3</td>
+            <td>
+                The date on which validation was performed.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Hrs. Worked
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                The hours worked is counted from login to logout. The total hours worked represents
+                the number of hours the user was logged in on this date.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total MPCs
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Count of distinct MPCs validated by user.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                #Green Boxes
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Number of boxes whose outcome is validated. This is displayed for each SKU Case
+                ID
+            </td>
+        </tr>
+        <tr>
+            <td>
+                #UPS Boxes
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Number of small shipment boxes. If the carrier_id of the pickslip is a small carrier
+                (carrier 0475) then it is included in this column.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                #Red Boxes
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Number of Boxes whose outcome is Invalidated.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                #Repitch Boxes
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Number of Boxes repitched by the operator.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No. of Bad Scans
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Any box which is not a red or a green box is considered as a bad scan. This includes
+                the scan of already validated boxes and any other wrong scan.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Boxes /Hrs.
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Average total boxes worked in an hour by a validator in all session. This include
+                all boxes except bad scans divided by the total hours worked.
+                <br />
+                This column is calculated as the (RED_BOX_COUNT + GREEN_BOX_COUNT)/TOTAL_HOURS_WORKED.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                User Setup Date
+            </td>
+            <td>
+                None
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Date on which the User or operator had been created.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center" width="20%">
+                <b>Name</b>
+            </td>
+            <td align="center" width="20%">
+                <b>Default</b>
+            </td>
+            <td align="center" width="60%">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Validation date 
+            </td>
+            <td>
+                Last seven days period
+            </td>
+            <td>
+                Date range in which validation operation was performed.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Shift
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                A Validation scanner for each user can work in any shift. Also a validator scanner
+                for particular user can perform the validation operation in multiple shifts. Specify
+                if you are interested in a specific shift.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building</td>
+            <td>
+                All</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>1 Second</p>
+    The report exhibits logarithmic performance with respect to the operation start
+    date and operation code in BOX_PRODUCTIVITY.
+     <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+       
+        box_productivity,</p>
+    <p>
+       
+        All_users<br />
+        
+    </p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>
+            create or replace synonym box_productivity for dcms8.box_productivity;<br />           
+            </code></p>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>
+            <p>
+        Replaced building filter dropdown with checkbox list.</p>
+        </li>
+    </ul>
+    <h2>
+        Query</h2>
+    <pre>
+   
+           WITh Q1 AS
+ (SELECT B.OPERATOR,
+         B.WORK_STATION,
+         B.CASE_ID,
+         B.PROCESS_ID,
+         B.OPERATION_START_DATE,
+         B.OPERATION_END_DATE,
+         B.OUTCOME,
+         B.UCC128_ID,
+         CASE
+           WHEN (LAG(DECODE(B.OUTCOME, 'INVALIDATED', B.UCC128_ID))
+                 OVER(PARTITION BY B.WORK_STATION,
+                      B.OPERATOR ORDER BY B.WORK_STATION,
+                      B.OPERATOR,
+                      B.OPERATION_START_DATE)) IS NULL OR
+                (LAG(DECODE(B.OUTCOME, 'INVALIDATED', B.UCC128_ID))
+                 OVER(PARTITION BY B.WORK_STATION,
+                      B.OPERATOR ORDER BY B.WORK_STATION,
+                      B.OPERATOR,
+                      B.OPERATION_START_DATE)) !=
+                DECODE(B.OUTCOME, 'INVALIDATED', B.UCC128_ID) THEN
+            DECODE(B.OUTCOME, 'INVALIDATED', B.UCC128_ID)
+         END AS BOX_COUNT,
+         B.REPITCHED_BOX,
+         B.CARRIER_ID,
+         B.MPC_ID,
+         <![CDATA[$ShiftDateSelectClause$]]>
+    FROM BOX_PRODUCTIVITY B
+   WHERE B.OPERATION_CODE = '$CTNVERIFY'
+     AND B.operation_start_date &gt;= cast(:operation_start_date_from as date)
+     AND B.operation_start_date &lt; cast(:operation_start_date_to as date)+ 2
+     <![CDATA[
+        $ShiftNumberWhereClause$                     
+     ]]>       
+         <if>AND <a pre="B.WAREHOUSE_LOCATION_ID IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>    
+            ),
+Q2 AS
+ (SELECT Q1.OPERATOR,
+         Q1.WORK_STATION,
+         Q1.VALIDATION_DATE,
+         COUNT(DECODE(Q1.REPITCHED_BOX, 'Y', Q1.UCC128_ID)) AS REPITCH_CARTONS,
+         COUNT(DECODE(Q1.CARRIER_ID, :carrier_id, Q1.UCC128_ID)) AS UPS_CARTON_COUNT,
+         COUNT(DECODE(Q1.OUTCOME, 'VALIDATED', Q1.UCC128_ID)) AS GREEN_CARTON_COUNT,
+         COUNT(CASE
+                 WHEN Q1.OUTCOME = 'VERIFIED' OR Q1.OUTCOME = 'INVALIDSCAN' THEN
+                  Q1.UCC128_ID
+               END) AS BAD_SCAN_COUNT,
+         COUNT(DISTINCT Q1.MPC_ID) AS MPC_COUNT,
+         ROUND((MAX(Q1.OPERATION_END_DATE) - MIN(Q1.OPERATION_START_DATE)) * 24,
+               4) AS TOTAL_HOURS_WORKED,
+         COUNT(Q1.BOX_COUNT) AS RED
+    FROM Q1
+    WHERE Q1.validation_date &gt;= :operation_start_date_from
+     AND Q1.validation_date &lt; :operation_start_date_to + 1
+   GROUP BY Q1.OPERATOR, Q1.WORK_STATION, Q1.VALIDATION_DATE),
+Q3 AS
+ (SELECT Q1.OPERATOR,
+         Q1.WORK_STATION,
+         Q1.CASE_ID,
+         Q1.VALIDATION_DATE,
+         COUNT(DECODE(Q1.OUTCOME, 'VALIDATED', Q1.UCC128_ID)) AS grn_ctn_case_count   
+    FROM Q1
+    WHERE Q1.validation_date &gt;= :operation_start_date_from
+     AND Q1.validation_date &lt; :operation_start_date_to + 1
+   GROUP BY Q1.OPERATOR, Q1.WORK_STATION, Q1.CASE_ID, Q1.VALIDATION_DATE)
+SELECT Q2.OPERATOR,
+       Q2.WORK_STATION,
+       Q2.VALIDATION_DATE,
+       Q3.CASE_ID AS grn_ctn_case_id, 
+       Q2.REPITCH_CARTONS,
+       Q2.UPS_CARTON_COUNT AS ups_cartons,
+       Q2.GREEN_CARTON_COUNT,
+       Q3.grn_ctn_case_count AS GREEN_CARTONS,
+       Q2.BAD_SCAN_COUNT AS BAD_SCAN_CARTONS,
+       Q2.MPC_COUNT AS MPC_COUNT,
+       Q2.TOTAL_HOURS_WORKED,
+       Q2.RED AS red_cartons,
+       round(CASE
+               WHEN Q2.TOTAL_HOURS_WORKED = 0 THEN
+                (Q2.GREEN_CARTON_COUNT + Q2.RED) * 3600
+               ELSE
+                round((Q2.GREEN_CARTON_COUNT + Q2.RED) / Q2.TOTAL_HOURS_WORKED, 2)
+             END,
+             2) CTN_HR,
+       AU.CREATED AS USER_SETUP_DATE
+  FROM Q2
+  LEFT OUTER JOIN Q3
+    ON Q2.OPERATOR = Q3.OPERATOR
+   AND Q2.WORK_STATION = Q3.WORK_STATION
+   AND Q2.VALIDATION_DATE = Q3.VALIDATION_DATE
+  LEFT OUTER JOIN ALL_USERS AU
+    ON AU.USERNAME = Q2.OPERATOR
+    </pre>
+    <h2>
+        Validation Query</h2>
+    <pre>Bellow queries may have the where clause in the [] brackets. It means these are the optional parameters.
+If you do not want to pass these parameters just remove the [] section.</pre>
+    <h3>
+        Query</h3>
+    <pre>
+SELECT 
+     bp.work_station AS WORK_STATION,
+     bp.operator AS OPERATOR,
+     TRUNC(MAX(BP.OPERATION_START_DATE)),
+     COUNT(decode(bp.outcome, 'VALIDATED', bp.ucc128_id)) AS GREEN_CARTON_COUNT,
+     COUNT(decode(bp.outcome, 'INVALIDATED', bp.ucc128_id)) AS RED_CARTON_COUNT,
+     COUNT(decode(bp.repitched_box, 'Y', bp.ucc128_id)) AS REPITCH_CARTONS,
+     COUNT(decode(bp.carrier_id, '0472', bp.ucc128_id)) AS UPS_CARTON_COUNT,
+     round((MAX(bp.operation_end_date) - MIN(bp.operation_start_date)) * 24, 4) AS TOTAL_HOURS_WORKED,
+     bp.process_id AS PROCESS_ID,
+     COUNT(BP.MPC_ID) AS MPC_COUNT
+FROM box_productivity bp
+WHERE bp.operation_code = '$CTNVERIFY'
+     AND bp.operation_start_date >= TO_DATE('8/10/2010','MM/DD/YYYY')
+     AND bp.operation_start_date < TO_DATE('8/10/2010','MM/DD/YYYY')+1
+     AND bp.warehouse_location_id = 'FDC'
+     AND BP.WORK_STATION='BURMA'
+     AND BP.OPERATOR = 'BISHT'
+     GROUP BY bp.process_id,bp.work_station,
+     bp.operator
+        
+    </pre>
+    <h3>
+        Description:</h3>
+    <pre>The above query  retrieves  Green boxes count against each case_id for each operator,workstation and validation start date.</pre>
+ 
+</body>
+</html>

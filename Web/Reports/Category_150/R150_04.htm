@@ -1,0 +1,351 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+
+    <form id="Form1" 
+    action="http://w3chile/XTremeReporter/ReportDoc.aspx?_Report=C%3a%5cDCMSLive%5cReports%5cR150.04.xsd" 
+    method="post" name="Form1">
+    <div>
+        <input id="__VIEWSTATE" name="__VIEWSTATE" type="hidden" 
+            value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+    </div>
+    <h1 align="center">
+        150<b>.</b>04<b> : </b>Expeditor Productivity Report
+    </h1>
+    <h3>
+        Author : Manmohan Bisht</h3>
+    $Revision: 796 $<br />
+    Status: Reviewed<br/>
+    Reviewed By : Hemant K. Varshney<br />
+    Tested By: Nilesh Mohan
+    <p> 
+        This report shows the productivity of each expeditor for a given date or date 
+        range. You can further filter, on the basis of Shift, first or second shift of 
+        work and have the option of specifying custom date range.
+    </p>
+    <h2>
+        Overview</h2>
+    The report can be helpful for monitoring the productivity. The productivity is 
+    measured by monitoring the average cartons per hours put on a cart by a 
+    Expeditor.
+    <li>For identifying the star performers 
+        and the black sheep. </li>
+    <li>For monitoring the productivity on 
+        shift bases also.</li>
+        <h2>
+            Algorithm</h2>
+        Expeditor details are reterived from the BOX_PRODUCTIVITY table and the details 
+        about the Bucket processed and pickslips is extracted from the table PS and BOX.
+        <h3>
+            Output</h3>
+<table border="1" cellpadding="1" cellspacing="1" width="100%">
+            <tr>
+                <td align="middle" width="25%">
+                    <b>Item</b></td>
+                <td align="middle" width="20%">
+                    <b>Summary</b></td>
+                <td align="middle" width="10%">
+                    <b>Sort Sequence</b></td>
+                <td align="middle" width="35%">
+                    <b>Detail</b></td>
+            </tr>
+            <tr>
+                <td>
+                    <i><b>Expeditor Name</b></i></td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    1</td>
+                <td>
+                    Person who has been assigned the task of creating MPCs by the shipping 
+                    manager. 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    MPC Creation Date</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp; 2</td>
+                <td>
+                    Shift date when the work of creating MPCs started. 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Total Hrs. Worked</td>
+                <td>
+                    No
+                </td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item Term="Total Hrs. Worked">Total time expeditor worked on 
+                    MPC. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Number of
+                    Processed Buckets</td>
+                <td>
+                    Sum</td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item Term="Processed Buckets" 
+Summary="Sum">Total buckets processed by the expeditor </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Number of
+                    MPCs</td>
+                <td>
+                    Sum</td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item  Term="MPCs" Summary="Sum">Number of MPCs created by 
+                    Expeditor. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Number of
+                    Total Cartons</td>
+                <td>
+                    Sum</td>
+                <td align="middle">
+                    &nbsp;
+                </td>
+                <td>
+                    <r:item  Term="Total Cartons" 
+Summary="Sum">Number of the cartons and underpitched cartons scanned by the expeditor. </R:ITEM>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    All case types</td>
+                <td>
+                                        Sum</td>
+                <td align="middle">
+                    <b></b>
+                </td>
+                <td>
+                    All case types on which an expeditor worked</td>
+            </tr>
+            <tr>
+                <td>
+                    User Setup Date</td>
+                <td>
+                    None</td>
+                <td align="middle">
+                    &nbsp;</td>
+                <td>
+                    Date when user had been created.</td>
+            </tr>
+        </table>            
+        <h2 >        
+            Parameters</h2>
+        <table border="1" cellpadding="1" cellspacing="1" width="100%" >
+            <tr>
+                <td align="middle" width="20%">
+                    <b>Name</td>
+                <td align="middle" width="20%">
+                    <b>Default</b></td>
+                <td align="middle" width="60%">
+                    <b>Detail</b></td>
+            </tr>
+            <tr>
+                <td>
+                    Specify Date</td>
+                <td>
+                    Last seven days period</td>
+                <td>
+                    Restrict output to pickslips imported within this date range.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Shift</td>
+                <td>
+                    All Shifts</td>
+                <td>
+                    A Expeditor can work in any shift. Also a Exepditor can perform the operation in 
+                    multiple shifts. Specify if you are interested in a specific shift.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Warehouse Location</td>
+                <td>
+                    All</td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+        </table>
+        &nbsp;<h2>
+            Definitions</h2>
+        <dl>
+            <dt><i>Exepditor</i> </dt>
+            <dd>
+                <r:definition Term="Exepditor">Expeditor is a person who is 
+                instructed by the shipping manger for creating the MPCs for the specified 
+                bucket. </R:DEFINITION>
+            </dd>
+        </dl>
+        <h2>
+            Details</h2>
+        When you drill down on a Expeditor, you can see the work performed by the 
+        Exepditor. You can see details of how much time was spent by Expeditor for 
+        creating the MPC.
+        </li>
+    &nbsp;<div id="divTechnical">
+            <h2>
+                Parameter Technical Details</h2>
+            <ul>
+                <li>Specify Date (Type = Date): Restrict output to pickslips imported within this 
+                    date range. This is a date range control. </li>
+                <li>Shift (Type = Number): This is a list parameter control. You can select shift to see 
+                    the expeditor productivity for the selected shift. Null value text is &quot;All&quot;.
+                    <ul>
+                        <li>Value = 1, Text = First </li>
+                        <li>Value = 2, Text = Second</li>
+                    </ul>
+                </li>
+                 <li>Warehouse Location (Type = String): This is a list parameter control. You can select Warehouse Location to see 
+                    the expeditor productivity for the selected Warehouse Location.Default Value is all.
+                </li>
+            </ul>
+            <h2>
+                Issues:</h2>
+            <ul>
+                <li>Take approval from Gitesh for changes in default sorting </li>
+            </ul>
+             <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+       
+        box_productivity,<br />
+        
+    </p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>
+            create or replace synonym box_productivity for dcms8.box_productivity;<br />           
+            </code></p>
+    <h2>
+            <h2>
+                Query&#39;s documentation:</h2>
+            <ul>
+                <li>
+                    <r:doc>
+                    The query displays the mpc count,number of carton 
+                    details and Displaying the Ex-epditor details i.e number of catrons scanned by 
+                    Expeditor which are marked completed
+           
+
+             <pre>
+with expeditor_prod as
+(
+SELECT /*+index(bp BOXPROD_OPERATION_START_DATE_I)*/
+       bp.operation_start_date AS operation_start_date,
+       min(bp.operator) AS operator,
+       bp.process_id AS count_mpc,
+       bp.UCC128_ID AS carton_id,      
+       <![CDATA[
+       $ShiftDateSelectClause$
+       ]]>,
+       COUNT(DISTINCT(CASE
+                        WHEN bp.outcome = 'COMPLETED' OR bp.outcome = 'UNDERPITCH' THEN
+                         bp.ucc128_id
+                      END)) AS total_cartons,
+              (MAX(bp.OPERATION_END_DATE) - MIN(bp.OPERATION_START_DATE)) * 24 AS TOTAL_TIME_WORKED,
+       max(bp.bucket_id) AS bucket_id,
+       max(bp.case_id) AS case_id   
+  FROM box_productivity bp  
+ WHERE bp.operation_code = '$CTNEXP'
+   AND bp.operation_start_date &gt;= CAST(:operation_start_date_from AS DATE)
+   AND bp.operation_start_date &lt; CAST(:operation_start_date_to AS DATE) + 2
+   <![CDATA[
+    $ShiftNumberWhere$
+    ]]>
+     <if>AND bp.warehouse_location_id = :warehouse_location_id</if>
+
+ GROUP BY bp.operation_start_date, bp.process_id, bp.ucc128_id
+ )
+  SELECT distinct exprod.operator AS operator,
+       count(exprod.case_id) over(partition by exprod.operator, exprod.shift_start_date,case_id) AS count_case_id,
+       count(distinct(exprod.COUNT_MPC)) over(partition by exprod.operator, exprod.shift_start_date) AS count_mpc,      
+       sum(exprod.TOTAL_CARTONS) over(partition by exprod.operator,exprod.shift_start_date) AS total_cartons,
+       NVL(round(sum(exprod.TOTAL_TIME_WORKED) over(partition by exprod.operator,exprod.shift_start_date),4),0) AS total_time_worked,
+       count(distinct exprod.BUCKET_ID) over(partition by exprod.operator,exprod.shift_start_date) as count_bucket,
+       exprod.shift_start_date as shift_start_date,
+       max(exprod.case_id)over(partition by exprod.operator,exprod.shift_start_date,case_id) as case_id,
+       au.created AS user_setup_date
+  FROM expeditor_prod exprod
+  LEFT OUTER JOIN all_users au ON au.username = exprod.operator
+ WHERE exprod.shift_start_date &gt;= CAST(:operation_start_date_from AS DATE)
+   AND exprod.shift_start_date &lt; CAST(:operation_start_date_to AS DATE) + 1                
+            </pre>
+&nbsp;<pre>
+            </pre>
+                    </R:DOC></li>
+            </ul>
+            <h2>
+                Validation details</h2>
+            Bellow queries may have the where clause in the [] brackets. It means these are 
+            the optional parameters. If you do not want to pass these parameters just remove 
+            the [] section.
+            <br />
+            <br /><b>Query:</b><pre><r:query>
+SELECT MIn(bp.operation_start_date) AS "OPERATION_START_DATE",
+min(bp.OPERATOR) AS "OPERATOR",
+(BOX.CASE_ID) AS "CASE_ID",
+count(box.case_id) AS "QUANTITY"
+FROM box_productivity bp, box box
+WHERE bp.operation_code = '$CTNEXP'
+AND bp.ucc128_id = box.ucc128_id
+AND box.case_id = :case_id
+AND bp.operation_start_date >= (:operation_start_date)
+AND bp.operation_start_date < (:operation_start_date) + 1 
+group by BOX.CASE_ID;
+          </R:QUERY></pre>
+            <b>Description:</b><pre><r:description>Execute the above query to display the quantity of various carton type. You can modify the date to verify the data.</R:DESCRIPTION></pre>
+            <b>Query: bUCKET_ID </b><pre><r:query>
+select  bp.operation_start_date AS operation_start_date,
+       bp.operator AS operator,
+       bp.process_id AS count_mpc,
+       bp.bucket_id AS bucket_id,
+      bp.case_id AS case_id,
+       bp.UCC128_ID AS carton_id
+  from box_productivity bp
+ where bp.operator = 'BISHT'
+ AND bp.operation_code = '$CTNEXP'
+ AND BP.WAREHOUSE_LOCATION_ID = 'FDC'
+ AND BP.OPERATION_START_DATE >= TO_DATE('7/31/2010','MM/DD/YYYY')
+ AND BP.OPERATION_END_DATE < TO_DATE('7/31/2010','MM/DD/YYYY')+1
+          </R:QUERY></pre>
+            <b>Description:</b><pre><r:description>
+Execute the above query to display the buckets processed by the expeditor. 
+          </R:DESCRIPTION></pre>
+            <!--End divTechnical-->
+        </div>
+    </form>
+
+</body>
+</html>

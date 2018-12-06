@@ -1,0 +1,590 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Order Drill Down Report (110.08) Documentation</title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        110.08 : Order Drill Down Report
+    </h1>
+    Author : <b>Sanjeev Kumar</b><br />
+    $Revision: 6549 $<br />
+    Status: Done<br />
+    Reviewed By : Manmohan Bisht<br />
+    Tested By Hemant K. Singh<br />
+    <br />
+    This Report displays details of all open orders.<br />
+    <h3>
+        Overview</h3>
+    The report displays following details for the specified values of Order Type, delivery
+    date, DC Cancel dates, Warehouse Locations ,Vwh ID, VAS,&nbsp; No of Pieces per day, customer id, store and customer dc and Building.
+    <ol>
+        <li>Warehouse Location wise details for each Open Order. </li>
+        <li>It will further drill down on number of buckets and customers to show their respective
+            details as bucket-wise and customer-wise reports.</li>
+    </ol>
+    <h2>
+        Algorithm</h2>
+    <p>
+        The report intents to show the details of open orders for all statuses.
+    </p>
+    <dl>
+        <dt>In Order Bucket Status</dt>
+        <dd>
+            Orders of IN-Ordered-Bucket status are selected from <code>DEM_PICKSLIP</code> table
+            and having <code>PS_STATUS_ID</code> as 1.
+        </dd>
+        <dt>Under Process, Validated, Ready To Shipped and Others statuses</dt>
+        <dd>
+            Order of these categories are selected from <code>PS</code> table and only non cancelled
+            boxes and pickslip are considered.</dd>
+    </dl>
+    <p>
+        For each orders in each <em>Virtual Warehouse & Warehouse Location and Reporting Statuses</em>
+        we are showing details like ordered pieces and their values, shipped pieces and
+        their estimated values, no. of buckets, no. of customers, no. of pickslips, no.
+        of SKUs, etc.</p>
+    <p>
+        The <strong>%Completed </strong>and<strong> Process Days </strong>are calculated
+        column. These columns are calculated per warehouse location, virtual warehouse and
+        status of orders and are calculated as follows:</p>
+    <ul type="disc">
+        <li><strong>%Completed:</strong> -&nbsp; <em>Total Ordered pieces</em> * 100 / <em>Total
+            shipped pieces</em></li>
+        <li><strong>Process Days: </strong>- <em>(Total Ordered pieces - Total shipped pieces)</em>
+            / <em>pieces per day</em> </li>
+    </ul>
+    <h3>
+        Output
+    </h3>
+    <table border="1" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                <b>Item</b>
+            </td>
+            <td>
+                <p>
+                    <b>Summary</b></p>
+            </td>
+            <td>
+                <b>Default Sort
+                    <br />
+                    Sequence</b>
+            </td>
+            <td>
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                1</td>
+            <td>
+                Warehouse Loaction of Order
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Status
+            </td>
+            <td>
+                &nbsp;&nbsp;</td>
+            <td>
+                3
+            </td>
+            <td>
+                Order Status
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ordered Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Number of Pieces Ordered
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ordered Dollars
+            </td>
+            <td>
+                Sum
+            </td>
+            <td>
+                4
+            </td>
+            <td>
+                Total amount Ordered
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Shipped Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Number of pieces shipped
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Shipped Esitimated Dollar&nbsp;
+            </td>
+            <td>
+                Sum
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Estimated amount of shipped pieces
+            </td>
+        </tr>
+        <tr>
+            <td>
+                %Complete
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Percentage of Order completed
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No of Buckets
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Number of Buckets
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No of Customers
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Number Of Customers
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No of Pickslips
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Number of Pickslips
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No of PO
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Number of PO
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Vwh ID
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                2
+            </td>
+            <td>
+                Virtual Warhouse ID of Order
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Process Days
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Number of days took to process certain order
+            </td>
+        </tr>
+    </table>
+    <h3>
+        Parameters</h3>
+    <table border="1" cellspacing="1" cellpadding="1">
+        <tbody>
+            <tr>
+                <td align="center">
+                    <b>Name</b>
+                </td>
+                <td align="center">
+                    <b>Default</b>
+                </td>
+                <td align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Order Type</p>
+                </td>
+                <td>
+                    <p>
+                        All</p>
+                </td>
+                <td>
+                    Order Type like All, Domestic,International
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Date Range For Delivery Date</p>
+                </td>
+                <td>
+                    <p>
+                        First day of previous year </p>
+                    <p>
+                        Fiscal Month end for the current month</p>
+                </td>
+                <td>
+                    &nbsp;&nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Date Range For DC Cancel Date </td>
+                <td>
+                    <p>
+                        First day of previous year </p>
+                    Fiscal Month end for the current month</td>
+                <td>
+                    &nbsp;&nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    Virtual Warehouse
+                </td>
+                <td>
+                    All
+                </td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="cbvas">
+                    Orders Required VAS</label></td>
+                <td>
+                    All VAS</td>
+                <td>
+                    Any VAS(Value Added Service) applied on order.</td>
+            </tr>
+            <tr>
+                <td>
+                    Pieces Per Day
+                </td>
+                <td>
+                    216000
+                </td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    Customer</td>
+                <td>
+                    None</td>
+                <td>
+                    This parameter&nbsp;is used to see the order of the specific customer. </td>
+            </tr>
+            <tr>
+                <td>
+                    Customer DC</td>
+                <td>
+                    None</td>
+                <td>
+                    This parameter&nbsp;is used to see the order of the specific DC.</td>
+            </tr>
+            <tr>
+                <td>
+                    Customer Store</td>
+                <td>
+                    None</td>
+                <td>
+                    This parameter&nbsp;is used to see the order of the specific Store.</td>
+            </tr>
+            <tr>
+                <td>
+                    Building</td>
+                <td>
+                    All
+                </td>
+                <td>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>
+        Performance Detail</h3>
+    <p>
+        <i>Expected Time for the report output is 15</i>Sec.</p>
+    <h3>
+        Behavior Change</h3>
+    <ul>
+        <li>Number of Pickslip column is now Click able. Check the list of pickslips which are involved here.</li>
+        <li>Number of PO column is now Click able. Check the list of POs which are involved here.</li>
+        <li>Following new filters are now avaliable in this report:- Customer , Customer Store and Customer DC</li>
+    </ul>
+    <h3>
+        Issues</h3>
+    No Known Issue.
+    <br />
+    <h3>
+        Prerequisites</h3>
+    <ul>
+        <li>
+            <h4>
+                Private synonyms used in the reports are -
+            </h4>
+            <code>PS, PO, TAB_REPORTING_STATUS, DEM_PICKSLIP, box, ps_vas and BOXDET</code>.<br />
+            <p>
+                Run the following scripts to create the private synonyms of the above objects-</p>
+            <code>CREATE OR REPLACE SYNONYM PS FOR dcms8.PS;<br />
+                CREATE OR REPLACE SYNONYM PO FOR dcms8.PO;<br />
+                CREATE OR REPLACE SYNONYM TAB_REPORTING_STATUS FOR dcms8.TAB_REPORTING_STATUS;<br />
+                CREATE OR REPLACE SYNONYM DEM_PICKSLIP FOR dcms4.DEM_PICKSLIP;<br />
+                CREATE OR REPLACE SYNONYM BOXDET FOR dcms8.BOXDET;<br />
+                CREATE OR REPLACE SYNONYM box FOR dcms8.box;<br /> 
+                CREATE OR REPLACE SYNONYM ps_vas FOR dcms8.ps_vas;<br />
+                CREATE OR REPLACE SYNONYM MASTER_SKU FOR dcms4.MASTER_SKU;<br />
+
+            </code></li>
+        <li>
+            <h4>
+                AppSettings needed -
+            </h4>
+            <code>&lt;add key="PiecesPerDay" value="216000"/&gt;<br />
+            </code></li>
+    </ul>
+    <h3>
+        Technical Documentaioncumentaion</h3>
+    <h4>
+        Parameter Technical Details</h4>
+    <ol>
+        <li>Order Type:(<code>Type - String</code>):This parameter can be used to determine
+            customer type.
+            <ul>
+                <li>Orders from All customers</li>
+                <li>Orders from Domestic customers
+                    <ul>
+                        <li>Exclude Customers
+                            <ul>
+                                <li>Retail - Retails customers will be excluded in the select statement.</li>
+                                <li>IDC - IDC customers will be excluded in the select statement. </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>Orders from International customers</li>
+            </ul>
+        </li>
+        <li>Deleivery Date (<code>Type - DateTime</code>):This parameter can be used to specify
+            the date-range for Delivery date.</li>
+        <li>DC Cancel Date (<code>Type - DateTime</code>):This parameter can be used to specify
+            the date-range for DC Cancel date.</li>
+        <li>Virtual Warehouse (<code>Type - String</code>):This parameter can be used to specify
+            the Virtua Warehouse.</li>
+        <li>Warehouse Location (<code>Type - String</code>):This parameter can be used to specify
+            the Warehouse Location.</li>
+        <li>Pieces Per Day (<code>Type - String</code>):This parameter can be used to calculate
+            the <em>Process Days</em>.</li>
+    </ol>
+    <h3>
+        Parameter Validation</h3>
+    <p>
+        No special validations.</p>
+    <h3>
+        Query&#39;s documentation:</h3>
+    <p>
+        The report query is as follows:</p>
+    <pre>
+    WITH open_pickslips AS
+ (SELECT PS.PICKSLIP_ID AS PICKSLIP_ID,
+         ps.reporting_status as reporting_status,
+         TRS.SORT_SEQUENCE AS SORT_SEQUENCE,        
+         PS.TOTAL_QUANTITY_ORDERED AS ORDERED_PIECES,
+        
+         PS.TOTAL_DOLLARS_ORDERED AS ORDERED_DOLLARS,
+         PS.BUCKET_ID AS BUCKET_ID,
+         PS.CUSTOMER_ID AS CUSTOMER_ID,        
+         PS.PO_ID              AS PO_ID,
+         PS.VWH_ID             AS VWH_ID,
+         PS.warehouse_location AS warehouse_location_id
+    FROM PS PS
+    LEFT OUTER JOIN TAB_REPORTING_STATUS TRS ON TRS.REPORTING_STATUS = PS.Reporting_Status       
+    WHERE ps.Transfer_date IS NULL
+    AND PS.REPORTING_STATUS IS NOT NULL
+    <if>AND PS.customer_id =:customer_id</if>             
+
+  UNION ALL
+  SELECT ps1.pickslip_id,
+         'IN ORDER BUCKET' STATUS,
+         1 SEQUENCE,       
+         PS1.TOTAL_QUANTITY_ORDERED AS ORDERED_PIECES,
+         PS1.TOTAL_DOLLARS_ORDERED AS ORDERED_DOLLARS,
+         NULL as bucket_id,
+         ps1.CUSTOMER_ID,
+         PS1.CUSTOMER_ORDER_ID,
+         PS1.VWH_ID AS VWH_ID,
+         PS1.warehouse_location_id
+    FROM DEM_PICKSLIP PS1
+   where ps1.ps_status_id = 1
+         <if>AND PS1.customer_id =:customer_id</if>
+   ),
+box_pickslips AS
+ (select bd.pickslip_id,
+         SUM(bd.current_pieces) AS current_pieces,
+         SUM(bd.current_pieces *
+             (select psdet.extended_price
+                from psdet psdet
+                where psdet.pickslip_id = bd.pickslip_id
+                and psdet.upc_code = bd.upc_code)) as current_dollars
+    from boxdet bd
+    where bd.stop_process_date is null
+    and bd.current_pieces &gt; 0
+   group by bd.pickslip_id)
+SELECT PSDATA.reporting_status,
+       MAX(PSDATA.SORT_SEQUENCE) AS SEQUENCE,      
+       SUM(PSDATA.ORDERED_PIECES) AS ORDERED_PIECES,
+       SUM(PSDATA.ORDERED_DOLLARS) AS ORDERED_DOLLARS,
+       SUM(bp.CURRENT_PIECES) AS PIECES_IN_BOXES,
+       SUM(bp.current_dollars) as Estimated_Dollar_Shipped,
+       ROUND(SUM(bp.CURRENT_PIECES) / SUM(PSDATA.ORDERED_PIECES), 2) AS PERCENT_COMPLETE,
+       COUNT(DISTINCT PSDATA.BUCKET_ID) AS NO_OF_BUCKETS,
+       COUNT(DISTINCT PSDATA.CUSTOMER_ID) AS NO_OF_CUSTOMERS,
+       COUNT(DISTINCT PSDATA.PICKSLIP_ID) AS NO_OF_PICKSLIPS,
+       COUNT(DISTINCT
+             RPAD(PSDATA.CUSTOMER_ID, 10) || RPAD(PSDATA.PO_ID, 25)) AS NO_OF_POS,
+       PSDATA.VWH_ID AS VWH_ID,
+       PSDATA.warehouse_location_id AS warehouse_location_id
+  FROM open_pickslips psdata
+  left outer join box_pickslips bp
+    on bp.pickslip_id = psdata.pickslip_id
+ GROUP BY PSDATA.reporting_status,
+          PSDATA.VWH_ID,
+          PSDATA.warehouse_location_id
+PSDATA.VWH_ID, PSDATA.warehouse_location_id  
+        </pre>
+    <h3>
+        Validation details</h3>
+
+    <h4>Ordered Dollars and Pieces</h4>
+    <pre>
+select ps.total_quantity_ordered,
+       ps.total_dollars_ordered,
+       ps.pickslip_id,
+       ps.bucket_id,
+       ps.customer_id,
+       ps.po_id
+  from ps ps
+ inner join po po
+    on ps.customer_id = po.customer_id
+   and ps.po_id = po.po_id
+   and ps.iteration = po.iteration
+ where ps.reporting_status =:Reporting Status
+   and ps.warehouse_location_id =:Warehouse_location_id
+   and ps.vwh_id =:Vwh_id
+   and po.start_date >=:strat date
+   and po.start_date < =:strat date
+   and po.cancel_date >=cancel_date
+   and po.cancel_date <=cancel_date
+   and ps.transfer_date is null
+   and ps.reporting_status is not null
+   </pre>
+ <h4>Shipped Pieces and Dollars</h4>
+ <pre>
+ SELECT SUM(BD.CURRENT_PIECES) AS TOTAL_SHIPPED_PIECES,
+       SUM(BD.CURRENT_PIECES * BD.EXTENDED_PRICE),
+       PS.REPORTING_STATUS,
+       COUNT(DISTINCT PS.PO_ID),
+       COUNT(DISTINCT PS.PICKSLIP_ID),
+       COUNT(DISTINCT PS.CUSTOMER_ID),
+       COUNT(DISTINCT PS.BUCKET_ID)      
+  FROM BOX B
+ INNER JOIN PS
+    ON B.PICKSLIP_ID = PS.PICKSLIP_ID
+ INNER JOIN BOXDET BD
+    ON B.UCC128_ID = BD.UCC128_ID
+   AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+ WHERE BD.STOP_PROCESS_DATE IS NULL
+   AND PS.TRANSFER_DATE IS NULL
+   AND PS.PICKSLIP_CANCEL_DATE IS NULL
+   AND PS.CUSTOMER_ID = '10120'
+   AND PS.CUSTOMER_DC_ID = '90324'
+   AND PS.WAREHOUSE_LOCATION_ID = 'FDC'
+   AND PS.VWH_ID = '15'
+ GROUP BY PS.REPORTING_STATUS;
+
+     </pre>
+<h4>Orders from Dem pickSlip</h4>
+<pre>
+select dps.total_quantity_ordered, dps.total_dollars_ordered
+  from dem_pickslip dps
+ where dps.warehouse_location_id =:warehouse_location_id
+   and dps.vwh_id =:vwh_id
+   and dps.ps_status_id=1
+   and dps.delivery_date >=:delivery_date
+   and dps.delivery_date <=:delivery_date
+   and dps.dc_cancel_date >=:dc_cancel_date
+   and dps.dc_cancel_date <=:dc_cancel_date
+   </pre>
+</body>
+</html>

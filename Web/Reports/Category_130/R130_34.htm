@@ -1,0 +1,290 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+</head>
+<body>
+
+    <h1 style="text-align: center">130<b>.</b>34 <b>:Received SKUs with no FPK location</b></h1>
+    <ul style="list-style: none">
+        <li>
+            <h3>Author : Hemant K. Singh</h3>
+        </li>
+        <li>$Revision:28752</li>
+        <li>Status: Done</li>
+        <li>Reviewed By: Manmohan Bisht</li>
+        <li>Tested By: Sanjeev Kumar</li>
+    </ul>
+    <h2>Overview</h2>
+    <p>
+        This report is for displaying those SKUs which are received but yet not assigned to any forward pick location(FPK). User can limit this report to see only those un-assigend SKUs which are having at least desired number of cartons. By default this report will show those SKUs first which have maximun number of SKU quantiy.
+    </p>
+    <h2>Algorithm</h2>
+    <p>
+        Getting sku details from the master_sku table along with fetching the cartons and their quantities from the src_carton and src_carton_detail tables respectively. We are also checking whether the SKUs are assigned to any location or not from the IALOC table and also checking whether that SKU is required in any order by using the dem_pickslip and ps table.
+    </p>
+    <h3>Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="25%" align="center"><b>Item</b></td>
+            <td width="20%" align="center"><b>Summary</b></td>
+            <td width="10%" align="center"><b>Sort Sequence</b></td>
+            <td width="35%" align="center"><b style="font-style: italic">Detail</b></td>
+        </tr>
+        <tr>
+            <td>Vwh</td>
+            <td>No</td>
+            <td align="center">2(asc)</td>
+            <td>Virtual warehouse of the SKU</td>
+        </tr>
+        <tr>
+            <td>Style</td>
+            <td>No</td>
+            <td align="center">&nbsp;</td>
+            <td>Style of the SKU</td>
+        </tr>
+        <tr>
+            <td>Color</td>
+            <td>No</td>
+            <td align="center">&nbsp;</td>
+            <td>Color of the SKU. </td>
+        </tr>
+        <tr>
+            <td>Dimension</td>
+            <td>No</td>
+            <td align="center"><i></i></td>
+            <td>Dimension of the SKU </td>
+        </tr>
+        <tr>
+            <td>SKU Size</td>
+            <td>No</td>
+            <td align="center">&nbsp;</td>
+            <td>Size of the SKU </td>
+        </tr>
+        <tr>
+            <td>UPC</td>
+            <td>No
+            </td>
+            <td align="center">&nbsp;</td>
+            <td>UPC of the SKU. It will be shown in red if the UPC is not available in master_sku table.</td>
+        </tr>
+        <tr>
+            <td>No. of cartons</td>
+            <td>Sum</td>
+            <td align="center">&nbsp;</td>
+            <td>Total cartons of the SKU </td>
+        </tr>
+        <tr>
+            <td>No. of Pieces</td>
+            <td>Sum</td>
+            <td align="center">1(desc)</td>
+            <td>Pieces of the SKU</td>
+        </tr>
+        <tr>
+            <td>Weight</td>
+            <td>Sum</td>
+            <td align="center">&nbsp;</td>
+            <td>Weight of the SKU. It will be shown in red if weight of the SKU is not defined(null).</td>
+        </tr>
+        <tr>
+            <td>Volume</td>
+            <td>Sum</td>
+            <td align="center">&nbsp;</td>
+            <td>Volume of the SKU. It will be shown in red if volume of the SKU is not defined(null).</td>
+        </tr>
+        <tr>
+            <td>Required in order</td>
+            <td>No</td>
+            <td align="center">&nbsp;</td>
+            <td>Is SKU required by any order</td>
+        </tr>
+    </table>
+    <h2>Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="20%" align="center"><b>Name</b></td>
+            <td width="20%" align="center"><b>Default</b></td>
+            <td width="60%" align="center"><b>Detail</b></td>
+        </tr>
+        <tr>
+            <td>SKUs which have atleast passed cartons</td>
+            <td>Unchecked</td>
+            <td>Only those SKUs which are having atleast passed no. of cartons.</td>
+        </tr>
+    </table>
+    <h2>Performance Detail</h2>
+    <p>Expected Time for the report output is<i><strong> 2</strong></i> seconds.</p>
+    &nbsp;<h2>Behavior Change</h2>
+    <p>Now showing weight and volume per SKU along with a check whether the SKU is required by any order or not.
+        If the weight and volume of the SKU is null then both the column will be shown in red.
+    </p>
+    <h2>Known Issues</h2>
+    <ul>
+        <li>No Known Issues.</li>
+    </ul>
+    <h2>Prerequisites</h2>
+    <h4>App Settings</h4>
+    <add key="CancelArea" value="CAN" />
+    <add key="ScrapArea" value="SSS" />
+    <add key="SkuTypeStorageArea" value="SKU" />
+    <p>
+        Private synonyms for the following tables are required
+    </p>
+    ialoc<br />
+    src_carton_intransit<br />
+    master_sku<br />
+    ps<br />
+    psdet<br />
+    dem_pickslip<br />
+    dem_pickslip_detail<br />
+
+    <p>Use the below script to create the synonyms</p>
+    <ol>
+        <li>create or replace synonym ialoc for dcms8.ialoc;</li>
+        <li>create or replace synonym 
+    src_carton_intransit for dcms4.src_carton_intransit;</li>
+        <li>create or replace synonym master_sku for dcms4.master_sku;</li>
+        <li>create or replace synonym ps for dcms8.ps;</li>
+        <li>create or replace synonym psdet for dcms8.psdet;</li>
+        <li>create or replace synonym dem_pickslip for dcms4.dem_pickslip;</li>
+        <li>create or replace synonym dem_pickslip_detail for dcms4.dem_pickslip_detail;</li>
+    </ol>
+    <div id="divTechnical" style="display: block">
+        <h2><b>Report Query:</b></h2>
+        <pre xmlns="">
+        </pre>
+        <pre>
+WITH UNASSIGNED_SKUS AS
+ (SELECT SCI.VWH_ID AS VWH_ID,
+         SCI.STYLE AS STYLE,
+         SCI.COLOR AS COLOR,
+         SCI.DIMENSION AS DIMENSION,
+         SCI.SKU_SIZE AS SKU_SIZE,
+         MAX(MS.UPC_CODE) AS UPC_CODE,
+         COUNT(UNIQUE SCI.CARTON_ID) AS TOTAL_CARTONS,
+         SUM(SCI.QUANTITY) AS TOTAL_PIECES,
+         MAX(MS.VOLUME_PER_DOZEN) AS VOLUME_PER_DOZEN,
+         MAX(MS.WEIGHT_PER_DOZEN) AS WEIGHT_PER_DOZEN
+    FROM SRC_CARTON_INTRANSIT SCI
+    inner JOIN MASTER_SKU MS
+      ON SCI.STYLE = MS.STYLE
+     AND SCI.COLOR = MS.COLOR
+     AND SCI.DIMENSION = MS.DIMENSION
+     AND SCI.SKU_SIZE = MS.SKU_SIZE
+     WHERE  NOT EXISTS (SELECT *
+            FROM IALOC I
+           WHERE I.ASSIGNED_UPC_CODE = MS.UPC_CODE
+             AND I.LOCATION_TYPE = 'RAIL'
+            AND I.VWH_ID = SCI.VWH_ID)
+   AND SCI.RECEIVED_DATE > SYSDATE - 60
+   GROUP BY SCI.STYLE, SCI.COLOR, SCI.DIMENSION, SCI.SKU_SIZE, SCI.VWH_ID),
+IN_PROCESS_SKU AS
+ (SELECT PS.VWH_ID AS VWH_ID,
+         PD.UPC_CODE AS UPC_CODE
+    FROM PS
+   INNER JOIN PSDET PD
+      ON PS.PICKSLIP_ID = PD.PICKSLIP_ID
+       WHERE PS.TRANSFER_DATE IS NULL
+     AND PD.TRANSFER_DATE IS NULL
+     AND PS.PICKSLIP_CANCEL_DATE IS NULL
+     AND PS.PICKSLIP_IMPORT_DATE > SYSDATE - 60
+   group by PS.VWH_ID, PD.UPC_CODE
+  UNION
+  SELECT DP.VWH_ID AS VWH_ID,
+        
+         DPD.UPC_CODE AS UPC_CODE
+    FROM DEM_PICKSLIP DP
+   INNER JOIN DEM_PICKSLIP_DETAIL DPD
+      ON DP.PICKSLIP_ID = DPD.PICKSLIP_ID
+      WHERE DP.PS_STATUS_ID = 1
+     AND DP.PICKSLIP_IMPORT_DATE > SYSDATE - 60
+   group by DP.VWH_ID, DPD.UPC_CODE)
+SELECT US.VWH_ID AS VWH,
+       US.STYLE AS STYLE,
+       US.COLOR  AS COLOR,
+       US.DIMENSION AS DIMENSION,
+       US.SKU_SIZE AS SKU_SIZE,
+       US.UPC_CODE AS UPC_CODE,
+       US.WEIGHT_PER_DOZEN AS weight,
+       US.VOLUME_PER_DOZEN AS volume,
+       US.TOTAL_CARTONS AS TotalCartons,
+       US.TOTAL_PIECES AS Pieces,
+       CASE
+         WHEN nvl(US.UPC_CODE,0) != nvl(IPS.UPC_CODE,0) AND
+              nvl(US.VWH_ID,0) != nvl(IPS.VWH_ID,0) THEN
+          'N'
+         ELSE
+          'Y'
+       END AS REQUIRED_IN_ORDER
+      FROM UNASSIGNED_SKUS US
+  left OUTER JOIN IN_PROCESS_SKU IPS
+    ON US.VWH_ID = IPS.VWH_ID
+   AND US.UPC_CODE = IPS.UPC_CODE
+     </pre>
+        <b>Description:</b><pre>
+This is the report query which is used to show you the unassigned SKUs for the inventory which are not yet assigned to any location.
+          </pre>
+        <!--End divTechnical-->
+        <h2>Validation Query: </h2>
+        <br>
+        <b>Query:&nbsp; Below Query&nbsp;is used to verify the data.</b><pre>
+SELECT SCI.VWH_ID,
+       SCI.STYLE,
+       SCI.COLOR,
+       SCI.DIMENSION,
+       SCI.SKU_SIZE,
+       SCI.QUANTITY
+  FROM SRC_CARTON_INTRANSIT SCI
+ INNER JOIN MASTER_SKU MS
+    ON SCI.STYLE = MS.STYLE
+   AND SCI.COLOR = MS.COLOR
+   AND SCI.DIMENSION = MS.DIMENSION
+   AND SCI.SKU_SIZE = MS.SKU_SIZE
+ WHERE SCI.RECEIVED_DATE >= SYSDATE - 60  
+ AND ms.upc_code =''
+
+            </pre>
+        <b>This query is used to validate find the Sku details by passing the UPC code</b><br />
+        <br />
+        SELECT style,
+               color,
+               DIMENSION,
+               sku_size,
+               m.inactive_flag 
+               FROM master_sku m 
+         WHERE m.upc_code=: UPC_Code;<br />
+        <br />
+        <b>These queries are required to verify whether the SKU is required in any order or not.</b><br />
+        <br />
+        <pre>
+            1. 
+            
+ select ps.vwh_id,
+        pd.upc_code,
+        pd.pieces_ordered 
+   from ps
+inner join psdet pd 
+on ps.pickslip_id = pd.pickslip_id
+where ps.transfer_date is null
+and pd.transfer_date is null
+and ps.pickslip_cancel_date is null
+and pd.upc_code = :upc_code
+and ps.vwh_id = :vwh_id;</pre>
+<br />
+        <pre>2. select dp.vwh_id,
+                       dpd.style,
+                       dpd.color,
+                       dpd.dimension,
+                       dpd.sku_size,
+                       dpd.upc_code,
+                       dpd.quantity_ordered 
+                  from dem_pickslip dp
+                 inner join dem_pickslip_detail dpd
+                    on dp.pickslip_id = dpd.pickslip_id
+                 where dp.ps_status_id = 1
+                   and dpd.upc_code=:upc_code
+                   and dp.vwh_id='15';
+        </pre>
+    </div>
+</body>
+</html>

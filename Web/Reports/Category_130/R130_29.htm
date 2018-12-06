@@ -1,0 +1,405 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html>
+<head>
+    <title>130.29 : SKUs flagged for Red carton cycle count</title>
+</head>
+<body>
+    <h1 align="center">
+        130<b>.</b>29<b> : </b>SKUs flagged for Red carton cycle count</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    $Revision: 4498 $<br />
+    Mentor: Hemant K. Varshney
+    <br />
+    Status: Tested<br />
+    Tested By : Hemant K. Singh
+    <p>
+        The report display the information about the location marked for CYC while pitching
+        due to mismatch of pieces.</p>
+    <h2>
+        Overview</h2>
+    <body>
+        <p>
+            The Report displays the information about the SKU flagged for red carton cycle count
+            for warehouse wise i.e. (SKUs whose location are marked for CYC while pitching due
+            to mismatch of pieces)
+        </p>
+    </body>
+    <h2>
+        Algorithm</h2>
+    Number of CYC marked SKUs are retrieved from the master_sku table. The details about
+    the cyc marked sku, location status, number of pieces marked for CYC is extracted
+    from the table ialoc,ialoc_content and label of the marked CYC is extracted from
+    table master_style table. For handling details of the location_status splh table
+    is used in which the status of the splh_id is equal to $LCLOCSTAT which is Least
+    Count of Location Status based to that report display the location of sku marked
+    by CYC.
+    <h3>
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="25%" align="center">
+                <b>Item</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Summary</b>
+            </td>
+            <td width="10%" align="center">
+                <b>Sort Sequence</b>
+            </td>
+            <td width="35%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                CYC Marked Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2
+            </td>
+            <td>
+                <r:item term="CYC_MARKED_DATE" key="true " sortsequence="1">
+            Date on which this location was marked for the CYC
+          </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                CYC Marked By
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Who marked the location for CYC.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Style
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="STYLE">Style of the Cyc marked SKU.</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Color
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="COLOR">Color of the Cyc marked SKU.</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Dim
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="DIMENSION">Dimension of the Cyc marked SKU.</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Size
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="SIZE">Size of the Cyc marked SKU.</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Label
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="LABEL">Label of the Cyc marked SKU.</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Location
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="LOCATION">Location of the SKU marked by Cyc.</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                System Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="PIECES" summary="Sum">Current pieces on the location of the CYC marked SKU.</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                VWh
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="WAREHOUSE ID">Warehouse, to which the location of SKU belongs.</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp; 1
+            </td>
+            <td>
+                <r:item term="WAREHOUSE ID">Warehouse Location , to which the location of SKU belongs.</r:item>
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="20%" align="center">
+                <b>Name</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Type</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Default</b>
+            </td>
+            <td width="60%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Virtual Warehouse
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                All Warehouse
+            </td>
+            <td>
+                Virtual Warehouse Id for the corresponding location of SKU.&nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                All&nbsp;
+            </td>
+            <td>
+                Warehouse Id for the corresponding location of SKU.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>0.05 second</p>
+    This report selects all the CYC marked SKUs so the report query is linear to the
+    number of SKUs marked for CYC. There is an index range scan on tables splh, ialoc,
+    ialoc_content, master_sku and master_style table. Index SPLH_PK used in the table
+    splh, Index IALOC_PK used in the table ialoc, Index IALOCCONT_PK used in the table
+    ialoc_content, Index SKU_UK used in the table master_sku, Index STY_PK used in the
+    table master_style.
+    <h2>
+        Definitions</h2>
+    <dl>
+        <dt><i>Need of CYC</i></dt><dd><r:definition term="Need of CYC">
+          When any discrepancy (mismatch in pieces) is found at any location of
+          Picking Area then this location is marked for cycle count and such
+          location is not reliable for system. So, to correct the status of these
+          locations cycle count is required.
+        </r:definition></dd><dt><i>Red carton based counting</i></dt><dd><r:definition term="Red carton based counting">
+          In this case system provides only those locations which were marked red (means number of pieces is less then as system expected or
+          some pieces are missing from these locations so it should be crosschecked)
+          and locations, which are marked again for cycle count by the manager.
+        </r:definition></dd><dt><i>$LCLOCSTAT</i></dt><dd><r:definition term="$LCLOCSTAT">
+          It is the least count value.
+          With the help of this value we calculate the field value for
+          LOCATION_STATUS in the table IALOC
+        </r:definition></dd></dl>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>
+            <p class="MsoNormal">
+                Helps you know login user who marked the location for CYC.<o:p></o:p></p>
+        </li>
+        <li>
+            <p class="MsoNormal">
+                <o:p>Changed column and filter names from Warehouse 
+                Location&nbsp; to&nbsp; Building. </o:p>
+            </p>
+        </li>
+    </ul>
+    <h2>
+        Issues</h2>
+    No Known Issue.
+    <br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Synonyms used in the report are</p>
+    <p>
+        IALOC,<br />
+        IALOC_CONTENT,<br />
+        MASTER_SKU,<br />
+        MASTER_STYLE,<br />
+        SPLH</p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        create or replace synonym IALOC for dcms8.IALOC; &nbsp;<br />
+        create or replace synonym IALOC_CONTENT for dcms8.IALOC_CONTENT;
+        <br />
+        create or replace synonym MASTER_SKU for dcms4.MASTER_SKU;
+        <br />
+        create or replace synonym MASTER_STYLE for dcms4.MASTER_STYLE;
+        <br />
+        create or replace synonym SPLH for dcms8.SPLH;<br />
+        <br />
+        There is no appSetting used in the report.</p>
+    &nbsp;<h2>
+        Sub-Query's documentation:</h2>
+    <ul>
+        <li><b>STATUS: </b>
+            <r:doc>
+            Query is used to extract the splh value where SPLH ID is equal to '$LCLOCSTAT'
+            <pre>
+              SELECT sp.splh_value AS "SPLH_VALUE"
+               FROM splh sp
+              WHERE SPLH_ID = '$LCLOCSTAT'
+            </pre></r:doc>
+        </li>
+    </ul>
+    <h2>
+        Query's documentation:</h2>
+    <ul>
+        <li>
+            <r:doc>
+            The query displays the SKU flagged for red carton cycle count
+            <pre>
+            SELECT /*+ index (ia ialoc_pk )*/
+ IA.CYC_MARKED_DATE  AS CYC_MARKED_DATE,
+ IA.CYC_MODIFIED_BY  AS CYC_MODIFIED_BY,
+ IA.LOCATION_ID      AS LOCATION_ID,
+ IA.VWH_ID           AS VWH_ID,
+ IA.warehouse_location_id AS warehouse_location_id,
+ MS.STYLE            AS STYLE,
+ MS.COLOR            AS COLOR,
+ MS.DIMENSION        AS DIMENSION,
+ MS.SKU_SIZE         AS SKU_SIZE,
+ IAC.NUMBER_OF_UNITS AS PIECES,
+ MT.LABEL_ID         AS LABEL_ID
+  FROM IALOC IA
+  LEFT OUTER JOIN IALOC_CONTENT IAC ON IA.IA_ID = IAC.IA_ID
+                                   AND IA.LOCATION_ID = IAC.LOCATION_ID
+ INNER JOIN MASTER_SKU MS ON IA.ASSIGNED_UPC_CODE = MS.UPC_CODE
+  LEFT OUTER JOIN MASTER_STYLE MT ON MS.STYLE = MT.STYLE
+ WHERE IA.CYC_MARKED_DATE IS NOT NULL
+   AND IA.LOCATION_STATUS IN
+       (SELECT SP.SPLH_VALUE AS SPLH_VALUE
+          FROM SPLH SP
+         WHERE SPLH_ID = '$LCLOCSTAT')
+         <if>AND IA.VWH_ID = cast(:vwh_id as varchar2(255))</if>
+         <if>AND IA.warehouse_location_id=:Whloc</if>           
+         </pre></r:doc>
+        </li>
+    </ul>
+    <h2>
+        Validation details</h2>
+    <b>Query: Below query shows the CYC marked by and marked date</b><pre>
+            select a.cyc_marked_date,
+            a.CYC_MODIFIED_BY,
+            a.location_id AS location_id,
+            a.location_status AS location_status
+            FROM ialoc  a
+            WHERE a.location_id = :location_id
+            and a.CYC_MARKED_DATE IS NOT NULL
+  </pre>
+    <b>Description:</b> <b>Query: Below query shows style, color, dim, size and label</b>
+    <pre>
+            SELECT MS.STYLE, MS.COLOR, MS.DIMENSION, MS.SKU_SIZE, MT.LABEL_ID
+  FROM IALOC A
+ INNER JOIN MASTER_SKU MS
+    ON A.ASSIGNED_UPC_CODE = MS.UPC_CODE
+ INNER JOIN MASTER_STYLE MT
+    ON MS.STYLE = MT.STYLE
+ WHERE A.LOCATION_ID = :LOCATION_ID
+   AND A.VWH_ID = :VWH_ID;
+          </pre>
+    <b>Query:Execute the above query to find the quantity on the location.</b><pre>
+            SELECT IC.NUMBER_OF_UNITS
+  FROM IALOC A
+ INNER JOIN IALOC_CONTENT IC
+    ON A.IA_ID = IC.IA_ID
+   AND A.LOCATION_ID = IC.LOCATION_ID
+ WHERE A.LOCATION_ID = :LOCATION_ID
+   AND A.VWH_ID = :VWH_ID
+   AND a.cyc_marked_date IS NOT NULL;
+</pre>
+</body>
+</html>

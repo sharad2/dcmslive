@@ -1,0 +1,383 @@
+﻿<html>
+<head>
+    <title>30.101 Title of the Report</title>
+    <style type="text/css">
+        .style1
+        {
+            text-decoration: underline;
+        }
+        .style3
+        {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        30.101 SKU Detail for Area</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <ul style="list-style: none">
+        <li>Reviewed By: Manmohan Bisht</li>
+        <li>$Revision: 5626 $</li>
+        <li>Status: Tested</li>
+        <li>Tested By: Hemant K. Singh</li>
+    </ul>
+    <p>
+        This report gives the SKU details with price season code and total quantities for
+        a given area.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        In building there are several areas which contains inventory. Each area has it
+        own purpose and is involved in process receiving, storing and shipping inventory.
+        The report displays all areas which are in building along with their location
+        in building.</p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        Get all the information about carton information from tables SRC_CARTON and 
+        SRC_CARTON_DETAIL . SKU details for SKU areas without price season code are 
+        retrieved from view V_SKU_INVENTORY.
+    </p>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 25%; text-align: center">
+                <b>Item</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Summary</b>
+            </td>
+            <td style="width: 10%; text-align: center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Style
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center">
+                1
+            </td>
+            <td>
+                Style of SKU.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Color
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center">
+                2
+            </td>
+            <td>
+                Color of SKU.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Dimension
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center">
+                3</td>
+            <td>
+                Dimension of SKU.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                SKU Size
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center">
+                4
+            </td>
+            <td>
+                Size of SKU.
+            </td>
+        </tr>
+        <tr>
+            <td>
+              Quality
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center">
+                &nbsp;</td>
+            <td>
+                Quality of SKU.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Price Season Code
+            </td>
+            <td>
+                Sum
+            </td>
+            <td style="text-align: center">
+                &nbsp;
+            </td>
+            <td>
+                Quantity available for each available Season Codes.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Quantity
+            </td>
+            <td>
+                Sum
+            </td>
+            <td style="text-align: center">
+                &nbsp;
+            </td>
+            <td>
+                Total quantity of the SKU for all available season codes.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Wh.loc</td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center">
+                5</td>
+            <td>
+               Building assigned to the SKUs.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 20%; text-align: center">
+                <b>Name</b>
+            </td>
+            <td style="width: 15%; text-align: center">
+                <b>Type</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Default</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%;" class="style3">
+                Virtual Warehouse
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                (All)
+            </td>
+            <td style="width: 45%;" class="style3">
+                Virtual Warehouse Id
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%;" class="style3">
+                Warehouse Location</td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                (All)
+            </td>
+            <td style="width: 45%;" class="style3">
+                Location of SKU in Building
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%;" class="style3">
+                Area
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                AWL
+            </td>
+            <td style="width: 45%;" class="style3">
+                Inventory Area.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%;" class="style3">
+                Quality Code
+            </td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                None
+            </td>
+            <td style="width: 45%;" class="style3">
+                Quality of SKU.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+  
+        <ul><li> Report is taking 0.31 seconds to execute.</li></ul>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>In case of no Building against any area,then we show "Unknown" as building of that area.</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>None</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+    <h4>
+        Private synonyms requried for the tables:
+    </h4>
+    <p>
+        <code>SRC_CARTON ,<br />
+            SRC_CARTON_DETAIL ,<br />
+            MASTER_STORAGE_LOCATION,<br />
+            MASTER_SKU,<br />
+            TAB_INVENTORY_AREA,<br />
+            V_SKU_INVENTORY.</code></p>
+    <h4>
+        Script to create the synonyms:</h4>
+    <p>
+        <code>create or replace synonym SRC_CARTON for dcms4.SRC_CARTON;<br />
+            create or replace synonym SRC_CARTON_DETAIL for dcms4.SRC_CARTON_DETAIL;&nbsp;
+            <br />
+            create or replace synonym MASTER_STORAGE_LOCATION for dcms4.MASTER_STORAGE_LOCATION;<br />
+            create or replace synonym 
+        MASTER_SKU for dcms4.MASTER_SKU;<br />
+            create or replace synonym TAB_INVENTORY_AREA for dcms4.TAB_INVENTORY_AREA ;
+            <br />
+            create or replace synonym V_SKU_INVENTORY for dcms4.V_SKU_INVENTORY;</code></p>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <h4 class="style1">
+        For 'CTN' As Area Type</h4>
+    <pre>
+    SELECT SUM(CTNDET.QUANTITY) AS TOTAL_QUANTITY,
+       MAX(MSKU.STYLE) AS STYLE,
+       MAX(MSKU.COLOR) AS COLOR,
+       CTNDET.SKU_ID AS SKU_ID,
+      
+       MAX(MSKU.DIMENSION) AS DIMENSION,
+       MAX(MSKU.SKU_SIZE) AS SKU_SIZE,
+       CTN.price_season_code as price_season_code,
+        nvl(nvl(tabinv.WAREHOUSE_LOCATION_ID,msloc.WAREHOUSE_LOCATION_ID),'Unknown')  AS WAREHOUSE_LOC,
+       ctn.quality_code as quality_code
+  FROM SRC_CARTON              CTN
+    INNER JOIN src_carton_detail ctndet ON ctndet.carton_id = ctn.carton_id
+     INNER JOIN MASTER_SKU MSKU ON MSKU.SKU_ID=CTNDET.SKU_ID
+   LEFT OUTER JOIN master_storage_location msloc ON ctn.carton_storage_area =
+                                                     msloc.storage_area
+                                                 AND ctn.location_id =
+                                                     msloc.location_id
+  left outer JOIN tab_inventory_area tabinv ON tabinv.inventory_storage_area = ctn.carton_storage_area
+   WHERE CTN.CARTON_STORAGE_AREA = CAST(:area AS VARCHAR2(255))
+ <if>AND ctn.vwh_id = CAST(:vwh_id AS VARCHAR2(255))</if>
+ <if c="$warehouse_location != 'Unknown'">AND (tabinv.WAREHOUSE_LOCATION_ID = :warehouse_location or msloc.WAREHOUSE_LOCATION_ID = :warehouse_location) </if>
+ <if c="$warehouse_location ='Unknown'">and (msloc.Warehouse_Location_Id is null or tabinv.WAREHOUSE_LOCATION_ID is null)</if> 
+ <if>AND ctn.quality_code = CAST(:quality_code AS VARCHAR2(255))</if>   
+ GROUP BY CTNDET.SKU_ID,
+          CTN.price_season_code,
+         nvl(nvl(tabinv.WAREHOUSE_LOCATION_ID,msloc.WAREHOUSE_LOCATION_ID),'Unknown'),
+         ctn.quality_code
+HAVING SUM(CTNDET.QUANTITY) &lt;&gt; 0  </pre>
+
+<h2>For 'SKU' As Area Type</h2>
+
+<pre>
+ SELECT SKU.STYLE AS STYLE,
+          SKU.COLOR AS COLOR,
+          SKU.DIMENSION AS DIMENSION,
+          SKU.SKU_SIZE AS SKU_SIZE,
+          MAX(SKU.INVENTORY_QUANTITY) AS tot_quantity_sku,
+          nvl(tabinv.WAREHOUSE_LOCATION_ID,'Unknown') AS WAREHOUSE_LOC,
+          sku.quality_code as quality_code
+     FROM V_SKU_INVENTORY SKU  
+    LEFT OUTER JOIN tab_inventory_area tabinv ON tabinv.Inventory_Storage_Area = SKU.inventory_area_id
+    WHERE SKU.VWH_ID = CAST(:vwh_id AS VARCHAR2(255))
+      AND SKU.inventory_area_id = CAST(:area AS VARCHAR2(255))
+       <if c="$warehouse_location != 'Unknown'">AND tabinv.WAREHOUSE_LOCATION_ID = CAST(:warehouse_location AS VARCHAR2(255))</if>
+      <if c="$warehouse_location ='Unknown'">and tabinv.Warehouse_Location_Id is null</if>
+    GROUP BY SKU.COLOR,
+             SKU.DIMENSION,
+             SKU.SKU_SIZE,
+             tabinv.WAREHOUSE_LOCATION_ID,
+             SKU.STYLE,
+             sku.quality_code
+   HAVING SUM(SKU.INVENTORY_QUANTITY) &lt;&gt; 0
+</pre>
+
+    <h2>
+        Validation details</h2>
+    <p>
+        Description:
+    </p>
+    <p style="font-weight: bold">
+        Query: This query validates the output of inventory of area-type "CTN"</p>
+    <pre>
+SELECT sku.style AS style,
+       sku.color AS color,
+       sku.dimension AS dimension,
+       sku.sku_size AS sku_size,
+       MAX(sku.inventory_quantity) AS tot_quantity_sku,
+       wloc.warehouse_location_id AS warehouse_loc
+  FROM v_sku_inventory sku
+  LEFT OUTER JOIN tab_inventory_area tabinv ON 
+  tabinv.Inventory_Storage_Area = SKU.inventory_area_id
+ WHERE sku.vwh_id = CAST(:vwh_id AS VARCHAR2(255))
+   AND sku.inventory_area_id = CAST(:area AS VARCHAR2(255))
+   AND tabinv.WAREHOUSE_LOCATION_ID = CAST(:warehouse_location AS VARCHAR2(255))
+ GROUP BY sku.color,
+          sku.dimension,
+          sku.sku_size,
+          wloc.warehouse_location_id,
+          sku.style
+HAVING SUM(sku.inventory_quantity) &lt;&gt;0;  </pre>
+    <p style="font-weight: bold">
+        Query: This query validates the output of inventory of area-type "SKU"</p>
+    <pre>
+ SELECT MAX(rawinv.sku_storage_area) AS area,
+        MAX(rawinv.style) AS style,
+        MAX(rawinv.color) AS color,
+        MAX(rawinv.dimension) AS dim,
+        MAX(rawinv.sku_size) AS sku_size,
+        MAX(rawinv.vwh_id) AS vwh,
+        SUM(rawinv.quantity) AS total_qty
+   FROM master_raw_inventory rawinv
+  WHERE rawinv.style = :style
+    AND rawinv.color = :color
+    AND rawinv.dimension = :dimension
+    AND rawinv.sku_size = :sku_size
+    AND rawinv.vwh_id = :vwh_id
+    AND rawinv.sku_storage_area = :area;       </pre>
+</body>
+</html>

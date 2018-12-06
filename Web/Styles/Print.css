@@ -1,0 +1,35 @@
+﻿body
+{
+	font-size:10pt;
+}
+#left-sidebar 
+{
+    display:none;
+}
+
+.main-content 
+{
+    padding-left:0px;
+}
+.ui-tabs, .ui-tabs-nav, .ui-tabs-hide, .fg-button
+{
+	display:none;	
+}
+
+.ui-datepicker, .ui-widget-header a
+{
+	display:none!important;
+}
+.onEclPrint
+{
+	display:inline-block;
+	white-space:nowrap;
+}
+
+.noPrint
+{
+	display:none;
+}
+
+/* IE7 requires this to repeat table headers on each page while printing */
+thead {display: table-header-group;}

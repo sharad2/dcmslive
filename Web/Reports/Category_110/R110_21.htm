@@ -1,0 +1,1552 @@
+﻿<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        .style6
+        {
+            width: 51px;
+        }
+        .style8
+        {
+            height: 52px;
+        }
+        .style9
+        {
+            width: 51px;
+            height: 52px;
+        }
+        .style10
+        {
+            width: 159px;
+        }
+        .style11
+        {
+            text-align: center;
+        }
+        .style12
+        {
+            width: 159px;
+            text-align: center;
+        }
+        .style13
+        {
+            height: 52px;
+            text-align: center;
+        }
+        .newStyle1
+        {
+            background-color: #FFFFFF;
+        }
+    ol
+	{margin-bottom:0cm;}
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        R110<b>.</b>21<b> : </b>Boxes of a customer in different areas</h1>
+    <h4>
+        Author : Sanjeev kumar</h4>
+    Mentor : Hemant K. Varshney<br />
+    $Revision: 7233 $<br />
+    Status: Reviewed<br />
+    Tested BY : Sanjeev Kumar
+    <p>
+        Report helps while shipping orders of customer. It lists all pallets (area wise)
+        to be shipped. Further it helps to locate boxes (non-palletized). You can filter
+        information on the basis of PO, BOL, wave and ATS date etc.Now you get to know count of boxes specific VAS for each pallet with the helps of VAS filter.</p>
+    <h2>
+        Overview</h2>
+    <ul>
+        <li>This report shows palletized and non-palletized boxes of open orders; customer,
+            building and area wise. </li>
+        <li>As this report is showing area wise palletized and non-palletized boxes so this
+            report will serve a great job for consolidating orders while loading the boxes of
+            an order on to the truck. </li>
+        <li>By using this report users can also find out those pallets which are ready for shipping
+            but not yet reached to door area. Such pallets will be displayed with their location
+            id so that the report user can print this information’s and inform someone to pull
+            those pallets to the door area form the specified locations.</li>
+        <li>This report can be run for a customer with different combinations of the following
+            filters like, Purchase Order, Bill Of Lading, Customer DC, Customer Store and DC
+            Cancel Date range.</li>
+        <li>In order to see customer’s boxes in specific building, building filter can be applied.
+            By default report shows boxes of all building.</li>
+        <li>By default report shows box information Customer wise you can run the report to
+            display same information PO wise.</li>
+    </ul>
+    <p>
+        This report displays the following useful information for the orders being process
+        in the warehouse.:-</p>
+        <ul>
+        <li>
+            Area wise 
+            palletized and non- palletized boxes are being shown separately in three outputs 
+            ‘BOXES NOT ON PALLET’, BOXES ON PALLET and BOXES ON TEMPORARY PALLET 
+        </li>
+            <li>BOXES NOT ON 
+                PALLET’:- This grid is showing those boxes which are not on the pallet.</span></li>
+            <li>BOXES ON PALLET: - 
+                This grid is showing details of real pallets.</li>
+            <li>
+                BOXES ON TEMPORARY PALLET:- This grid is showing the details of temporary 
+                pallets.</li>
+            <li>
+                Report showing pallet wise details 
+                (real or temporary pallet) of the boxes, if the pallet is containing boxes of 
+                same criteria then report will also show the criteria like Wave, PO, BOL and DC 
+                of the boxes on the pallet. In the same grids that is showing palletized boxes 
+                if any pallet is having mixed criteria boxes then the report will indicate this 
+                by showing MULTIPLE WAVEs (buckets) or MULTIPLE DCs or MULTIPLE BOLs.<o:p></o:p></span></li>
+            </ul>
+    <p>
+        <b>Note :--</b> You need to pass at least one filter from 'boxes of' section.</p>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td class="style12">
+                <b>Name</b>
+            </td>
+            <td class="style11">
+                <b>Default</b>
+            </td>
+            <td class="style11">
+                <b>Details</b>
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Customer
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                You can pass either id or name of the customer but the report will display only
+                id in the customer filter textbox.
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Purchase Orders
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                Purchase order of the customer.
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Bill Of Lading
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                Bill of lading of the Purchase Orders
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Wave
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                Bucket of the Pickslip.
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Customer DC
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                Distribution center ID of the customer.
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Customer Store
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                Store ID of the customer.
+            </td>
+        </tr>
+        <tr>
+                <td>
+                    Orders required VAS</td>
+                <td>
+                    All VAS</td>
+                <td>
+                    Any VAS(Value Added Service) applied on order.</td>
+            </tr>
+        <tr>
+            <td class="style10">
+                Appointment ID</td>
+            <td>
+                None</td>
+            <td>
+                Provided appointment filter to view unshipped boxes of given appointment number.</td>
+        </tr>
+        <tr>
+            <td class="style10">
+                ATS Date
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                This parameter is for selecting the ATS(Available to Ship) date. This parameter
+                is only for ASN customer orders.
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                DC&nbsp;Cancel Date&nbsp;
+            </td>
+            <td>
+                Date range from date = current date, To date = current date&nbsp; next seven days.
+            </td>
+            <td>
+                This parameter is for selecting the DC Cancel Date range for which user wants to
+                see the report. There is a checkbox which is near to this date parameter. For applying
+                this date filter this checkbox must be checked.
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                Building
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                Boxes of customer will be shown for open order in this building.
+            </td>
+        </tr>
+        <tr>
+            <td class="style10">
+                PO wise details
+            </td>
+            <td>
+                Uncheck
+            </td>
+            <td>
+                For displaying the customer detail&nbsp; PO wise.
+            </td>
+        </tr>
+    </table>
+    <h4>
+        Algorithm for &quot;Boxes not on pallets&quot;</h4>
+    <p>
+        Get information of non shipped orders of customer from PS table. Retreving name
+        of customer and building from ps table. Retreiving area and&nbsp; total boxes in
+        any areas from box and boxdet table and load id from edi_753_754_ps table.</p>
+    <h3>
+        Output
+    </h3>
+    <b>Boxes Not On Pallet</b>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td class="style11">
+                <b>Item</b>
+            </td>
+            <td class="style11">
+                <b>Summary</b>
+            </td>
+            <td class="style11">
+                <b>Sort Sequence</b>
+            </td>
+            <td class="style11">
+                <b>Details</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Name
+            </td>
+            <td>
+                No
+            </td>
+            <td>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;
+            </td>
+            <td>
+                The Report will show both ID and name of the customer.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Area
+            </td>
+            <td>
+                No
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Area of the Boxes. In the same column <em><strong>non physical boxes </strong></em>
+                are also mentioned. This is because those boxes which are not in any area comes
+                in the category of non physical boxes.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Label
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Label of SKU&#39;s&nbsp; for the shippable boxes. If there are more than two labels,
+                report will show first and last label[i.e <span id="gv1_MultiValueLabel1_2"><span
+                    style="white-space: nowrap" title="4 values from FL - MP">FL - MP</span></span>]
+                along with the total no. of labels on tooltip for the displayed box(es).
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Load Id
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Report will show load id only if the box is assigned some load id.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Building of the areas.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Boxes
+            </td>
+            <td>
+                Yes
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Count of boxes for the given Customer along with the other applied filters.
+            </td>
+        </tr>
+    </table>
+    <h4>
+        Algorithm for &quot;Boxes on pallet&quot;</h4>
+    <p>
+        Get information of non shipped orders of customer from PS table. Retreving name
+        of customer, wave, BOL, PO,&nbsp; building customer DC and store from ps table.
+        Retreiving area, pallet, location, total boxes and &#39;Last action performed by&#39;&nbsp;
+        from box and boxdet table and load id from edi_753_754_ps table.Retreiving label,
+        shipdate and DC cancel date from master_style, ship and PO tables.
+    </p>
+    <h3>
+        Output</h3>
+    <b>Boxes On Pallet</b>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center" class="style8">
+                <b>Item</b>
+            </td>
+            <td align="center" class="style9">
+                <b>Summary</b>
+            </td>
+            <td align="center" class="style8">
+                <b>Sort Sequence</b>
+            </td>
+            <td class="style13">
+                <b>Details</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Name
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                Report will show ID and name of the customer.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Area
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                2
+            </td>
+            <td>
+                Area where the pallet is currently placed. In the same column <em><strong>non physical
+                    boxes </strong></em>are also mentioned. This is because those boxes which are
+                not in any area comes in the category of non physical boxes.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                3
+            </td>
+            <td>
+                Building of the boxes.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pallet
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                5
+            </td>
+            <td>
+                Pallet on which boxes are placed
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Location
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                4
+            </td>
+            <td>
+                Location number where the pallet is currently placed.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Boxes
+            </td>
+            <td class="style6">
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total number of boxes on the Pallet.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Label
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Label of SKU&#39;s&nbsp; for the shippable boxes. If there are more than two labels,
+                report will show first and last label[i.e <span id="gv1_MultiValueLabel1_5"><span
+                    style="white-space: nowrap" title="4 values from FL - MP">FL - MP</span></span>]
+                along with the total no. of labels on tooltip for the displayed box(es).
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Load Id
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Report will show load id only if the box is assigned some load id.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                VAS</td>
+            <td class="style6">
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Displaying VAS order each pallet.</td>
+        </tr>
+        <tr>
+            <td>
+                Wave
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                This column shows the wave (bucket) whose boxes are kept on the pallet. In case
+                if the pallet is contained with boxes of&nbsp; multiple waves this column will show
+                MULTIPLE WAVEs.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                BOL
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                This column shows the bols whose boxes are kept on the pallet. In case if the pallet
+                is contained with boxes of&nbsp; multiple bols this column will show MULTIPLE BOLs
+            </td>
+        </tr>
+        <tr>
+            <td>
+                PO
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                This column shows the PO whose boxes are kept on the pallet.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                PO Attrib 1</td>
+            <td class="style6">
+                NO</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                This column is showing STO number.</td>
+        </tr>
+        <tr>
+            <td>
+                DC
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                This column shows the DC to which the boxes kept on the pallet belongs. In case
+                if the pallet is contained with boxes of&nbsp; multiple DCs this column will show
+                MULTIPLE DCs
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Last Action performed by</td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                this column show last user name in which last performed to this pallet.</td>
+        </tr>
+        <tr>
+            <td>
+                Ship Date
+            </td>
+            <td class="style6">
+                Date
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Displaying the shipping date of the pickslip
+            </td>
+        </tr>
+        <tr>
+            <td>
+                DC Cancel Date
+            </td>
+            <td class="style6">
+                Date
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Latest date by which the pickslip must leave Distribution Centre in order to reach
+                the customer on time.
+            </td>
+        </tr>
+    </table>
+    <h3>
+        Algorithm for &quot;<b>Boxes On Temporary Pallet</b>&quot;</h3>
+    <p>
+        Get information of non shipped orders of customer from PS table. Retreving name
+        of customer, wave, BOL, PO,&nbsp; building customer DC and and store from ps table.
+        Retreiving area, pallet, location,&nbsp; total boxes and &#39;Last action performed
+        by&#39;&nbsp; from box and boxdet table and load id from edi_753_754_ps table.Retreiving
+        label, shipdate and DC cancel date from master_style, ship and PO tables.
+    </p>
+    <h3>
+        Output</h3>
+    <b>Boxes On Temporary Pallet</b>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center" class="style8">
+                <b>Item</b>
+            </td>
+            <td align="center" class="style9">
+                <b>Summary</b>
+            </td>
+            <td align="center" class="style8">
+                <b>Sort Sequence</b>
+            </td>
+            <td class="style13">
+                <b>Details</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Name
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                Report will show both ID and name of the customer.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Area
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                2
+            </td>
+            <td>
+                Area where the pallet is currently placed.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                3
+            </td>
+            <td>
+                Building of the boxes.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pallet
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                5
+            </td>
+            <td>
+                Pallet on which boxes are placed.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Location
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                4
+            </td>
+            <td>
+                &nbsp;Location number where the pallet is currently placed.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Boxes
+            </td>
+            <td class="style6">
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total number of boxes on the Pallet.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Label
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Label of SKU&#39;s&nbsp; for the shippable boxes. If there are more than two labels,
+                report will show first and last label[i.e <span id="gv1_MultiValueLabel1_6"><span
+                    style="white-space: nowrap" title="4 values from FL - MP">FL - MP</span></span>]
+                along with the total no. of labels on tooltip for the displayed box(es).
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Load Id
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Report will show load id only if the box is assigned some load id.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                VAS</td>
+            <td class="style6">
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Displaying VAS order each pallet.</td>
+        </tr>
+        <tr>
+            <td>
+                Wave
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                This column shows the wave (bucket) whose boxes are kept on the pallet. In case
+                if the pallet is contained with boxes of&nbsp; multiple waves this column will show
+                MULTIPLE WAVEs.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                BOL
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                This column shows the bols whose boxes are kept on the pallet. In case if the pallet
+                is contained with boxes of&nbsp; multiple bols this column will show MULTIPLE BOLs
+            </td>
+        </tr>
+        <tr>
+            <td>
+                PO
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                This column shows the PO whose boxes are kept on the pallet.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                PO Attrib 1</td>
+            <td class="style6">
+                NO</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                This column is showing STO number.</td>
+        </tr>
+        <tr>
+            <td>
+                DC
+            </td>
+            <td class="style6">
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                This column shows the DC to which the boxes kept on the pallet belongs. In case
+                if the pallet is contained with boxes of&nbsp; multiple DCs this column will show
+                MULTIPLE DCs
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ship Date
+            </td>
+            <td class="style6">
+                Date
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Displaying the shipping date of the box.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                DC Cancel Date
+            </td>
+            <td class="style6">
+                Date
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Latest date by which the pickslip must leave Distribution Centre in order to reach
+                the customer on time.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Now report will show STO against a PO. This additional information will be displayed under a new column &#39;PO Attrib 1&#39;.</li>
+    </ul>
+    <p>
+        &nbsp;</p>
+    <h2>
+        Issues</h2>
+    <ol>
+        <li>After pitching if a VAS box is under pitched and marked for RED area then report will show this box in VAS area. </li>
+    </ol>
+    <br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following table is requried</p>
+    <br />
+    BOX,<br />
+    IA,<br />
+    ship,<br />
+    edi_573_574_ps,<br />
+    boxdet,<br />
+    master_sku,<br />
+    master_style,<br />
+    PS,<br />
+    cust,<br />
+    PO,<br />
+    ps_vas,<br />
+    tab_vas
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        Create or replace synonym box for dcms8.box;</p>
+    <p>
+        Create or replace synonym boxdet for dcms8.boxdet;</p>
+    <p>
+        Create or replace synonym master_sku&nbsp; for dcms4.master_sku;</p>
+    <p>
+        Create or replace synonym master_style for dcms4.master_style;</p>
+    <p>
+        Create or replace synonym IA for dcms8.IA;</p>
+    <p>
+        Create or replace synonym edi_573_574_ps for dcms8.edi_573_574_ps;</p>
+    <p>
+        Create or replace synonym ship for dcms8.ship;</p>
+    <p>
+        Create or replace synonym PS for dcms8.PS;</p>
+    <p>
+        Create or replace synonym cust for dcms8.cust;</p>
+    <p>
+        Create or replace synonym ps_vas for dcms8.ps_vas;</p>
+    <p>
+        Create or replace synonym tab_vas for dcms8.tab_vas;</p>
+    <p>
+        Create or replace synonym PO for dcms8.PO;</p>
+    <b>Following appSettings are required:</b>
+    <p>
+        No used AppSetting in this report</p>
+    <br />
+    <h2>
+        Parameter Validation</h2>
+    No special validations.
+    <h3>
+        Query&#39;s documentation:</h3>
+    <b>Boxes Not On Pallet</b>
+    <pre>
+   WITH Q1 AS
+ (SELECT NVL(CASE
+               WHEN B.PITCHING_END_DATE IS NOT NULL AND B.VERIFY_DATE IS NULL AND
+                    PV.VAS_ID IS NOT NULL and b.ia_id != :RedBoxArea  THEN
+                'VAS'
+               ELSE
+                B.IA_ID
+             END,
+             'NON PHYSICAL BOXES') AS BOX_AREA_ID,
+         EDIPS.LOAD_ID AS LOAD_ID,
+         IA.PROCESS_FLOW_SEQUENCE AS PROCESS_FLOW_SEQUENCE,
+         PS.CUSTOMER_ID || ' : ' || C.NAME AS NAME,
+         PS.CUSTOMER_ID AS CUSTOMER_ID,
+         PS.WAREHOUSE_LOCATION_ID AS BUILDING,
+         MS.LABEL_ID AS LABEL_ID,
+         B.UCC128_ID AS UCC128_ID
+    FROM BOX B
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+    LEFT OUTER JOIN MASTER_SKU MSKU
+      ON BD.UPC_CODE = MSKU.UPC_CODE
+    LEFT OUTER JOIN MASTER_STYLE MS
+      ON MSKU.STYLE = MS.STYLE
+    LEFT OUTER JOIN IA IA
+      ON B.IA_ID = IA.IA_ID
+    LEFT OUTER JOIN PS
+      ON B.PICKSLIP_ID = PS.PICKSLIP_ID
+    LEFT OUTER JOIN CUST C
+      ON PS.CUSTOMER_ID = C.CUSTOMER_ID
+    LEFT OUTER JOIN EDI_753_754_PS EDIPS
+      ON PS.PICKSLIP_ID = EDIPS.PICKSLIP_ID
+    LEFT OUTER JOIN PS_VAS PV
+      ON PS.PICKSLIP_ID = PV.PICKSLIP_ID
+    LEFT OUTER JOIN TAB_VAS TV
+      ON PV.VAS_ID = TV.VAS_CODE
+    LEFT OUTER JOIN PO
+      ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+     AND PS.PO_ID = PO.PO_ID
+     AND PS.ITERATION = PO.ITERATION
+    LEFT OUTER JOIN SHIP S
+      ON PS.SHIPPING_ID = S.SHIPPING_ID
+   WHERE PS.TRANSFER_DATE IS NULL
+     AND B.PALLET_ID IS NULL
+     AND B.STOP_PROCESS_DATE IS NULL
+     AND BD.STOP_PROCESS_DATE IS NULL 
+     AND PS.customer_id IN (:customer_id0,:customer_id1)
+     AND PS.WAREHOUSE_LOCATION_ID IN (:WAREHOUSE_LOCATION_ID0)  
+    )
+SELECT Q.BOX_AREA_ID as BOX_AREA_ID,
+       MAX(Q.LOAD_ID) as LOAD_ID,
+       DECODE(Q.BOX_AREA_ID, 'VAS', 25, Q.PROCESS_FLOW_SEQUENCE) AS FLOW_SEQUENCE,
+       MAX(Q.NAME) AS NAME,
+       Q.CUSTOMER_ID AS CUSTOMER_ID,
+       Q.BUILDING AS BUILDING,
+       MIN(Q.LABEL_ID) AS MIN_LABEL_ID,
+       MAX(Q.LABEL_ID) AS MAX_LABEL_ID,
+       COUNT(DISTINCT Q.LABEL_ID) AS COUNT_LABEL_ID,
+       COUNT(DISTINCT Q.UCC128_ID) AS TOTAL_BOXES
+  FROM Q1 Q
+ GROUP BY DECODE(Q.BOX_AREA_ID, 'VAS', 25, Q.PROCESS_FLOW_SEQUENCE),
+          Q.BOX_AREA_ID,
+          Q.BUILDING,
+          Q.CUSTOMER_ID
+         ORDER BY MAX(Q.NAME) ASC, FLOW_SEQUENCE ASC NULLS FIRST
+
+    </pre>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <br />
+    <b>Boxes On&nbsp; Pallet which is started From 'P' and which is not group by on PO</b>
+    <pre> 
+ SELECT B.PALLET_ID PALLET_ID,
+       MAX(B.LOCATION_ID) AS LOCATION_ID,
+       CASE
+         WHEN B.PITCHING_END_DATE IS NOT NULL AND B.VERIFY_DATE IS NULL AND
+              PV.VAS_ID IS NOT NULL and b.ia_id != :RedBoxArea
+            THEN
+          'VAS'
+         ELSE
+          B.IA_ID
+       END AS IA_ID,
+       PS.CUSTOMER_ID ||' : '|| C.NAME AS CUSTOMER_NAME,
+       RTRIM(SYS.STRAGG(UNIQUE(NVL2(TV.DESCRIPTION, (TV.DESCRIPTION || ', '), ''))),', ') AS VAS,
+       CASE WHEN COUNT(UNIQUE PS.SALES_ORDER_ID) >1 THEN
+       '*****'
+       ELSE
+       TO_CHAR(MAX(PS.SALES_ORDER_ID))
+       END AS SALES_ORDER_ID,
+       PS.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID,
+       MAX(S.SHIP_DATE) AS SHIP_DATE,
+       MAX(PO.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+       MAX(edips.LOAD_ID) AS LOAD_ID,
+       MIN(MS.LABEL_ID) AS MIN_LABEL_ID,
+       MAX(MS.LABEL_ID) AS MAX_LABEL_ID,
+       COUNT(DISTINCT MS.LABEL_ID) AS COUNT_LABEL_ID,
+       MAX(S.PARENT_SHIPPING_ID) AS MAX_SHIPPING_ID,
+       COUNT(DISTINCT S.PARENT_SHIPPING_ID) AS COUNT_SHIPPING_ID,
+       MAX(PS.BUCKET_ID) AS MAX_BUCKET,
+       COUNT(DISTINCT PS.BUCKET_ID) AS COUNT_OF_BUCKETS,
+       MAX(PS.PO_ID) AS MAX_PO,
+       COUNT(DISTINCT PS.PO_ID) AS COUNT_OF_POS,
+       MAX(PS.CUSTOMER_DC_ID) AS MAX_DC,
+       COUNT(DISTINCT PS.CUSTOMER_DC_ID) AS COUNT_OF_DCS,
+       MAX(B.MODIFIED_BY) KEEP (DENSE_RANK LAST ORDER BY b.date_modified) AS USER_NAME,
+       COUNT(DISTINCT B.UCC128_ID) AS Total_Boxes
+  FROM BOX B
+ INNER JOIN BOXDET BD
+    ON B.UCC128_ID = BD.UCC128_ID
+   AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+  LEFT OUTER JOIN MASTER_SKU MSKU
+    ON BD.UPC_CODE = MSKU.UPC_CODE
+  LEFT OUTER JOIN MASTER_STYLE MS
+    ON MSKU.STYLE = MS.STYLE
+  LEFT OUTER JOIN PS
+    ON B.PICKSLIP_ID = PS.PICKSLIP_ID
+  LEFT OUTER JOIN PS_VAS PV
+    ON PS.PICKSLIP_ID = PV.PICKSLIP_ID
+  INNER JOIN tab_vas tv on
+            pv.vas_id = tv.vas_CODE
+  LEFT OUTER JOIN CUST C ON 
+    PS.CUSTOMER_ID = C.CUSTOMER_ID
+  LEFT OUTER JOIN SHIP S
+    ON PS.SHIPPING_ID = S.SHIPPING_ID
+  LEFT OUTER JOIN edi_753_754_ps edips
+    ON PS.PICKSLIP_ID = edips.PICKSLIP_ID
+  LEFT OUTER JOIN PO
+    ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+   AND PS.PO_ID = PO.PO_ID
+   AND PS.ITERATION = PO.ITERATION
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND PALLET_ID LIKE 'P%'
+    <if c="$vas"> 
+    and pv.vas_id is not null        
+    <if c="$vas_id !='vas'">and pv.vas_id =:vas_id</if>    
+    </if>
+   AND B.STOP_PROCESS_DATE IS NULL
+   AND BD.STOP_PROCESS_DATE IS NULL
+   <if>and s.appointment_id =:appointment_id</if>
+   <if>and <a pre="PS.PO_ID IN (" sep="," post=")">(:PO_ID)</a></if>
+   <if>AND <a pre="S.PARENT_SHIPPING_ID IN (" sep="," post=")">:SHIPPING_ID</a></if>
+   <if>AND <a pre="PS.customer_id IN (" sep="," post=")">:customer_id</a></if>
+   <if>AND <a pre="PS.WAREHOUSE_LOCATION_ID IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+   <if>AND <a pre="PS.customer_store_id IN (" sep="," post=")">:customer_store_id</a></if>
+   <if>and <a pre="to_char(ps.bucket_id) IN (" sep="," post=")">:BUCKET_ID</a></if>
+   <if>and <a pre="ps.customer_dc_id IN (" sep="," post=")">(:customer_dc_id) </a></if>
+   <if>AND edips.ats_date &gt;=CAST(:ats_date AS DATE)</if>
+   <if>AND edips.ats_date &lt;=CAST(:ats_date AS DATE) + 1</if>
+   <if>AND PO.DC_CANCEL_DATE &gt;= CAST(:FROM_DC_CANCEL_DATE AS DATE) </if>
+   <if>AND PO.DC_CANCEL_DATE &lt; CAST(:TO_DC_CANCEL_DATE AS DATE) + 1</if>
+GROUP BY B.PALLET_ID,CASE
+         WHEN B.PITCHING_END_DATE IS NOT NULL AND B.VERIFY_DATE IS NULL AND
+              PV.VAS_ID IS NOT NULL and b.ia_id != :RedBoxArea
+            THEN
+          'VAS'
+         ELSE
+          B.IA_ID
+       END, ps.warehouse_location_id, PS.CUSTOMER_ID ||' : '|| C.NAME
+                    </pre>
+    <h3>
+        Box On Pallet which is started From 'P' and which is group by on PO</h3>
+    <pre>
+SELECT B.PALLET_ID PALLET_ID,
+       MAX(B.LOCATION_ID) AS LOCATION_ID,
+       CASE
+         WHEN B.PITCHING_END_DATE IS NOT NULL AND B.VERIFY_DATE IS NULL AND
+              PV.VAS_ID IS NOT NULL and b.ia_id != :RedBoxArea
+             THEN
+          'VAS'
+         ELSE
+          B.IA_ID
+       END AS IA_ID,
+       PS.CUSTOMER_ID ||' : '|| C.NAME AS CUSTOMER_NAME,
+       RTRIM(SYS.STRAGG(UNIQUE(NVL2(TV.DESCRIPTION, (TV.DESCRIPTION || ', '), ''))),', ') AS VAS,
+       CASE WHEN COUNT(UNIQUE PS.SALES_ORDER_ID) >1 THEN
+       '*****'
+       ELSE
+       TO_CHAR(MAX(PS.SALES_ORDER_ID))
+       END AS SALES_ORDER_ID,
+       PS.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID,
+       MAX(S.SHIP_DATE) AS SHIP_DATE,
+       MAX(PO.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+       MAX(edips.LOAD_ID) AS LOAD_ID,
+       MIN(MS.LABEL_ID) AS MIN_LABEL_ID,
+       MAX(MS.LABEL_ID) AS MAX_LABEL_ID,
+       COUNT(DISTINCT MS.LABEL_ID) AS COUNT_LABEL_ID,
+       MAX(S.PARENT_SHIPPING_ID) AS MAX_SHIPPING_ID,
+       COUNT(DISTINCT S.PARENT_SHIPPING_ID) AS COUNT_SHIPPING_ID,
+       MAX(PS.BUCKET_ID) AS MAX_BUCKET,
+       COUNT(DISTINCT PS.BUCKET_ID) AS COUNT_OF_BUCKETS,
+       PS.PO_ID AS MAX_PO,
+       MAX(PS.CUSTOMER_DC_ID) AS MAX_DC,
+       COUNT(DISTINCT PS.CUSTOMER_DC_ID) AS COUNT_OF_DCS,
+       MAX(B.MODIFIED_BY) KEEP (DENSE_RANK LAST ORDER BY b.date_modified) AS USER_NAME,
+       COUNT(DISTINCT B.UCC128_ID) AS Total_Boxes
+  FROM BOX B
+ INNER JOIN BOXDET BD
+    ON B.UCC128_ID = BD.UCC128_ID
+   AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+  LEFT OUTER JOIN MASTER_SKU MSKU
+    ON BD.UPC_CODE = MSKU.UPC_CODE
+  LEFT OUTER JOIN MASTER_STYLE MS
+    ON MSKU.STYLE = MS.STYLE
+  LEFT OUTER JOIN PS
+    ON B.PICKSLIP_ID = PS.PICKSLIP_ID
+LEFT OUTER JOIN PS_VAS PV
+    ON PS.PICKSLIP_ID = PV.PICKSLIP_ID
+INNER JOIN tab_vas tv on
+            pv.vas_id = tv.vas_CODE
+    LEFT OUTER JOIN CUST C ON 
+    PS.CUSTOMER_ID = C.CUSTOMER_ID
+  LEFT OUTER JOIN SHIP S
+    ON PS.SHIPPING_ID = S.SHIPPING_ID
+  LEFT OUTER JOIN edi_753_754_ps edips
+    ON PS.PICKSLIP_ID = edips.PICKSLIP_ID
+  LEFT OUTER JOIN PO
+    ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+   AND PS.PO_ID = PO.PO_ID
+   AND PS.ITERATION = PO.ITERATION
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND PALLET_ID LIKE 'P%'
+   AND B.STOP_PROCESS_DATE IS NULL
+   AND BD.STOP_PROCESS_DATE IS NULL
+   <if c="$vas"> 
+   and pv.vas_id is not null        
+   <if c="$vas_id !='vas'">and pv.vas_id =:vas_id</if>    
+   </if>
+   <if>and s.appointment_id =:appointment_id</if>
+   <if>and <a pre="PS.PO_ID IN (" sep="," post=")">(:PO_ID)</a></if>
+   <if>AND <a pre="S.PARENT_SHIPPING_ID IN (" sep="," post=")">:SHIPPING_ID</a></if>
+   <if>AND <a pre="PS.customer_id IN (" sep="," post=")">:customer_id</a></if>
+   <if>AND <a pre="PS.WAREHOUSE_LOCATION_ID IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+   <if>AND <a pre="PS.customer_store_id IN (" sep="," post=")">:customer_store_id</a></if>
+   <if>and <a pre="to_char(ps.bucket_id) IN (" sep="," post=")">(:BUCKET_ID)</a></if>
+   <if>and <a pre="ps.customer_dc_id IN (" sep="," post=")">(:customer_dc_id) </a></if>
+       <if>AND edips.ats_date &gt;=CAST(:ats_date AS DATE)</if>
+     <if>AND edips.ats_date &lt;=CAST(:ats_date AS DATE) + 1</if>
+   <if>AND PO.DC_CANCEL_DATE &gt;= CAST(:FROM_DC_CANCEL_DATE AS DATE) </if>
+   <if>AND PO.DC_CANCEL_DATE &lt; CAST(:TO_DC_CANCEL_DATE AS DATE) + 1</if>
+GROUP BY B.PALLET_ID,CASE
+         CASE
+         WHEN B.PITCHING_END_DATE IS NOT NULL AND B.VERIFY_DATE IS NULL AND
+              PV.VAS_ID IS NOT NULL and b.ia_id != :RedBoxArea
+            THEN
+          'VAS'
+         ELSE
+          B.IA_ID
+       END, ps.warehouse_location_id, PS.PO_ID, PS.CUSTOMER_ID ||' : '|| C.NAME
+</pre>
+    <h2>
+        Box on Temporary Pallet which are not group by on PO
+    </h2>
+    <pre>
+        
+SELECT B.PALLET_ID PALLET_ID,
+       MAX(B.LOCATION_ID) AS LOCATION_ID,
+       CASE
+         WHEN B.PITCHING_END_DATE IS NOT NULL AND B.VERIFY_DATE IS NULL AND
+              PV.VAS_ID IS NOT NULL and b.ia_id != :RedBoxArea
+            THEN
+          'VAS'
+         ELSE
+          B.IA_ID
+       END AS IA_ID,
+       PS.CUSTOMER_ID ||' : '|| C.NAME AS CUSTOMER_NAME,
+        RTRIM(SYS.STRAGG(UNIQUE(NVL2(TV.DESCRIPTION, (TV.DESCRIPTION || ', '), ''))),', ') AS VAS,
+       CASE WHEN COUNT(UNIQUE PS.SALES_ORDER_ID) >1 THEN
+       '*****'
+       ELSE
+       TO_CHAR(MAX(PS.SALES_ORDER_ID))
+       END AS SALES_ORDER_ID,
+       PS.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID,
+       MAX(S.SHIP_DATE) AS SHIP_DATE,
+       MAX(PO.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+       MAX(edips.LOAD_ID) AS LOAD_ID,
+       MIN(MS.LABEL_ID) AS MIN_LABEL_ID,
+       MAX(MS.LABEL_ID) AS MAX_LABEL_ID,
+       COUNT(DISTINCT MS.LABEL_ID) AS COUNT_LABEL_ID,
+       MAX(S.PARENT_SHIPPING_ID) AS MAX_SHIPPING_ID,
+       COUNT(DISTINCT S.PARENT_SHIPPING_ID) AS COUNT_SHIPPING_ID,
+       MAX(PS.BUCKET_ID) AS MAX_BUCKET,
+       COUNT(DISTINCT PS.BUCKET_ID) AS COUNT_OF_BUCKETS,
+       MAX(PS.PO_ID) AS MAX_PO,
+       COUNT(DISTINCT PS.PO_ID) AS COUNT_OF_POS,
+       MAX(PS.CUSTOMER_DC_ID) AS MAX_DC,
+       COUNT(DISTINCT PS.CUSTOMER_DC_ID) AS COUNT_OF_DCS,
+       MAX(B.MODIFIED_BY) KEEP (DENSE_RANK LAST ORDER BY b.date_modified) AS USER_NAME,
+       COUNT(DISTINCT B.UCC128_ID) AS Total_Boxes
+  FROM BOX B
+ INNER JOIN BOXDET BD
+    ON B.UCC128_ID = BD.UCC128_ID
+   AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+  LEFT OUTER JOIN MASTER_SKU MSKU
+    ON BD.UPC_CODE = MSKU.UPC_CODE
+  LEFT OUTER JOIN MASTER_STYLE MS
+    ON MSKU.STYLE = MS.STYLE
+  LEFT OUTER JOIN PS
+    ON B.PICKSLIP_ID = PS.PICKSLIP_ID
+  LEFT OUTER JOIN PS_VAS PV
+    ON PS.PICKSLIP_ID = PV.PICKSLIP_ID
+  INNER JOIN tab_vas tv on
+            pv.vas_id = tv.vas_CODE
+  LEFT OUTER JOIN CUST C ON 
+    PS.CUSTOMER_ID = C.CUSTOMER_ID
+  LEFT OUTER JOIN SHIP S
+    ON PS.SHIPPING_ID = S.SHIPPING_ID
+  LEFT OUTER JOIN edi_753_754_ps edips
+    ON PS.PICKSLIP_ID = edips.PICKSLIP_ID
+  LEFT OUTER JOIN PO
+    ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+   AND PS.PO_ID = PO.PO_ID
+   AND PS.ITERATION = PO.ITERATION
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND PALLET_ID NOT LIKE 'P%'
+   AND B.STOP_PROCESS_DATE IS NULL
+   AND BD.STOP_PROCESS_DATE IS NULL
+   <if c="$vas"> 
+   and pv.vas_id is not null        
+   <if c="$vas_id !='vas'">and pv.vas_id =:vas_id</if>    
+   </if>
+   <if>and s.appointment_id =:appointment_id</if>
+   <if>and <a pre="PS.PO_ID IN (" sep="," post=")">:PO_ID</a></if>
+   <if>AND <a pre="S.PARENT_SHIPPING_ID IN (" sep="," post=")">:SHIPPING_ID</a></if>
+   <if>AND <a pre="PS.customer_id IN (" sep="," post=")">:customer_id</a></if>
+   <if>AND <a pre="PS.WAREHOUSE_LOCATION_ID IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+   <if>AND <a pre="PS.customer_store_id IN (" sep="," post=")">:customer_store_id</a></if>
+   <if>and <a pre="to_char(ps.bucket_id) IN (" sep="," post=")">:BUCKET_ID</a></if>
+   <if>and <a pre="ps.customer_dc_id IN (" sep="," post=")">(:customer_dc_id) </a></if>
+       <if>AND edips.ats_date &gt;=CAST(:ats_date AS DATE)</if>
+     <if>AND edips.ats_date &lt;=CAST(:ats_date AS DATE) + 1</if>
+   <if>AND PO.DC_CANCEL_DATE &gt;= CAST(:FROM_DC_CANCEL_DATE AS DATE) </if>
+<if>AND PO.DC_CANCEL_DATE &lt; CAST(:TO_DC_CANCEL_DATE AS DATE) + 1</if>
+ GROUP BY B.PALLET_ID,CASE
+         WHEN B.PITCHING_END_DATE IS NOT NULL AND B.VERIFY_DATE IS NULL AND
+              PV.VAS_ID IS NOT NULL and b.ia_id != :RedBoxArea
+             THEN
+          'VAS'
+         ELSE
+          B.IA_ID
+       END,ps.warehouse_location_id,PS.CUSTOMER_ID ||' : '|| C.NAME
+</pre>
+    <h2>
+        Query&#39;s documentation:</h2>
+    The query will get the Pallet details&nbsp; from tables<br />
+    <b>Boxes On Temporary Pallet which is group by on PO</b>
+    <pre> 
+   <if c="$customer_id">
+SELECT B.PALLET_ID PALLET_ID,
+       MAX(B.LOCATION_ID) AS LOCATION_ID,
+       CASE
+         WHEN B.PITCHING_END_DATE IS NOT NULL AND B.VERIFY_DATE IS NULL AND
+              PV.VAS_ID IS NOT NULL and b.ia_id != :RedBoxArea
+             THEN
+          'VAS'
+         ELSE
+          B.IA_ID
+       END AS IA_ID,
+       PS.CUSTOMER_ID ||' : '|| C.NAME AS CUSTOMER_NAME,
+        RTRIM(SYS.STRAGG(UNIQUE(NVL2(TV.DESCRIPTION, (TV.DESCRIPTION || ', '), ''))),', ') AS VAS,
+       CASE WHEN COUNT(UNIQUE PS.SALES_ORDER_ID) >1 THEN
+       '*****'
+       ELSE
+       TO_CHAR(MAX(PS.SALES_ORDER_ID))
+       END AS SALES_ORDER_ID,
+       PS.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID,
+       MAX(S.SHIP_DATE) AS SHIP_DATE,
+       MAX(PO.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+       MAX(edips.LOAD_ID) AS LOAD_ID,
+       MIN(MS.LABEL_ID) AS MIN_LABEL_ID,
+       MAX(MS.LABEL_ID) AS MAX_LABEL_ID,
+       COUNT(DISTINCT MS.LABEL_ID) AS COUNT_LABEL_ID,
+       MAX(S.PARENT_SHIPPING_ID) AS MAX_SHIPPING_ID,
+       COUNT(DISTINCT S.PARENT_SHIPPING_ID) AS COUNT_SHIPPING_ID,
+       MAX(PS.BUCKET_ID) AS MAX_BUCKET,
+       COUNT(DISTINCT PS.BUCKET_ID) AS COUNT_OF_BUCKETS,
+       PS.PO_ID AS MAX_PO,
+       MAX(PS.CUSTOMER_DC_ID) AS MAX_DC,
+       COUNT(DISTINCT PS.CUSTOMER_DC_ID) AS COUNT_OF_DCS,
+       MAX(B.MODIFIED_BY) KEEP (DENSE_RANK LAST ORDER BY b.date_modified) AS USER_NAME,
+       COUNT(DISTINCT B.UCC128_ID) AS Total_Boxes
+  FROM BOX B
+ INNER JOIN BOXDET BD
+    ON B.UCC128_ID = BD.UCC128_ID
+   AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+  LEFT OUTER JOIN MASTER_SKU MSKU
+    ON BD.UPC_CODE = MSKU.UPC_CODE
+  LEFT OUTER JOIN MASTER_STYLE MS
+    ON MSKU.STYLE = MS.STYLE
+  LEFT OUTER JOIN PS
+    ON B.PICKSLIP_ID = PS.PICKSLIP_ID
+   LEFT OUTER JOIN PS_VAS PV
+    ON PS.PICKSLIP_ID = PV.PICKSLIP_ID
+   INNER JOIN tab_vas tv on
+            pv.vas_id = tv.vas_CODE
+  LEFT OUTER JOIN CUST C ON 
+    PS.CUSTOMER_ID = C.CUSTOMER_ID
+  LEFT OUTER JOIN SHIP S
+    ON PS.SHIPPING_ID = S.SHIPPING_ID
+  LEFT OUTER JOIN edi_753_754_ps edips
+    ON PS.PICKSLIP_ID = edips.PICKSLIP_ID
+  LEFT OUTER JOIN PO
+    ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+   AND PS.PO_ID = PO.PO_ID
+   AND PS.ITERATION = PO.ITERATION
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND PALLET_ID NOT LIKE 'P%'
+   AND B.STOP_PROCESS_DATE IS NULL
+   AND BD.STOP_PROCESS_DATE IS NULL
+   <if c="$vas"> 
+   and pv.vas_id is not null        
+   <if c="$vas_id !='vas'">and pv.vas_id =:vas_id</if>    
+   </if>
+   <if>and s.appointment_id =:appointment_id</if>
+   <if>and <a pre="PS.PO_ID IN (" sep="," post=")">:PO_ID</a></if>
+   <if>AND <a pre="S.PARENT_SHIPPING_ID IN (" sep="," post=")">:SHIPPING_ID</a></if>
+   <if>AND <a pre="PS.customer_id IN (" sep="," post=")">:customer_id</a></if>
+   <if>AND <a pre="PS.WAREHOUSE_LOCATION_ID IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+   <if>AND <a pre="PS.customer_store_id IN (" sep="," post=")">:customer_store_id</a></if>
+   <if>and <a pre="to_char(ps.bucket_id) IN (" sep="," post=")">(:BUCKET_ID)</a></if>
+   <if>and <a pre="ps.customer_dc_id IN (" sep="," post=")">(:customer_dc_id) </a></if>
+       <if>AND edips.ats_date &gt;=CAST(:ats_date AS DATE)</if>
+     <if>AND edips.ats_date &lt;=CAST(:ats_date AS DATE) + 1</if>
+   <if>AND PO.DC_CANCEL_DATE &gt;= CAST(:FROM_DC_CANCEL_DATE AS DATE) </if>
+<if>AND PO.DC_CANCEL_DATE &lt; CAST(:TO_DC_CANCEL_DATE AS DATE) + 1</if>
+ GROUP BY B.PALLET_ID,CASE
+         WHEN B.PITCHING_END_DATE IS NOT NULL AND B.VERIFY_DATE IS NULL AND
+              PV.VAS_ID IS NOT NULL and b.ia_id != :RedBoxArea
+            THEN
+          'VAS'
+         ELSE
+          B.IA_ID
+       END,ps.warehouse_location_id,PS.PO_ID, PS.CUSTOMER_ID ||' : '|| C.NAME
+  </if>    
+                    </pre>
+    <h2>
+        Validation details</h2>
+    Bellow queries may have the where clause in the [] brackets. It means these are
+    the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.
+    <br />
+    <b>Query:</b><br />
+    <b>Description: Validate the boxes of a pallet that belongs to the passed customer and building </b>
+    <pre>
+       SELECT COUNT(DISTINCT b.ucc128_id)
+  FROM box b
+ inner join ps
+    on b.pickslip_id = ps.pickslip_id
+ WHERE b.pallet_id = 'PMDSS12'
+  and ps.transfer_date is null
+  and ps.customer_id ='11160'
+  and ps.warehouse_location_id ='FDC'
+   AND B.STOP_PROCESS_DATE IS NULL
+   AND B.STOP_PROCESS_REASON IS NULL
+          </pre>
+    <b>Description: Validate the boxes of a pallet that belongs to the passed POs</b>
+    <pre>
+          SELECT COUNT(DISTINCT B.UCC128_ID) 
+          FROM BOX B, PS PS
+          WHERE B.PICKSLIP_ID = PS.PICKSLIP_ID 
+          AND B.PALLET_ID = &#39;PALLET&#39; 
+          AND ps.po_id = &#39;po_id&#39; 
+          AND B.STOP_PROCESS_DATE IS NULL
+          AND B.STOP_PROCESS_REASON IS NULL
+          and PS.TRANSFER_DATE IS NULL
+          </pre>
+    <b>Description: Validate the boxes of a pallet that belongs to the passed Shipping_id</b>
+    <pre>
+          SELECT COUNT(DISTINCT B.UCC128_ID) 
+          FROM BOX B, PS PS 
+          WHERE B.PICKSLIP_ID = PS.PICKSLIP_ID 
+          AND B.PALLET_ID = &#39;PALLET_ID&#39; 
+          AND ps.shipping_id = &#39;shipping_id&#39;
+          AND B.STOP_PROCESS_DATE IS NULL
+          AND B.STOP_PROCESS_REASON IS NULL
+          and PS.TRANSFER_DATE IS NULL
+          </pre>
+    <b>Description: Validate the boxes of a pallet that belongs to the passed DCs</b>
+    <pre>
+          SELECT COUNT(DISTINCT B.UCC128_ID) 
+          FROM BOX B, PS PS 
+          WHERE B.PICKSLIP_ID = PS.PICKSLIP_ID 
+          AND B.PALLET_ID = &#39;PALLET_ID &#39; 
+          AND ps.customer_dc_id = &#39;customer_dc_id&#39;
+          AND B.STOP_PROCESS_DATE IS NULL
+          AND B.STOP_PROCESS_REASON IS NULL
+          and PS.TRANSFER_DATE IS NULL
+          </pre>
+    <b>Description:Validate the POs belongs to the pallet</b>
+    <pre>
+          SELECT distinct(ps.po_id) 
+          FROM ps ps , box b 
+          WHERE ps.pickslip_id = box.pickslip_id 
+          AND ps.shipping_id = &#39;shipping_id&#39; 
+          AND b.pallet_id = &#39;pallet_id&#39;
+          AND B.STOP_PROCESS_DATE IS NULL
+          AND B.STOP_PROCESS_REASON IS NULL
+          and PS.TRANSFER_DATE IS NULL
+          
+</pre>
+    <b>Description:Validate the DCs belongs to the pallet </b>
+    <pre>SELECT distinct(ps.customer_dc_id) 
+FROM ps ps , box b
+WHERE ps.pickslip_id = box.pickslip_id 
+AND ps.shipping_id = &#39;shipping_id&#39; 
+AND b.pallet_id =&#39;pallet_id&#39;
+AND B.STOP_PROCESS_DATE IS NULL
+AND B.STOP_PROCESS_REASON IS NULL
+AND PS.TRANSFER_DATE IS NULL</pre>
+    <b>Description:Validation quer for validating area wise non palletized boxes.</b>
+    <pre>
+SELECT COUNT(DISTINCT B.UCC128_ID) AS TOTAL_BOXES, PS.WAREHOUSE_LOCATION_ID
+  FROM BOX B
+  LEFT OUTER JOIN PS
+    ON B.PICKSLIP_ID = PS.PICKSLIP_ID
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND B.PALLET_ID IS NULL
+   AND B.STOP_PROCESS_DATE IS NULL
+   AND B.STOP_PROCESS_REASON IS NULL
+   AND PS.TRANSFER_DATE IS NULL
+   AND PS.CUSTOMER_ID = '11160'
+ GROUP BY PS.CUSTOMER_ID, PS.WAREHOUSE_LOCATION_ID, B.IA_ID</pre>
+    <b>Description:Validation query for retreving area wise pallets for the passed customer:-</b>
+    <pre>SELECT COUNT(DISTINCT B.Pallet_Id) AS TOTAL_BOXES
+  FROM BOX B
+  LEFT OUTER JOIN PS
+    ON B.PICKSLIP_ID = PS.PICKSLIP_ID
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND B.PALLET_ID IS NOT NULL
+   AND B.STOP_PROCESS_DATE IS NULL
+   AND B.STOP_PROCESS_REASON IS NULL
+  AND PS.TRANSFER_DATE IS NULL
+   AND PS.CUSTOMER_ID = &#39;CUSTOMER_ID'
+   AND B.IA_ID = &#39;IA_ID'
+ GROUP BY PS.CUSTOMER_ID</pre>
+    <b>Description:Validation query for EDI customers. Retrieving details on the basis of
+        passed ATS date:-</b>
+    <pre>
+SELECT B.UCC128_ID,
+       B.PALLET_ID,
+       PS.CUSTOMER_ID,
+       PS.CUSTOMER_DC_ID,
+       PS.PO_ID, 
+       PS.BUCKET_ID,
+       EPS.EDI_ID,
+       EPS.Load_Id,
+       EPS.ATS_DATE,
+       ps.shipping_id,
+       COUNT(DISTINCT b.ucc128_id) OVER() AS TOTAL_BOXES
+  FROM PS PS
+  INNER JOIN box b ON
+  PS.PICKSLIP_ID = B.PICKSLIP_ID
+ INNER JOIN EDI_753_754_PS EPS
+    ON PS.PICKSLIP_ID = EPS.PICKSLIP_ID
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND B.STOP_PROCESS_DATE IS NULL  
+   AND PS.PO_ID = :PO_ID
+   AND PS.Customer_Id = :CUSTOMER_ID
+   AND EPS.ATS_DATE >= (:ATS_DATE)
+   AND EPS.ATS_DATE < (:ATS_DATE) + 1
+   </pre>
+
+    <p>
+    <b>Description:Validation query for displaying the box count area wise for the pass appointment id :-</b></p>
+    <pre>
+        SELECT COUNT(B.UCC128_ID), B.IA_ID
+  FROM PS
+ INNER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+  LEFT OUTER JOIN SHIP S
+    ON PS.SHIPPING_ID = S.SHIPPING_ID
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND B.STOP_PROCESS_DATE IS NULL
+   AND PS.WAREHOUSE_LOCATION_ID = 'ANX1'
+   AND PS.VWH_ID = '15'
+   AND S.APPOINTMENT_ID = '310'
+ GROUP BY B.IA_ID
+
+    </pre>
+ <b>Description:Validation query for displaying the boxes, area, bucket_id and PO_ID for the pass Pallet :-</b>
+    <pre>
+        SELECT B.UCC128_ID, PS.PO_ID, PS.BUCKET_ID, B.IA_ID 
+  FROM PS
+ INNER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+ INNER JOIN PS_VAS PV
+    ON PV.PICKSLIP_ID = PS.PICKSLIP_ID
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND B.STOP_PROCESS_DATE IS NULL
+   AND B.PALLET_ID = 'PACIFIER'
+    </pre>
+    <b>Description:Validation query for displaying the boxes, area, bucket_id and PO_ID for the pass Pallet :-</b>
+    <pre>
+        SELECT B.UCC128_ID, PS.PO_ID, PS.BUCKET_ID, B.IA_ID 
+  FROM PS
+ INNER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+ INNER JOIN PS_VAS PV
+    ON PV.PICKSLIP_ID = PS.PICKSLIP_ID
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND B.STOP_PROCESS_DATE IS NULL
+   AND ps.customer_id = ''
+    </pre>
+</body>
+</html>

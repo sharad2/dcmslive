@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="c362e5f9-1b65-4f10-862a-e04b4c539502" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <summary>
+      <para>
+        <codeInline>ajaxDialog</codeInline> is a jQuery widget which is automatically associated with
+        each <codeEntityReference>T:EclipseLibrary.Web.JQuery.Dialog</codeEntityReference> control. The methods
+        and events available in this widget allow you to control the dialog using javascript.
+      </para>
+    </summary>
+
+    <introduction>
+      <autoOutline xmlns="" />
+      <para>
+        All the options available in the widget have a counterpart server side property. The widget
+        allows you to change the design time options using client script.
+        You will normally load the ajax page by calling the method <link xlink:href="#load">load</link>.
+        during the <link xlink:href="#loading">loading</link> event, you can decide what query string should
+        be passed to the remote page by updating the value of the <link xlink:href="#data">data</link> option.
+      </para>
+      <para>
+        If the page you are loading is processing intensive, you can set the <link xlink:href="#cache">cache</link>
+        option to true. This will prevent the page from loading again when <link xlink:href="#load">load</link>
+        is called. You can force the page to reload by calling <link xlink:href="#reload">reload</link> instead
+        of <codeInline>load</codeInline>.
+      </para>
+    </introduction>
+    <section address="CodeExamples">
+      <title>Code Examples</title>
+      <content>
+        <para>
+          Show pickslip details when a button is clicked. You might write the following code in a button click handler.
+          This code passes the
+          query string <codeInline>pickslip_id</codeInline> to the remote page. Its value is the value the user entered
+          in the textbox <codeInline>mytb</codeInline>.
+        </para>
+        <code language="js">
+          <![CDATA[
+$('#mydlg').ajaxDialog('option', 'data', {pickslip_id: $('#mytb').val()} )
+  .ajaxDialog('load');
+        ]]>
+        </code>
+        <para>
+          The following steps show how to reload a remote page again only if the user has changed some value in your UI.
+        </para>
+        <procedure address="CachedPageExample">
+          <title>Cached Page Example</title>
+          <steps class="ordered">
+            <step>
+              <content>
+                <para>
+                  In your markup, set the <codeEntityReference>P:EclipseLibrary.Web.JQuery.AjaxDialogSettings.Cache</codeEntityReference>
+                  proeprty to true.
+                </para>
+                <code language="xml">
+                  <![CDATA[
+<inp:TextBoxEx runat="server" ID="tbPickslipId" />                      
+<inp:ButtonEx runat="server" ID="btnDetails" Text="Pickslip Details..." />                      
+<jq:Dialog runat="server" ID="mydlg">
+  <Ajax Cache="true" />
+  ...
+</jq:Dialog>                      
+                      ]]>
+                </code>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  In the change event handler of your textbox <codeInline>tbPickslipId</codeInline>
+                  write the javascript to set <codeInline>alreadyLoaded</codeInline> to false whenever the
+                  user changes the value of the pickslip.
+                </para>
+                <code language="js">
+                  <![CDATA[
+$('#mydlg').ajaxDialog('option', 'alreadyLoaded', false);              
+              ]]>
+                </code>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  In the click event handler of <codeInline>btnDetails</codeInline>, simply load the dialog.
+                  The dialog will actually load only if the pickslip id has changed since the last load.
+                </para>
+                <code language="js">
+                  <![CDATA[
+$('#mydlg').ajaxDialog('load');              
+                      ]]>
+                </code>
+              </content>
+            </step>
+          </steps>
+        </procedure>
+      </content>
+    </section>
+    <section address="Options">
+      <title>Options</title>
+      <content>
+        <para>Add one or more sections with content</para>
+      </content>
+      <sections>
+        <section>
+          <title>url (string). Default: ''.</title>
+          <content>
+            <para >
+              The remote url to invoke. You can set the <codeInline>url</codeInline> either during the
+              <link xlink:href="#loading">loading</link> event or before calling the <link xlink:href="#load">load</link> method.
+              You can also set it at design time as the value of the property
+              <codeEntityReference>P:EclipseLibrary.Web.JQuery.AjaxDialogSettings.Url</codeEntityReference>
+            </para>
+            <para>
+              Imagine that your page has two buttons which open the same dialog.
+              The url to open depends on which button is clicked.
+              This code snippet extracted from the button click handler
+              sets the url to <system>CustomerPicker.aspx</system> and then loads the remote page.
+              The other button would have similar code but the url would be different.
+            </para>
+            <code language="js">
+              $('#mydlg').ajaxDialog('option', 'url', 'CustomerPicker.aspx').ajaxDialog('load');
+            </code>
+          </content>
+        </section>
+        <section address="cache">
+          <title>cache (boolean). Default: false</title>
+          <content>
+            <para>
+              If <codeInline>cache</codeInline> is set to true, then subsequent
+              calls to the <link xlink:href="#load">load</link> method will not reload the page.
+              You can still force the page to load by calling <link xlink:href="#reload">reload</link>
+              instead of <codeInline>load</codeInline>.
+            </para>
+            <para>
+              See <link xlink:href="#CachedPageExample">Cached Page Example</link> for a working example.
+            </para>
+          </content>
+        </section>
+        <section address="alreadyLoaded">
+          <title>alreadyLoaded (boolean). Default: false.</title>
+          <content>
+            <alert class="important">
+              <para>
+                When <link xlink:href="#cache">cache</link> is set to false (the default), then the value of this
+                option is irrelevant.
+              </para>
+            </alert>
+            <para>
+              Once the remote page is loaded, this option is automatically set to <codeInline>true</codeInline>.
+              If <link xlink:href="#cache">cache</link> is true then the <link xlink:href="#load">load</link>
+              method looks at this option to decide whether to load the page again. The load is bypassed if
+              <codeInline>alreadyLoaded</codeInline> is true.
+            </para>
+            <para>
+              It could be useful to set the value of this option to false whenever some signinficant information
+              in your UI changes. Then your load call is guaranteed to reload the page. Assume that you want to reload
+              the page only when your user changes the value of pickslip id.
+            </para>
+            <para>
+              See <link xlink:href="#CachedPageExample">Cached Page Example</link> for a working example.
+            </para>
+
+          </content>
+        </section>
+        <section address="data">
+          <title>data</title>
+          <content>
+            <para>Sub-section content.</para>
+          </content>
+        </section>
+      </sections>
+    </section>
+    <section address="Methods">
+      <title>Methods</title>
+      <content>
+        <!-- Uncomment this to create a sub-section outline
+        <autoOutline /> -->
+        <para>Add one or more sections with content</para>
+      </content>
+      <sections>
+        <section  address="remoteContainer">
+          <title>remoteContainer</title>
+          <content>
+            <para>
+              The remote url to invoke. You can set the <codeInline>url</codeInline> either during the
+              <link xlink:href="#loading">loading</link> event or before calling the <link xlink:href="#load">load</link> method.
+              You can also set it at design time as the value of the property
+              <codeEntityReference>P:EclipseLibrary.Web.JQuery.AjaxDialogSettings.Url</codeEntityReference>
+            </para>
+            <code language="js">
+              $('#mydlg').ajaxDialog('option', 'url', 'CustomerPicker.aspx');
+            </code>
+          </content>
+        </section>
+        <section address="load">
+          <title>load</title>
+          <content>
+            <para>Sub-section content.</para>
+          </content>
+        </section>
+        <section address="reload">
+          <title>reload</title>
+          <content>
+            <para>Sub-section content.</para>
+          </content>
+        </section>
+      </sections>
+    </section>
+    <section address="Events">
+      <title>Events</title>
+      <content>
+      </content>
+      <sections>
+        <section address="loading">
+          <title>loading</title>
+          <content>
+            <para>
+              Raised just before the AJAX request is submitted for loading the remote page.
+            </para>
+          </content>
+        </section>
+        <section address="loaded">
+          <title>loaded</title>
+          <content>
+            <para>
+              Raised just before the AJAX request is submitted for loading the remote page.
+            </para>
+          </content>
+        </section>
+        <section address="submitting">
+          <title>submitting</title>
+          <content>
+            <para>
+              Raised just before the AJAX request is submitted for loading the remote page.
+            </para>
+          </content>
+        </section>
+      </sections>
+    </section>
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

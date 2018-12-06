@@ -1,0 +1,363 @@
+﻿<%@ Page Title="SKU Inventory of Label" Language="C#" MasterPageFile="~/MasterPage.master" %>
+
+<%--*
+ *  Programming: Eclipse Systems (P) Ltd., NOIDA, INDIA
+ *  E-mail: support@eclsys.com
+ *
+ *  $Revision: 5979 $
+ *  $Author: skumar $
+ *  $HeadURL: http://server/svn/dcmslive/Projects/DcmsLive/trunk/Web/Reports/Category_130/R130_103.aspxExclude $
+ *  $Id: R130_103.aspxExclude 5979 2013-08-12 11:20:58Z skumar $
+ * Version Control Template Added.
+--%>
+<script runat="server">
+    protected override void OnInit(EventArgs e)
+    {
+        ds.PostSelected += new EventHandler<PostSelectedEventArgs>(ds_PostSelected);
+        gv.DataBound += new EventHandler(gv_DataBound);
+        base.OnInit(e);
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    /// <remarks>
+    /// <para>
+    /// This is the XML we ar trying to parse.
+    /// </para>
+    /// <code>
+    /// <![CDATA[
+    /// <PivotSet>
+    /// <item>
+    /// <column name = "CARTON_STORAGE_AREA">BIR</column>
+    /// <column name = "WAREHOUSE_LOCATION_ID">FDC</column>
+    /// <column name = "QUANTITY">576</column>
+    /// </item>
+    /// <item>
+    /// <column name = "CARTON_STORAGE_AREA">BIR</column>
+    /// <column name = "WAREHOUSE_LOCATION_ID">FDC1</column>
+    /// <column name = "QUANTITY">972</column>
+    /// </item>
+    /// </PivotSet>
+    /// ]]>
+    /// </code>
+    /// </remarks>
+    void ds_PostSelected(object sender, PostSelectedEventArgs e)
+    {
+        var data = (System.Data.DataView)e.Result;
+        if (data != null)
+        {
+            var list = new List<DataControlField>();
+            var oldCount = gv.Columns.Count;
+            foreach (var row in data.Cast<System.Data.DataRowView>().Where(p => p["area_xml"] != DBNull.Value))
+            {
+                var items = XElement.Parse((string)row["area_xml"]).Elements("item");
+                foreach (var item in items)
+                {
+                    var field = ParsePivotItem(data.Table, row, item);
+                    if (field != null)
+                    {
+                        list.Add(field);
+                    }
+                }
+            }
+            var index = gv.Columns.IndexOf(gv.Columns.OfType<DataControlField>().First(p => p.AccessibleHeaderText == "FPKqty"));
+            var addedColumns = from col in list
+                               let tokens = col.AccessibleHeaderText.Split(',')
+                               let building = tokens[0]
+                               let area = tokens[1]
+                               orderby building, area
+                               select new
+                               {
+                                   Column = col,
+                                   Area = area,
+                                   Building = building,
+                                   HeaderText = string.Format("Pieces in {0}|{1}", building, area)
+                               };
+            foreach (var col in addedColumns.Where(p => p.Building != "Unknown"))
+            {
+
+                ++index;
+                gv.Columns.Insert(index, col.Column);
+
+            }
+            foreach (var col in addedColumns.Where(p => p.Building == "Unknown"))
+            {
+
+                ++index;
+                col.Column.HeaderText = col.HeaderText;
+                gv.Columns.Insert(index, col.Column);
+            }
+            if (oldCount == gv.Columns.Count)
+            {
+                divInfo.Visible = true;// No column was added to the grid
+            }
+        }
+    }
+    private static DataControlField ParsePivotItem(System.Data.DataTable tbl, System.Data.DataRowView row, XElement pivotItem)
+    {
+        var areaId = pivotItem.Elements("column").Where(p => p.Attribute("name").Value == "SHORT_NAME").First().Value;
+        var buildingId = pivotItem.Elements("column").Where(p => p.Attribute("name").Value == "WAREHOUSE_LOCATION_ID").First().Value;
+        var qty = pivotItem.Elements("column").Where(p => p.Attribute("name").Value == "QUANTITY").First().Value;
+        var colName = string.Format("{0}_{1}", areaId, buildingId);
+        var col = tbl.Columns[colName];
+        int pieces;
+        DataControlField retVal = null;
+        if (int.TryParse(qty, out pieces) && pieces > 0)
+        {
+            if (col == null && !string.IsNullOrEmpty(areaId))
+            {
+                col = tbl.Columns.Add(colName, typeof(int));
+                var bf = new MultiBoundField
+                {
+
+                    HeaderText = string.Format("Pieces in {0}|{1}", buildingId, areaId),
+                    DataFields = new[] { colName },
+                    DataFormatString = "{0:N0}",
+                    AccessibleHeaderText = string.Format("{0},{1}", buildingId, areaId),
+                    DataSummaryCalculation = SummaryCalculationType.ValueSummation,
+                    DataFooterFormatString = "{0:N0}"
+                };
+                bf.ItemStyle.HorizontalAlign = HorizontalAlign.Right;
+                bf.FooterStyle.HorizontalAlign = HorizontalAlign.Right;
+                retVal = bf;
+            }
+            row[colName] = pieces;
+        }
+        return retVal;
+
+
+    }
+
+    protected void gv_DataBound(object send, EventArgs e)
+    {
+        var CountOfLocation = gv.Columns.Cast<DataControlField>().Select((p, i) => p.AccessibleHeaderText == "Location" ? i : -1)
+           .Single(p => p >= 0);
+
+
+        if (gv.Rows.Count > 1)
+        {
+            for (int tempIndex = 0; tempIndex <= gv.Rows.Count - 1; tempIndex++)
+            {
+                if (gv.Rows[tempIndex].Cells[CountOfLocation].Text.Split(',').Count() > 1)
+                {
+
+                    gv.Rows[tempIndex].Cells[CountOfLocation].BackColor = System.Drawing.Color.Yellow;
+                    gv.Rows[tempIndex].Cells[CountOfLocation].ForeColor = System.Drawing.Color.Red;
+                    //gv.Rows[tempIndex].Cells[CountOfLocation].Font.Size = 9;
+                }
+            }
+        }
+    }
+
+
+    //protected override void OnLoad(EventArgs e)
+    //{
+    //    base.OnLoad(e);
+    //    // Handling dynamic headertext of the operator column
+
+    //    if (!string.IsNullOrWhiteSpace(ddlArea.Value))
+    //    {
+    //        DataControlField dcf = (from DataControlField dc in gv.Columns
+    //                                where dc.AccessibleHeaderText.Equals("FPKqty")
+    //                                select dc).Single();
+    //        dcf.HeaderText = "Pieces in" + " " + ctlWhLoc.Value + "|" + ddlArea.DisplayValue.Substring(0, 3);
+    //        ;
+    //    }
+    //    else
+    //    {
+    //        DataControlField dcf = (from DataControlField dc in gv.Columns
+    //                                where dc.AccessibleHeaderText.Equals("FPKqty")
+    //                                select dc).Single();
+    //        dcf.HeaderText = "Quantity";
+    //    }
+    //}
+</script>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <meta name="Description" content="The report lists  inventory in various SKU areas except 'SSS'  for the passed  building. Report will also show the quantity  in different carton areas irrespective of building. Report will not consider cartons which are in suspense." />
+    <meta name="ReportId" content="130.103" />
+    <meta name="Browsable" content="false" />
+    <meta name="ChangeLog" content="Added Building filter which will applied for SKU area inventory.|Now, report is showing carton area inventory also.|Changed report title from 'FPK inventory report' to 'SKU inventory report'." />
+    <meta name="Version" content="$Id: R130_103.aspxExclude 5979 2013-08-12 11:20:58Z skumar $" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ($('#ctlWhLoc').find('input:checkbox').is(':checked')) {
+
+                
+            }
+            else {
+                $('#ctlWhLoc').find('input:checkbox').attr('checked', 'checked');
+            }
+        });
+    </script>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <jquery:Tabs runat="server" ID="tabs">
+        <jquery:JPanel ID="JPanel" runat="server" HeaderText="Filters">
+            <eclipse:TwoColumnPanel ID="TwoColumnPanel1" runat="server">
+                <eclipse:LeftLabel runat="server" Text="Area" />
+                <oracle:OracleDataSource ID="dsArea" runat="server" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+                    ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>" CancelSelectOnNullParameter="true">
+                    <SelectSql>
+                          SELECT DISTINCT I.IA_ID,
+                                 IA.SHORT_NAME||'-'||IA.WAREHOUSE_LOCATION_ID||':'||IA.SHORT_DESCRIPTION AS DESCRIPTION 
+                          FROM IALOC_CONTENT I
+                          INNER JOIN IA
+                         ON I.IA_ID = IA.IA_ID
+                         WHERE I.IACONTENT_TYPE_ID = 'SKU'
+                         AND I.IA_ID &lt;&gt; 'SSS'
+                    </SelectSql>
+                </oracle:OracleDataSource>
+                <i:DropDownListEx2 ID="ddlArea" runat="server" QueryString="ia_id" DataFields="IA_ID,DESCRIPTION"
+                    FriendlyName="Area" DataSourceID="dsArea"
+                    DataTextFormatString="{1}" DataValueFormatString="{0}">
+                </i:DropDownListEx2>
+                <eclipse:LeftLabel ID="LeftLabel2" runat="server" />
+                <d:StyleLabelSelector ID="ls" runat="server" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+                    ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>" ShowAll="true"
+                    FriendlyName="Label" QueryString="label_id" ToolTip="Select any label to see the order.">
+                    <Validators>
+                        <i:Required />
+                    </Validators>
+                </d:StyleLabelSelector>
+                <eclipse:LeftLabel ID="LeftLabel5" runat="server" />
+                <d:VirtualWarehouseSelector ID="ctlVwh" runat="server" QueryString="vwh_id" ShowAll="true" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+                    ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>" />
+                <eclipse:LeftLabel runat="server" Text="Building" />
+                <oracle:OracleDataSource ID="dsBuilding" runat="server" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+                    ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>" CancelSelectOnNullParameter="true">
+                    <SelectSql>
+                            WITH Q1 AS
+                                    (SELECT TWL.WAREHOUSE_LOCATION_ID, TWL.DESCRIPTION
+                                     FROM TAB_WAREHOUSE_LOCATION TWL
+   
+                                     UNION
+                                     SELECT 'Unknown' AS WAREHOUSE_LOCATION_ID, 'Unknown' AS DESCRIPTION
+                                     FROM TAB_WAREHOUSE_LOCATION TWL)
+                                     SELECT Q1.WAREHOUSE_LOCATION_ID,
+                                     (Q1.WAREHOUSE_LOCATION_ID || ':' || Q1.DESCRIPTION) AS DESCRIPTION
+                                      FROM Q1
+                            ORDER BY 1
+                    </SelectSql>
+                </oracle:OracleDataSource>
+                <i:CheckBoxListEx ID="ctlWhLoc" runat="server" DataTextField="DESCRIPTION"
+                    DataValueField="WAREHOUSE_LOCATION_ID" DataSourceID="dsBuilding" FriendlyName="Building"
+                    QueryString="warehouse_location_id">
+                </i:CheckBoxListEx>
+            </eclipse:TwoColumnPanel>
+        </jquery:JPanel>
+        <jquery:JPanel ID="JPanel1" runat="server" HeaderText="Sorting">
+            <jquery:SortColumnsChooser ID="SortColumnsChooser1" runat="server" GridViewExId="gv"
+                EnableGroupBy="true" />
+        </jquery:JPanel>
+    </jquery:Tabs>
+    <uc2:ButtonBar2 ID="ButtonBar1" runat="server" />
+    <oracle:OracleDataSource ID="ds" runat="server" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+        ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>" CancelSelectOnNullParameter="true"
+        DataSourceMode="DataSet">
+        <SelectSql>
+WITH ialoc_sku AS (
+SELECT MSKU.SKU_ID AS SKU_ID,
+       L.VWH_ID AS VWH_ID,
+       MAX(MSTYLE.LABEL_ID) AS LABEL_ID,
+       MAX(NVL(L.WAREHOUSE_LOCATION_ID,'Unknown')) AS Building,
+       COUNT(DISTINCT LC.LOCATION_ID) AS COUNT_LOCATION,
+       LISTAGG(LC.LOCATION_ID, ',   ') WITHIN GROUP(ORDER BY MSKU.SKU_ID, L.VWH_ID, L.IA_ID) AS LOCATIONA,
+       MAX(LC.IACONTENT_ID) UPC_CODE,
+       MAX(MSKU.STYLE) STYLE,
+       MAX(MSKU.COLOR) COLOR,
+       MAX(MSKU.DIMENSION) DIMENSION,
+       MAX(MSKU.SKU_SIZE) SKU_SIZE,
+       SUM(LC.NUMBER_OF_UNITS) AS NUMBER_OF_UNITS,
+       SUM(NVL(L.ASSIGNED_UPC_MAX_PIECES, MSKU.PIECES_PER_RAIL)) AS CAPACITY
+  FROM IALOC_CONTENT LC
+ INNER JOIN IALOC L
+    ON LC.IA_ID = L.IA_ID
+   AND LC.LOCATION_ID = L.LOCATION_ID
+ LEFT OUTER JOIN MASTER_SKU MSKU
+    ON LC.IACONTENT_ID = MSKU.UPC_CODE
+  LEFT OUTER JOIN MASTER_STYLE MSTYLE
+    ON MSKU.STYLE = MSTYLE.STYLE
+ WHERE LC.IACONTENT_TYPE_ID = 'SKU'
+   <if>AND LC.IA_ID =:ia_id</if>
+   <if>AND L.VWH_ID = :vwh_id</if>
+   <if>AND MSTYLE.LABEL_ID = :label_id</if>
+  AND <a pre="NVL(l.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a>
+ GROUP BY MSKU.SKU_ID, L.VWH_ID,LC.IA_ID
+HAVING SUM(LC.NUMBER_OF_UNITS) &gt; 0),
+carton_sku AS (SELECT *
+    from (SELECT MSKU.sku_id           AS sku_id,
+                 c.vwh_id              AS vwh_id,
+                 tia.SHORT_NAME        AS SHORT_NAME,
+                 COALESCE(TIA.WAREHOUSE_LOCATION_ID,MSL.WAREHOUSE_LOCATION_ID,'Unknown') AS WAREHOUSE_LOCATION_ID,
+                 d.quantity            AS quantity
+           FROM src_carton c
+           INNER JOIN src_carton_detail d
+                 ON c.carton_id = d.carton_id
+           LEFT OUTER JOIN MASTER_SKU MSKU
+                 ON D.SKU_ID = MSKU.SKU_ID
+           LEFT OUTER JOIN MASTER_STYLE MS
+                 ON MSKU.STYLE = MS.STYLE
+           LEFT OUTER JOIN master_storage_location msl
+                 ON msl.storage_area = c.carton_storage_area
+                 AND msl.location_id = c.location_id
+           LEFT OUTER JOIN tab_inventory_area tia 
+                 ON c.carton_storage_area = tia.inventory_storage_area
+           WHERE C.suspense_date IS NULL
+              <if>AND C.vwh_id = :vwh_id</if>
+              <if>and ms.label_id = :label_id</if>
+             )
+          pivot XML(SUM(quantity) as quantity for(SHORT_NAME, WAREHOUSE_LOCATION_ID) in(ANY, ANY))
+)
+SELECT ISKU.SKU_ID AS SKU_ID,
+       isku.vwh_id as vwh_id,
+       ISKU.STYLE AS STYLE,
+       ISKU.COLOR AS COLOR,
+       ISKU.DIMENSION AS DIMENSION,
+       ISKU.SKU_SIZE AS SKU_SIZE,
+       ISKU.CAPACITY AS CAPACITY,
+       ISKU.COUNT_LOCATION AS COUNT_LOCATION,
+       ISKU.LOCATIONA,
+       ISKU.NUMBER_OF_UNITS AS NUMBER_OF_UNITS,
+       ISKU.UPC_CODE AS UPC_CODE,
+       ISKU.LABEL_ID AS LABEL_ID,
+       CSKU.SHORT_NAME_WAREHOUSE_LOCAT_XML AS area_xml
+       FROM ialoc_sku ISKU
+LEFT OUTER JOIN carton_sku CSKU ON
+ISKU.SKU_ID = CSKU.SKU_ID
+and isku.vwh_id = csku.vwh_id
+        </SelectSql>
+        <SelectParameters>
+            <asp:ControlParameter ControlID="ls" Name="label_id" Type="String" Direction="Input" />
+            <asp:ControlParameter ControlID="ctlVwh" Name="vwh_id" Type="String" Direction="Input" />
+            <asp:ControlParameter ControlID="ctlWhLoc" Type="String" Direction="Input" Name="warehouse_location_id" />
+            <asp:ControlParameter ControlID="ddlArea" Type="String" Direction="Input" Name="ia_id" />
+        </SelectParameters>
+    </oracle:OracleDataSource>
+    <div style="padding: 1em 0em 1em 1em; font-style: italic" runat="server" id="divInfo" visible="false">
+        Carton areas are not being displayed because none of these Skus exist in any Carton area.
+    </div>
+    <jquery:GridViewEx ID="gv" runat="server" AutoGenerateColumns="false" AllowSorting="true"
+        ShowFooter="true" DataSourceID="ds" DefaultSortExpression="LOCATIONA">
+        <Columns>
+            <eclipse:SequenceField />
+            <eclipse:MultiBoundField DataFields="LOCATIONA" HeaderText="Location" SortExpression="LOCATIONA" AccessibleHeaderText="Location" />
+            <eclipse:MultiBoundField DataFields="UPC_CODE" HeaderText="UPC" SortExpression="UPC_CODE" />
+            <eclipse:MultiBoundField DataFields="STYLE" HeaderText="Style" SortExpression="STYLE" />
+            <eclipse:MultiBoundField DataFields="COLOR" HeaderText="Color" SortExpression="COLOR" />
+            <eclipse:MultiBoundField DataFields="DIMENSION" HeaderText="Dim" SortExpression="DIMENSION" />
+            <eclipse:MultiBoundField DataFields="SKU_SIZE" HeaderText="Size" SortExpression="SKU_SIZE" />
+            <eclipse:MultiBoundField DataFields="CAPACITY" ItemStyle-HorizontalAlign="Right"
+                HeaderText="Capacity" SortExpression="CAPACITY" />
+            <eclipse:MultiBoundField DataFields="NUMBER_OF_UNITS" ItemStyle-HorizontalAlign="Right"
+                HeaderText="Quantity In Picking Area" DataSummaryCalculation="ValueSummation" DataFooterFormatString="{0:N0}" DataFormatString="{0:N0}" AccessibleHeaderText="FPKqty">
+                <ItemStyle HorizontalAlign="Right" />
+                <FooterStyle HorizontalAlign="Right" />
+            </eclipse:MultiBoundField>
+
+        </Columns>
+    </jquery:GridViewEx>
+</asp:Content>

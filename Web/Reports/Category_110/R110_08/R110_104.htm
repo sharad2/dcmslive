@@ -1,0 +1,750 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>SKU wise(110.104)</title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        110<b>.104 : </b>Open Orders Drilldown Report (SKU Wise)
+    </h1>
+    Author : <b>Sanjeev Kumar</b><br />
+    $Revision: 6555 $<br />
+    Status: Done<br />
+    Reviewed By : Manmohan Bisht<br />
+    Tested By :Ankit Sharma
+    <br />
+    <br />
+    This Report displays SKU wise informtion of open orders.
+    <br />
+    <h2>
+        Overview</h2>
+    For the specified values of Order Type, Dates, Warehouse Locations ,Vwh ID,Customer,Bucket,PO,Iteration
+    and Reporting Status,<ol>
+        <li>The detail of SKU, Warehouse Location wise. </li>
+    </ol>
+    <h2>
+        Algorithm</h2>
+    <p>
+        All SKUs in pickslips are visible to this report except SKUs in:
+    </p>
+    <ul type="disc">
+        <li class="MsoNormal">Cancelled Pickslips. </li>
+        <li class="MsoNormal">Transferred Pickslips.</li>
+    </ul>
+    <p>
+        For finding the UPC CODE, style, color, dimension, sku size, price, number of ordered
+        pieces and dollars, pieces and units in boxes for passed PO, order status (‘IN ORDERED
+        BUCKET’), customer, virtual warehouse and warehouse Location using the table <code>DEM_PICKSLIP
+            and DEM_PICKSLIP_DETAIL </code>table where the pickslip status is 1.</p>
+    <p>
+        For finding the UPC CODE, style, color, dimension, sku size, price, number of ordered
+        pieces and dollars, pieces and units in boxes for passed PO, order status (except
+        ‘IN ORDERED BUCKET’) , customer/bucket, virtual warehouse and warehouse location
+        using the table <code>PS, PO, BOX, BOXDET and MASTER_SKU</code> where the pickslip
+        reporting status is not null of those status of order.</p>
+    <h2>
+        Output
+    </h2>
+    <table border="1" cellpadding="0" cellspacing="1">
+        <tr>
+            <td>
+                <b>Item</b>
+            </td>
+            <td>
+                <p>
+                    <b>Summary</b></p>
+            </td>
+            <td>
+                <b>Default Sort
+                    <br />
+                    Sequence</b>
+            </td>
+            <td>
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                1
+            </td>
+            <td>
+                Warehouse Loaction of SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Vwh
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+                Virtual Warehouse ID
+            </td>
+        </tr>
+        <tr>
+            <td>
+                UPC
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp
+            </td>
+            <td>
+                Universal Product code</td>
+        </tr>
+        <tr>
+            <td>
+                Style
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                SKU Style
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Color
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                SKU Color
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Dim
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                SKU Dimension
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Size
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Size of SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Price
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Displaying&nbsp; price of the SKU.</td>
+        </tr>
+        <tr>
+            <td>
+                Ordered Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Number of Pieces Odred in SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ordered Dollars
+            </td>
+            <td>
+                Sum
+            </td>
+            <td>
+                2
+            </td>
+            <td>
+                Ordered Amount of SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                In Box Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Number of pieces in SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                In Box Dollars
+            </td>
+            <td>
+                Sum
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Shipping amount of SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                In Box Units
+            </td>
+            <td>
+                Sum
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Number of Units in SKU
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellspacing="1" cellpadding="1" style="height: 432px; width: 79%">
+        <tbody>
+            <tr>
+                <td align="center">
+                    <b>Name</b>
+                </td>
+                <td align="center">
+                    <b>Default</b>
+                </td>
+                <td align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Order Type</p>
+                </td>
+                <td>
+                    <p>
+                        All</p>
+                </td>
+                <td>
+                    Order Type like All, Domestic,International
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Date Range For Delivery Date</p>
+                </td>
+                <td>
+                    <p>
+                        The first day of previous year</p>
+                    <p>
+                        The month end date for the system date which is based on FDC Calendar</p>
+                </td>
+                <td>
+                    &nbsp;
+                    User can see the order the basis of the delivery date range.</td>
+            </tr>
+            <tr>
+                <td>
+                    Date Range For DC Cancel Date
+                </td>
+                <td>
+                    <p>
+                        The first day of previous year
+                    </p>
+                    <p>
+                        The month end date for the system date which is based on FDC Calendar</p>
+                </td>
+                <td>
+                    &nbsp;
+                    User can see the orders which are cancelled&nbsp; next days.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Virtual Warehouse
+                </td>
+                <td>
+                    All
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Orders Required
+                    VAS</td>
+                <td>
+                    All VAS</td>
+                <td>
+                    Any VAS(Value Added Service) applied on order.</td>
+            </tr>
+            <tr>
+                <td>
+                    Customer
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                    &nbsp;
+                    Report is showing ID with name of the customers.</td>
+            </tr>
+            <tr>
+                <td>
+                    Bucket
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                    &nbsp;
+                    Id of the bucket</td>
+            </tr>
+            <tr>
+                <td>
+                    PO
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                    Id Of the Purchase Orders</td>
+            </tr>
+            <tr>
+                <td>
+                    Iteration
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Customer DC
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                Customer Distribution Center ID to which the SKUs will be shipped.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Customer Store
+                </td>
+                <td>
+                    None
+                </td>
+                <td>
+                Customer Store id for which the SKUs have been ordered.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pickslip</td>
+                <td>
+                    None</td>
+                <td>
+                    Pickslip&nbsp; of the order</td>
+            </tr>
+            <tr>
+                <td>
+                    Reporting Status
+                </td>
+                <td>
+                    INORDER BUCKET</td>
+                <td>
+                    &nbsp;
+                    Indicate the stage of the orders.</td>
+            </tr>
+            <tr>
+                <td>
+                    Building
+                </td>
+                <td>
+                    All
+                </td>
+                <td>
+                    &nbsp;
+                    Building of the orders</td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 1 </i>Sec.</p>
+    <h2>
+        Behavior Change</h2>
+     <ul>
+        <li>Number of Pickslip column is now Click able. Check the list of pickslips which are involved here.</li>
+        <li>Number of PO column is now Click able. Check the list of POs which are involved here.</li>
+        <li>Following new filters are now avaliable in this report:- Customer, Customer Store and Customer DC</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    No Known Issue.
+    <br />
+    <h2>
+        Prerequisites</h2>
+    <h4>
+        Private synonyms used in the reports are -
+    </h4>
+    <code>PS, PO, TAB_REPORTING_STATUS, PS_VAS, DEM_PICKSLIP and BOXDET</code>.<br />
+    <p>
+        <strong>Run the following scripts to create the private synonyms of the above objects-</strong></p>
+    <ol>
+        <li>CREATE OR REPLACE SYNONYM PS FOR dcms8.PS; </li>
+        <li>CREATE OR REPLACE SYNONYM PO FOR dcms8.PO;</li>
+        <li>CREATE OR REPLACE SYNONYM TAB_REPORTING_STATUS FOR dcms8.TAB_REPORTING_STATUS;</li>
+        <li>CREATE OR REPLACE SYNONYM DEM_PICKSLIP FOR dcms4.DEM_PICKSLIP;</li>
+        <li>CREATE OR REPLACE SYNONYM BOXDET FOR dcms8.BOXDET;</li>
+        <li>CREATE OR REPLACE SYNONYM ps_vas FOR dcms8.ps_vas;,</li>
+    </ol>
+    <br />
+    <p>
+        AppSettings are not need.</p>
+    <h3>
+        Technical Documentaioncumentaion</h3>
+    <h4>
+        Parameter Technical Details</h4>
+    <ol>
+        <li>Order Type:(<code>Type - String</code>):This parameter can be used to determine
+            customer type.
+            <ul>
+                <li>Orders from All customers</li>
+                <li>Orders from Domestic customers
+                    <ul>
+                        <li>Exclude Customers
+                            <ul>
+                                <li>Retail - Retails customers will be excluded in the select statement.</li>
+                                <li>IDC - IDC customers will be excluded in the select statement. </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>Orders from International customers</li>
+            </ul>
+        </li>
+        <li>Deleivery Date (<code>Type - DateTime</code>):This parameter can be used to specify
+            the date-range for Delivery date.</li>
+        <li>DC Cancel Date (<code>Type - DateTime</code>):This parameter can be used to specify
+            the date-range for DC Cancel date.</li>
+        <li>Virtual Warehouse (<code>Type - String</code>):This parameter can be used to specify
+            the Virtua Warehouse.</li>
+        <li>Warehouse Location (<code>Type - String</code>):This parameter can be used to specify
+            the Warehouse Location.</li>
+        <li>Customer (<code>Type - String</code>):This parameter can be used to specify the
+            Customer ID.</li>
+        <li>Bucket (<code>Type - String</code>):This parameter can be used to specify the Bucket
+            ID.</li>
+        <li>PO(<code>Type-String</code>):This parameter can be used to specify the PO ID</li>
+        <li>Iteration(<code>Type-String</code>): This parameter can be used to specify value
+            of Iteration</li>
+        <li>Customer DC(Type-String)This parameter can be used to specify value of customer 
+            DC.</li>
+        <li>Customer Store(Type-String)This parameter can be used to specify value of 
+            customer store.</li>
+        <li>Reporting Status (<code>Type - String</code>):This parameter can be used to pass
+            order status.</li>
+    </ol>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.
+    <h2>
+        Query documentation:</h2>
+    <p>
+        The report query is as follows:</p>
+    <pre> 
+   WITH Q1 AS
+ (SELECT PS.PICKSLIP_ID,
+         PD.UPC_CODE,
+         PD.PIECES_ORDERED,
+         PD.EXTENDED_PRICE,
+         PO.DC_CANCEL_DATE,
+         PO.START_DATE,
+         PS.PICKSLIP_IMPORT_DATE,
+         PO.PO_ID AS PO_ID,
+         NVL(PS.WAREHOUSE_LOCATION_ID, 'Unknown') AS WAREHOUSE_LOCATION_ID,
+         PS.VWH_ID AS VWH_ID
+    FROM PS
+INNER JOIN PO
+      ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+     AND PS.PO_ID = PO.PO_ID
+     AND PS.ITERATION = PO.ITERATION
+   INNER JOIN PSDET PD
+      ON PS.PICKSLIP_ID = PD.PICKSLIP_ID
+   WHERE PS.TRANSFER_DATE IS NULL
+     AND PD.TRANSFER_DATE IS NULL
+     <if>AND ps.vwh_id = :vwh_id</if>    
+     <if>AND <a pre="NVL(ps.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>      
+     <if c="$reporting_status != 'IN ORDER BUCKET'">AND PS.REPORTING_STATUS=:reporting_status</if>
+     <if c="$reporting_status = 'IN ORDER BUCKET'">AND 1 = 2</if>    
+     <if>AND po.start_date &gt;= cast(:delivery_start_date as date)</if>  
+     <if>AND po.start_date &lt; cast(:delivery_end_date as date) + 1</if>
+     <if>AND po.dc_cancel_date &gt;=cast(:dc_cancel_start_date as date)</if>
+     <if>AND po.dc_cancel_date &lt; cast(:dc_cancel_end_date as date) + 1</if>
+     <if c="$order_type='D' and contains($restrict_type, 'R')">AND ps.customer_id NOT IN (select c.customer_id from cust c WHERE account_type = 'RTL')</if>
+     <if c="$order_type='D' and contains($restrict_type, 'I')">AND ps.customer_id NOT IN (select c.customer_id from cust c WHERE account_type = 'IDC')</if>
+     <if c="$order_type='D'">AND ps.Export_Flag IS NULL</if>
+     <if c="$order_type='I'">AND ps.Export_Flag IS NOT NULL</if>
+     <if>AND ps.customer_id=:customer_id</if>
+     <if>AND ps.po_id=:po_id</if>
+     <if>AND ps.bucket_id=:BUCKET_ID</if>
+     <if>AND ps.iteration=:iteration</if>
+     <if>AND PS.CUSTOMER_DC_ID = :customer_dc_id</if>
+     <if>AND ps.CUSTOMER_STORE_ID = :customer_store_id</if>
+  UNION ALL
+  SELECT DP.PICKSLIP_ID,
+         DPD.UPC_CODE,
+         DPD.QUANTITY_ORDERED     AS PIECES_ORDERED,
+         DPD.EXTENDED_PRICE,
+         DP.DC_CANCEL_DATE,
+         DP.DELIVERY_DATE,
+         DP.PICKSLIP_IMPORT_DATE,
+         DP.CUSTOMER_ORDER_ID     AS PO_ID,
+         DP.WAREHOUSE_LOCATION_ID,
+         DP.VWH_ID
+    FROM DEM_PICKSLIP DP
+   INNER JOIN DEM_PICKSLIP_DETAIL DPD
+      ON DP.PICKSLIP_ID = DPD.PICKSLIP_ID
+   WHERE 1=1
+      <if>AND DP.vwh_id = :vwh_id</if>
+   
+      <if>AND <a pre="NVL(DP.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>      
+      <if c="$reporting_status='IN ORDER BUCKET'">AND DP.PS_STATUS_ID = 1</if>
+      <if c="$reporting_status!='IN ORDER BUCKET'">AND 1=2</if>
+      <if>AND DP.delivery_date &gt;= cast(:delivery_start_date as date)</if>
+      <if>AND DP.delivery_date &lt; cast(:delivery_end_date as date) + 1</if>
+      <if>AND DP.dc_cancel_date &gt;=cast(:dc_cancel_start_date as date)</if>
+      <if>AND DP.dc_cancel_date &lt; cast(:dc_cancel_end_date as date) + 1</if>
+      <if c="$order_type='D' and contains($restrict_type, 'R')">AND DP.customer_id NOT IN (select c.customer_id from cust c WHERE account_type = 'RTL')</if>
+      <if c="$order_type='D' and contains($restrict_type, 'I')">AND DP.customer_id NOT IN (select c.customer_id from cust c WHERE account_type = 'IDC')</if>
+      <if c="$order_type='D'">AND DP.Export_Flag IS NULL</if>
+      <if c="$order_type='I'">AND DP.Export_Flag IS NOT NULL</if>
+      <if>AND DP.customer_id=:customer_id</if>
+      <if>AND DP.customer_order_id=:po_id</if>
+      <if>AND DP.customer_dist_center_id = :customer_dc_id</if>
+      <if>AND DP.CUSTOMER_STORE_ID = :customer_store_id</if>
+      <if c="$BUCKET_ID">AND 1=2</if> ),
+Q2 AS
+ (SELECT ROW_NUMBER() OVER(PARTITION BY Q1.PICKSLIP_ID, Q1.UPC_CODE ORDER BY Q1.PICKSLIP_ID, Q1.UPC_CODE) AS PICKSLIP_SEQUENCE,
+         Q1.PICKSLIP_ID,
+         Q1.UPC_CODE,
+         MS.STYLE,
+         MS.COLOR,
+         MS.DIMENSION,
+         MS.SKU_SIZE,
+         Q1.PIECES_ORDERED,
+         Q1.EXTENDED_PRICE,
+         Q1.DC_CANCEL_DATE,
+         Q1.START_DATE,
+         Q1.PICKSLIP_IMPORT_DATE,
+         Q1.PO_ID,
+         Q1.WAREHOUSE_LOCATION_ID,
+         Q1.VWH_ID
+    FROM Q1
+    LEFT OUTER JOIN PS_VAS PV
+      ON Q1.PICKSLIP_ID = PV.PICKSLIP_ID
+    LEFT OUTER JOIN MASTER_SKU MS
+      ON Q1.UPC_CODE = MS.UPC_CODE),
+ALL_PSDATA AS
+ (SELECT Q1.PICKSLIP_ID,
+         Q1.UPC_CODE,
+         MAX(Q1.STYLE) AS STYLE,
+         MAX(Q1.COLOR) AS COLOR,
+         MAX(Q1.DIMENSION) AS DIMENSION,
+         MAX(Q1.SKU_SIZE) AS SKU_SIZE,
+         SUM(Q1.PIECES_ORDERED) AS PIECES_ORDERED,
+         SUM(Q1.PIECES_ORDERED * Q1.EXTENDED_PRICE) AS DOLLARS_ORDERED,
+         SUM(Q1.EXTENDED_PRICE) AS EXTENDED_PRICE,
+         MAX(Q1.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+         MAX(Q1.START_DATE) AS DELIVERY_DATE,
+         MAX(Q1.PICKSLIP_IMPORT_DATE) AS IMPORT_DATE,
+         MAX(Q1.PO_ID) AS PO_ID,
+         MAX(Q1.WAREHOUSE_LOCATION_ID) AS WAREHOUSE_LOCATION_ID,
+         MAX(Q1.VWH_ID) AS VWH_ID
+    FROM Q2 Q1
+   WHERE PICKSLIP_SEQUENCE = 1
+   GROUP BY Q1.PICKSLIP_ID, Q1.UPC_CODE),
+BOX_PICKSLIPS AS
+ (SELECT BD.PICKSLIP_ID AS PICKSLIP_ID,
+         BD.UPC_CODE,
+         SUM(BD.CURRENT_PIECES / NVL(SKU.PIECES_PER_PACKAGE, 1)) AS UNITS_SHIPPED,
+         SUM(BD.CURRENT_PIECES * BD.EXTENDED_PRICE) AS SHIPPED_DOLLARS,
+         SUM(BD.CURRENT_PIECES) AS CURRENT_PIECES
+    FROM BOX B
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+   INNER JOIN PS
+      ON B.PICKSLIP_ID = PS.PICKSLIP_ID
+   INNER JOIN PO
+      ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+     AND PS.PO_ID = PO.PO_ID
+     AND PS.ITERATION = PO.ITERATION
+    LEFT OUTER JOIN MASTER_SKU SKU
+      ON BD.UPC_CODE = SKU.UPC_CODE
+   WHERE BD.STOP_PROCESS_DATE IS NULL
+     AND B.STOP_PROCESS_DATE IS NULL
+     AND PS.TRANSFER_DATE IS NULL
+     <if>AND ps.vwh_id = :vwh_id</if>    
+     <if>AND <a pre="NVL(ps.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>      
+     <if c="$reporting_status != 'IN ORDER BUCKET'">AND PS.REPORTING_STATUS=:reporting_status</if>
+     <if c="$reporting_status = 'IN ORDER BUCKET'">AND 1 = 2</if>    
+     <if>AND po.start_date &gt;= cast(:delivery_start_date as date)</if>  
+     <if>AND po.start_date &lt; cast(:delivery_end_date as date) + 1</if>
+     <if>AND po.dc_cancel_date &gt;=cast(:dc_cancel_start_date as date)</if>
+     <if>AND po.dc_cancel_date &lt; cast(:dc_cancel_end_date as date) + 1</if>
+     <if c="$order_type='D' and contains($restrict_type, 'R')">AND ps.customer_id NOT IN (select c.customer_id from cust c WHERE account_type = 'RTL')</if>
+     <if c="$order_type='D' and contains($restrict_type, 'I')">AND ps.customer_id NOT IN (select c.customer_id from cust c WHERE account_type = 'IDC')</if>
+     <if c="$order_type='D'">AND ps.Export_Flag IS NULL</if>
+     <if c="$order_type='I'">AND ps.Export_Flag IS NOT NULL</if>
+     <if>AND ps.customer_id=:customer_id</if>
+     <if>AND ps.po_id=:po_id</if>
+     <if>AND ps.bucket_id=:BUCKET_ID</if>
+     <if>AND ps.iteration=:iteration</if>
+     <if>AND PS.CUSTOMER_DC_ID = :customer_dc_id</if>
+     <if>AND ps.CUSTOMER_STORE_ID = :customer_store_id</if>
+     AND BD.CURRENT_PIECES > 0
+   GROUP BY BD.UPC_CODE, BD.PICKSLIP_ID)
+SELECT PSDATA.UPC_CODE AS UPC_CODE,
+       MAX(PSDATA.STYLE) AS STYLE,
+       MAX(PSDATA.COLOR) AS COLOR,
+       MAX(PSDATA.DIMENSION) AS DIMENSION,
+       MAX(PSDATA.SKU_SIZE) AS SKU_SIZE,
+       MAX(PSDATA.EXTENDED_PRICE) AS PRICE,
+       SUM(PSDATA.PIECES_ORDERED) AS PIECES_ORDERED,
+       SUM(PSDATA.DOLLARS_ORDERED) AS DOLLARS_ORDERED,
+       SUM(BP.CURRENT_PIECES) AS PIECES_IN_BOXES,
+       ROUND(SUM(BP.UNITS_SHIPPED)) AS UNITS_SHIPPED,
+       SUM(BP.SHIPPED_DOLLARS) AS SHIPPED_DOLLARS,
+       PSDATA.VWH_ID AS VWH_ID,
+       PSDATA.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID
+  FROM ALL_PSDATA PSDATA
+  LEFT OUTER JOIN BOX_PICKSLIPS BP
+    ON BP.UPC_CODE = PSDATA.UPC_CODE
+   AND BP.PICKSLIP_ID = PSDATA.PICKSLIP_ID
+ GROUP BY PSDATA.UPC_CODE, PSDATA.VWH_ID, PSDATA.WAREHOUSE_LOCATION_ID</pre>
+    <h3>
+        Validation Details
+    </h3>
+    <h4>
+        SKU Detail</h4>
+    <pre>select
+ pd.pieces_ordered * pd.extended_price as Dollars_ordered,
+ pd.pieces_ordered as Quantity_ordered,
+ pd.upc_code
+  from ps ps
+ inner join psdet pd
+    on ps.pickslip_id = pd.pickslip_id
+ inner join po po
+    on po.po_id = ps.po_id
+   and po.customer_id = ps.customer_id
+   and po.iteration = ps.iteration
+ inner join master_sku msku
+    on pd.upc_code = msku.upc_code
+ where msku.style =:style
+   and msku.color =:color 
+   and msku.dimension =:dimension 
+   and msku.sku_size =:sku_size 
+   and ps.warehouse_location_id =:warehouse_location_id 
+   and ps.vwh_id =:vwh_id 
+   and po.start_date >=:start_date 
+   and po.start_date <=:start_date
+   and po.dc_cancel_date >=:dc_cancel_date 
+   and po.dc_cancel_date <=:dc_cancel_date 
+   and ps.reporting_status =:reporting_status 
+</pre>
+    <h4>
+        In Order SKU detail</h4>
+    <pre>Select 
+ dpd.quantity_ordered as Ordered_Pieces,
+ dpd.quantity_ordered * dpd.extended_price as Ordered_Dollars
+  from dem_pickslip_detail dpd
+ inner join dem_pickslip dps
+    on dps.pickslip_id = dpd.pickslip_id
+ where dpd.style =:style
+   and dpd.color =:color 
+   and dpd.dimension =:dimension 
+   and dpd.sku_size =:sku_size 
+   and dps.ps_status_id='1'
+   and dps.warehouse_location_id=warehouse_location_id
+   and dps.vwh_id=:vwh_id
+   and dps.delivery_date >=:delivery_date 
+   and dps.delivery_date <=:delivery_date 
+   and dps.dc_cancel_date >=:dc_cancel_date 
+   and dps.dc_cancel_date <=:dc_cancel_date 
+   </pre>
+    <h5>
+        TO VALIDATE BOX PIECES PLEASE RUN FOLLOWING QUERY</h5>
+    <pre>  
+SELECT PS.VWH_ID AS VWH_ID,
+       PS.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID,
+       BD.UPC_CODE,
+       MAX(PS.REPORTING_STATUS) AS REPORTING_STATUS,
+       SUM(BD.CURRENT_PIECES / NVL(SKU.PIECES_PER_PACKAGE, 1)) AS UNITS_SHIPPED,
+       SUM(BD.CURRENT_PIECES) AS CURRENT_PIECES
+  FROM BOXDET BD
+ INNER JOIN PS PS
+    ON BD.PICKSLIP_ID = PS.PICKSLIP_ID
+  LEFT OUTER JOIN MASTER_SKU SKU
+    ON BD.UPC_CODE = SKU.UPC_CODE
+ WHERE BD.STOP_PROCESS_DATE IS NULL
+   AND BD.CURRENT_PIECES > 0
+   AND PS.WAREHOUSE_LOCATION_ID =:warehouse_location_id
+   AND PS.VWH_ID =:vwh_id
+   AND PS.REPORTING_STATUS = :rerporting_status
+   AND PS.PO_ID = :PO_Id
+   AND BD.UPC_CODE =:SKU_id
+ GROUP BY BD.UPC_CODE, PS.VWH_ID, PS.WAREHOUSE_LOCATION_ID
+</pre>
+</body>
+</html>

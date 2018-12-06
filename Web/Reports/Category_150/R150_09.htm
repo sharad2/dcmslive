@@ -1,0 +1,204 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+    <meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1" />
+    <meta name="CODE_LANGUAGE" content="C#" />
+    <meta name="vs_defaultClientScript" content="JavaScript" />
+    <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5" />
+    <script type="text/javascript">
+        /*
+          Toggles the visibility of the passed divToToggle object.
+        */
+        function toggleVisibility(oVisibilityToggle, oInnerTextToggle) {
+            if (oVisibilityToggle.style.display == 'none') {
+                oVisibilityToggle.style.display = '';
+                oInnerTextToggle.innerText = "Hide Technical Documentaion";
+            }
+            else {
+                oVisibilityToggle.style.display = 'none';
+                oInnerTextToggle.innerText = "View Technical Documentaion"
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <form name="Form1" method="post" action="ReportDoc.aspx?_Report=C%3a%5cDCMSLive1%5cReports%5cR150.08.xsd" id="Form1">
+        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+
+        <h1 align="center"><b>150.09 : VAS Productivity Report</b></h1>
+        <h2>Author : Hemant K. Singh</h2>
+        <br />
+        <h3>$Revision: 6826$<br />
+            Status :
+            Done<br />
+            Reviewed By : Manmohan<br />
+            Tested by: Sanjeev Kumar </h3>
+        <br />
+        <p>This report displays the productivity of V2P (VAS to pallet) for the specified period of time. VAS productivity is defined as the number of boxes scanned in the VAS to pallet process. </p>
+        <h2>Overview</h2>
+        <p>
+            Report displays the information of the boxes scanned by the users in V2P for the given date range. Report also displays the user wise information of the first and the last box scanned in V2P on daily basis. This will help managers to see that who is performing well in the V2P process by checking the number of boxes done by the users per day. More boxes means more productivity. Hours are being displayed just to let the viewer know that how much time (in Hrs.) workers are spending daily in between the first and last box scanned in V2P. For dedicated V2P users this report will definitely help on giving incentives to good performers and finding out black sheep.   
+        </p>
+        <p>
+            The report can be helpful
+        </p>
+        <h2>Algorithm</h2>
+        Get the box level VAS information like the first and last box scanned on from BOX_VAS table and VAS description from the tab_vas table.
+          <h3>Output</h3>
+        <table width="100%" cellspacing="1" cellpadding="1" border="1">
+            <tr>
+                <td width="25%" align="center"><b>Item</b></td>
+                <td width="20%" align="center"><b>Summary</b></td>
+                <td width="10%" align="center"><b>Sort Sequence</b></td>
+                <td width="35%" align="center"><b>Detail</b></td>
+            </tr>
+            <tr>
+                <td>V2P date </td>
+                <td>No
+                </td>
+                <td align="center">1</td>
+                <td>Date on which the VAS was applied.</td>
+            </tr>
+            <tr>
+                <td>Operator</td>
+                <td>No
+                </td>
+                <td align="center">&nbsp;</td>
+                <td>Person who applied VAS.</td>
+            </tr>
+            <tr>
+                <td>Applied VAS</td>
+                <td>No
+                </td>
+                <td align="center"></td>
+                <td>Description of the VAS type applied.</td>
+            </tr>
+            <tr>
+                <td>First box scanned on</td>
+                <td>No
+                </td>
+                <td align="center">2</td>
+                <td>Date on which the first box was scanned.</td>
+            </tr>
+            <tr>
+                <td>Last box scanned on</td>
+                <td>No
+                </td>
+                <td align="center"></td>
+                <td>Date on which the last box was scanned.</td>
+            </tr>
+            <tr>
+                <td>V2P completed on&nbsp; #Boxes</td>
+                <td>Sum</td>
+                <td align="center">&nbsp;</td>
+                <td>No. of boxes scanned.</td>
+            </tr>
+            <tr>
+                <td>V2P completed on&nbsp; Pieces</td>
+                <td>Sum</td>
+                <td align="center">&nbsp;</td>
+                <td>Total no. of pieces done by the operator.</td>
+            </tr>
+            <tr>
+                <td>Hours</td>
+                <td>No
+                </td>
+                <td align="middle">&nbsp;</td>
+                <td>Hours between the first and last VAS was applied.</td>
+            </tr>
+        </table>
+        <h2 xmlns="http://www.w3.org/1999/xhtml">Parameters</h2>
+        <table width="100%" cellspacing="1" cellpadding="1" border="1" xmlns="http://www.w3.org/1999/xhtml">
+            <tr>
+                <td width="20%" align="center"><b>Name</b></td>
+                <td width="20%" align="center"><b>Default</b></td>
+                <td width="60%" align="center"><b>Detail</b></td>
+            </tr>
+            <tr>
+                <td>V2P Date From | To</td>
+                <td>Last seven days</td>
+                <td>The date range for which you wish to view the VAS productivity information.
+                </td>
+            </tr>
+        </table>
+        <h2 xmlns="http://www.w3.org/1999/xhtml">Performance Detail</h2>
+        <p xmlns="http://www.w3.org/1999/xhtml"><i>Expected Time for the report output is 2</i> seconds</p>
+            <h2>Behavior Change</h2>
+        <ul xmlns="http://www.w3.org/1999/xhtml">
+            <li>Its a new report which shows VAS productivity information.
+            </li>
+        </ul>
+        <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+ <code>
+        Box_vas,<br />
+        Tab_vas,<br />
+        Boxdet,<br />
+        </code>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>
+            create or replace synonym Box_vas for dcms8.Box_vas;<br />
+            create or replace synonym Tab_vas for dcms8.Tab_vas;<br />
+            create or replace synonym Boxdet for dcms8.Boxdet;
+            </code></p>
+    <p>
+        <strong>Following appSettings are required:</strong></p>
+    <p>
+        Report is not using AppSetting </p>
+    <br />
+        <h2 xmlns="http://www.w3.org/1999/xhtml">Issues</h2>
+        No Known Issues.
+        <br xmlns="http://www.w3.org/1999/xhtml">
+        <h2>Query&#39;s documentation:</h2>
+        <ul>
+            <li>
+                <r:doc xmlns:r="http://www.eclsys.com/schemas/dcmslive/ReportProperties.xsd"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    xmlns:mstns="http://tempuri.org/R150.08.xsd">This query will get VAS productiviy information for 
+                    specified date range.
+                    <pre>
+SELECT  trunc(A.DATE_CREATED) AS V2P_Date,
+        A.CREATED_BY AS Operator,
+        rtrim(SYS.STRAGG(UNIQUE B.description || ','),',') AS Applied_VAS,
+        COUNT(DISTINCT A.UCC128_ID) AS Boxes_Scanned,
+        MIN(A.DATE_CREATED) AS First_BOX_Scanned_on,
+        MAX(A.DATE_CREATED) AS Last_BOX_Scanned_on,
+        ROUND((MAX(A.DATE_CREATED) - MIN(A.DATE_CREATED)) * 24, 2) AS Hours,
+        sum(bd.current_pieces) as total_pieces
+   FROM BOX_VAS A
+   left outer join boxdet bd
+   on a.ucc128_id = bd.ucc128_id
+   INNER JOIN tab_vas b
+   ON a.BOX_PROCESS_CODE = b.vas_code
+  WHERE 1=1 
+     <if>and a.DATE_CREATED &gt; = CAST(:vas_date_from AS DATE)</if>
+     <if>AND a.DATE_CREATED &lt; = CAST(:vas_date_to AS DATE) +1</if>
+  GROUP BY TRUNC(A.DATE_CREATED), A.CREATED_BY
+            </pre>
+                    </r:doc>
+            </li>
+        </ul>
+        <h2>Validation details</h2>
+        <br />
+        <b>The below query is used to verify a particular record(Pass the V2P date for which you want to verify thee records):</b><pre>
+       select count(bv.ucc128_id) as boxes_scanned,
+       bv.created_by as opertor,
+       MIN(bv.DATE_CREATED) AS First_BOX_Scanned_on,
+       MAX(bv.DATE_CREATED) AS Last_BOX_Scanned_on,
+       ROUND((MAX(bv.DATE_CREATED) - MIN(bv.DATE_CREATED)) * 24, 2) AS Hours
+  from box_vas bv
+ where bv.date_created >= to_date('1-27-2014', 'mm-dd-yyyy')
+   and bv.date_created < to_date('1-27-2014', 'mm-dd-yyyy') + 1
+ group by bv.created_by;
+          </pre>
+
+    </form>
+</body>
+</html>
+

@@ -1,0 +1,808 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>140.102 : Unprocessed SKU Detail Report</title>
+    <style type="text/css">
+        .style1
+        {
+            text-align: left;
+        }
+        .style2
+        {
+            width: 43%;
+        }
+        .style3
+        {
+            text-align: left;
+            width: 43%;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        &nbsp;
+        140<b>.</b>102<b> : </b>Unprocessed SKU Detail Report</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <ul style="list-style: none">
+        <li>Reviewed By: Manmohan Bisht</li>
+        <li>$Revision: 7119 $</li>
+        <li>Status: Tested</li>
+        <li>Tested By:Sanjeev Kumar</li>
+    </ul>
+    <p>
+       This report lists all the details of SKUs which belongs to unprocessed cartons(Boxes).</p>
+    <h2>
+        Overview</h2>
+    <p>
+        This report lists all the details of SKUs which belongs to unprocessed cartons(Boxes). This report also inform that bucket how many boxes are yet to be Expedite. The report excludes the SKUs which are marked as underpitch. Request module code is suffixed with carton areas , for SKU's which have request against them.</p>
+    <p>
+        Report is also shows unprocess carton (i.e Unprocessed cartons are those cartons which are not yet put on any MPC ) along with name of the bucket and buildin in separate single line header. This header will show above of the data grid.</p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        Get all the SKU details from master_sku. The quantity in different carton storage areas is retrieved from src_carton and src_carton_detail and The quantity in different sku&#39;s areas is retrieved from master_raw_inventory. The FPK information is retrieved from tables ialoc and ialoc_content. Pieces of the SKU still not processed in the bucket are retrieved from tables box and boxdet. </p>
+    <h2>
+        &nbsp;Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:25%; text-align:center">
+                <b>Item</b>
+            </td>
+            <td style="width:20%; text-align:center">
+                <b>Summary</b>
+            </td>
+            <td style="width:10%; text-align:center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                UPC</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                2</td>
+            <td style="width:45%; " class="style1">
+                UPC Code of the SKU</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Style</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Style of the SKU</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Color</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Color of the SKU</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Dim</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Dimension of the SKU</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Size</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Size of the SKU</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Rail Capacity</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Capacity of the FPK location where the SKU is assigned</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Standard Case Qty</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Standard case quantity of the SKU.</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Bucket Quantity Total</td>
+            <td style="width:20%; " class="style1">
+                Sum</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                The total pieces required for the SKU in passed bucket.
+            </td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Bucket Quantity Unprocessed</td>
+            <td style="width:20%; " class="style1">
+                Sum</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Pieces of the SKU which are still not processed
+            </td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Quantity in Allocated FPK</td>
+            <td style="width:20%; " class="style1">
+                Sum</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Total pieces which are already reserved.</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Quantity in Unallocated FPK in Your Building</td>
+            <td style="width:20%; " class="style1">
+                Sum</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Total pieces which are already reserved.</td>
+        </tr>
+        <tr>
+            <td style="width: 25%;" class="style1">
+                Carton
+                Areas/Sku Areas Quantity
+            </td>
+            <td style="width: 20%;" class="style1">
+                Sum
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%; text-align: left">
+                We are showing the inventory quantity&nbsp;of all inventory area(Carton Area and Sku 
+                Area) Area which are suffixed with “-RS” or “-BoxPick” etc. are indicating number of reserved cartons for different processes. </td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Shortage Pieces</td>
+            <td style="width:20%; " class="style1">
+                Sum</td>
+            <td style="width:10%; text-align:center">
+                1 desc nulls last</td>
+            <td style="width:45%; " class="style1">
+                The difference between SKU demand quantity and available quantity in FPK.&nbsp; 
+                If available quantity is more than the demand quantity in that case shortage 
+                will be 0</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Assigned Locations</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                The Locations, where the SKU is assigned. There may be more that one location 
+                where the SKU is assigned, in this case report will show min location and max 
+                location the location count will be displayed in tooltip.
+            </td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Is Any Assigned Location Freeze?</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Shows whether the assigned location is freeze or not.</td>
+        </tr>
+        <tr>
+            <td style="width:25%; " class="style1">
+                Is Any Assigned Location Marked For CYC?</td>
+            <td style="width:20%; " class="style1">
+                No</td>
+            <td style="width:10%; text-align:center">
+                &nbsp;</td>
+            <td style="width:45%; " class="style1">
+                Showing whether the assigned location is marked for CYC or not.</td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width:20% ; text-align:center">
+                <b>Name</b>
+            </td>
+            <td style="width:15% ; text-align:center">
+                <b>Type</b>
+            </td>
+            <td style="text-align:center" class="style2">
+                <b>Default</b>
+            </td>
+            <td style="width:45%; text-align:center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:20%; " class="style1">
+                Bucket Id</td>
+            <td style="width:15%; " class="style1">
+                Number</td>
+            <td class="style3">
+                None</td>
+            <td style="width:45%; " class="style1">
+                Bucket id for which you wish to see the data</td>
+        </tr>
+        <tr>
+            <td style="width:20%; " class="style1">
+                Virtual Warehouse</td>
+            <td style="width:15%; " class="style1">
+                Choice</td>
+            <td class="style3">
+                All</td>
+            <td style="width:45%; " class="style1">
+                Virtual Warehouse id for whihc you would like to see the data</td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p xmlns="http://www.w3.org/1999/xhtml">
+        <i>Expected Time for the report output is 2</i> second</p>
+    The query will exhibit linear performance with respect to the number of SKUs 
+    lying in boxes of a pickslip contained in a bucket. There is full scan on tables 
+    BOX,BOXDET,RESVDET,IALOC and IALOC_CONTENT.There is an index range scan on 
+    tables PS,PO,PSDET and MASTER_SKU.
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Added new column which will show standard case quantity of the SKU.</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No known issue</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+                <h4>
+                Private synonyms requried for the tables: </h4>
+            <pre>
+<code>bucket,
+ps,
+po,
+bucketsku,
+Box,
+boxdet,
+resvdet,
+ialoc,
+ialoc_content,
+master_sku,
+src_carton,
+src_carton_detail,
+tab_inventory_area,
+master_raw_inventory,
+replenish_aisle_carton</code></pre>
+            <h4>
+                Script to create the synonyms:</h4>
+
+<ul><li>create or replace synonym bucket for dcms8.bucket;</li>
+    <li>create or replace synonym ps for dcms8.ps;</li>
+    <li>create or replace synonym po for dcms8.po;</li>
+    <li>create or replace synonym bucketsku for dcms8.bucketsku;</li>
+    <li>create or replace synonym box for dcms8.box;</li>
+    <li>create or replace synonym boxdet for dcms8.boxdet;</li>
+    <li>create or replace synonym resvdet for dcms8.resvdet;</li>
+    <li>create or replace synonym ialoc for dcms8.ialoc; </li>
+    <li>create or replace synonym ialoc_content for dcms8.ialoc_content;</li>
+    <li>create or replace synonym master_sku for dcms4.master_sku; </li>
+    <li>create or replace synonym src_carton for dcms4.src_carton; </li>
+    <li>create or replace synonym src_carton_detail for dcms4.src_carton_detail;</li>
+    <li>create or replace synonym tab_inventory_area for dcms8.tab_inventory_area;</li>
+    <li>create or replace synonym master_raw_inventory for dcms8.master_raw_inventory;</li>
+    <li>create or replace synonym replenish_aisle_carton for dcms8.replenish_aisle_carton; </li>
+</ul>
+         <h4>App-Settings required:</h4>
+          No use app setting 
+    <h2>
+        Query&#39;s documentation:</h2>
+        <pre>
+           with ORDERED_SKU AS
+ (SELECT PS.VWH_ID AS VWH_ID,
+         PSDET.UPC_CODE AS UPC_CODE,
+         SUM(PSDET.PIECES_ORDERED) AS EXPECTED_PIECES,
+         max(ms.style) as style,
+         max(ms.color) as color,
+         max(ms.dimension) as dimension,
+         max(ms.sku_size) as sku_size,
+         MAX(MS.STANDARD_CASE_QTY) AS standard_case_qty
+    FROM PS PS
+   INNER JOIN PSDET PSDET
+      ON PS.PICKSLIP_ID = PSDET.PICKSLIP_ID
+   INNER JOIN MASTER_SKU MS
+      ON MS.UPC_CODE = PSdet.UPC_CODE
+    LEFT OUTER JOIN BUCKETSKU BU
+      ON PS.BUCKET_ID = BU.BUCKET_ID
+     and MS.UPC_CODE = BU.UPC_CODE
+   WHERE BU.UNDERPITCH_FLAG IS NULL
+      <if>and PS.BUCKET_ID =:bucket_id </if>
+   <if>AND PS.VWH_ID =:vwh_id</if>
+     AND PS.TRANSFER_DATE IS NULL
+     and ps.reporting_status = 'UNDER PROCESS'
+   GROUP BY PS.VWH_ID, PSDET.UPC_CODE),
+SKU_IN_BOXES AS
+ (SELECT /*+index (box BOX_PS_FK_I) index(bd BOXDET_PK)*/
+   PS.VWH_ID AS VWH_ID,
+   BD.UPC_CODE AS UPC_CODE,
+   SUM(BD.current_pieces) as picked_pieces,
+   MIN(M.STYLE) AS STYLE,
+   MIN(M.COLOR) AS COLOR,
+   MIN(M.DIMENSION) AS DIMENSION,
+   MIN(M.SKU_SIZE) AS SKU_SIZE,
+   MIN(M.sku_id) as sku_id
+    FROM BUCKET BUCKET
+   INNER JOIN PS PS
+      ON PS.BUCKET_ID = BUCKET.BUCKET_ID
+   INNER JOIN BOX BOX
+      ON BOX.PICKSLIP_ID = PS.PICKSLIP_ID
+   INNER JOIN BOXDET BD
+      ON BOX.UCC128_ID = BD.UCC128_ID
+     AND BOX.PICKSLIP_ID = BD.PICKSLIP_ID
+    LEFT OUTER JOIN BUCKETSKU BU
+      ON BUCKET.BUCKET_ID = BU.BUCKET_ID
+     AND BD.UPC_CODE = BU.UPC_CODE
+   INNER JOIN MASTER_SKU M
+      ON M.UPC_CODE = BD.UPC_CODE
+   WHERE 1 = 1
+ <if>AND PS.BUCKET_ID =:bucket_id</if> 
+ <if>AND PS.VWH_ID =:vwh_id</if>
+     AND BU.UNDERPITCH_FLAG IS NULL
+     AND ps.reporting_status = 'UNDER PROCESS'
+     AND box.stop_process_date IS NULL
+     AND bd.stop_process_date IS NULL
+     AND ps.transfer_date is null
+   GROUP BY PS.VWH_ID, BD.UPC_CODE),
+RESV_SKU AS
+ (SELECT RESV.UPC_CODE AS UPC_CODE,
+         RESV.VWH_ID AS VWH_ID,
+         MAX(RESV.IA_ID) AS PICKING_AREA,
+         SUM(RESV.PIECES_RESERVED) AS RESERVED_QUANTITY
+    FROM RESVDET RESV
+   WHERE resv.ia_id in
+         (select pitch_ia_id from bucket where bucket_id = :bucket_id)
+     <if>and RESV.VWH_ID =:vwh_id</if>
+   GROUP BY RESV.UPC_CODE, RESV.VWH_ID),
+IALOC_SKU AS
+ (SELECT MAX(IA.LOCATION_ID) AS MAX_LOCATION_ID,
+         MIN(IA.LOCATION_ID) AS MIN_LOCATION_ID,
+         COUNT(DISTINCT IA.LOCATION_ID) AS LOCATION_COUNT,
+         IA.ASSIGNED_UPC_CODE AS UPC_CODE,
+         IA.VWH_ID AS VWH_ID,
+         MAX(DECODE(IA.ASSIGNED_UPC_MAX_PIECES,
+                    NULL,
+                    '0',
+                    IA.ASSIGNED_UPC_MAX_PIECES)) AS RAIL_CAPACITY,
+         SUM(IA.ASSIGNED_UPC_MAX_PIECES) AS FPK_CAPACITY,
+         SUM(IAC.NUMBER_OF_UNITS) AS FPK_QUANTITY,
+         max(ia.freeze_flag) as is_location_freezed,
+         MAX(ia.location_status) as cyc_marked
+    FROM IALOC IA
+    LEFT OUTER JOIN IALOC_CONTENT IAC
+      ON IA.IA_ID = IAC.IA_ID
+     AND IA.LOCATION_ID = IAC.LOCATION_ID
+   WHERE 1 = 1
+     <if>and IA.VWH_ID =:vwh_id</if>
+     <if>AND NVL(IA.WAREHOUSE_LOCATION_ID,'Unknown') =:warehouse_location_id</if>
+     AND IA.LOCATION_TYPE = 'RAIL'
+     AND IA.CAN_ASSIGN_SKU = 1
+   GROUP BY IA.ASSIGNED_UPC_CODE, IA.VWH_ID),
+CTN_SKU AS
+ (SELECT CTN.VWH_ID AS VWH_ID,
+         NVL(TIA.SHORT_NAME,CTN.carton_storage_area) || DECODE(TIA.LOCATION_NUMBERING_FLAG,
+                                  'Y',
+                                  NVL2(RAC.CARTON_ID,
+                                       '-RS',
+                                       NVL2(CTNDET.REQ_MODULE_CODE,
+                                            ('-' || CTNDET.REQ_MODULE_CODE),
+                                            ''))) AS AREA,
+         MAX(CTN.carton_storage_area) AS AREA_ID,
+         CASE
+              WHEN CTNDET.REQ_MODULE_CODE = 'REQ2'
+                   AND TIA.LOCATION_NUMBERING_FLAG ='Y' THEN
+               'REQUEST'
+              ELSE
+               'NOTREQUEST'
+            END AS REQUEST,
+         SUM(CTNDET.QUANTITY) AS QUANTITY,
+         COALESCE(TIA.WAREHOUSE_LOCATION_ID,MSL.WAREHOUSE_LOCATION_ID,'Unknown') as WAREHOUSE_LOCATION_ID,
+         MAX(TIA.STORES_WHAT) AS STORE_WHAT,
+         OS.UPC_CODE AS UPC_CODE
+    FROM SRC_CARTON CTN
+    LEFT OUTER JOIN SRC_CARTON_DETAIL CTNDET
+      ON CTN.CARTON_ID = CTNDET.CARTON_ID
+    LEFT OUTER JOIN REPLENISH_AISLE_CARTON RAC
+      ON CTN.CARTON_ID = RAC.CARTON_ID
+     LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+      ON CTN.carton_storage_area = msl.storage_area
+     and CTN.LOCATION_ID = MSL.LOCATION_ID
+      LEFT OUTER JOIN TAB_INVENTORY_AREA TIA
+      ON CTN.CARTON_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+   LEFT OUTER JOIN TAB_QUALITY_CODE  TQC ON 
+            CTN.QUALITY_CODE = TQC.QUALITY_CODE
+   INNER JOIN ORDERED_SKU OS
+      ON OS.STYLE = CTNDET.STYLE
+     AND OS.COLOR = CTNDET.COLOR
+     AND OS.DIMENSION = CTNDET.DIMENSION
+     AND OS.SKU_SIZE = CTNDET.SKU_SIZE
+  <if>WHERE CTN.VWH_ID   = CAST(:vwh_id AS VARCHAR2(255))</if>
+      AND TQC.ORDER_QUALITY ='Y' 
+   GROUP BY CTN.VWH_ID,
+            NVL(TIA.SHORT_NAME, CTN.carton_storage_area) || DECODE(TIA.LOCATION_NUMBERING_FLAG,
+                                     'Y',
+                                     NVL2(RAC.CARTON_ID,
+                                          '-RS',
+                                          NVL2(CTNDET.REQ_MODULE_CODE,
+                                               ('-' || CTNDET.REQ_MODULE_CODE),
+                                               ''))),
+            OS.UPC_CODE,CASE
+              WHEN CTNDET.REQ_MODULE_CODE = 'REQ2'
+                   AND TIA.LOCATION_NUMBERING_FLAG ='Y' THEN
+               'REQUEST'
+              ELSE
+               'NOTREQUEST'
+            END,
+            COALESCE(TIA.WAREHOUSE_LOCATION_ID,MSL.WAREHOUSE_LOCATION_ID,'Unknown')
+  
+  UNION
+  
+  SELECT MRI.VWH_ID AS VWH_ID,
+         TIA.SHORT_NAME AS AREA,
+         MAX(MRI.SKU_STORAGE_AREA) AS AREA_ID,
+         'REQUEST' as REQUEST,
+         SUM(MRI.QUANTITY) AS QUANTITY,
+         nvl(TIA.WAREHOUSE_LOCATION_ID,'Unknown') as warehouse_location_id,
+         MAX(TIA.STORES_WHAT) AS STORE_WHAT,
+         BS.UPC_CODE AS UPC_CODE
+    FROM MASTER_RAW_INVENTORY MRI
+   INNER JOIN TAB_INVENTORY_AREA TIA
+      ON MRI.SKU_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+   INNER JOIN MASTER_SKU BS
+      ON BS.STYLE = MRI.STYLE
+     AND BS.COLOR = MRI.COLOR
+     AND BS.DIMENSION = MRI.DIMENSION
+     AND BS.SKU_SIZE = MRI.SKU_SIZE
+   WHERE TIA.STORES_WHAT = 'SKU'
+     AND TIA.UNUSABLE_INVENTORY IS NULL
+      <if>AND MRI.VWH_ID   =:vwh_id</if>
+   GROUP BY MRI.VWH_ID,
+            TIA.SHORT_NAME,
+            BS.UPC_CODE,
+            nvl(TIA.WAREHOUSE_LOCATION_ID,'Unknown')
+  UNION
+  
+  SELECT IL.VWH_ID AS VWH_ID,
+         NVL(IL.SHORT_NAME,IL.AREA_ID) AS AREA,
+         IL.AREA_ID AS AREA_ID,
+         null as REQUEST,
+         NVL(IL.NUMBER_OF_UNITS, 0) - NVL(R.RESERVED_UNITS, 0) AS Quantity,
+         NVL(IL.WAREHOUSE_LOCATION_ID, 'Unknowm') as warehouse_location_id,
+         'SKU' as area_type,
+         il.upc_code
+    FROM (SELECT IA.SHORT_NAME AS SHORT_NAME,
+                 MAX(IA.IA_ID) AS AREA_ID,
+                 msku.upc_code as upc_code,
+                 I.VWH_ID AS VWH_ID,
+                 NVL(I.WAREHOUSE_LOCATION_ID, 'Unknown') as WAREHOUSE_LOCATION_ID,
+                 SUM(IAC.NUMBER_OF_UNITS) AS NUMBER_OF_UNITS
+            FROM IALOC_CONTENT IAC
+           INNER JOIN IALOC I
+              ON I.IA_ID = IAC.IA_ID
+             AND I.LOCATION_ID = IAC.LOCATION_ID
+             inner join ia ia 
+               on i.ia_id = ia.ia_id
+           INNER JOIN MASTER_SKU MSKU
+              ON MSKU.UPC_CODE = IAC.IACONTENT_ID
+           <if>WHERE I.VWH_ID =:vwh_id</if>
+           GROUP BY IA.SHORT_NAME,
+                    msku.upc_code,
+                    I.VWH_ID,
+                    NVL(I.WAREHOUSE_LOCATION_ID, 'Unknown')) IL
+    LEFT OUTER JOIN (SELECT RD.IA_ID AS IA_ID,
+                            msku.upc_code as upc_code,
+                            SUM(RD.PIECES_RESERVED) RESERVED_UNITS,
+                            RD.VWH_ID,
+                            NVL(iac.warehouse_location_id, 'Unknown') as warehouse_location_id
+                       FROM RESVDET RD
+                      INNER JOIN MASTER_SKU MSKU
+                         ON RD.UPC_CODE = MSKU.UPC_CODE
+                       left outer join ialoc iac
+                         on iac.ia_id = rd.ia_id
+                        and iac.location_id = rd.location_id
+                      GROUP BY msku.upc_code,
+                               RD.VWH_ID,
+                               RD.IA_ID,
+                               NVL(iac.warehouse_location_id, 'Unknown')) R
+      ON IL.AREA_ID = R.IA_ID
+     AND IL.upc_code = R.upc_code
+     AND IL.VWH_ID = R.VWH_ID
+     and Il.warehouse_location_id = R.warehouse_location_id),
+FINAL_QUERY AS
+ (SELECT OS.UPC_CODE AS UPC_CODE,
+         OS.STYLE AS STYLE,
+         OS.COLOR AS COLOR,
+         OS.DIMENSION AS DIMENSION,
+         OS.SKU_SIZE AS SKU_SIZE,
+         OS.VWH_ID as VWH_ID,
+         os.standard_case_qty as standard_case_qty,
+         nvl(trunc(((os.expected_pieces - nvl(bs.picked_pieces, 0)) / os.standard_case_qty)),0) as carton_create,
+         nvl(mod((os.expected_pieces - nvl(bs.picked_pieces, 0)),os.standard_case_qty),0) as remaining_pieces,
+         IAS.RAIL_CAPACITY AS RAIL_CAPACITY,
+         OS.EXPECTED_PIECES AS EXPECTED_PIECES,
+         os.expected_pieces - nvl(bs.picked_pieces, 0) as UNPROCESSED_PIECES,
+         NVL(RS.RESERVED_QUANTITY, 0) AS ALLOCATED_QUANTITY,
+         (NVL(IAS.FPK_QUANTITY, 0) - NVL(RS.RESERVED_QUANTITY, 0)) UNALLOCATTED_QTY,
+         CS.AREA AS AREA,
+         cs.area_id as area_id,
+         cs.REQUEST as REQUEST,
+         CS.QUANTITY AS QUANTITY,
+         CS.STORE_WHAT AS STORE_WHAT,
+         RS.PICKING_AREA,
+         CS.WAREHOUSE_LOCATION_ID,
+         GREATEST(0,
+                  (os.expected_pieces - nvl(bs.picked_pieces, 0)) -
+                  (NVL(IAS.FPK_QUANTITY, 0) - NVL(RS.RESERVED_QUANTITY, 0))) SHORTAGE_PIECES,
+         IAS.MIN_LOCATION_ID AS MIN_FPK_LOCATION_ID,
+         IAS.MAX_LOCATION_ID AS MAX_FPK_LOCATION_ID,
+         IAS.LOCATION_COUNT AS FPK_LOCATION_COUNT,
+         ias.is_location_freezed as is_location_freezed,
+         nvl2(ias.cyc_marked,'Y','') as cyc_marked
+    FROM ordered_sku os
+    LEFT OUTER JOIN RESV_SKU RS
+      ON os.VWH_ID = RS.VWH_ID
+     AND os.UPC_CODE = RS.UPC_CODE
+    LEFT OUTER JOIN IALOC_SKU IAS
+      ON os.VWH_ID = IAS.VWH_ID
+     AND os.UPC_CODE = IAS.UPC_CODE
+    LEFT OUTER JOIN CTN_SKU CS
+      ON os.VWH_ID = CS.VWH_ID
+     AND os.UPC_CODE = CS.UPC_CODE
+    left OUTER JOIN SKU_IN_BOXES bs
+      ON OS.VWH_ID = BS.VWH_ID
+     AND OS.UPC_CODE = BS.UPC_CODE
+   where (os.expected_pieces - nvl(bs.picked_pieces, 0)) > 0
+     )
+
+SELECT *
+  FROM FINAL_QUERY PIVOT XML(SUM(QUANTITY) AS QUANTITY FOR(AREA, WAREHOUSE_LOCATION_ID, STORE_WHAT,REQUEST,area_id) IN(ANY,
+                                                                                                       ANY,
+                                                                                                       ANY,ANY,ANY))
+
+             </pre>
+   
+<h2>Validation Query</h2>
+
+         <p style="font-weight:bold">Query: Below Query is displaying header information which is above of the grid.</p>
+    <pre>
+SELECT BK.BUCKET_ID, BK.NAME, B.UCC128_ID, WAREHOUSE_LOCATION_ID
+  FROM PS
+  
+ INNER JOIN BUCKET BK
+    ON PS.BUCKET_ID = BK.BUCKET_ID  
+    LEFT OUTER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+    AND B.Ia_Id IS NULL
+ WHERE PS.BUCKET_ID = '32188'
+        </pre>
+
+
+
+        <p style="font-weight:bold">Query: Below Query is showing lists of SKUs along with Style, color, dimension, size, Pieces ordered and Unprocess pieces.</p>
+        <pre>WITH Q1 AS
+ (SELECT PS.VWH_ID, PD.UPC_CODE, SUM(PD.PIECES_ORDERED) AS PIECES_ORDERED
+    FROM PS
+   INNER JOIN PSDET PD
+      ON PS.PICKSLIP_ID = PD.PICKSLIP_ID
+    LEFT OUTER JOIN BUCKETSKU BS
+      ON PS.BUCKET_ID = BS.BUCKET_ID
+     AND PD.UPC_CODE = BS.UPC_CODE
+   WHERE PS.TRANSFER_DATE IS NULL
+     AND PD.TRANSFER_DATE IS NULL
+     AND PS.BUCKET_ID = '29730'
+     AND BS.UNDERPITCH_FLAG IS NULL
+     AND PS.REPORTING_STATUS = 'UNDER PROCESS'
+   GROUP BY PS.VWH_ID, PD.UPC_CODE),
+Q2 AS
+ (SELECT PS.VWH_ID, BD.UPC_CODE, SUM(BD.CURRENT_PIECES) AS PIECES_SHIPPED
+    FROM PS
+   INNER JOIN BOX B
+      ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+   WHERE B.STOP_PROCESS_DATE IS NULL
+     AND BD.STOP_PROCESS_DATE IS NULL
+     AND PS.TRANSFER_DATE IS NULL
+     AND PS.BUCKET_ID = '29730'
+   GROUP BY PS.VWH_ID, BD.UPC_CODE)
+SELECT Q1.VWH_ID AS "VWh",
+       Q1.UPC_CODE AS "UPC",
+       MS.STYLE AS "Style",
+       MS.COLOR AS "Color",
+       MS.DIMENSION AS "Dim",
+       MS.SKU_SIZE AS "Size",
+       Q1.PIECES_ORDERED AS "Pieces ordered",
+       NVL(Q1.PIECES_ORDERED, 0) - NVL(Q2.PIECES_SHIPPED, 0) AS "Pieces Unprocess"
+  FROM Q1
+  LEFT OUTER JOIN Q2
+    ON Q1.VWH_ID = Q2.VWH_ID
+   AND Q1.UPC_CODE = Q2.UPC_CODE
+ INNER JOIN MASTER_SKU MS
+    ON Q1.UPC_CODE = MS.UPC_CODE
+ WHERE NVL(Q1.PIECES_ORDERED, 0) - NVL(Q2.PIECES_SHIPPED, 0) > 0
+ ORDER BY 2
+</pre>   
+        <p style="font-weight:bold">Query:
+        The below query will get inventory in 
+        all carton areas for the passed 
+        UPC code</p>
+        <pre>
+ SELECT CTN.VWH_ID AS VWH_ID,
+       T.SHORT_NAME || DECODE(T.LOCATION_NUMBERING_FLAG,
+                              'Y',
+                              NVL2(RAC.CARTON_ID,
+                                   '-RS',
+                                   NVL2(CTNDET.REQ_MODULE_CODE,
+                                        ('-' || CTNDET.REQ_MODULE_CODE),
+                                        ''))) AS AREA,
+       COALESCE(T.WAREHOUSE_LOCATION_ID, M.WAREHOUSE_LOCATION_ID, 'Unknown') AS WAREHOUSE_LOCATION_ID,
+       SUM(CTNDET.QUANTITY) AS QUANTITY
+  FROM SRC_CARTON CTN
+ INNER JOIN SRC_CARTON_DETAIL CTNDET
+    ON CTN.CARTON_ID = CTNDET.CARTON_ID
+  LEFT OUTER JOIN MASTER_STORAGE_LOCATION M
+    ON CTN.CARTON_STORAGE_AREA = M.STORAGE_AREA
+   AND CTN.LOCATION_ID = M.LOCATION_ID
+  LEFT OUTER JOIN REPLENISH_AISLE_CARTON RAC
+    ON CTN.CARTON_ID = RAC.CARTON_ID
+ INNER JOIN TAB_INVENTORY_AREA T
+    ON CTN.CARTON_STORAGE_AREA = T.INVENTORY_STORAGE_AREA
+ INNER JOIN MASTER_SKU MS
+    ON MS.SKU_ID = CTNDET.SKU_ID
+ WHERE MS.UPC_CODE = '014671176209'
+   AND CTN.VWH_ID = '15'
+ GROUP BY CTN.VWH_ID,
+          T.SHORT_NAME || DECODE(T.LOCATION_NUMBERING_FLAG,
+                                 'Y',
+                                 NVL2(RAC.CARTON_ID,
+                                      '-RS',
+                                      NVL2(CTNDET.REQ_MODULE_CODE,
+                                           ('-' || CTNDET.REQ_MODULE_CODE),
+                                           ''))),
+          COALESCE(T.WAREHOUSE_LOCATION_ID,
+                   M.WAREHOUSE_LOCATION_ID,
+                   'Unknown')
+                              ORDER BY 3, 2</pre>
+    <b>Query Below Query is Showing SKU area for the pass UPC Code</b>
+    <pre>
+  SELECT T.SHORT_NAME,
+       SUM(M.QUANTITY),
+       NVL(T.WAREHOUSE_LOCATION_ID, 'Unknown')
+  FROM MASTER_RAW_INVENTORY M
+ INNER JOIN TAB_INVENTORY_AREA T
+    ON M.SKU_STORAGE_AREA = T.INVENTORY_STORAGE_AREA
+ WHERE T.STORES_WHAT = 'SKU'
+   AND M.SKU_ID IN
+       (SELECT MS.SKU_ID FROM MASTER_SKU MS WHERE MS.UPC_CODE = '014671797510')
+   AND M.VWH_ID = '15'
+ GROUP BY T.SHORT_NAME, NVL(T.WAREHOUSE_LOCATION_ID, 'Unknown')
+HAVING SUM(M.QUANTITY) > 0
+        </pre>
+    <b>Below query is displaying number of pieces in Unlocated FPK quanity in your building.</b>
+    <pre>       
+with a as
+ (SELECT IC.NUMBER_OF_UNITS, ic.IACONTENT_ID as upc_code
+    FROM IALOC I
+   INNER JOIN IALOC_CONTENT IC
+      ON I.IA_ID = IC.IA_ID
+     AND I.LOCATION_ID = IC.LOCATION_ID
+   WHERE I.ASSIGNED_UPC_CODE = '037745117915'
+     AND I.WAREHOUSE_LOCATION_ID = 'FDC'),
+b as
+ (select r.PIECES_RESERVED, r.UPC_CODE
+    from resvdet r
+   where r.UPC_CODE = '037745117915')
+select nvl(a.number_of_units, 0) - nvl(b.pieces_reserved, 0) as &quot;Unallocated Pieces&quot; 
+  from a, b
+   where a.upc_code = b.upc_code(+)
+    </pre>
+    <b>
+Below query is showing order pieces for specific SKU
+    </b>
+    <pre>
+        SELECT SUM(PD.PIECES_ORDERED) AS "Ordered Pieces" 
+  FROM PS
+ INNER JOIN PSDET PD
+    ON PS.PICKSLIP_ID = PD.PICKSLIP_ID
+ WHERE PS.TRANSFER_DATE IS NULL
+   AND PD.TRANSFER_DATE IS NULL
+   AND PS.REPORTING_STATUS = 'UNDER PROCESS'
+   AND PS.WAREHOUSE_LOCATION_ID = 'FDC'
+   AND PS.VWH_ID = '15'
+   AND PS.BUCKET_ID = '26736'
+   AND PD.UPC_CODE = '037745211682'
+    </pre>
+    <b>Below query is showing Under Process Pieces.</b>
+    <pre>
+WITH A AS
+ (SELECT SUM(NVL(PD.PIECES_ORDERED, 0)) AS PIECES_ORDERED,
+         pd.UPC_CODE as upc_code
+    FROM PS
+   INNER JOIN PSDET PD
+      ON PS.PICKSLIP_ID = PD.PICKSLIP_ID
+   WHERE PS.TRANSFER_DATE IS NULL
+     AND PD.TRANSFER_DATE IS NULL
+     AND PS.REPORTING_STATUS = 'UNDER PROCESS'
+     AND PS.WAREHOUSE_LOCATION_ID = 'FDC'
+     AND PS.VWH_ID = '15'
+     AND PS.BUCKET_ID = '26736'
+     AND PD.UPC_CODE = '037745211682'
+   GROUP BY pd.UPC_CODE),
+B AS
+ (SELECT SUM(case
+               when B.verify_date is not null then
+                nvl(bd.expected_pieces, 0)
+               else
+                nvl(bd.current_pieces, 0)
+             end) as picked_pieces,
+         BD.UPC_CODE AS UPC_CODE
+    FROM PS
+   INNER JOIN BOX B
+      ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+   WHERE B.STOP_PROCESS_DATE IS NULL
+     AND BD.STOP_PROCESS_DATE IS NULL
+     AND PS.TRANSFER_DATE IS NULL
+     AND PS.REPORTING_STATUS = 'UNDER PROCESS'
+     AND PS.WAREHOUSE_LOCATION_ID = 'FDC'
+     AND PS.VWH_ID = '15'
+     AND PS.BUCKET_ID = '26736'
+     AND BD.UPC_CODE = '037745211682'
+   GROUP BY BD.UPC_CODE)
+SELECT PIECES_ORDERED - picked_pieces AS "Under Process pieces"
+  FROM A, B
+ WHERE A.UPC_CODE = B.UPC_CODE(+)
+    </pre>
+     <p><b>Query:</b> You can validate standard case quantity of the SKU.</p>
+            <pre>
+                SELECT MS.STANDARD_CASE_QTY FROM MASTER_SKU MS 
+                WHERE MS.UPC_CODE ='014671826647'
+            </pre>
+    </body>
+</html>

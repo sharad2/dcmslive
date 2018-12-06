@@ -1,0 +1,294 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Box ID QC Audit Report (#) - 110.05 Documentation</title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        110<b>.</b>05<b> : </b>Box ID QC Audit Report (#)
+    </h1>
+    Author : <b>Dinesh Panwar</b><br />
+    $Revision: 1386 $<br />
+    Status:
+    Done<br />
+    Tested By :Skumar<br />
+    <h2>
+        Overview</h2>
+    For the specified audit date/date range the report displays
+    <ol>
+        <li>The detail for each pitcher. </li>
+        <li>It will further drilldown on pitcher to show the carton-wise detail.</li>
+    </ol>
+    Note: The report shows you all of the boxes that where pitched but if a box is scan
+    more then one time we only consider the last scan of the box.
+    <h2>
+        Algorithm</h2>
+    Get the box qc audit details from box_productivity from passed
+    operation dates.
+    <h2>
+        Output
+    </h2>
+    <table border="1" cellpadding="0" cellspacing="1">
+        <tr>
+            <td>
+                <b>Item</b>
+            </td>
+            <td>
+                <p>
+                    <b>Summary</b></p>
+            </td>
+            <td>
+                <b>Default Sort Sequence</b>
+            </td>
+            <td>
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pitcher
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                1
+            </td>
+            <td>
+                Pitcher whcih is preforming pitching.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Audit Date
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                2
+            </td>
+            <td>
+                Operation Start Date.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pitching Date
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp
+            </td>
+            <td>
+                Last Pitch Date on which pitching operation was performed.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pitched Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Number of Pieces pitched by the pitcher.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Scanned Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Number of Scanned Pieces by the pitcher which is calculated as (Total Scan Pieces
+                - Total Abnormal Pieces).
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Percentage Accurate
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Percentage of accurate which is calculated as ((pitched pieces - scanned pieces)/pitched
+                pieces)*100.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellspacing="1" cellpadding="1" width="100%">
+        <tbody>
+            <tr>
+                <td align="center">
+                    <b>Name</b>
+                </td>
+                <td align="center">
+                    <b>Default</b>
+                </td>
+                <td align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Operation dates
+                    </p>
+                </td>
+                <td>
+                    <p>
+                        Last seven days period</p>
+                </td>
+                <td>
+                    Date range in which the operation is preformed.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Shift</p>
+                </td>
+                <td>
+                    <p>
+                        All</p>
+                </td>
+                <td>
+                    <p>
+                        Pitching is done in shifts. This parameter can be used to specify the shift for
+                        which information is to retrieve.
+                    </p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>5 Sec.</p>
+    <h2>
+        Behavior Change</h2>
+    <h2>
+        Issues</h2>
+    No Known Issue.
+    <br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        box_productivity,<br />
+        </p>
+    <p>
+        Use the below script to create the synonyms</p>
+        <code>
+        CREATE OR REPLACE SYNONYM BOX_PRODUCTIVITY FOR dcms8.BOX_PRODUCTIVITY;<br />
+        </code>
+    <p>
+        <b>AppSettings are need.</b>
+        <br />
+        <code>&lt;add key="PitchingDays" value="14"/&gt;</code>
+        </p>
+    <br />
+    <h1>
+        Technical Documentaion</h1>
+    <h2>
+        Parameter Technical Details</h2>
+    <ul>
+        <li>Operation dates(Type = DateTime):Date range in which the operation is preformed.</li>
+        <li>Shift:Pitching is done in shifts. This parameter can be used to specify the shift
+            for which information is to retrieve. </li>
+    </ul>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.
+    <h2>
+        Query&#39;s documentation:</h2>
+    <p>
+        The report query is as follows:</p>
+    <pre>
+  WITH BOXQC_OPERATION AS
+(SELECT MAX(T.OPERATOR) AS OPERATOR,
+         T.UCC128_ID AS UCC128_ID,
+         <![CDATA[
+                    $ShiftDateSelectClause$                 
+                  ]]>,
+         SUM(T.NUM_OF_PIECES) AS PITCHED_PIECES,
+         SUM(T.NUM_OF_ABNORMAL_PIECES) AS NUM_OF_ABNORMAL_PIECES,
+         MAX(T.LAST_PITCHED_DATE) AS PITCH_DATE
+    FROM BOX_PRODUCTIVITY T
+   WHERE T.OPERATION_CODE = '$BOXQC'
+     AND T.NUM_OF_PIECES &gt; 0
+     AND T.OPERATION_START_DATE &gt;= CAST(:min_operation_date AS DATE)
+     AND T.OPERATION_START_DATE 
+         &lt; CASt(:max_operation_date AS DATE) + 1
+     <![CDATA[
+                    $ShiftNumberWhereClause$                 
+                  ]]> 
+   GROUP BY T.UCC128_ID,t.OPERATION_START_DATE
+  
+  ),
+PITCH_OPERATION AS
+(SELECT MAX(T.OPERATOR) AS PITCHER_NAME,
+         T.UCC128_ID AS UCC128_ID,
+         max(T.LAST_PITCHED_DATE) AS PITCH_DATE
+         FROM BOX_PRODUCTIVITY T
+   INNER JOIN BOXQC_OPERATION BOXQCOP
+      ON BOXQCOP.UCC128_ID = T.UCC128_ID
+   WHERE T.OPERATION_CODE = 'PITCH'
+     And T.OPERATION_START_DATE &gt;= CAST(:min_operation_date As DATE)-:Days
+   AND T.OPERATION_START_DATE  &lt;= CASt(:max_operation_date AS DATE) + 1
+   GROUP BY T.UCC128_ID)
+SELECT Y.PITCHER_NAME AS PITCHER_NAME,
+       MAX(X.OPERATION_DATE) AS OPERATION_DATE,
+       SUM(X.PITCHED_PIECES) AS PITCHED_PIECES,
+       SUM(X.PITCHED_PIECES - X.NUM_OF_ABNORMAL_PIECES) AS SCANED_PIECES,
+       ROUND(((1 -
+             (SUM(X.PITCHED_PIECES) -
+             SUM(X.PITCHED_PIECES - X.NUM_OF_ABNORMAL_PIECES)) /
+             DECODE(SUM(X.PITCHED_PIECES), 0, 1, SUM(X.PITCHED_PIECES)))* 100),
+             2) || '%' AS ACCURATE,/*),
+             4) AS ACCURATE,*/
+          MAX(y.PITCH_DATE) AS PITCH_DATE
+  FROM BOXQC_OPERATION X
+ inner JOIN PITCH_OPERATION Y
+  ON X.UCC128_ID=Y.UCC128_ID
+GROUP BY Y.PITCHER_NAME,x.OPERATION_DATE
+        </pre>
+    <h2>
+        Validation details</h2>
+        <h4>Validation Query for QC</h4>
+        <pre>
+       SELECT  T.UCC128_ID AS UCC128_ID,
+                --T.OPERATOR  AS OPERATOR ,
+               max(trunc(t.operation_start_date)),
+                SUM(T.NUM_OF_PIECES) AS PITCHED_PIECES,
+                SUM(T.NUM_OF_ABNORMAL_PIECES) AS NUM_OF_ABNORMAL_PIECES,
+                MAX(T.LAST_PITCHED_DATE) AS PITCH_DATE
+  FROM BOX_PRODUCTIVITY T
+WHERE T.OPERATION_CODE = '$BOXQC'
+   AND T.NUM_OF_PIECES > 0
+   AND T.OPERATION_START_DATE >= TO_DATE('DATE', 'mm/dd/yyyy')
+   AND T.OPERATION_START_DATE < TO_DATE('DATE', 'mm/dd/yyyy') + 1
+GROUP BY T.UCC128_ID;
+ </pre>
+ 
+
+</body>
+</html>

@@ -1,0 +1,383 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html>
+<head>
+    <title>Report Documentation</title>
+</head>
+<body>
+    <h1>
+        40<b>.</b>23<b> : </b>Pallet History
+    </h1>
+    <h3>
+        Author : Hemant K. Singh</h3>
+    $Revision: 6501$<br />
+    Status: <br />
+    Reviewed By : Sanjeev Kumar<br />
+    Tested by:
+    <p>
+        For the specified Pallet the report displays module code wise carton id, Location and the employee name with the date and time along with VWH, SKUs details and the quantity when any carton was put or removed
+        from the given pallet,virtual warehouse.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        The report displays the history of the given pallet for all module codes,When a
+        carton was put or removed from the given pallet.
+        The report displays the history of the pallet specified by the user, carton assigned
+        on it, locations on which it is assigned and the employee name, date and time on
+        which it located on pallet in BIR( Bundle Inventory Reserve) along with the SKU details and the quantity. In short, it displays
+        the information as where the contents of the Pallet were located in the BIR and
+        in case one of the carton goes in suspense it can be tracked easily.
+    </p>
+    <h2>
+        Algorithm</h2>
+    This report is fetching data from src_carton,src_carton_detail and src_carton_process_detail and the quantity is fetching from src_open_carton table..
+    <h3>
+        Output</h3>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="middle" width="25%">
+                <b>Item</b>
+            </td>
+            <td align="middle" width="20%">
+                <b>Summary</b>
+            </td>
+            <td align="middle" width="10%">
+                <b>Sort Sequence</b>
+            </td>
+            <td align="middle" width="35%">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Module Code
+            </td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                1
+            </td>
+            <td>
+                <r:item>Cartons placed on the pallet. </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Carton_id
+            </td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item>Cartons placed on the pallet. </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Style</td>
+            <td>
+                No</td>
+            <td align="middle">
+                &nbsp;</td>
+            <td>
+                Style of the SKU</td>
+        </tr>
+        <tr>
+            <td>
+                Color</td>
+            <td>
+                No</td>
+            <td align="middle">
+                &nbsp;</td>
+            <td>
+                Color of the SKU</td>
+        </tr>
+        <tr>
+            <td>
+                Dimension</td>
+            <td>
+                No</td>
+            <td align="middle">
+                &nbsp;</td>
+            <td>
+                Dimension of the SKU</td>
+        </tr>
+        <tr>
+            <td>
+                Sku size</td>
+            <td>
+                No</td>
+            <td align="middle">
+                &nbsp;</td>
+            <td>
+                Size of the SKU</td>
+        </tr>
+        <tr>
+            <td>
+                Quantity</td>
+            <td>
+                Sum</td>
+            <td align="middle">
+                &nbsp;</td>
+            <td>
+                Quantity of the SKU</td>
+        </tr>
+        <tr>
+            <td>
+                From_Location</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                2
+            </td>
+            <td>
+                <r:item>
+                Locations on which the cartons locatated or pulled
+            </td>
+        </tr>
+        <tr>
+            <td>
+                To_Location
+            </td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                3
+            </td>
+            <td>
+                Location Where carton was moved
+            </td>
+        </tr>
+        <tr>
+            <td>
+                User
+            </td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item>User who performed operation </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Inserted Date and Time
+            </td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item>Time and date when operation was performed.</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                VWH
+            </td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                Virtual warehouse of the carton
+            </td>
+        </tr>
+        
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="middle" width="20%">
+                <b>Name</b>
+            </td>
+            <td align="middle" width="20%">
+                <b>Default</b>
+            </td>
+            <td align="middle" width="60%">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pallet ID
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Pallet on which cartons are placed in the BIR.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Virtual Warehouse
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                Virtual warehouse ID
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Show records
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Pass the no. of days for which you want to see the data.</td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>1 second</p>
+    The query is logarithmic as there is an index range scan on table src_carton_process_detail(srp).The
+    indexes used for scan are srp.module_code and srp.TO_PALLET_ID.the query was run
+    for pallet Id &quot;P001&quot; and it took 1 second to display the results.
+    <h2>
+        Behavior Change</h2>
+        Now,the report displays style,color,dimension,sku size along with the quantity.
+    <h2>
+        Issues</h2>
+    No Known Issue.
+    <br />
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following table is requried</p>
+    <p>
+        src_carton_process_detail,
+        <br />
+        <br />
+        Use the below script to create the synonyms<br />
+        <br />
+        <code>create or replace synonym src_carton_process_detail for dcms4.src_carton_process_detail;
+        </code><br/>
+        <code>create or replace synonym src_carton_detail for dcms4.src_carton_detail;
+        </code><br />
+        <code>create or replace synonym src_carton for dcms4.src_carton;
+        </code><br />
+    </p>   
+        <h2>
+            Parameter Technical Details</h2>
+        <ul>
+            <li>Pallet ID (Type = String): On which the cartons are placed in the BIR.&nbsp;
+            </li>
+            <li>Virtual Warehouse (Type = String): This is a drop down list control. Virtual Warehouse
+                default value is &quot;All&quot;. </li>
+            <ul>
+                <li>Query to fill list values = &quot;SELECT vwh_id AS vwh_id, vwh_id || &#39;: Query
+                    to fill list values = &quot;SELECT vwh_id AS vwh_id, vwh_id || &#39;: &#39; || description
+                    AS description FROM tab_virtual_warehouse ORDER BY vwh_id&quot; </li>
+            </ul>
+            <ui>
+            <li>Pass the no. of days(an integer value) for which you want to see the data. This is a filter to pass the no. of days for which you want to see the data.</li>
+            </ui>
+        </ul>
+        <h2>
+            Parameter Validation</h2>
+        No special validations.
+        <h2>
+            Query&#39;s documentation:</h2>
+        <pre>
+      WITH PALLET_HISTORY AS
+ (SELECT SRPD.CARTON_ID AS CARTON_ID,
+         SRPD.TO_LOCATION_ID AS TO_LOCATION_ID,
+         SRPD.FROM_LOCATION_ID AS FROM_LOCATION_ID,
+         SRPD.MODULE_CODE AS MODULE_CODE,
+         SCD.STYLE AS STYLE,
+         SCD.COLOR AS COLOR,
+         SCD.DIMENSION AS DIMENSION,
+         SCD.SKU_SIZE AS SKU_SIZE,
+         scd.quantity AS quantity,
+         SRPD.INSERTED_BY AS INSERTED_BY,
+         SRPD.INSERT_DATE AS INSERT_DATE,
+         SRPD.VWH_ID AS VWH_ID
+    FROM SRC_CARTON_PROCESS_DETAIL SRPD
+   LEFT OUTER JOIN SRC_CARTON SC
+      ON SC.CARTON_ID = SRPD.CARTON_ID
+   LEFT OUTER JOIN SRC_CARTON_DETAIL SCD
+      ON SC.CARTON_ID = SCD.CARTON_ID
+   WHERE (SRPD.FROM_PALLET_ID =:pallet_id OR SRPD.TO_PALLET_ID =:pallet_id)
+     AND SRPD.INSERT_DATE &gt; SYSDATE - cast(:no_of_days as number)
+  UNION ALL
+  SELECT SRPD.CARTON_ID AS CARTON_ID,
+         SRPD.TO_LOCATION_ID AS TO_LOCATION_ID,
+         SRPD.FROM_LOCATION_ID AS FROM_LOCATION_ID,
+         SRPD.MODULE_CODE AS MODULE_CODE,
+         MS.STYLE AS STYLE,
+         MS.COLOR AS COLOR,
+         MS.DIMENSION AS DIMENSION,
+         MS.SKU_SIZE AS SKU_SIZE,
+         soc.total_carton_quantity AS quantity,
+         SRPD.INSERTED_BY AS INSERTED_BY,
+         SRPD.INSERT_DATE AS INSERT_DATE,
+         SRPD.VWH_ID AS VWH_ID
+    FROM SRC_CARTON_PROCESS_DETAIL SRPD
+   LEFT OUTER JOIN SRC_OPEN_CARTON SOC
+      ON SRPD.CARTON_ID = SOC.CARTON_ID
+   INNER JOIN MASTER_SKU MS
+      ON SOC.SKU_ID = MS.SKU_ID
+   WHERE (SRPD.FROM_PALLET_ID =:pallet_id OR SRPD.TO_PALLET_ID =:pallet_id )
+     AND SRPD.INSERT_DATE &gt; SYSDATE - cast(:no_of_days as number)
+  )
+SELECT CARTON_ID AS CARTON_ID,
+       FROM_LOCATION_ID AS FROM_LOCATION_ID,
+       TO_LOCATION_ID TO_LOCATION_ID,
+       MODULE_CODE AS module_code,
+       VWH_ID AS VWH_ID,
+       MAX(STYLE) AS "Style",
+       MAX(COLOR) AS "Color",
+       MAX(DIMENSION) AS "Dimension",
+       MAX(SKU_SIZE) AS SKU_SIZE,
+       MAX(quantity) AS "Quantity",
+       MAX(INSERTED_BY) AS INSERTED_BY,
+       INSERT_DATE AS INSERT_DATE
+  FROM PALLET_HISTORY PH
+ GROUP BY CARTON_ID,
+          FROM_LOCATION_ID,
+          TO_LOCATION_ID,  
+          MODULE_CODE,     
+          INSERT_DATE,
+          VWH_ID
+            </pre>
+        <h2>
+            Validation details</h2>
+        Bellow queries may have the where clause in the [] brackets. It means these are
+        the optional parameters. If you do not want to pass these parameters just remove
+        the [] section.
+        <br />
+        <br />
+        <b>Query:</b><pre><r:query>
+						select srpd.carton_id,
+						srpd.from_location_id,
+						srpd.module_code,
+						srpd.inserted_by,
+						srpd.vwh_id
+						from src_carton_process_detail srpd
+						where srpd.to_pallet_id = :PALLET_ID
+						AND srpd.carton_id = :CARTON_ID
+                                                AND srpd.module_code=:MODULE_CODE
+					</r:query></pre>
+        <b>Description:</b><pre><r:description>
+						Execute the above query to get the pallet history  of the carton moved from which location and to which from pallet.
+					</r:description></pre>
+        <!--End divTechnical-->
+</body>
+</html>

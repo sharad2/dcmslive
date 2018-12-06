@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>XTremeReporter 3 Export to PDF</title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        Export to PDF</h1>
+    <h3>
+        Features
+    </h3>
+    <ol>
+        <li>Fetches and displays the data for the report against the passed parameters</li>
+        <li>In case of report with paging exports the selected page i.e. the page selected from
+            the table and if run staight away for passed parameters then exports first page</li>
+        <li>The format of any report isn't altered and remains the same</li>
+        <li>Hiding each an every component from the page to export which is of least use for
+            PDF eg. None of the button is displayed in PDF, recently viewed reports link is
+            not been displayed, About box is also not displayed nor the filters etc</li>
+        <li>Each page displays Title at the header and date of generating the PDF at footer</li>
+        <li>All the links of the page are exported as plain text i.e. clicking those links in
+            the PDF will not have any effect this rule also applies to table headers</li>
+        <li>Each page displays its page number to get the index of current page of all the available
+            pages</li>
+        <li>Attributes for PDF have been set which can be viewed from its file -> properties,
+            the attributes set by us are
+            <ul>
+                <li>Title: Title of report</li>
+                <li>Created Date: Current date</li>
+                <li>Author Name: Logged in user</li>
+                <li>Subject: Report Header</li>
+                <li>Keyword: Report description</li>
+            </ul>
+        </li>
+    </ol>
+    <h3>
+        Steps to perform for PDF export</h3>
+    <ol>
+        <li>Paste the supplied assembly *.dll to the bin folder</li>
+        <li>Insert a button in the ButtonBar, click handler of this button will perform the
+            action for PDF export</li>
+        <li>PageBase class within App_Code folder will be responsible for communicating with
+            the supplied assembly and calling its function for PDF export and performing all
+            the work on PDF document, it will also be responsible for communicating with other
+            class about whether to perform PDF export or not</li>
+        <li>Since we would like to remove left side bar in MaterPage while pdfexport so the
+            placeholder containing the side bar should be set to visible = "false" while exporting</li>
+        <li>Removing side bar should remove the padding of repots grid so that it can adjust
+            to free left space so the css class for same should be set to empty</li>
+        <li>For removing Expand All and Collapse All buttons while exporting the GridView need
+            to perform some work, these work are in classes GridViewEx.cs and GridViewExMasterRow.cs
+            so the dll for EclipseLibrary also need to be renewed</li>
+        <li>Any work if to be performed on ServerControl has to be performed in the click event
+            of export button</li>
+        <li>Change the Default style sheet present within App Themes folder since the selector
+            for main-content has changed from id selector to class selector</li>
+    </ol>
+    <h3>
+        Limitations</h3>
+    <ol>
+        <li>Table header i.e. column header for each page does not repeat as in case of HTML</li>
+        <li>Table with large data may halt export</li>
+    </ol>
+</body>
+</html>

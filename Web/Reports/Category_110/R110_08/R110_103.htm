@@ -1,0 +1,665 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>PO Wise(110.103)</title>
+    <style type="text/css">
+
+        .style6
+        {
+            width: 51px;
+        }
+        </style>
+</head>
+<body>
+
+    <h1 style="text-align: center">
+        110<b>.103 : </b>Open Orders Drilldown Report (PO Wise)
+    </h1>
+    Author : <b>Sanjeev Kumar</b><br />
+    $Revision: 7233 $<br />
+    Status:
+    Done<br />
+    Reviewed By : Hemant K. varshney<br />
+    Tested By : Sanjeev Kumar<br />
+    <br />
+    This Report Displays PO wise information of open orders.<br />
+    <h2>
+        Overview</h2>
+    For the specified values of Order Type, Dates, Warehouse Locations ,Vwh ID , 
+    Customer,Bucket, Reporting Status, customer id, store and customer dc and Building.<ol>
+        <li>The detail of PO, Warehouse Location wise . </li>
+        <li>It will further drill down on SKU to show the detailed SKU-wise report in a Certain PO</li>
+    </ol>
+    <h2>
+        Algorithm</h2>
+    <p>
+        For finding the PO, dc cancel date, start date, 
+        number of ordered pieces and dollars, pieces, number of pickslip and, skus in 
+        each PO for passed order status (‘IN ORDERED BUCKET’), customer, virtual 
+        warehouse and warehouse location using the table <code>DEM_PICKSLIP and 
+        DEM_PICKSLIP_DETAIL</code> table where the pickslip status is 1.</p>
+    <p>
+        For finding the PO, dc cancel date, start date, number of 
+        ordered pieces and dollars, pieces, number of pickslip and skus in each PO for 
+        passed order status (except ‘IN ORDERED BUCKET’) , customer/bucket, virtual 
+        warehouse and warehouse location using the table <code>PS, PO, BOX, and BOXDET</code> where 
+        the pickslip reporting status is not null of those status of order.</p>
+    <p>
+        Number units are fetched from <code>MASTER_SKU table</code> 
+        against the SKU which is in the order.
+    </p>
+    <p>
+        &nbsp;</p>
+    <h2>
+        Output
+    </h2>
+    <table border="1" cellpadding="0" cellspacing="1">
+        <tr>
+            <td>
+                <b>Item</b>
+            </td>
+            <td>
+                <p>
+                    <b>Summary</b></p>
+            </td>
+            <td>
+                <b>Default Sort 
+                <br />
+                Sequence</b>
+            </td>
+            <td>
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building</td>
+            <td>
+                &nbsp;No</td>
+            <td>
+                1</td>
+            <td>
+                Warehouse Loaction of Order</td>
+        </tr>
+        <tr>
+            <td>
+                Vwh</td>
+            <td>
+                No</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Virtual Warehouse ID</td>
+        </tr>
+        <tr>
+            <td>
+                PO</td>
+            <td>
+                &nbsp;No</td>
+            <td>
+                &nbsp
+            </td>
+            <td>
+                Id of PO</td>
+        </tr>
+        <tr>
+            <td>
+                PO Attrib 1</td>
+            <td class="style6">
+                NO</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                This column is showing STO number.</td>
+        </tr>
+        <tr>
+            <td>
+                DC Cancel Date</td>
+            <td>
+                No</td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Latest date by which the pickslip must leave Distribution Centre in order to reach
+                the customer on time.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Start Date</td>
+            <td>
+                No</td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                Earliest date on which the customer is willing to accept the shipment.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Import Date</td>
+            <td>
+                No</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                This is pickslip import date.</td>
+        </tr>
+        <tr>
+            <td>
+                Ordered Pices</td>
+            <td>
+                Sum</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Report is displaying&nbsp; total pieces of the purchase order.</td>
+        </tr>
+        <tr>
+            <td>
+                Ordered Dollars</td>
+            <td>
+                Sum</td>
+            <td>
+                2</td>
+            <td>
+                Ordered amount</td>
+        </tr>
+        <tr>
+            <td>
+                In Box Pieces</td>
+            <td>
+                Sum</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Number of Pieces 
+                in Certain PO</td>
+        </tr>
+        <tr>
+            <td>
+                In Box Dollars</td>
+            <td>
+                sum</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Shipped amount
+            </td>
+        </tr>
+        <tr>
+            <td>
+                In Box Units</td>
+            <td>
+                Sum</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Number of Units 
+                in Certain PO</td>
+        </tr>
+        <tr>
+            <td>
+                Number of PickSlips</td>
+            <td>
+                Sum</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Number of Pickslips 
+                In Certain PO</td>
+        </tr>
+        <tr>
+            <td>
+                Number Of SKUs</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                Number Of SKUs In Certain PO</td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellspacing="1" cellpadding="1" 
+        style="height: 197px; width: 65%">
+        <tbody>
+            <tr>
+                <td align="center">
+                    <b>Name</b>
+                </td>
+                <td align="center">
+                    <b>Default</b>
+                </td>
+                <td align="center">
+                    <b>Detail</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Order Type</p>
+                </td>
+                <td>
+                    <p>
+                        All</p>
+                </td>
+                <td>
+                    Order Type like All, Domestic,International</td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Date Range For Delivery Date</p>
+                </td>
+                <td>
+                    <p>The first day of previous year</p>
+                    <p>Fiscal Month end for the current month</p>
+              
+                </td>
+                 <td>
+                     User can see the order the basis of the delivery date range.</td>
+               
+            </tr>
+            <tr>
+                <td>
+                    Date Range For DC Cancel Date</td>
+                <td>
+                    <p>The first day of previous year</p>
+                    <p>Fiscal Month end for the current month</p>
+                </td>
+                 <td>
+                    User can see the orders which are cancelled&nbsp; next days.
+                </td>
+               
+            </tr>
+            <tr>
+                <td>
+                    Virtual Warehouse</td>
+                <td>
+                    All</td>
+                <td>
+                    virtaul warehouse of the SKU.</td>
+            </tr>
+            <tr>
+                <td>
+                    Orders Required
+                    VAS</td>
+                <td>
+                    All VAS</td>
+                <td>
+                    Any VAS(Value Added Service) applied on order.</td>
+            </tr>
+            <tr>
+                <td>
+                    Customer</td>
+                <td>
+                    None</td>
+                <td>
+                    Report is displaying Id of the customers. </td>
+            </tr>
+            <tr>
+                <td>
+                    Bucket</td>
+                <td>
+                    None</td>
+                <td>
+                    ID of the Bucket.</td>
+            </tr>
+            <tr>
+                <td>
+                    Customer DC</td>
+                <td>
+                    None</td>
+                <td>
+                Customer Distribution Center ID to which the SKUs will be shipped.
+            </td>
+            </tr>
+            <tr>
+                <td>
+                    Customer 
+                    Store</td>
+                <td>
+                    None</td>
+                <td>
+                Customer Store id for which the SKUs have been ordered.
+            </td>
+            </tr>
+            <tr>
+                <td>
+                    Reporting Status</td>
+                <td>
+                    INORDER BUCKET</td>
+                <td>
+                    Indicate the processing of the orders stage.</td>
+            </tr>
+            <tr>
+                <td>
+                    Building</td>
+                <td>
+                    All</td>
+                <td>
+                    Building of the orders</td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 2 </i>Sec.</p>
+    <h2>
+        Behavior Change </h2>
+     <ul>
+         <li>Now report will show STO against a PO. This additional information will be displayed under a new column &#39;PO Attrib 1&#39;.</li>
+    </ul><h2>
+        Issues</h2>
+    No Known Issue.
+    <br />
+    <h3>
+        Prerequisites</h3>
+    <ul>
+        <li>
+            <h4>
+                Private synonyms used in the reports are -
+            </h4>
+            <code>PS, PO, TAB_REPORTING_STATUS, DEM_PICKSLIP, BOXDET and ps_vas</code>.<br />
+            <p>
+                Run the following scripts to create the private synonyms of the above objects-</p>
+            <code>CREATE OR REPLACE SYNONYM PS FOR dcms8.PS;<br />
+                CREATE OR REPLACE SYNONYM PO FOR dcms8.PO;<br />
+                CREATE OR REPLACE SYNONYM TAB_REPORTING_STATUS FOR dcms8.TAB_REPORTING_STATUS;<br />
+                CREATE OR REPLACE SYNONYM DEM_PICKSLIP FOR dcms4.DEM_PICKSLIP;<br />
+                CREATE OR REPLACE SYNONYM BOXDET FOR dcms8.BOXDET;<br />
+                CREATE OR REPLACE SYNONYM ps_vas FOR dcms8.ps_vas;
+            </code></li>
+            
+            <p> AppSettings Not needed </p>
+            
+    </ul>
+    <h3>
+        Technical Documentaioncumentaion</h3>
+    <h4>
+        Parameter Technical Details</h4>
+    <ol>
+        <li>Order Type:(<code>Type - String</code>):This parameter can be used to determine
+            customer type.
+            <ul>
+                <li>Orders from All customers</li>
+                <li>Orders from Domestic customers
+                    <ul>
+                        <li>Exclude Customers
+                            <ul>
+                                <li>Retail - Retails customers will be excluded in the select statement.</li>
+                                <li>IDC - IDC customers will be excluded in the select statement. </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>Orders from International customers</li>
+            </ul>
+        </li>
+        <li>Deleivery Date (<code>Type - DateTime</code>):This parameter can be used to specify
+            the date-range for Delivery date.</li>
+        <li>DC Cancel Date (<code>Type - DateTime</code>):This parameter can be used to specify
+            the date-range for DC Cancel date.</li>
+        <li>Virtual Warehouse (<code>Type - String</code>):This parameter can be used to specify
+            the Virtua Warehouse.</li>
+        <li>Warehouse Location (<code>Type - String</code>):This parameter can be used to specify
+            the Warehouse Location.</li>
+        <li>Customer (<code>Type - String</code>):This parameter can be used to specify
+            the Customer ID.</li>
+        <li>Bucket (<code>Type - String</code>):This parameter can be used to specify
+            the Bucket ID.</li>
+        <li>Customer DC(Type-String):This parameter can be used to specify the customer DC.</li>
+        <li>Customer Store(Type-String):This parameter can be used to specify the customer 
+            store.</li>
+        <li>Reporting Status (<code>Type - String</code>):This parameter can be used to pass Order status
+            </li>
+    </ol>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.<p>
+        &nbsp;</p>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <pre>
+ WITH PSDATA AS
+ (SELECT count(distinct PS.PICKSLIP_ID) AS PICKSLIP_ID,
+         sum(pd.pieces_ordered)as PIECES_ORDERED,
+         count(DISTINCT pd.upc_code) as TOTAL_SKU_ORDERED,
+         max(PO.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+         max(PO.START_DATE) AS START_DATE,
+         MAX(PS.PICKSLIP_IMPORT_DATE) AS IMPORT_DATE,
+         sum(pd.pieces_ordered * pd.extended_price) as ORDERED_DOLLARS,
+         PO.PO_ID AS PO_ID,
+         NVL(PS.WAREHOUSE_LOCATION_ID,'Unknown') AS WAREHOUSE_LOCATION_ID,
+         ps.vwh_id as vwh_id,
+         CASE WHEN COUNT(UNIQUE PS.SALES_ORDER_ID) > 1 THEN
+            '*****'
+            ELSE
+         TO_CHAR(max(ps.SALES_ORDER_ID))
+            END as STO
+    FROM PS PS
+     inner join psdet pd on
+     ps.pickslip_id=pd.pickslip_id
+    INNER JOIN PO PO
+      ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+     AND PS.PO_ID = PO.PO_ID
+     AND PS.ITERATION=PO.ITERATION
+     WHERE PS.TRANSFER_DATE IS NULL
+      AND PD.TRANSFER_DATE IS NULL
+      and ps.pickslip_cancel_date IS NULL
+      <if c="$vas">AND PS.PICKSLIP_ID IN (SELECT PV.PICKSLIP_ID FROM PS_VAS PV 
+          WHERE PV.VAS_ID IS NOT NULL
+           <if c="$vas_id !='vas'">and pv.vas_id =:vas_id</if> 
+          )</if>
+      <if>AND ps.vwh_id = :vwh_id</if>    
+      <if>AND <a pre="NVL(ps.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>      
+      <if>AND ps.customer_id=:customer_id</if>
+      <if c="$reporting_status != 'IN ORDER BUCKET'">AND PS.REPORTING_STATUS=:reporting_status</if>
+      <if c="$reporting_status = 'IN ORDER BUCKET'">AND 1 = 2</if>    
+      <if>AND po.start_date &gt;= cast(:delivery_start_date as date)</if>
+      <if>AND po.start_date &lt;= cast(:delivery_end_date as date)</if>
+      <if>AND po.dc_cancel_date &gt;=cast(:dc_cancel_start_date as date)</if>
+      <if>AND po.dc_cancel_date &lt;=cast(:dc_cancel_end_date as date)</if>
+      <if c="$order_type='D' and contains($restrict_type, 'R')">AND ps.customer_id NOT IN (select c.customer_id from cust c WHERE account_type = 'RTL')</if>
+      <if c="$order_type='D' and contains($restrict_type, 'I')">AND ps.customer_id NOT IN (select c.customer_id from cust c WHERE account_type = 'IDC')</if>
+      <if c="$order_type='D'">AND ps.Export_Flag IS NULL</if>
+      <if c="$order_type='I'">AND ps.Export_Flag IS NOT NULL</if>
+      <if>AND ps.bucket_id=:BUCKET_ID</if>
+      <if>AND PS.CUSTOMER_DC_ID = :customer_dc_id</if>
+      <if>AND ps.CUSTOMER_STORE_ID = :customer_store_id</if>
+      group by PO.PO_ID, NVL(PS.WAREHOUSE_LOCATION_ID,'Unknown'), ps.vwh_id
+      
+       
+  UNION ALL
+  
+  SELECT count(distinct PS2.PICKSLIP_ID) AS PICKSLIP_ID,
+         sum(PS2.QUANTITY_ORDERED) AS PIECES_ORDERED,
+         COUNT(DISTINCT PS2.UPC_CODE) AS TOTAL_SKU_ORDERED,
+         max(PS1.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+         max(PS1.DELIVERY_DATE) AS START_DATE,
+         MAX(PS1.PICKSLIP_IMPORT_DATE) AS IMPORT_DATE,
+         sum(PS2.Extended_Price * ps2.QUANTITY_ORDERED) AS ORDERED_DOLLARS,
+         PS1.CUSTOMER_ORDER_ID AS PO_ID,
+         NVL(PS1.WAREHOUSE_LOCATION_ID,'Unknown') AS WAREHOUSE_LOCATION_ID,
+         ps1.vwh_id as vwh_id,
+         CASE WHEN COUNT(UNIQUE PS1.SALES_ORDER_ID) > 1 THEN
+            '*****'
+            ELSE
+         TO_CHAR(max(ps1.SALES_ORDER_ID))
+            END as STO
+    FROM DEM_PICKSLIP PS1
+   INNER JOIN DEM_PICKSLIP_DETAIL PS2
+      ON PS1.PICKSLIP_ID = PS2.PICKSLIP_ID
+       WHERE 1=1
+       <if c="$vas">AND PS1.PICKSLIP_ID IN (SELECT PV.PICKSLIP_ID FROM PS_VAS PV 
+          WHERE PV.VAS_ID IS NOT NULL
+           <if c="$vas_id !='vas'">and pv.vas_id =:vas_id</if> 
+          )</if>
+       <if>AND ps1.vwh_id = :vwh_id</if>    
+       <if>AND <a pre="NVL(ps1.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>      
+       <if>AND ps1.customer_id=:customer_id</if>
+       <if c="$reporting_status='IN ORDER BUCKET'">AND PS1.PS_STATUS_ID = 1</if>
+       <if c="$reporting_status!='IN ORDER BUCKET'">AND 1=2</if>
+       <if>AND ps1.delivery_date &gt;= cast(:delivery_start_date as date)</if>
+       <if>AND ps1.delivery_date &lt;= cast(:delivery_end_date as date)</if>
+       <if>AND ps1.dc_cancel_date &gt;=cast(:dc_cancel_start_date as date)</if>
+       <if>AND ps1.dc_cancel_date &lt;=cast(:dc_cancel_end_date as date)</if>
+       <if c="$order_type='D' and contains($restrict_type, 'R')">AND ps1.customer_id NOT IN (select c.customer_id from cust c WHERE account_type = 'RTL')</if>
+       <if c="$order_type='D' and contains($restrict_type, 'I')">AND ps1.customer_id NOT IN (select c.customer_id from cust c WHERE account_type = 'IDC')</if>
+       <if c="$order_type='D'">AND ps1.Export_Flag IS NULL</if>
+       <if c="$order_type='I'">AND ps1.Export_Flag IS NOT NULL</if>
+       <if c="$BUCKET_ID">AND 1=2</if>
+       <if>AND ps1.customer_dist_center_id = :customer_dc_id</if>
+       <if>AND ps1.CUSTOMER_STORE_ID = :customer_store_id</if>
+       group by ps1.CUSTOMER_ORDER_ID,NVL(PS1.WAREHOUSE_LOCATION_ID,'Unknown'), ps1.vwh_id
+       ),
+
+ALL_CUST AS
+ (SELECT SUM(PSDATA.Pieces_Ordered) AS ORDERED_PIECES,
+         SUM(PSDATA.TOTAL_SKU_ORDERED) AS TOTAL_SKU_ORDERED,
+         SUM(PSDATA.ORDERED_DOLLARS) AS ORDERED_DOLLARS,
+         PSDATA.PO_ID AS PO_ID,
+         MAX(PSDATA.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+         MAX(PSDATA.START_DATE) AS START_DATE,
+         MAX(PSDATA.IMPORT_DATE) AS IMPORT_DATE,
+         PSDATA.warehouse_location_id AS warehouse_location_id,
+         psdata.vwh_id as vwh_id,
+         max(psdata.STO) as STO,
+         MAX(distinct PSDATA.PICKSLIP_ID) AS NO_OF_PICKSLIPS
+    FROM PSDATA PSDATA
+   GROUP BY PSDATA.warehouse_location_id, PSDATA.PO_ID,psdata.vwh_id),
+
+BOX_PICKSLIPS AS
+ (SELECT /*+ index(ps PS_P_TRANSFER_DATE_I) */
+         PS.PO_ID AS PO_ID,
+         PS.CUSTOMER_ID AS CUSTOMER_ID,
+         NVL(PS.WAREHOUSE_LOCATION_ID,'Unknown') AS WAREHOUSE_LOCATION_ID,
+         ps.vwh_id as vwh_id,
+         SUM(BD.CURRENT_PIECES / NVL(SKU.PIECES_PER_PACKAGE, 1)) AS UNITS_SHIPPED,
+         SUM(BD.CURRENT_PIECES * BD.EXTENDED_PRICE) AS SHIPPED_DOLLARS,
+         SUM(BD.CURRENT_PIECES) AS CURRENT_PIECES
+    FROM BOX B
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+   INNER JOIN PS PS
+      ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+      <if c="$delivery_start_date or $delivery_end_date or $dc_cancel_start_date or $dc_cancel_end_date">INNER JOIN po po ON po.customer_id = ps.customer_id and po.po_id = ps.po_id and po.iteration = ps.iteration</if>
+   inner JOIN master_sku sku
+      ON BD.UPC_CODE = SKU.UPC_CODE
+   WHERE BD.STOP_PROCESS_DATE IS NULL
+     AND B.STOP_PROCESS_DATE IS NULL
+     AND PS.TRANSFER_DATE IS NULL
+     <if>AND ps.vwh_id = :vwh_id</if>
+     <if>AND <a pre="NVL(ps.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>      
+     <if>AND ps.customer_id=:customer_id</if>
+     <if c="$reporting_status != 'IN ORDER BUCKET'">AND PS.REPORTING_STATUS=:reporting_status</if>
+     <if c="$reporting_status = 'IN ORDER BUCKET'">AND 1 = 2</if> 
+     <if>AND po.start_date &gt;= cast(:delivery_start_date as date)</if>
+     <if>AND po.start_date &lt;= cast(:delivery_end_date as date)</if>
+     <if>AND po.dc_cancel_date &gt;=cast(:dc_cancel_start_date as date)</if>
+     <if>AND po.dc_cancel_date &lt;=cast(:dc_cancel_end_date as date)</if>
+     <if c="$order_type='D' and contains($restrict_type, 'R')">AND ps.customer_id NOT IN (select c.customer_id from cust c WHERE account_type = 'RTL')</if>
+     <if c="$order_type='D' and contains($restrict_type, 'I')">AND ps.customer_id NOT IN (select c.customer_id from cust c WHERE account_type = 'IDC')</if>
+     <if c="$order_type='D'">AND ps.Export_Flag IS NULL</if>
+     <if c="$order_type='I'">AND ps.Export_Flag IS NOT NULL</if>
+     <if c="$BUCKET_ID">AND ps.bucket_id=:BUCKET_ID</if>
+     <if>AND PS.CUSTOMER_DC_ID = :customer_dc_id</if>
+     <if>AND ps.CUSTOMER_STORE_ID = :customer_store_id</if>
+   GROUP BY PS.PO_ID, NVL(PS.WAREHOUSE_LOCATION_ID,'Unknown'),PS.CUSTOMER_ID,ps.vwh_id)
+SELECT AC.PO_ID AS PO_ID, 
+       AC.DC_CANCEL_DATE           AS DC_CANCEL_DATE, 
+       AC.START_DATE               AS START_DATE, 
+       AC.IMPORT_DATE              AS IMPORT_DATE,
+       AC.ORDERED_PIECES           AS ORDERED_PIECES, 
+       AC.ORDERED_DOLLARS          AS ORDERED_DOLLARS, 
+       BP.CURRENT_PIECES           AS PIECES_IN_BOXES,
+       BP.SHIPPED_DOLLARS          AS SHIPPED_DOLLARS,
+       BP.UNITS_SHIPPED            AS UNITS_SHIPPED, 
+       AC.NO_OF_PICKSLIPS          AS NO_OF_PICKSLIPS,
+       AC.TOTAL_SKU_ORDERED        AS NO_OF_SKU, 
+       AC.WAREHOUSE_LOCATION_ID    AS WAREHOUSE_LOCATION_ID,
+       AC.Vwh_id                   AS vwh_id,
+       AC.STO                      AS STO
+  FROM ALL_CUST AC
+  LEFT OUTER JOIN BOX_PICKSLIPS BP
+    ON AC.PO_ID = BP.PO_ID  
+    AND AC.WAREHOUSE_LOCATION_ID = BP.WAREHOUSE_LOCATION_ID
+    and ac.vwh_id = bp.vwh_id
+
+</pre>
+   <h3>
+   Validation Details
+   </h3> 
+<h4>PO Detail</h4>
+<pre>
+select 
+       sum(ps.total_quantity_ordered) as pieces,
+       sum(ps.total_dollars_ordered) as dollars,
+       count(distinct ps.pickslip_id) as pickslip
+     FROM  ps
+ inner join po po
+    on ps.po_id = po.po_id
+   and ps.customer_id = po.customer_id
+   and ps.iteration = po.iteration
+ where ps.warehouse_location_id =:warehouse_location_id 
+   and ps.vwh_id =:vwh_id 
+   and po.start_date >=:start_date 
+   and po.start_date <=:start_date 
+   and po.dc_cancel_date >=:dc_cancel_date 
+   and po.dc_cancel_date <=:dc_cancel_date 
+   and ps.transfer_date is null
+   and ps.reporting_status =:reporting_status 
+   and ps.po_id =:po_id ;  
+</pre>
+<h4>In Order Po detail</h4>
+<pre>
+SELECT PS1.TOTAL_QUANTITY_ORDERED AS ORDERED_PIECES,
+       PS1.TOTAL_DOLLARS_ORDERED  AS ORDERED_DOLLARS,
+       ps1.total_sku_ordered as total_Sku
+  FROM DEM_PICKSLIP PS1
+ where ps1.ps_status_id = 1   
+   AND ps1.delivery_date >=:delivery_date
+   AND ps1.delivery_date <=:delivery_date
+   AND ps1.dc_cancel_date >=:dc_cancel_date 
+   AND ps1.dc_cancel_date <=:dc_cancel_date 
+   and ps1.warehouse_location_id =:warehouse_location_id 
+   and ps1.vwh_id =:vwh_id 
+   and ps1.customer_order_id=:customer_order_id
+   
+</pre>
+<h4>Shipped pieces and Dollars</h4>
+<pre>
+select ps.warehouse_location_id,
+       ps.vwh_id,
+       ps.bucket_id,
+       BD.CURRENT_PIECES / NVL(SKU.PIECES_PER_PACKAGE, 1) AS UNITS_SHIPPED,
+       bd.current_pieces AS current_pieces
+  from boxdet bd
+ inner join ps ps
+    on ps.pickslip_id = bd.pickslip_id
+ inner JOIN master_sku sku
+    ON BD.UPC_CODE = SKU.UPC_CODE
+ inner join po po
+    on ps.customer_id = po.customer_id
+   and ps.po_id = po.po_id
+   and ps.iteration = po.iteration   
+ where bd.stop_process_date is null
+   and bd.current_pieces > 0
+   and ps.po_id=:po_id
+   and ps.warehouse_location_id =:warehouse_location_id
+   and ps.vwh_id =:vwh_id 
+   and ps.reporting_status=:reporting_status
+   and po.start_date >=:start_date
+   and po.start_date <=:start_date
+   and po.dc_cancel_date >=:dc_cancel_date 
+   and po.dc_cancel_date <=:dc_cancel_date 
+   </pre>
+</body>
+</html>

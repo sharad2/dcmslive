@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+
+    <form id="Form1" 
+    action="http://w3chile/XTremeReporter/ReportDoc.aspx?_Report=C%3a%5cDCMSLive%5cReports%5cR140.07.xsd" 
+    method="post" name="Form1">
+    <div>
+        <input id="__VIEWSTATE" name="__VIEWSTATE" type="hidden" 
+            value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+    </div>
+    <h1 align="center" xmlns="http://www.w3.org/1999/xhtml">
+        140<b>.</b>07<b> : </b>Corrugate Usage Report
+    </h1>
+    <h3>
+        Author : Manmohan Bisht</h3>
+    $Revision: 521 $<br />
+    Status: Reviewed<br xmlns="http://www.w3.org/1999/xhtml" />
+    Reviewed By : Hemant K. Varshney
+    <p author="Vipin Raturi" reviewer="Manmohan Bisht" status="In-Progress" 
+        xmlns="http://www.w3.org/1999/xhtml">
+        This report shows the corrugate used by the expeditor for given date or date 
+        range for the warehouse location.
+    </p>
+    <h2>
+        Overview</h2>
+    <p>
+        This report shows the number of cartons with warehouse location by the carton 
+        type for given date or date range. This report also shows corrugate usage 
+        details by using filter warehouse location.
+    </p>
+    <h2>
+        Algorithm</h2>
+    This report retrieves the carton type from box_productivity table and count of 
+    cartons from box table. To retrieve warehouse location tables warehouseloc, 
+    tab_label_group and ps are used.
+    <br/>
+    <br/>
+    The warehouse location will be retrieved on the basis of current assignment of 
+    warehouse_location to that particular label_id. It could be possible that when a 
+    box was created at that time the label of those SKUs which are there in the box 
+    are attached to warehouse location 1 but when you run the report the label is 
+    shifted to location 2. In this case report will show you location 2 as the 
+    warehouse location.
+    <h3>
+        Output</h3>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="middle" width="25%">
+                <b>Item</b></td>
+            <td align="middle" width="20%">
+                <b>Summary</b></td>
+            <td align="middle" width="10%">
+                <b>Sort Sequence</b></td>
+            <td align="middle" width="35%">
+                <b>Detail</b></td>
+        </tr>
+        <tr>
+            <td>
+                Carton Type</td>
+            <td>
+                No
+            </td>
+            <td align="middle">
+                2</td>
+            <td>
+                <r:item  SortSequence="2" Key="true" 
+Term="Carton Type">Type of cartons. </R:ITEM>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No. of Cartons</td>
+            <td>
+                Sum</td>
+            <td align="middle">
+                &nbsp;
+            </td>
+            <td>
+                <r:item Term="No. of Cartons">Total number of cartons for 
+                given carton type. </R:ITEM>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Warehouse Location</td>
+            <td>
+                No</td>
+            <td align="middle">
+                1</td>
+            <td>
+                <r:item  SortSequence="1" Key="true" 
+Term="Warehouse Location">Warehouse for which we cartons are consumed.</td>
+        </tr>
+        </table>
+    <br />
+    <h2>
+        Parameters</h2>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="middle" width="20%">
+                <b>Name</b></td>
+            <td align="middle" width="20%">
+                <b>Default</b></td>
+            <td align="middle" width="60%">
+                <b>Detail</b></td>
+        </tr>
+        <tr>
+            <td>
+                Check Date</td>
+            <td>
+                Today&#39;s Date</td>
+            <td>
+                The date / date range from which you want to display corrugate usage details.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Warehouse Location</td>
+            <td>
+                All</td>
+            <td>
+                Location in Warehouse</td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>3 sec.</p>
+    The query is showing 
+    linear performance w.r.t. table box. There is full scan on the table ps, 
+    tab_label_group and warehouseloc. There is index based scan on table box and 
+    box_productivity. Index BOX_PK used in the table Box and Index 
+    BOXPROD_OPERATION_START_DATE_I used in the table box_productivity.
+    <h2>
+        Behavior Change</h2>
+    <h2>
+        Issues</h2>
+    <p>
+        No known issue</p>
+    <h2>Prerequisites</h2>
+    <p>Private synonyms for the following tables are requried</p>
+    <p>box_productivity,
+    <br />
+    box,<br />
+    ps
+    <br />
+    <br />
+    Use the below script to create the synonyms<br />
+    <br />
+    <code>
+    create or replace synonym box_productivity for dcms8.box_productivity;
+    <br />
+    create or replace synonym box for dcms8.box;
+    <br />
+    create or replace synonym ps for dcms8.ps;</code></p>
+    
+    
+        <p>
+            &nbsp;</p>
+    <div id="divTechnical">
+        <h2>
+            Parameter Technical Details</h2>
+        <ul>
+            <li>Check Date (Type = Date): Please specify the Date range for which you wish to see 
+                details of Corrugate usage. This is a date range control. </li>
+            <li>Warehouse Location (Type = String): This is a drop down list parameter control. Location of 
+                SKUs in warehouse Null value text is &quot;All&quot;.
+                <ul>
+                    <li>Query to fill list values = &quot;select warehouse_location_id, 
+                        warehouse_location_id || &#39;: &#39; || description AS description from&nbsp; 
+                        :+DefaultSchemaName+:.tab_warehouse_location&quot; </li>
+                </ul>
+            </li>
+        </ul>
+        <h2>
+            Parameter Validation</h2>
+        No special validations.
+        <h2>
+            Query&#39;s documentation:</h2>
+        <ul>
+            <li><r:doc>
+            <pre>  
+SELECT COUNT(distinct boxprod.ucc128_id) AS number_of_cartons,
+       boxprod.case_id AS case_id,
+       boxprod.warehouse_location_id AS warehouse_location_id
+  FROM box_productivity boxprod
+ WHERE boxprod.operation_code = '$CTNEXP'
+   AND boxprod.operation_start_date &gt;= to_date(:operation_start_date_from,'mm/dd/yyyy')
+   AND boxprod.operation_start_date &lt;
+       to_date(:operation_start_date_to,'mm/dd/yyyy')  + 1      
+ GROUP BY boxprod.case_id, boxprod.warehouse_location_id
+            </pre>
+                </R:DOC></li>
+        </ul>
+        <h2>
+            Validation details</h2>
+        Bellow queries may have the where clause in the [] brackets. It means these are 
+        the optional parameters. If you do not want to pass these parameters just remove 
+        the [] section.         <br />
+        <br />
+        <b>Query:</b><pre><r:query ></pre>
+        <pre>
+SELECT /*+ INDEX(box BOX_PK)*/
+  BOX.CASE_ID AS "CASE_ID",
+ count(boxdata.BOX_ID) AS "NO_OF_CARTONS"
+  FROM (SELECT /*+ INDEX(bp boxprod_operation_start_date_i)*/
+        distinct (bp.ucc128_id) AS "BOX_ID"
+          FROM box_productivity bp
+         WHERE bp.OPERATION_CODE = '$CTNEXP'
+           AND bp.OPERATION_START_DATE >= (:FromDate)
+           AND bp.OPERATION_START_DATE < (:ToDate) + 1) boxdata,
+       box box,
+       tab_label_group tlg,
+       ps ps,
+       warehouseloc wloc
+ WHERE box.ucc128_id = boxdata.BOX_ID
+   AND box.pickslip_id = ps.pickslip_id
+   AND ps.label_id = tlg.label_id
+   AND ps.vwh_id = tlg.vwh_id
+   AND wloc.label_group = tlg.label_group
+   AND box.case_id = :case_id
+   AND wloc.warehouse_location_id = :warehouseloc
+ GROUP BY BOX.CASE_ID        
+        </pre>
+        </R:QUERY>
+        <pre></pre>
+        <b>Description:</b><pre><r:description>
+            This query will validiate the carton type and number of cartons. 
+            Please pass carton Type and date range in the query.
+          </R:DESCRIPTION></pre>
+        <!--End divTechnical-->
+    </div>
+    </form>
+
+</body>
+</html>

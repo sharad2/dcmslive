@@ -1,0 +1,526 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>130.15 QTY against a label in given area</title>
+    <style type="text/css">
+        .style1
+        {
+            text-align: left;
+        }
+        .style2
+        {
+            text-align: center;
+        }
+        .auto-style1 {
+            text-align: left;
+            height: 24px;
+        }
+        .auto-style2 {
+            text-align: center;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        130.15 <span id="ctl00_lblTitle">QTY against a label in given area</span>
+    </h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <ul style="list-style: none">
+        <li>Reviewed By: Hemant K. Varshney</li>
+        <li>$Revision: 6888 $</li>
+        <li>Status: Done</li>
+        <li>Tested By:Hemant K. Singh</li>
+    </ul>
+    <p>This report is showing carton quantity on the basis of SKU, quality, price season code, area, virtual warehouse and building. User also has the option to display only those SKUs which are assigned on multiple SKU locations.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        Listing those SKU, which are available in carton area, along with pieces and number of cartons. Pieces and cartons which are allocated or un-allocated are listed separately. Report is also showing total number of pieces separated by their price season. User also has the option to display those SKUs which are assigned on multiple SKU locations. User can also run the report for specific carton area, label, quality, virtual warehouse and building. </p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        &nbsp;SKUs are retreived from src_carton_detail table for a given carton area or all carton areas in src_carton table. Master_Style is used to retreive the Styles for the passed label_id. These styles further passed to master_sku to filter out the list of SKUs retreivied from src_carton_detail table.</p>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="25%" align="center">
+                <b>Item</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Summary</b>
+            </td>
+            <td width="10%" align="center">
+                <b>Sort Sequence</b>
+            </td>
+            <td width="45%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+         <tr>
+            <td width="25%" class="style1">
+                Building
+            </td>
+            <td width="20%" class="style1">
+                No
+            </td>
+            <td width="10%" class="style2">
+                2</td>
+            <td width="45%" class="style1">
+                
+                <r:item term="Warehouse Location" key="true" sortsequence="1">
+                Building of&nbsp; the area</r:item></td>
+        </tr>
+         <tr>
+            <td width="25%" class="style1">
+                Area</td>
+            <td width="20%" class="style1">
+                No</td>
+            <td width="10%" class="style2">
+                1</td>
+            <td width="45%" class="style1">
+                
+                Areas of the cartons</td>
+        </tr>
+        <tr>
+            <td width="25%" class="style1">
+                VWh
+            </td>
+            <td width="20%" class="style1">
+                No
+            </td>
+            <td width="10%" class="style2">
+                7</td>
+            <td width="45%" class="style1">
+                Virtual Warehouse of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td width="25%" class="style1">
+                Style
+            </td>
+            <td width="20%" class="style1">
+                No
+            </td>
+            <td width="10%" class="style2">
+                3</td>
+            <td width="45%" class="style1">
+                Style of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td width="25%" class="style1">
+                Color</td>
+            <td width="20%" class="style1">
+                No
+            </td>
+            <td width="10%" class="style2">
+                4</td>
+            <td width="45%" class="style1">
+                Color of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td width="25%" class="style1">
+                Dim
+            </td>
+            <td width="20%" class="style1">
+                No
+            </td>
+            <td width="10%" class="style2">
+                5</td>
+            <td width="45%" class="style1">
+                Dimension of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td width="25%" class="style1">
+                Size
+            </td>
+            <td width="20%" class="style1">
+                No
+            </td>
+            <td width="10%" class="style2">
+                6</td>
+            <td width="45%" class="style1">
+                Size of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td width="25%" class="style1">
+                Label
+            </td>
+            <td width="20%" class="style1">
+                No</td>
+            <td width="10%" class="style2">
+                &nbsp;
+            </td>
+            <td width="45%" class="style1">
+                
+                label of the SKU&nbsp; &nbsp;</td>
+        </tr>
+        <tr>
+            <td width="25%" class="style1">
+                Quality</td>
+            <td width="20%" class="style1">
+                No
+            </td>
+            <td width="10%" class="style2">
+                &nbsp;
+            </td>
+            <td width="45%" class="style1">
+                Quality of the SKU</td>
+        </tr>
+        <tr>
+            <td width="25%" class="style1">
+                Quantity for Season Code</td>
+            <td width="20%" class="style1">
+                Sum
+            </td>
+            <td width="10%" class="style2">
+                &nbsp;
+            </td>
+            <td width="45%" class="style1">
+                Quantity of the SKU against particular Price Season Code
+            </td>
+        </tr>
+        <tr>
+            <td width="25%" class="style1">
+                Quantity Allocated</td>
+            <td width="20%" class="style1">
+                sum</td>
+            <td width="10%" class="style2">
+                &nbsp;</td>
+            <td width="45%" class="style1">
+                Total Quantity of the SKU which are assigned to any request</td>
+        </tr>
+        <tr>
+            <td width="25%" class="style1">
+                Quantity Unallocated</td>
+            <td width="20%" class="style1">
+                sum</td>
+            <td width="10%" class="style2">
+                &nbsp;</td>
+            <td width="45%" class="style1">
+                Total Quantity of the SKU which are not assigned to any request</td>
+        </tr>
+        <tr>
+            <td width="25%" class="auto-style1">
+                No. Of carton&nbsp; Allocated</td>
+            <td width="20%" class="auto-style1">
+                sum</td>
+            <td width="10%" class="auto-style2">
+                </td>
+            <td width="45%" class="auto-style1">
+                No. of&nbsp; cartons which are assigned to any request</td>
+        </tr>
+        <tr>
+            <td width="25%" class="style1">
+                No. Of carton Unallocated</td>
+            <td width="20%" class="style1">
+                sum</td>
+            <td width="10%" class="style2">
+                &nbsp;</td>
+            <td width="45%" class="style1">
+                No. of cartons which are not assigned to any request</td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="20%" align="center">
+                <b>Name</b>
+            </td>
+            <td width="15%" align="center">
+                <b>Type</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Default</b>
+            </td>
+            <td width="45%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td width="20%" class="style1">
+                Label
+            </td>
+            <td width="15%" class="style1">
+                Choice
+            </td>
+            <td width="20%" class="style1">
+                All
+            </td>
+            <td width="45%" class="style1">
+                Label for which SKUs will be displayed
+            </td>
+        </tr>
+        <tr>
+            <td width="20%" class="style1">
+                Area
+            </td>
+            <td width="15%" class="style1">
+                Choice</td>
+            <td width="20%" class="style1">
+                All
+            </td>
+            <td width="45%" class="style1">
+                Area for which SKUs need to be displayed
+            </td>
+        </tr>
+        <tr>
+            <td width="20%" class="style1">
+                Show Multiple Locations
+            </td>
+            <td width="15%" class="style1">
+                Bool
+            </td>
+            <td width="20%" class="style1">
+                Unchecked
+            </td>
+            <td width="45%" class="style1">
+                If checked only those SKUs will be displayed which are assigned on multiple SKU
+                locations.
+            </td>
+        </tr>
+        <tr>
+            <td width="20%" class="style1">
+                Virtual Warehouse
+            </td>
+            <td width="15%" class="style1">
+                Choice</td>
+            <td width="20%" class="style1">
+                All
+            </td>
+            <td width="45%" class="style1">
+                Virtual Warehouse of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td width="20%" class="style1">
+                Quality</td>
+            <td width="15%" class="style1">
+                Choice</td>
+            <td width="20%" class="style1">
+                All</td>
+            <td width="45%" class="style1">
+                Quality of the SKU</td>
+        </tr>
+        <tr>
+            <td width="20%" class="style1">
+                Building
+            </td>
+            <td width="15%" class="style1">
+                Bool</td>
+            <td width="20%" class="style1">
+                All Checkbox Checked
+            </td>
+            <td width="45%" class="style1">
+                Building of the area
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 2</i> Seconds</p>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Provide check box to select/unselect all Buildings.</li>
+        <li>Earlier this report was only listing those carton which were not assigned to any request. Now report is showing all the cartons whether they are assigned or not assigned to any request. Now report is showing # Allocated cartons / pcs along with # Unallocated Cartons / pcs.</li>
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No known issue</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are required</p>
+<code>
+        src_carton,<br />
+        tab_quality_code,<br />
+        src_carton_detail,<br />
+        master_sku,<br />
+        master_style,<br />
+        ialoc,<br />
+        tab_inventory_area,<br />
+        master_storage_location</code>
+        <br /><br />
+
+        <p>Use the below script to create the synonyms</p>
+        <code>create or replace synonym src_carton for dcms4.src_carton;<br />
+ create or replace synonym tab_quality_code for dcms4.tab_quality_code;<br />
+        create or replace synonym master_storage_location for dcms4.master_storage_location;<br />
+            create or replace synonym src_carton_detail for dcms4.src_carton_detail;<br />
+            create or replace synonym master_sku for dcms4.master_sku;<br />
+            create or replace synonym master_style for dcms4.master_style;<br />
+            create or replace synonym ialoc for dcms8.ialoc;<br />
+            create or replace synonym tab_inventory_area for dcms4.tab_inventory_area;<br />
+            <br />
+        </code>
+
+        <h3>App Setting</h3>
+    <p>
+        No AppSettings is required:</p>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <p>
+        <b>Description:</b></p>
+    <p>
+        Below query is used in normal conditions when multiple locations check box is not
+        checked</p>
+    <p>
+        <b>Query:</b></p>
+    <pre>
+
+       <if c="$multiloc">WITH ASSIGNED_SKU AS
+ (SELECT I.ASSIGNED_UPC_CODE AS UPC_CODE,
+         I.VWH_ID,
+         NVL(I.WAREHOUSE_LOCATION_ID, 'Unknown') AS WAREHOUSE_LOCATION_ID
+    FROM IALOC I
+   WHERE 1 = 1
+ <if>AND I.VWH_ID = CAST(:vwh as varchar2(255))</if>
+ <if>AND <a pre="NVL(I.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:warehouse_location_id</a></if>
+     AND I.ASSIGNED_UPC_CODE IS NOT NULL  
+     AND i.location_type ='RAIL'
+   GROUP BY I.ASSIGNED_UPC_CODE,
+            I.VWH_ID,
+            NVL(I.WAREHOUSE_LOCATION_ID, 'Unknown')
+  HAVING COUNT(I.ASSIGNED_UPC_CODE) >= 2)</if>
+SELECT SC.VWH_ID,
+       SCD.SKU_ID,
+       SC.QUALITY_CODE,
+       SC.CARTON_STORAGE_AREA,
+       SC.PRICE_SEASON_CODE AS PRICE_SEASON_CODE,
+       MAX(SCD.STYLE) AS STYLE,
+       MAX(SCD.COLOR) AS COLOR,
+       MAX(SCD.DIMENSION) AS DIMENSION,
+       MAX(SCD.SKU_SIZE) AS SKU_SIZE,
+       MAX(TIA.SHORT_NAME) AS SHORT_NAME,
+       SUM(COUNT(CASE
+                   WHEN SCD.REQ_PROCESS_ID IS NOT NULL THEN
+                    SCD.CARTON_ID
+                 END)) OVER(PARTITION BY SC.VWH_ID, SCD.SKU_ID, SC.CARTON_STORAGE_AREA, COALESCE(TIA.WAREHOUSE_LOCATION_ID, MSLOC.WAREHOUSE_LOCATION_ID, 'Unknown'), SC.QUALITY_CODE) AS ALLOCATED_CTN,
+       SUM(COUNT(CASE
+                   WHEN SCD.REQ_PROCESS_ID IS NULL THEN
+                    SCD.CARTON_ID
+                 END)) OVER(PARTITION BY SC.VWH_ID, SCD.SKU_ID, SC.CARTON_STORAGE_AREA, COALESCE(TIA.WAREHOUSE_LOCATION_ID, MSLOC.WAREHOUSE_LOCATION_ID, 'Unknown'), SC.QUALITY_CODE) AS UNLLOCATED_CTN,
+       SUM(SUM(CASE
+                 WHEN SCD.REQ_PROCESS_ID IS NOT NULL THEN
+                  SCD.QUANTITY
+               END)) OVER(PARTITION BY SC.VWH_ID, SCD.SKU_ID, SC.CARTON_STORAGE_AREA, COALESCE(TIA.WAREHOUSE_LOCATION_ID, MSLOC.WAREHOUSE_LOCATION_ID, 'Unknown'), SC.QUALITY_CODE) AS ALLOCATED_QTY,
+       SUM(SUM(CASE
+                 WHEN SCD.REQ_PROCESS_ID IS NULL THEN
+                  SCD.QUANTITY
+               END)) OVER(PARTITION BY SC.VWH_ID, SCD.SKU_ID, SC.CARTON_STORAGE_AREA, COALESCE(TIA.WAREHOUSE_LOCATION_ID, MSLOC.WAREHOUSE_LOCATION_ID, 'Unknown'), SC.QUALITY_CODE) AS UNLLOCATED_QTY,
+       COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                MSLOC.WAREHOUSE_LOCATION_ID,
+                'Unknown') AS WAREHOUSE_LOCATION_ID,
+       MAX(MST.LABEL_ID) AS LABEL_ID,
+       SUM(SCD.QUANTITY) AS TOTAL_PIECES
+  FROM SRC_CARTON SC
+ INNER JOIN SRC_CARTON_DETAIL SCD
+    ON SC.CARTON_ID = SCD.CARTON_ID
+ INNER JOIN MASTER_SKU MS
+    ON MS.STYLE = SCD.STYLE
+   AND MS.COLOR = SCD.COLOR
+   AND MS.DIMENSION = SCD.DIMENSION
+   AND MS.SKU_SIZE = SCD.SKU_SIZE
+  LEFT OUTER JOIN MASTER_STYLE MST
+    ON MS.STYLE = MST.STYLE
+  LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSLOC
+    ON SC.LOCATION_ID = MSLOC.LOCATION_ID
+ INNER JOIN TAB_INVENTORY_AREA TIA
+    ON SC.CARTON_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+  <if c="$multiloc">INNER JOIN ASSIGNED_SKU A
+    ON SC.VWH_ID = A.VWH_ID
+   AND MS.UPC_CODE = A.UPC_CODE
+   AND A.WAREHOUSE_LOCATION_ID =
+       COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                MSLOC.WAREHOUSE_LOCATION_ID,
+                'Unknown')</if>
+ WHERE 1=1
+   <if>AND SC.vwh_id = CAST(:vwh as varchar2(255))</if>
+   <if>AND <a pre="COALESCE(TIA.WAREHOUSE_LOCATION_ID, msloc.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:warehouse_location_id</a></if>
+   <if>AND SC.carton_storage_area = CAST(:area as varchar(255))</if>
+   <if>AND mst.label_id = CAST(:label as varchar2(255))</if>
+   <if>And sc.quality_code=:quality_code</if>
+   AND TIA.STORES_WHAT = 'CTN'
+ GROUP BY SC.VWH_ID,
+          SCD.SKU_ID,
+          SC.QUALITY_CODE,
+          SC.CARTON_STORAGE_AREA,
+          SC.PRICE_SEASON_CODE,
+          COALESCE(TIA.WAREHOUSE_LOCATION_ID,
+                   MSLOC.WAREHOUSE_LOCATION_ID,
+                   'Unknown')</pre>
+    <h2>
+        Validation details</h2>
+<b>Query:</b> Below query is displaying quantity and price season code wise.
+    <pre>
+SELECT nvl(SC.PRICE_SEASON_CODE,'No Season'), SUM(SCD.QUANTITY)
+  FROM SRC_CARTON SC
+ INNER JOIN SRC_CARTON_DETAIL SCD
+    ON SC.CARTON_ID = SCD.CARTON_ID
+ WHERE SCD.STYLE = ''
+   AND SCD.COLOR = ''
+   AND SCD.DIMENSION = ''
+   AND SCD.SKU_SIZE = ''
+   AND SC.QUALITY_CODE = ''
+   AND SC.VWH_ID =&#39;&#39;
+   AND SC.CARTON_STORAGE_AREA IN
+       (SELECT t.inventory_storage_area FROM TAB_INVENTORY_AREA T WHERE T.SHORT_NAME = '')
+ GROUP BY nvl(SC.PRICE_SEASON_CODE,'No Season')
+    </pre>
+<h3>Query:</h3> Below query is showing allocated Carton and Quantity basis of the passed Style, color, dimension and SKU size.
+    <pre>
+        SELECT SUM(SCD.QUANTITY) AS "Allocated Quantity",
+       COUNT(UNIQUE SC.CARTON_ID) AS "# Allocated carton"
+  FROM SRC_CARTON SC
+ INNER JOIN SRC_CARTON_DETAIL SCD
+    ON SC.CARTON_ID = SCD.CARTON_ID
+ WHERE SCD.STYLE = ''
+   AND SCD.COLOR = ''
+   AND SCD.DIMENSION = ''
+   AND SCD.SKU_SIZE = ''
+   AND SC.QUALITY_CODE = ''
+   AND SC.VWH_ID = ''
+   AND SCD.REQ_PROCESS_ID IS NOT NULL
+   AND SC.CARTON_STORAGE_AREA IN
+       (SELECT T.INVENTORY_STORAGE_AREA
+          FROM TAB_INVENTORY_AREA T
+         WHERE T.SHORT_NAME = '');
+    </pre>
+    <h3>Query </h3> Below query is showing  Unllocated No. of Carton and quantity.
+    <pre>
+       SELECT SUM(SCD.QUANTITY) AS "Unallocated Quantity",
+       COUNT(UNIQUE SCD.CARTON_ID) AS "# Unallocated cartons"
+  FROM SRC_CARTON SC
+ INNER JOIN SRC_CARTON_DETAIL SCD
+    ON SC.CARTON_ID = SCD.CARTON_ID
+ WHERE SCD.STYLE = ''
+   AND SCD.COLOR = ''
+   AND SCD.DIMENSION = ''
+   AND SCD.SKU_SIZE = ''
+   AND SC.QUALITY_CODE = ''
+   AND SC.VWH_ID = ''
+   AND SCD.REQ_PROCESS_ID IS NULL
+   AND SC.CARTON_STORAGE_AREA IN
+       (SELECT T.INVENTORY_STORAGE_AREA
+          FROM TAB_INVENTORY_AREA T
+         WHERE T.SHORT_NAME = '')
+
+    </pre>
+    <h3>Query</h3> Below query is showing label of the style.
+    <pre>
+        SELECT label_id, style FROM master_style
+         WHERE style =''
+    </pre>
+</body>
+</html>

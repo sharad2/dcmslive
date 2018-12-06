@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access">
+  <Class Name="EclipseLibrary.Web.UI.Matrix.MatrixField">
+    <Position X="8" Y="4.25" Width="2.25" />
+    <Members>
+      <Field Name="_curCellValues" Hidden="true" />
+      <Field Name="_dataHeaderValues" Hidden="true" />
+      <Field Name="_displayColumns" Hidden="true" />
+      <Field Name="_gv" Hidden="true" />
+      <Field Name="_headerFormatter" Hidden="true" />
+      <Field Name="_headerRow" Hidden="true" />
+      <Field Name="_isFirstRowOfSet" Hidden="true" />
+      <Method Name="CreateField" Hidden="true" />
+      <Property Name="CurCellValues" Hidden="true" />
+      <Property Name="DataHeaderValues" Hidden="true" />
+      <Property Name="DisplayColumns" Hidden="true" />
+      <Method Name="GetHeaderFormatter" Hidden="true" />
+      <Method Name="IHasCustomCells.CreateCell" Hidden="true" />
+      <Method Name="IHasCustomCells.FilterRow" Hidden="true" />
+      <Method Name="IHasCustomCells.RenderSubtotals" Hidden="true" />
+      <Method Name="MaybeAddHeaderValue" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AACAABhBAAIAAQgUAAEIABAAAiAAhAAAIIiJCgAgFAA=</HashCode>
+      <FileName>Web\UI\Matrix\MatrixField.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_matrixColumns" />
+      <Property Name="MatrixColumns" />
+      <Property Name="DataRows" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EclipseLibrary.Web.UI.Matrix.MatrixColumn">
+    <Position X="11.5" Y="4.25" Width="2" />
+    <Members>
+      <Field Name="_totalFormatString" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAgAEoAAEKAAAAAAAEAAAAgEAAQAAAAAA=</HashCode>
+      <FileName>Web\UI\Matrix\MatrixColumn.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EclipseLibrary.Web.UI.Matrix.MatrixCell" BaseTypeListCollapsed="true">
+    <Position X="1.5" Y="3.75" Width="2" />
+    <Members>
+      <Method Name="ICustomTypeDescriptor.GetAttributes" Hidden="true" />
+      <Method Name="ICustomTypeDescriptor.GetClassName" Hidden="true" />
+      <Method Name="ICustomTypeDescriptor.GetComponentName" Hidden="true" />
+      <Method Name="ICustomTypeDescriptor.GetConverter" Hidden="true" />
+      <Method Name="ICustomTypeDescriptor.GetDefaultEvent" Hidden="true" />
+      <Method Name="ICustomTypeDescriptor.GetDefaultProperty" Hidden="true" />
+      <Method Name="ICustomTypeDescriptor.GetEditor" Hidden="true" />
+      <Method Name="ICustomTypeDescriptor.GetEvents" Hidden="true" />
+      <Method Name="ICustomTypeDescriptor.GetProperties" Hidden="true" />
+      <Method Name="ICustomTypeDescriptor.GetPropertyOwner" Hidden="true" />
+      <Method Name="MatrixCell" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>EAAAgAAQAAAAgAAFAQAACAAAAgAAAQAAIAEGIAAQAQo=</HashCode>
+      <FileName>Web\UI\Matrix\MatrixCell.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EclipseLibrary.Web.UI.Matrix.MatrixRow">
+    <Position X="4.75" Y="4.75" Width="1.5" />
+    <Members>
+      <Method Name="Render" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAQAEBAAAAAAIAA=</HashCode>
+      <FileName>Web\UI\Matrix\MatrixRow.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="MatrixCells" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

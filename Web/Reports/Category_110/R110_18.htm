@@ -1,0 +1,357 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style type="text/css">
+        .style1
+        {
+            width: 111px;
+        }
+        .style2
+        {
+            width: 208px;
+        }
+    </style>
+    </head>
+<body>
+   <center> <h1>
+        110<b>.</b>18<b> : </b>Suspense Shipping Carton Report
+    </h1></center>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <p><b>
+        $Revision: 3901 $<br />
+        Status: Reviewed<br />
+        Reviewed By : Ritesh Verma<br />
+        Tested by : H.K.Singh</b></p>
+
+    <p>For the specified suspense date, days or date range the report displays the list of cartons along with their details 
+        as well as the boxes which are in suspense for more than days. This 
+        report can also be displayed with different combinations of the following 
+        filters:-Days,Customer, purchase order and building.The report will not consider 
+        Cancel Boxes.</p>
+
+    <h2>
+        Overview</h2>
+        
+        <p>The report displays the list of cartons with their informations for a specified 
+            suspense date or Days. When the user comes across a box which is not physically on the 
+            pallet and the system thinks it is there then the box is to be put in suspense 
+            and the report will not consider cancel boxes. Suspense Date and Days filter 
+            would be mutually exclusive.</p>
+    <h2>
+        Algorithm</h2>
+        <p>Information about the cartons,pickslip,area,within the specified suspense date range is reterived from box table. Details about the customer, PO and DC is reterived from the PS and Cust table. We are reteriving the shipment information from the ship table and box pieces details from the boxdet table. </p>
+    <h3>
+        Output</h3>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center" style="width: 25%">
+                <b>Item</b>
+            </td>
+            <td align="center" style="width: 20%">
+                <b>Summary</b>
+            </td>
+            <td align="center" style="width: 10%">
+                <b>Sort Sequence</b>
+            </td>
+            <td align="center" style="width: 35%">
+                <b>Detail</b>
+            </td>
+        </tr>
+               <tr>
+            <td>
+                Customer</td>
+            <td>
+                No</td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                Name of the customer</td>
+        </tr>
+       
+        <tr>
+            <td>
+                Building</td>
+            <td>
+                No</td>
+            <td align="center">
+                2</td>
+            <td>
+                Building of the box</td>
+        </tr>
+       
+        <tr>
+            <td>
+                Area</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Area of the box</td>
+        </tr>
+       
+        <tr>
+            <td>
+                UCC</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Id of the box.</td>
+        </tr>
+        <tr>
+            <td>
+                Pallet</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                This column dispalying the pallet on which put the boxes</td>
+        </tr>
+        <tr>
+            <td>
+                Location</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                location of the pallet.</td>
+        </tr>
+        <tr>
+            <td>
+                Pickslip</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Report displaying the pickslip of the customer</td>
+        </tr>
+        <tr>
+            <td>
+                PO</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Purchase order of the customer.</td>
+        </tr>
+        <tr>
+            <td>
+                DC</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                This column is for displaying customer DC.</td>
+        </tr>
+        <tr>
+            <td>
+                Ship Date</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Displaying the shipping date of the pickslip</td>
+        </tr>
+        <tr>
+            <td>
+                Suspense|Date</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Suspense date of the box.</td>
+        </tr>
+        <tr>
+            <td>
+                Suspense|No. Of Days</td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;3
+            </td>
+            <td>
+                The Boxes which are in suspense for more than days.</td>
+        </tr>
+        <tr>
+            <td>
+                User </td>
+            <td>
+                No</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                User who put box in the 
+                suspense.</td>
+        </tr>
+        <tr>
+            <td>
+                Pieces</td>
+            <td>
+                Yes</td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total pieces in the box</td>
+        </tr>
+    </table>
+    <h3>
+        Parameter</h3>
+        <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center" class="style2">
+                <b>Name</b>
+            </td>
+            <td align="center" class="style1">
+                <b>Default</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+            <tr>
+        <td class="style2">Suspense Date</td>
+        <td class="style1">Default date</td>
+       <td>Suspence to_date is a current date and from_date is equal to less than 7 days 
+           from current_date(i.e. sysdate-7)</td>
+            </tr>
+            <tr>
+        <td class="style2">Boxes in suspense area from Days</td>
+        <td class="style1">None</td>
+       <td>Total no of days the box is in suspense.</td>
+            </tr>
+        <tr>
+        <td class="style2">Customer</td>
+        <td class="style1">None</td>
+       <td>Customer for which you would like to run the report.</td>
+        </tr>
+        <tr>
+        <td class="style2">Purchase Order</td>
+        <td class="style1">None</td>
+       <td>PO for which you would like to run the report </td>
+        </tr>
+        <tr>
+        <td class="style2">Building</td>
+        <td class="style1">&nbsp;All &nbsp;</td>
+       <td>Building of the box.</td>
+        </tr>
+        </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 10</i> Seconds.</p>
+ <h2>
+Behavior Change</h2>
+             <ul><li>Added a new column for user name and displaying the information who is putting 
+                 the box in the suspense.</li>
+                 <li>Changes in UI</li>
+                 <li>Filters name have been renamed e.g. (Filter:- 'Po Id' is now Purchase order).</li>
+                 <li>Column name&nbsp; have also been renamed e.g.(Column:-'Ucc128 Id' is now 
+                     UCC).</li>
+                 <li>Added Days filter which shows for how many days the box is in suspense.</li>
+                 <li>This report will not display cancel boxes.</li>
+                 <li>Suspense Date and Days filter would be mutually exclusive.</li>
+                 <li>Added column DC in the report.</li>
+                 </ul>
+
+ 
+    <h2>
+        Prerequisites     Prerequisites</h2>
+
+<ol>
+<li>Create or replace synonym box for dcms8.box;</li>
+<li>Create or replace synonym box_audit for dcms8.box_audit;</li>
+<li>Create or replace synonym Boxdet for dcms8.Boxdet;</li>
+<li>Create or replace synonym PS for dcms8.PS;</li>
+<li>Create or replace synonym Cust for dcms8.Cust;</li>
+<li>Create or replace synonym ship for dcms8.ship;</li>
+</ol>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.
+
+    <h2>Query documentation:</h2>
+    <pre>
+       select MAX(B.IA_ID) AS ia_id , 
+       B.UCC128_ID AS ucc128_id,
+       max(P.WAREHOUSE_LOCATION_ID) AS Building,
+       SUM(BD.CURRENT_PIECES) AS current_pieces,
+       MAX(P.CUSTOMER_ID ||'     :     '|| c.name) AS customer,
+       MAX(P.PO_ID)  AS po_id, 
+       MAX(p.customer_dc_id) AS customer_dc_id,
+       MAX(b.PICKSLIP_ID) AS pickslip_id,
+       MAX(S.SHIP_DATE) AS ship_date,
+       max(B.Pallet_id) as Pallet_id,
+       max(B.location_id) as location_id,
+       MAX(B.SUSPENSE_DATE) AS suspense_date,
+       MAX(ba.created_by) AS User_name,
+       MAX(TRUNC(SYSDATE) - TRUNC(B.SUSPENSE_DATE)) AS LAST_ADDED_DAY
+       from  BOX B
+LEFT OUTER JOIN box_audit ba
+       ON b.ucc128_id = ba.ucc128_id
+       AND b.suspense_date = ba.suspense_date
+LEFT OUTER JOIN BOXDET BD ON 
+       B.UCC128_ID = BD.UCC128_ID
+       AND B.PICKSLIP_ID = BD.PICKSLIP_ID
+LEFT OUTER JOIN PS P ON 
+       B.PICKSLIP_ID = P.PICKSLIP_ID
+LEFT OUTER JOIN SHIP S ON
+       P.Shipping_Id = S.Shipping_Id
+INNER JOIN CUST C ON
+       P.CUSTOMER_ID = C.CUSTOMER_ID
+ WHERE B.SUSPENSE_DATE IS NOT NULL
+ AND B.STOP_PROCESS_DATE IS NULL
+  <if>and b.suspense_date &gt;= :from_suspense_date</if>
+  <if> and b.suspense_date &lt; :to_suspense_date + 1</if>
+   <if>AND TRUNC(SYSDATE) - B.SUSPENSE_DATE &lt;= :Days</if>
+  <if> and p.customer_id = :customer_id</if>
+  <if> AND p.po_id = :po_id</if>
+  <if>and p.warehouse_location_id =:warehouse_location_id</if>
+ GROUP BY b.ucc128_id
+    </pre>
+    <h2>Validation Detail</h2>
+    <p>Below queries may have the where clause in the [] brackets. It means these are the optional parameters. If you do not want to pass these parameters just remove the [] section. 
+</p>
+<b>Query :</b>
+<pre>SELECT
+BOX.UCC128_ID AS CARTON_ID,
+max(box.ia_id) as ia_id,
+max(box.pallet_id) as pallet,
+max(box.location_id) as location_id,
+max(BOX.PICKSLIP_ID) AS PS_ID,
+max(BOX.SUSPENSE_DATE) AS SUSPENSE_DATE
+FROM BOX
+WHERE BOX.UCC128_ID = :UCC128_ID
+and box.pickslip_id = :pickslip_id
+group by BOX.UCC128_ID
+</pre>
+<b>Description :</b>
+<p>Execute the above query to find the suspense date for a specified BOX and Pickslip,
+</p>
+<b>Query :</b>
+<pre>SELECT p.po_id,
+       P.customer_dc_id,
+       P.CUSTOMER_ID,
+       P.PICKSLIP_ID
+       FROM ps p 
+WHERE p.pickslip_id ='pickslip_id'</pre>
+ <b>Description</b>
+<p>Execute the above query to find the Customer, PO and DC from the passed pickslip.
+</p>
+</body>
+</html>

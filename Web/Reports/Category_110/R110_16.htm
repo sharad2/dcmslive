@@ -1,0 +1,861 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style type="text/css">
+        .style1
+        {
+            height: 30px;
+        }
+        .style6
+        {
+            width: 51px;
+        }
+        </style>
+</head>
+<body>
+    <h1 align="center">
+        110<b>.</b>16<b> : </b>Unshipped boxes by DC/PO/Bucket
+    </h1>
+    <p>
+        Author : Sanjeev Kumar<br />
+        $Revision: 7236 $<br />
+        Reviewed By: Hemant K. Varshney<br />
+        Tested By : Sanjeev Kumar</p>
+    <p>
+        This report shows unshipped boxes on the basis of either DC,building and bucket or DC,building,bucket and PO.It     lists all PO with no. of boxes 
+        and bucket for a particular Customer with total pieces ordered,total dollars 
+        ordered,total shipped pieces , total dollars shipped,weight of the pieces,cancel 
+        date and import date of the customer, specific building and date range for 
+        the desired PO or the bucket.
+    </p>
+    <h2>
+        Overview</h2>
+    <p>
+        The report lists all POs with no. of boxes 
+        and the details of the bucket.We can filter the unshipped boxes on the 
+        basic of either customer DC,building and PO or customer DC,building,po and bucket as per the 
+        desiration.We can filter the resultset for a customer and the building. This 
+        report also includes total pieces ordered,total dollars ordered,total shipped 
+        pieces,total dollars shipped, weight of the pieces,cancel date and import date 
+        of the customer ordered for the 
+        passed filters.
+        Note: This report does not include cancel or transfer pickslips.</p>
+    <p>
+        Note:- Now report will show label of the SKU&#39;s in a order.</p>
+    <h2>
+        Algorithm</h2>
+    Get all the details of unshipped boxes within the PO from the box , ps, skucase tables.The total quantity ordered,total pieces ordered against pickslip fetched from the dem_pickslip table and the ordered pickslips from the ps table and&nbsp; retreiving label from master_style.
+    <h3>
+        Output</h3>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center" style="width: 25%">
+                <b>Item</b>
+            </td>
+            <td align="center" style="width: 20%">
+                <b>Summary</b>
+            </td>
+            <td align="center" style="width: 10%">
+                <b>Sort Sequence</b>
+            </td>
+            <td align="center" style="width: 35%">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: center; font-weight: 700">
+                Normal View (L<label accesskey="L" for="ctl00_ContentPlaceHolder1_rblListBy">ist by
+                    Customer DC and PO)</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Customer DC
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                The Customer DC.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building</td>
+            <td>
+                All</td>
+            <td align="center">
+                2</td>
+            <td>
+                Building of boxes.</td>
+        </tr>
+        <tr>
+            <td>
+                Bucket
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                4</td>
+            <td>
+                Bucket for given Customer.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                PO
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                5</td>
+            <td>
+                Purchase Order for given Customer.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                PO Attrib 1</td>
+            <td class="style6">
+                NO</td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                This column is showing STO number.</td>
+        </tr>
+        <tr>
+            <td>
+                Label
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Label.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No. of Pickslips
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total number of pickslips.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No. of Boxes
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total number of boxes.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ordered Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Ordered Pieces.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total dollars Ordered
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                dollars Ordered Pieces.
+            </td>
+        </tr>
+        <tr>
+            <td>
+               Total shipped Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                shipped Pieces.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Dollars Shipped
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Dollars Shipped Pieces.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Weight (in lbs)
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total weight of the boxes.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Volume (in cc)
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total volume of the boxes.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Start Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                3</td>
+            <td>
+                Start Date when PO started.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                DC Cancel Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                6</td>
+            <td>
+                DC Cancel Date.
+            </td>
+        </tr>
+         <tr>
+            <td>
+                Import Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                
+            </td>
+            <td>
+                Import Date.
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: center">
+                <b>List by Customer DC and Bucket (Recommended for POC Customers)</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Customer DC
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1
+            </td>
+            <td>
+                The Customer DC.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building</td>
+            <td>
+                All</td>
+            <td align="center">
+                2</td>
+            <td>
+                building of boxes.</td>
+        </tr>
+        <tr>
+            <td>
+                Bucket
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                3</td>
+            <td>
+                Bucket&nbsp; for given Customer.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Label
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Label.
+            </td>
+        </tr>
+        <tr>
+            <td class="style1">
+                No. of POs
+            </td>
+            <td class="style1">
+                Sum
+            </td>
+            <td align="center" class="style1">
+            </td>
+            <td class="style1">
+                No. of Purchase Order for given Customer.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ordered Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total Ordered Pieces.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total dollars Ordered
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                dollars Ordered Pieces.
+            </td>
+        </tr>
+        <tr>
+            <td>
+               Total shipped Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                shipped Pieces.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Dollars Shipped
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Dollars Shipped Pieces.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                No. of Boxes
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total number of boxes.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Weight (in lbs)
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total weight of the boxes.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Volume (in cc)
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                Total volume of the boxes.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Start Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                4</td>
+            <td>
+                Start Date when PO started.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                DC Cancel Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                5</td>
+            <td>
+                DC Cancel Date.
+            </td>
+        </tr>
+         <tr>
+            <td>
+                Import Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                
+            </td>
+            <td>
+                Import Date.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tr>
+            <td align="center" style="width: 20%">
+                <b>Name</b>
+            </td>
+            <td align="center" style="width: 20%">
+                <b>Default</b>
+            </td>
+            <td align="center" style="width: 60%">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td >
+                Customer</td>
+            <td >
+                None</td>
+            <td>
+                Customer for which data to be displayed.</td>
+        </tr>
+        <tr>
+            <td>
+                Building</td>
+            <td>
+                All</td>
+            <td>
+                &nbsp;Building for which data is to be displayed.</td>
+        </tr>
+        <tr>
+            <td>
+                Order Start Date
+            </td>
+            <td>
+                Last 7 days.
+            </td>
+            <td>
+                The date from which you want to display information.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                List by Customer DC and PO
+            </td>
+            <td>
+                Selected
+            </td>
+            <td>
+                Check this box to see normal view ( PO Wise VIEW)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                List by Customer DC and Bucket
+            </td>
+            <td>
+                False
+            </td>
+            <td>
+                Check this box to see Bucket view ( Bucket Wise VIEW for POC Customers)
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is 10</i> Sec.</p>
+    <h2>
+        Behavior Change</h2>
+    <ol>
+        <li>
+
+            Now report will show STO against a PO. This additional information will be displayed under a new column &#39;PO Attrib 1&#39;.</li>
+    </ol>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        
+        ps,<br />
+        po,<br />
+        dem_pickslip,<br />
+        psdet,<br />
+        master_sku,<br />
+        box,<br />
+        skucase<br />
+    </p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>create or replace synonym ps for dcms8.ps;<br />
+        create or replace synonym po for dcms8.po;<br />
+        create or replace synonym dem_pickslip for dcms4.dem_pickslip;<br />
+            create or replace synonym psdet for dcms8.psdet;
+            <br />
+            create or replace synonym master_sku for dcms4.master_sku;<br />
+            create or replace synonym box for dcms8.box;
+            <br />
+            create or replace synonym skucase for dcms8.skucase; </code>
+    </p>
+    <p>
+        No appSetting is required:</p>
+    &nbsp;<h2>
+        Parameter Validation</h2>
+    <ul>
+        <li>Customer is required. </li>
+    </ul>
+    <h2>
+        Query documentation:</h2>
+    <ul>
+        <li>
+            <h3>
+                For Normal PO Wise View</h3>
+        </li>
+    </ul>
+    <pre>
+   
+      WITH ACTIVE_PS AS
+ (SELECT PS.PICKSLIP_ID           AS PICKSLIP_ID,
+         PS.CUSTOMER_ID           AS CUSTOMER_ID,
+         PS.PO_ID                 AS PO_ID,
+         PS.LABEL_ID              AS LABEL_ID,
+         PD.PIECES_ORDERED        AS PIECES_ORDERED,
+         PS.BUCKET_ID             AS BUCKET_ID,
+         PD.UPC_CODE              AS UPC_CODE,
+         PS.CUSTOMER_DC_ID        AS CUSTOMER_DC_ID,
+         PD.EXTENDED_PRICE        AS EXTENDED_PRICE,
+         PS.PICKSLIP_IMPORT_DATE  AS PICK_SLIP_IMPORT_DATE,
+         PO.START_DATE            AS START_DATE,
+         PO.DC_CANCEL_DATE        AS DC_CANCEL_DATE,
+         NVL(PS.WAREHOUSE_LOCATION_ID,'Unknown') AS BUILDING,
+         PS.SALES_ORDER_ID AS SALES_ORDER_ID
+    FROM PS
+   INNER JOIN PSDET PD
+      ON PS.PICKSLIP_ID = PD.PICKSLIP_ID
+   INNER JOIN PO
+      ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+     AND PS.PO_ID = PO.PO_ID
+     AND PS.ITERATION = PO.ITERATION
+   WHERE PS.TRANSFER_DATE IS NULL
+     AND ps.pickslip_cancel_date IS NULL
+     AND PS.CUSTOMER_ID = :Customer_id
+ <if>AND <a pre="NVL(ps.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:Building_id</a></if>
+     AND po.start_date &gt;= to_date(:FromDate, 'mm/dd/yyyy')
+     AND po.start_date &lt; to_date(:ToDate, 'mm/dd/yyyy') + 1
+  
+  UNION ALL
+  
+  SELECT DPS.PICKSLIP_ID             AS PICKSLIP_ID,
+         DPS.CUSTOMER_ID             AS CUSTOMER_ID,
+         DPS.CUSTOMER_ORDER_ID       AS PO_ID,
+         DPS.PICKSLIP_TYPE           AS LABEL_ID,
+         DPD.QUANTITY_ORDERED        AS PIECES_ORDERED,
+         NULL                        AS BUCKET_ID,
+         DPD.UPC_CODE                AS UPC_CODE,
+         DPS.CUSTOMER_DIST_CENTER_ID AS CUSTOMER_DC_ID,
+         DPD.EXTENDED_PRICE          AS EXTENDED_PRICE,
+         DPS.PICKSLIP_IMPORT_DATE    AS PICK_SLIP_IMPORT_DATE,
+         DPS.DELIVERY_DATE           AS START_DATE,
+         DPS.DC_CANCEL_DATE          AS DC_CANCEL_DATE,
+         NVL(DPS.WAREHOUSE_LOCATION_ID,'Unknown')   AS BUILDING,
+         DPS.SALES_ORDER_ID AS SALES_ORDER_ID
+    FROM DEM_PICKSLIP DPS
+   INNER JOIN DEM_PICKSLIP_DETAIL DPD
+      ON DPS.PICKSLIP_ID = DPD.PICKSLIP_ID
+   WHERE DPS.PS_STATUS_ID = 1
+     AND DPS.CUSTOMER_ID = :Customer_id
+ <if>AND <a pre="NVL(dps.WAREHOUSE_LOCATION_ID,'Unknown') IN (" sep="," post=")">:Building_id</a></if>
+     AND DPS.DELIVERY_DATE &gt;= to_date(:FromDate, 'mm/dd/yyyy')
+     AND DPS.DELIVERY_DATE &lt; to_date(:ToDate, 'mm/dd/yyyy') + 1),
+ORDER_INFO AS
+ (SELECT RP.PICKSLIP_ID AS PICKSLIP,
+         MAX(RP.BUCKET_ID) AS BUCKET,
+         MAX(RP.CUSTOMER_DC_ID) AS CUSTOMER_DC_ID,
+         RP.LABEL_ID AS LABEL_ID,
+         MAX(RP.PO_ID) AS PO,
+         SUM(RP.PIECES_ORDERED) AS PIECES,
+         MAX(RP.START_DATE) AS START_DATE,
+         MAX(RP.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+         MAX(RP.PICK_SLIP_IMPORT_DATE) AS IMPORT_DATE,
+         SUM(RP.PIECES_ORDERED * RP.EXTENDED_PRICE) AS TOTAL_DOLLARS_ORDERED,
+         SUM(RP.PIECES_ORDERED * (MSKU.WEIGHT_PER_DOZEN / 12)) AS WEIGHT,
+         MAX(RP.BUILDING) AS BUILDING,
+         MAX(RP.SALES_ORDER_ID) AS SALES_ORDER_ID
+    FROM ACTIVE_PS RP
+    LEFT OUTER JOIN MASTER_SKU MSKU
+      ON MSKU.UPC_CODE = RP.UPC_CODE
+   GROUP BY RP.PICKSLIP_ID, RP.LABEL_ID),
+ORDER_WITH_BOX AS
+ (SELECT OI.PICKSLIP AS PICKSLIP_ID,
+         MAX(OI.BUCKET) AS BUCKET,
+         MAX(OI.PO) AS PO,
+         MAX(OI.CUSTOMER_DC_ID) AS CUSTOMER_DC_ID,
+         MAX(OI.TOTAL_DOLLARS_ORDERED) AS TOTAL_DOLLARS_ORDERED,
+         OI.LABEL_ID AS LABEL_ID,
+         MAX(OI.START_DATE) AS START_DATE,
+         MAX(OI.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+         MAX(PIECES) AS PIECES,
+         MAX(OI.IMPORT_DATE) AS IMPORT_DATE,
+         COUNT(DISTINCT B.UCC128_ID) AS NO_OF_BOXES,
+         MAX(WEIGHT) + NVL(SUM(SC.EMPTY_WT), 0) BOX_WEIGHT,
+         SUM(SC.OUTER_CUBE_VOLUME) BOX_VOLUME,
+         MAX(OI.BUILDING) AS BUILDING,
+         MAX(OI.SALES_ORDER_ID) AS SALES_ORDER_ID
+    FROM ORDER_INFO OI
+    LEFT OUTER JOIN BOX B
+      ON OI.PICKSLIP = B.PICKSLIP_ID
+    LEFT OUTER JOIN SKUCASE SC
+      ON B.CASE_ID = SC.CASE_ID
+   WHERE B.STOP_PROCESS_DATE IS NULL
+   GROUP BY OI.PICKSLIP, OI.LABEL_ID),
+ORDER_SHIPPED AS
+ (SELECT PS.PICKSLIP_ID AS PICKSLIP_ID,
+         SUM(NVL(BD.CURRENT_PIECES, 0)) AS SHIPPED_PIECES,
+         SUM(NVL(BD.CURRENT_PIECES, 0) * NVL(BD.EXTENDED_PRICE, 0)) AS DOLLARS_SHIPPED,
+         NVL(PS.WAREHOUSE_LOCATION_ID,'Unknown') AS BUILDING
+    FROM PS PS
+   INNER JOIN PO PO
+      ON PS.PO_ID = PO.PO_ID
+     AND PS.CUSTOMER_ID = PO.CUSTOMER_ID
+     AND PS.ITERATION = PO.ITERATION
+    LEFT OUTER JOIN BOX B
+      ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+    LEFT OUTER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND PS.PICKSLIP_ID = BD.PICKSLIP_ID
+   WHERE PS.TRANSFER_DATE IS NULL
+     AND B.STOP_PROCESS_DATE IS NULL
+     AND BD.STOP_PROCESS_DATE IS NULL
+     AND ps.pickslip_cancel_date IS NULL
+     AND PS.CUSTOMER_ID = :Customer_id
+ <if>AND <a pre="ps.WAREHOUSE_LOCATION_ID IN (" sep="," post=")">:Building_id</a></if>
+     AND po.start_date &gt;= to_date(:FromDate, 'mm/dd/yyyy')
+     AND po.start_date &lt; to_date(:ToDate, 'mm/dd/yyyy') + 1
+   GROUP BY PS.PICKSLIP_ID, PS.WAREHOUSE_LOCATION_ID)
+SELECT OWB.CUSTOMER_DC_ID AS CUSTOMER_DC_ID,
+       OWB.BUCKET AS BUCKET_ID,
+       OWB.PO AS PO_ID,
+       OWB.LABEL_ID AS LABEL_ID,
+       COUNT(OWB.PICKSLIP_ID) AS NO_OF_PICKSLIP,
+       SUM(OWB.NO_OF_BOXES) AS NO_OF_BOXES,
+       SUM(PIECES) AS ORDERED_PIECES,
+       ROUND(SUM(OWB.BOX_WEIGHT), 4) AS WEIGHT,
+       ROUND(SUM(OWB.BOX_VOLUME), 4) AS MAX_VOLUME,
+       TRUNC(OWB.IMPORT_DATE) AS IMPORT_DATE,
+       ROUND(SUM(OWB.TOTAL_DOLLARS_ORDERED), 4) AS TOTAL_DOLLARS_ORDERED,
+       SUM(OS.SHIPPED_PIECES) AS SHIPPED_PIECES,
+       SUM(OS.DOLLARS_SHIPPED) AS DOLLARS_SHIPPED,
+       MAX(OWB.START_DATE) AS START_DATE,
+       MAX(OWB.DC_CANCEL_DATE) AS DC_CANCEL_DATE,
+       OWB.BUILDING AS BUILDING,
+       MAX(OWB.SALES_ORDER_ID) AS SALES_ORDER_ID
+  FROM ORDER_WITH_BOX OWB
+  LEFT OUTER JOIN ORDER_SHIPPED OS
+    ON OWB.PICKSLIP_ID = OS.PICKSLIP_ID
+ GROUP BY OWB.BUCKET,
+          OWB.PO,
+          OWB.CUSTOMER_DC_ID,
+          OWB.LABEL_ID,
+          TRUNC(OWB.IMPORT_DATE),
+          OWB.BUILDING
+
+ </pre>
+    <h2>
+        &nbsp;</h2>
+    <h2>
+        Validation details</h2>
+   <p>
+    <b>BUCKET WISE:-</b>The validation queries are divided into parts:-
+               (i)   To validate Label_id,Total_Quantity_Ordered and Total_Dollars_Ordered.
+               (ii)  To validate No_Of_Boxes,No_Of_Po,Shipped_Pieces and Dollars_Shipped.
+               
+    <br />
+    <br />
+    </p>
+    <b> (i)Validation Query to validate Label_id,Total_Quantity_Ordered and Total_Dollars_Ordered.</b>
+    <pre>   
+    SELECT MAX(PS.LABEL_ID) AS LABEL_ID,
+        SUM(PS.TOTAL_QUANTITY_ORDERED) AS TOTAL_QUANTITY_ORDERED,
+        SUM(PS.TOTAL_DOLLARS_ORDERED) AS TOTAL_DOLLARS_ORDERED
+        FROM PS PS
+        WHERE PS.BUCKET_ID = :BUCKET_ID
+        AND PS.CUSTOMER_ID = :CUSTOMER_ID
+        AND PS.WAREHOUSE_LOCATION_ID = :WAREHOUSE_LOCATION_ID
+        AND PS.CUSTOMER_DC_ID = :CUSTOMER_DC_ID;
+</pre>
+    <b> (ii)Validation Query to validate No_Of_Boxes,No_Of_Po,Shipped_Pieces and Dollars_Shipped.</b>
+    <pre>   
+    SELECT COUNT(DISTINCT B.UCC128_ID) AS NO_OF_BOXES,
+           SUM(NVL(BD.CURRENT_PIECES, 0)) AS SHIPPED_PIECES,
+            SUM(NVL(BD.CURRENT_PIECES, 0) * NVL(BD.EXTENDED_PRICE, 0)) AS DOLLARS_SHIPPED
+        FROM PS PS
+        RIGHT OUTER JOIN BOX B
+        ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+        LEFT OUTER JOIN BOXDET BD
+        ON PS.PICKSLIP_ID = BD.PICKSLIP_ID
+        AND B.UCC128_ID = BD.UCC128_ID
+        WHERE PS.BUCKET_ID = :BUCKET_ID
+        AND B.STOP_PROCESS_DATE IS NULL
+        AND PS.WAREHOUSE_LOCATION_ID = :WAREHOUSE_LOCATION_ID;
+ <p>
+    <b>PO WISE:-</b>The validation queries are divided into parts:-
+               (i)   To validate Label_id,Total_Quantity_Ordered and Total_Dollars_Ordered.
+               (ii)  To validate No_Of_Pickslip,No_Of_Boxes,Shipped_Pieces and Dollars_Shipped.
+               
+    <br />
+    <br />
+    </p>
+    <b> (i)Validation Query to validate Label_id,Total_Quantity_ordered and Total_Dollars_Ordered.</b>
+    <pre>   
+   SELECT MAX(PS.LABEL_ID) AS LABEL_ID,
+       SUM(PS.TOTAL_QUANTITY_ORDERED) AS TOTAL_QUANTITY_ORDERED,
+       SUM(PS.TOTAL_DOLLARS_ORDERED) AS TOTAL_DOLLARS_ORDERED
+  FROM PS PS
+ INNER JOIN PO PO
+    ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+   AND PS.PO_ID = PO.PO_ID
+   AND PS.ITERATION = PO.ITERATION
+ WHERE PS.BUCKET_ID = :BUCKET_ID
+   AND PS.WAREHOUSE_LOCATION_ID = :WAREHOUSE_LOCATION_ID
+   AND PS.CUSTOMER_ID = :CUSTOMER_ID
+   AND PS.PO_ID = :PO_ID
+   AND PS.CUSTOMER_DC_ID = :CUSTOMER_DC_ID
+   AND PO.START_DATE >= TO_DATE(:START_DATE, 'mm/dd/yyyy')
+   AND PO.START_DATE < TO_DATE(:START_DATE, 'mm/dd/yyyy');
+
+</pre> 
+    <b> (ii)Validation Query to validate No_Of_Pickslip,No_Of_Boxes,Shipped_Pieces and Dollars_Shipped.</b>
+    <pre>   
+    SELECT COUNT(DISTINCT PS.PICKSLIP_ID),
+       COUNT(DISTINCT B.UCC128_ID) AS NO_OF_BOXES,
+       SUM(NVL(BD.CURRENT_PIECES, 0)) AS SHIPPED_PIECES,
+       SUM(NVL(BD.CURRENT_PIECES, 0) * NVL(BD.EXTENDED_PRICE, 0)) AS DOLLARS_SHIPPED
+  FROM PS PS
+ INNER JOIN PO PO
+    ON PS.CUSTOMER_ID = PO.CUSTOMER_ID
+   AND PS.PO_ID = PO.PO_ID
+   AND PS.ITERATION = PO.ITERATION
+ RIGHT OUTER JOIN BOX B
+    ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+  LEFT OUTER JOIN BOXDET BD
+    ON PS.PICKSLIP_ID = BD.PICKSLIP_ID
+   AND B.UCC128_ID = BD.UCC128_ID
+ WHERE PS.BUCKET_ID = :BUCKET_ID
+   AND PS.WAREHOUSE_LOCATION_ID = :WAREHOUSE_LOCATION_ID
+   AND PS.PO_ID = :PO_ID
+   AND B.STOP_PROCESS_DATE IS NULL
+   AND PO.START_DATE >= TO_DATE(:START_DATE, 'mm/dd/yyyy')
+   AND PO.START_DATE < TO_DATE(:START_DATE, 'mm/dd/yyyy');
+</pre>
+
+
+</body>
+</html>

@@ -1,0 +1,337 @@
+﻿<%@ Page Title="SKUs Which Are Locking Buckets(SKU Wise)" Language="C#" MasterPageFile="~/MasterPage.master"
+    EnableViewState="false" %>
+
+<%@ Import Namespace="System.Linq" %>
+<script runat="server">
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+    }
+</script>
+<%--*
+ *  Programming: Eclipse Systems (P) Ltd., NOIDA, INDIA
+ *  E-mail: support@eclsys.com
+ *
+ *  $Revision: 5979 $
+ *  $Author: skumar $
+ *  $HeadURL: http://server/svn/dcmslive/Projects/DcmsLive/trunk/Web/Reports/Category_140/R140_08.aspxExclude $
+ *  $Id: R140_08.aspxExclude 5979 2013-08-12 11:20:58Z skumar $
+ * Version Control Template Added.
+ * 
+--%>
+
+<script runat="server">
+
+
+    protected void cbSpecificBuilding_OnServerValidate(object sender, EclipseLibrary.Web.JQuery.Input.ServerValidateEventArgs e)
+    {
+        if (string.IsNullOrEmpty(ctlWhLoc.Value))
+        {
+            e.ControlToValidate.IsValid = false;
+            e.ControlToValidate.ErrorMessage = "Please provide select at least one building.";
+            return;
+        }
+    }
+</script>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <meta name="Description" content="This report lists those SKUs whose demand exceeds number of pieces available in the forward pick area. 
+    This allows supervisors to take preventive action and decide to bump up some of replenishment priorities. 
+    The Supervisors will be able to view the shortage SKUs along with their open pulls, required pieces and available pieces. 
+    The available pieces are broken down by inventory area.You can see details for specified Label ID or Virtual Warehouse or warehouse location, through filters available for this report. 
+    This report does not display the SKUs if they are marked as underpitch. 
+    The report might take longer time to execute when tried to run for all labels." />
+    <meta name="ReportId" content="140.08" />
+    <meta name="Browsable" content="true" />
+    <meta name="Version" content="$Id: R140_08.aspxExclude 5979 2013-08-12 11:20:58Z skumar $" />
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <jquery:Tabs runat="server" ID="tabs">
+        <jquery:JPanel ID="JPanel" runat="server" HeaderText="Filters">
+            <eclipse:TwoColumnPanel runat="server">
+                <eclipse:LeftLabel runat="server" Text="Label" />
+                <d:StyleLabelSelector ID="ctlLabel" runat="server" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+                    QueryString="label_id" ShowAll="true" ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>"
+                    ToolTip="Select Label" />
+                <eclipse:LeftLabel ID="LeftLabel2" runat="server" />
+
+            </eclipse:TwoColumnPanel> 
+                <d:VirtualWarehouseSelector ID="ctlvwh_id" runat="server" QueryString="vwh_id" ShowAll="true"
+                    ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>" ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>"
+                    ToolTip="Virtual Warehouse">
+                </d:VirtualWarehouseSelector>
+                <%-- <eclipse:LeftLabel runat="server" />
+               <d:BuildingSelector ID="ctlwhloc" runat="server" QueryString="whloc" ShowAll="true" FriendlyName="Building"
+                    ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>" ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>"
+                    ToolTip="Warehouse Location">
+                </d:BuildingSelector>--%>
+               <eclipse:LeftPanel ID="LeftPanel1" runat="server">
+                    <eclipse:LeftLabel ID="LeftLabel3" runat="server"  Text="Check For Specific Building"/>
+                    <i:CheckBoxEx ID="cbSpecificBuilding" runat="server" FriendlyName="Specific Building">
+                         <Validators>
+                            <i:Custom OnServerValidate="cbSpecificBuilding_OnServerValidate" />
+                        </Validators>
+                    </i:CheckBoxEx>
+                </eclipse:LeftPanel>
+
+                <oracle:OracleDataSource ID="dsBuilding" runat="server" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+                    ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>" CancelSelectOnNullParameter="true">
+                    <SelectSql>
+                          SELECT TWL.WAREHOUSE_LOCATION_ID,
+                                   (TWL.WAREHOUSE_LOCATION_ID || ':' || TWL.DESCRIPTION) AS DESCRIPTION
+                            FROM TAB_WAREHOUSE_LOCATION TWL
+                            ORDER BY 1
+
+                    </SelectSql>
+                </oracle:OracleDataSource>
+                
+                <i:CheckBoxListEx ID="ctlWhLoc" runat="server" DataTextField="DESCRIPTION"
+                    DataValueField="WAREHOUSE_LOCATION_ID" DataSourceID="dsBuilding" FriendlyName="Building"
+                    QueryString="building" OnClientChange="ctlWhLoc_OnClientChange">
+                </i:CheckBoxListEx>
+
+
+        </jquery:JPanel>
+        <%-- This panel will provide the sort control --%>
+        <jquery:JPanel ID="JPanel1" runat="server" HeaderText="Sorting">
+            <jquery:SortColumnsChooser runat="server" GridViewExId="gv" EnableGroupBy="true" />
+        </jquery:JPanel>
+    </jquery:Tabs>
+    <%--Button bar for all the buttons, validation summary and Applied Filter control--%>
+    <uc2:ButtonBar2 ID="btnButtonBar" runat="server" />
+    <%--Data source --%>
+    <oracle:OracleDataSource ID="ds" runat="server" ConnectionString="<%$ ConnectionStrings:DCMSLIVE %>"
+        ProviderName="<%$ ConnectionStrings:DCMSLIVE.ProviderName %>" CancelSelectOnNullParameter="true">
+        <SelectSql>
+
+WITH SKU AS
+ (SELECT PS.VWH_ID         AS VWH_ID,
+         PD.UPC_CODE       AS UPC_CODE,
+         PD.PIECES_ORDERED AS REQUIRED_PIECES,
+         BKT.BUCKET_ID     AS NO_OF_BUCKETS
+    FROM PS PS
+   INNER JOIN PSDET PD
+      ON PS.PICKSLIP_ID = PD.PICKSLIP_ID
+   INNER JOIN BUCKET BKT
+      ON PS.BUCKET_ID = BKT.BUCKET_ID
+   WHERE BKT.AVAILABLE_FOR_MPC = 'Y'
+     AND BKT.AVAILABLE_FOR_PITCHING IS NULL
+     AND BKT.PICK_MODE = :Pitching
+     <if>AND PS.VWH_ID=:vwh_id</if>
+     <%--<if>AND PS.WAREHOUSE_LOCATION_ID=:warehouse_location_id</if>--%>
+    <if>AND <a pre="PS.WAREHOUSE_LOCATION_ID IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+     AND NOT EXISTS (SELECT BK.BUCKET_ID
+            FROM BUCKETSKU BK
+           WHERE bk.bucket_id = bkt.bucket_id
+             AND BK.UNDERPITCH_FLAG = 'Y')
+  
+  UNION ALL
+  
+  SELECT B.VWH_ID           AS VWH_ID,
+         BD.UPC_CODE        AS UPC_CODE,
+         BD.EXPECTED_PIECES AS REQUIRED_PIECES,
+         BKT.BUCKET_ID      AS NO_OF_BUCKETS
+    FROM PS PS
+   INNER JOIN PSDET PD
+      ON PS.PICKSLIP_ID = PD.PICKSLIP_ID
+   INNER JOIN BUCKET BKT
+      ON PS.BUCKET_ID = BKT.BUCKET_ID
+   INNER JOIN BOX B
+      ON PS.PICKSLIP_ID = B.PICKSLIP_ID
+   INNER JOIN BOXDET BD
+      ON B.UCC128_ID = BD.UCC128_ID
+     AND PS.PICKSLIP_ID = BD.PICKSLIP_ID
+   WHERE BKT.AVAILABLE_FOR_PITCHING = 'Y'
+     AND BKT.AVAILABLE_FOR_MPC = 'Y'
+     AND BKT.PICK_MODE = :Pitching
+     <if>AND B.VWH_ID=:vwh_id</if>
+     <%--<if>AND PS.WAREHOUSE_LOCATION_ID=:warehouse_location_id</if>--%>
+   <if>AND <a pre="PS.WAREHOUSE_LOCATION_ID IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+     AND BD.EXPECTED_PIECES &gt; 0
+    AND NOT EXISTS (SELECT BK.BUCKET_ID
+            FROM BUCKETSKU BK
+           WHERE bk.bucket_id = bkt.bucket_id
+             AND BK.UNDERPITCH_FLAG = 'Y')
+     AND B.IA_ID IS NULL
+     AND B.CARTON_ID IS NULL),
+
+GROUP_SKU AS
+ (SELECT S.VWH_ID AS VWH_ID,
+         max(MS.STYLE) AS STYLE,
+         max(MS.COLOR) AS COLOR,
+         max(MS.DIMENSION) AS DIMENSION,
+         max(MS.SKU_SIZE) AS SKU_SIZE,
+         MS.SKU_ID AS SKU_ID,
+         MAX(S.UPC_CODE) AS UPC_CODE,
+         SUM(S.REQUIRED_PIECES) AS REQUIRED_PIECES,
+         COUNT(DISTINCT S.NO_OF_BUCKETS) AS NO_OF_BUCKETS
+    FROM SKU S
+   INNER JOIN MASTER_SKU MS
+      ON S.UPC_CODE = MS.UPC_CODE
+   GROUP BY S.VWH_ID, MS.SKU_ID),
+
+AREA_SKU AS
+ (SELECT SC.VWH_ID AS VWH_ID,
+         max(MS.STYLE) AS STYLE,
+         max(MS.COLOR) AS COLOR,
+         max(MS.DIMENSION) AS DIMENSION,
+         max(MS.SKU_SIZE) AS SKU_SIZE,
+         SCD.SKU_ID AS SKU_ID,
+          TIA.Short_Name || decode(tia.location_numbering_flag ,'Y', NVL2(SCD.REQ_MODULE_CODE,('-'||SCD.REQ_MODULE_CODE),'')) AS AREA,
+          NVL(SUM(SCD.QUANTITY), 0) AS QUANTITY
+  
+    FROM SRC_CARTON SC
+   INNER JOIN SRC_CARTON_DETAIL SCD
+      ON SC.CARTON_ID = SCD.CARTON_ID
+    LEFT OUTER JOIN SRC_REQ_DETAIL SRD
+      ON SCD.REQ_PROCESS_ID = SRD.REQ_PROCESS_ID
+     AND SCD.REQ_MODULE_CODE = SRD.REQ_MODULE_CODE
+     AND SCD.REQ_LINE_NUMBER = SRD.REQ_LINE_NUMBER
+     LEFT OUTER JOIN MASTER_SKU MS
+     ON MS.SKU_ID=SCD.SKU_ID
+    LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+      ON SC.LOCATION_ID = MSL.LOCATION_ID
+      LEFT OUTER JOIN TAB_INVENTORY_AREA TIA
+            ON SC.CARTON_STORAGE_AREA = TIA.INVENTORY_STORAGE_AREA
+            WHERE 1=1 
+       
+   GROUP BY TIA.SHORT_NAME || decode(tia.location_numbering_flag ,'Y', NVL2(SCD.REQ_MODULE_CODE,('-'||SCD.REQ_MODULE_CODE),'')),
+            SC.VWH_ID,
+            SCD.SKU_ID),
+
+FPK_QUANTITY AS
+ (SELECT max(MS.STYLE) AS STYLE,
+         max(MS.COLOR) AS COLOR,
+         max(MS.DIMENSION) AS DIMENSION,
+         max(MS.SKU_SIZE) AS SKU_SIZE,
+         MS.SKU_ID AS SKU_ID,
+         I.VWH_ID AS VWH_ID,
+         MAX(I.LOCATION_ID) AS LOCATION_ID,
+         SUM(I.ASSIGNED_UPC_MAX_PIECES) AS FPK_CAPACITY,
+         COUNT(DISTINCT I.LOCATION_ID) LOCATION_COUNT,
+         SUM(IC.NUMBER_OF_UNITS) AS FPK_QUANTITY,
+         SUM(RD.PIECES_RESERVED) AS RESERVED_PIECES
+    FROM IALOC I
+    LEFT OUTER JOIN IALOC_CONTENT IC
+      ON I.ASSIGNED_UPC_CODE = IC.IACONTENT_ID
+     AND I.LOCATION_ID = IC.LOCATION_ID
+     AND I.IA_ID = IC.IA_ID
+   INNER JOIN MASTER_SKU MS
+      ON I.ASSIGNED_UPC_CODE = MS.UPC_CODE
+    LEFT OUTER JOIN RESVDET RD
+      ON I.VWH_ID = RD.VWH_ID
+     AND I.ASSIGNED_UPC_CODE = RD.UPC_CODE
+   WHERE I.IA_ID = :PickArea
+     <if>AND I.VWH_ID = :VWH_ID</if>
+     AND I.ASSIGNED_UPC_CODE IS NOT NULL
+   GROUP BY MS.SKU_ID, I.VWH_ID)
+
+SELECT GS.STYLE AS STYLE,
+ GS.COLOR AS COLOR, 
+ GS.DIMENSION AS DIMENSION, 
+ GS.SKU_SIZE AS SKU_SIZE,
+ GS.VWH_ID AS VWH_ID, 
+ MT.LABEL_ID AS LABEL_ID, 
+ GS.UPC_CODE AS UPC_CODE, 
+ ARS.AREA AS AREA, 
+ GS.REQUIRED_PIECES AS REQUIRED_QUANTITY, 
+ FQ.FPK_QUANTITY AS FPK_QUANTITY,
+  FQ.RESERVED_PIECES AS Unallocated_FPK_Quantity,
+   NVL(GS.REQUIRED_PIECES, 0) - (NVL(FQ.FPK_QUANTITY, 0) + NVL(FQ.RESERVED_PIECES, 0)) AS SHORTAGE_PIECES,
+    GS.NO_OF_BUCKETS AS BUCKETS, 
+     ARS.QUANTITY AS QUANTITY,
+      FQ.FPK_CAPACITY AS FPK_CAPACITY, 
+      FQ.LOCATION_ID AS PICKING_AREA_LOCATION
+
+  FROM GROUP_SKU GS
+
+ LEFT OUTER JOIN MASTER_STYLE MT
+    ON GS.STYLE = MT.STYLE
+  LEFT OUTER JOIN FPK_QUANTITY FQ
+    ON GS.SKU_ID = FQ.SKU_ID 
+    AND GS.VWH_ID = FQ.VWH_ID
+  LEFT OUTER JOIN AREA_SKU ARS
+    ON GS.SKU_ID= ARS.SKU_ID
+    AND GS.VWH_ID = ARS.VWH_ID
+
+ WHERE NVL (REQUIRED_PIECES, 0) &gt; (NVL(FPK_QUANTITY, 0) - NVL(RESERVED_PIECES,
+                                                               0))
+
+
+ <if> and MT.Label_id=:label_id</if>
+        </SelectSql> 
+        <SelectParameters>
+            <asp:ControlParameter ControlID="ctlLabel" Type="String" Name="label_id" Direction="Input" />
+            <asp:ControlParameter ControlID="ctlvwh_id" Type="String" Name="vwh_id" Direction="Input" />
+            <asp:ControlParameter ControlID="ctlwhloc" Type="String" Name="warehouse_location_id"
+                Direction="Input" />
+            <asp:Parameter Name="BirArea" Type="String" DefaultValue="<%$  AppSettings: CartonReserveArea %>" />
+            <asp:Parameter Name="Pitching" Type="String" DefaultValue="<%$  AppSettings: Pitching %>" />
+            <asp:Parameter Name="PickArea" Type="String" DefaultValue="<%$  AppSettings: PickingArea %>" />
+        </SelectParameters>
+    </oracle:OracleDataSource>
+    <%--GridViewEx to display result--%>
+    <jquery:GridViewEx ID="gv" runat="server" AutoGenerateColumns="false" AllowSorting="true"
+        ShowFooter="true"  AllowPaging="true" PageSize="200"  DataSourceID="ds" DefaultSortExpression="UPC_CODE;vwh_id">
+        <Columns>
+            <eclipse:SequenceField />
+             <eclipse:MultiBoundField DataFields="VWH_ID" HeaderText="VWh" HeaderToolTip="Virtual Warehouse Id"
+                SortExpression="VWH_ID" />
+            <eclipse:MultiBoundField DataFields="STYLE" HeaderText="Style" HeaderToolTip="Style of the SKU"
+                SortExpression="STYLE" />
+            <eclipse:MultiBoundField DataFields="COLOR" HeaderText="Color" HeaderToolTip="Color of the SKU"
+                SortExpression="Color" />
+            <eclipse:MultiBoundField DataFields="DIMENSION" HeaderText="Dim" HeaderToolTip="Dimension of the SKU"
+                SortExpression="DIMENSION" />
+            <eclipse:MultiBoundField DataFields="SKU_SIZE" HeaderText="Size" HeaderToolTip="Size of the SKU"
+                SortExpression="SKU_SIZE" />
+            <eclipse:MultiBoundField DataFields="Label_Id" HeaderText="Label" HeaderToolTip="Label of SKU"
+                SortExpression="Label_Id" />
+            <eclipse:MultiBoundField DataFields="UPC_CODE" HeaderText="UPC Code" HeaderToolTip="UPC code"
+                SortExpression="UPC_CODE" />
+            <eclipse:MultiBoundField DataFields="REQUIRED_QUANTITY" HeaderText="Required Quantity"
+                HeaderToolTip="Required Quantity of SKU" DataSummaryCalculation="ValueSummation"
+                SortExpression="REQUIRED_QUANTITY" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right"
+                DataFormatString="{0:N0}" />
+              <eclipse:MultiBoundField DataFields="FPK_QUANTITY" HeaderText="FPK Quantity"
+                HeaderToolTip="Quantity of SKU currently available in picking area" SortExpression="FPK_QUANTITY"
+                DataSummaryCalculation="ValueSummation" DataFormatString="{0:N0}" ItemStyle-HorizontalAlign="Right"
+                FooterStyle-HorizontalAlign="Right" />
+            <eclipse:MultiBoundField DataFields="Unallocated_FPK_Quantity" HeaderText="Unallocated Quantity"
+                HeaderToolTip="Quantity available in unallocated FPK (Quantity in FPK - Quantity in Reserve )"
+                SortExpression="Unallocated_FPK_Quantity" DataSummaryCalculation="ValueSummation"
+                DataFormatString="{0:N0}" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right" />
+            <eclipse:MultiBoundField DataFields="SHORTAGE_PIECES" HeaderText="Shortage Pieces" HeaderToolTip="Number of shortage pieces (Unallocated Pieces - Required Pieces)"
+                SortExpression="SHORTAGE_PIECES" DataSummaryCalculation="ValueSummation" DataFormatString="{0:N0}"
+                ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right" />
+            <eclipse:SiteHyperLinkField DataTextField="BUCKETS" HeaderText="#Bucket"
+                DataNavigateUrlFields="label_id,upc_code,vwh_id" SortExpression="NO_OF_CONTAINING_BUCKETS"
+                DataNavigateUrlFormatString="R140_107.aspx?label_id={0}&upc_code={1}&vwh_id={2}"
+                HeaderToolTip="No of Buckets in which this SKU is required" DataTextFormatString="{0:N0}"
+                ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right" AppliedFiltersControlID="btnButtonBar$af" />
+            <%--<eclipse:MultiBoundField DataFields="OPEN_PULL_QUANTITY" HeaderText="Open Pulls"
+                SortExpression="OPEN_PULL_QUANTITY" HeaderToolTip="Quantity lying in open pulls"
+                DataSummaryCalculation="ValueSummation" DataFormatString="{0:N0}" ItemStyle-HorizontalAlign="Right"
+                FooterStyle-HorizontalAlign="Right" />--%>
+            <m:MatrixField DataHeaderFields="AREA" HeaderText="Quantity In" DataCellFields="QUANTITY"
+                DataMergeFields="UPC_CODE,vwh_id">
+                <MatrixColumns>
+                    <m:MatrixColumn ColumnType="CellValue" DisplayColumnTotal="true">
+                        <ItemTemplate>
+                            <eclipse:SiteHyperLink ID="SiteHyperLink1" runat="server" SiteMapKey="R40_24.aspx"
+                                Text='<%# Eval("QUANTITY", "{0:N0}") %>' NavigateUrl='<%# string.Format("style={0}&color={1}&dimension={2:d}&sku_size={3}&Area={4}",Eval("style"),Eval("color"),Eval("dimension"),Eval("sku_size"),Eval("Area"))%>'></eclipse:SiteHyperLink>
+                        </ItemTemplate>
+                    </m:MatrixColumn>
+                </MatrixColumns>
+            </m:MatrixField>
+         
+            <%--<eclipse:MultiBoundField DataFields ="UNASSIGNED_BIR_QUANTITY" HeaderText="Bir Qty"></eclipse:MultiBoundField>--%>
+             <eclipse:MultiBoundField DataFields="FPK_CAPACITY" HeaderText="FPK Capacity"
+                DataSummaryCalculation="ValueSummation" HeaderToolTip="Total Capacity of all locations, which contains this SKU."
+                DataFormatString="{0:N0}" SortExpression="FPK_CAPACITY" ItemStyle-HorizontalAlign="Right"
+                FooterStyle-HorizontalAlign="Right" />
+            <eclipse:MultiBoundField DataFields="PICKING_AREA_LOCATION" HeaderText="FPK Location"
+                SortExpression="PICKING_AREA_LOCATION" HeaderToolTip="The location where SKU is assigned. If there are more than one location then '*****' will be displayed" />
+        </Columns>
+    </jquery:GridViewEx>
+</asp:Content>

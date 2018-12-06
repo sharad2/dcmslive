@@ -1,0 +1,587 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Report Documentation</title>
+    <meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1" />
+    <meta name="CODE_LANGUAGE" content="C#" />
+    <meta name="vs_defaultClientScript" content="JavaScript" />
+    <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5" />
+    <script type="text/javascript">
+        /*
+        Toggles the visibility of the passed divToToggle object.
+        */
+        function toggleVisibility(oVisibilityToggle, oInnerTextToggle) {
+            if (oVisibilityToggle.style.display == 'none') {
+                oVisibilityToggle.style.display = '';
+                oInnerTextToggle.innerText = "Hide Technical Documentaion";
+            }
+            else {
+                oVisibilityToggle.style.display = 'none';
+                oInnerTextToggle.innerText = "View Technical Documentaion"
+            }
+        }
+ 
+    </script>
+</head>
+<body>
+    <form name="Form1" method="post" id="Form1">
+    <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTEzNDA3MDMyNjVkZIcap+K8nT9Z14LPGvQPQ71nJTZT" />
+    <h1 align="center" xmlns="http://www.w3.org/1999/xhtml">
+        40<b>.</b>24<b> : </b>Location of SKU in Carton Area</h1>
+    <h3>
+        Author : Sanjeev Kumar</h3>
+    <p>
+        $Revision: 5656 $<br />
+        Status: Reviewed<br />
+        Reviewed By : Manmohan Bisht</p>
+    <p author="Nilesh Mohan" status="Completed" reviewer="Vipin Raturi">
+        Report retrieves the cartons for the SKU in given area.
+    </p>
+    <h2>
+        Overview</h2>
+    <body>
+        <p>
+            Report retrieves the cartons for the SKU in given area. It can also filter on received
+            date as well as on Sewing Plant Code. It also shows whether the carton is reserved
+            or not.
+        </p>
+    </body>
+    <h2>
+        Algorithm</h2>
+    Get the location or pallet of SKU in carton areas along with the Carton ID from
+    tables src_carton , src_carton_detail.This report
+    will retrieve the warehouse location from tab_inventory_area or master_storage_location.In case building is null in both tables then it will show "Unknown" building<h3>
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="25%" align="center">
+                <b>Item</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Summary</b>
+            </td>
+            <td width="10%" align="center">
+                <b>Default<br />
+                    Sort Sequence</b>
+            </td>
+            <td width="35%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Area
+            </td>
+            <td>
+                No<td align="center">
+                    1
+                </td>
+                <td>
+                    Area for which report is running
+                </td>
+        </tr>
+        <tr>
+            <td>
+                Style
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2
+            </td>
+            <td>
+                Style passed as parameter
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Color
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                3
+            </td>
+            <td>
+                Color passed as parameter
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Dimension
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                4
+            </td>
+            <td>
+                Dimension passed as parameter
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Size
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                5
+            </td>
+            <td>
+                Size passed as parameter
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Quality
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                6
+            </td>
+            <td>
+                Quality of the carton
+            </td>
+        </tr>   
+         <tr>
+            <td>
+                Pallet
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                7
+            </td>
+            <td>
+                <r:item term="Pallet ID" key="true" sortsequence="1"> 
+        Pallet on which carton is lying </r:item>
+            </td>
+        </tr>     
+        <tr>
+            <td>
+                Location
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                8
+            </td>
+            <td>
+                <r:item term="Location ID" key="true" sortsequence="1">Location 
+        on which carton is lying </r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Carton
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="Carton ID">The Carton ID.</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Sewing Plant Code
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="Sewing Plant Code">Sewing Plant Code 
+            of the carton.</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Season Code
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="Season Code">Price Season code 
+                of the carton.</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Received Date
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="Received Date">The date on which cartons 
+                was received.</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Quantity
+            </td>
+            <td>
+                sum
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="Quantity" summary="sum">
+            Number of pieces in the carton of passed SKU</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Reservation
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="Reservation">Indicate if there is a requirement against carton or not</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                VWh
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="VWH ID">Virtual Warehouse ID for the carton</r:item>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building
+            </td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;
+            </td>
+            <td>
+                <r:item term="Warehouse Location">Building assigned to the SKUs</r:item>
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td width="20%" align="center">
+                <b>Name</b>
+            </td>
+            <td width="20%" align="center">
+                <b>Default</b>
+            </td>
+            <td width="60%" align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Style
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                SKU Style
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Color
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                SKU Color
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Dimension
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                SKU Dimension
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Size
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                SKU Size
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label accesskey="p" for="ctl00_ContentPlaceHolder1_dtReceivedDate">
+                    S<span style="text-decoration: underline">p</span>ecify Received Date</label>
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                The date on which cartons was received.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Sewing Plant Code
+            </td>
+            <td>
+                None
+            </td>
+            <td>
+                Sewing plant code of the carton
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Virtual Warehouse
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                Virtual warehouse for which you would like to run the report
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Building
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                Building for which you would like to run the report
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Specify Carton Area
+            </td>
+            <td>
+                BIR
+            </td>
+            <td>
+                Area for which you would like to see cartons
+            </td>
+        </tr>
+         <tr>
+            <td>
+                Quality Code
+            </td>
+            <td>
+                Any
+            </td>
+            <td>
+                Quality of carton inventory
+            </td>
+        </tr>
+    </table>
+    <h2 >
+        Behavior Change</h2>
+    <ul>
+        <li>Showing areas along with their building. </li>
+        
+    </ul>
+   
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are required</p>
+    <p>
+        src_carton,</br> src_carton_detail,</br> master_storage_location,</br> master_style,</br>
+        tab_label_group,</br> tab_warehouse_location &nbsp;</p>
+    <p>
+        Use the below script to create the synonyms</p>
+    <p>
+        <code>create or replace synonym src_carton for dcms4.src_carton;
+            <br />
+            create or replace synonym src_carton_detail for dcms4.src_carton_detail;<br />
+            create or replace synonym master_storage_location for dcms4.master_storage_location;<br />
+            create or replace synonym master_style for dcms4.master_style;<br />
+            create or replace synonym tab_label_group for dcms4.tab_label_group;<br />
+            create or replace synonym tab_warehouse_location for dcms4.tab_warehouse_location;<br />
+            create or replace synonym tab_quality_code for dcms4.tab_quality_code<br />
+        </code>
+    </p>
+  
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
+        Issues</h2>
+    <p>
+        No known issue.</p>
+    </form>
+    <h2>
+        Parameter Technical Details</h2>
+    <ul>
+        <li>Style (Type = String): Style of SKU </li>
+        <li>Color (Type = String): Color of SKU </li>
+        <li>Dimension (Type = String): Dimension of SKU </li>
+        <li>Size (Type = String): Size of SKU </li>
+        <li>Specify Received Date (Type = Date): Specify a particular Date for retrieving the
+            location of carton along with SKU details </li>
+        <li>Sewing PSewing Plant Code (Type = String): Sewing Plant Code </li>
+        <li>Virtual Warehouse(Type = String): This is a combo parameter control. By default,
+            inventory of all Warehouses is shown for each SKU. If your focus is on the inventory
+            in a particular Warehouse, Specify that Warehouse Id. Null value text is &quot;All&quot;.
+            <ul>
+                <li>
+                Query to fill list values = &quot;select tab_virtual_warehouse.vwh_id, tab_virtual_warehouse.vwh_id
+                from tab_virtual_warehouse&quot;
+            </ul>
+        </li>
+        <li>Warehouse Location (Type = String): This is a combo parameter control. Location
+            of SKUs in warehouse Null value text is &quot;All&quot;.
+            <ul>
+                <li>Query to fill list values = &quot;select warehouseloc.warehouse_location_id,warehouseloc.warehouse_location_id
+                    from :+DefaultSchemaName+:.warehouseloc&quot; </li>
+            </ul>
+        </li>
+        <li>Carton Area (Type = String): This is a combo parameter control. This is list of
+            all carton storage areas. BIR carton area is selected by default.
+            <ul>
+                <li>Query to fill list values = &quot;select distinct(inventory_storage_area) from tab_inventory_area
+                    where stores_what =&#39;CTN&#39; order by inventory_storage_area&quot; </li>
+            </ul>
+        </li>
+    </ul>
+    <h2>
+        Parameter Validation</h2>
+    No special validations.
+    <h2>
+        Query&#39;s documentation:</h2>
+    <ul>
+        
+        <pre>
+SELECT ctn.carton_storage_area as carton_storage_area, 
+       ctndet.style as style,
+       ctndet.color as color,
+       ctndet.dimension as dimension,
+       ctndet.sku_size as sku_size,
+       ctn.quality_code as quality_code,
+       ctn.location_id as location_id,
+       ctn.pallet_id as pallet_id,
+       ctn.carton_id as carton_id,
+       ctn.sewing_plant_code as sewing_plant_code,
+       ctn.price_season_code as price_season_code,
+       ctn.Insert_Date as received_date,
+       ctndet.quantity as quantity,
+       decode(ctndet.req_process_id, NULL, '', 'TRUE') as reservation,
+       ctn.vwh_id as vwh_id,
+       nvl(nvl(tia.warehouse_location_id,msl.warehouse_location_id),'Unknown') as WAREHOUSE_LOCATION_ID
+  FROM src_carton ctn
+ inner JOIN src_carton_detail ctndet ON ctn.carton_id = ctndet.carton_id
+  LEFT OUTER JOIN master_style ms ON ctndet.style = ms.style
+ LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+      ON ctn.LOCATION_ID = MSL.LOCATION_ID
+     and ctn.carton_storage_area = msl.storage_area
+    left outer JOIN TAB_INVENTORY_AREA TIA
+      ON ctn.carton_storage_area = TIA.INVENTORY_STORAGE_AREA
+   WHERE ctndet.style = :style
+   AND ctndet.color = :color
+   AND ctndet.DIMENSION = :dimension1
+   AND ctndet.sku_size = :size1
+   <if>AND ctn.vwh_id=:vwh_id</if>
+   <if c="$warehouse_location_id != 'Unknown'">AND (TIA.WAREHOUSE_LOCATION_ID = :warehouse_location or MSL.WAREHOUSE_LOCATION_ID = :warehouse_location) </if>
+   <if c="$warehouse_location_id ='Unknown'">and (MSL.Warehouse_Location_Id is null and TIA.WAREHOUSE_LOCATION_ID is null)</if> 
+   <if>AND ctn.carton_storage_area=:carton_storage_area</if>
+   <if c="$received_date">
+   AND ctn.insert_date &gt;= trunc(:received_date)
+   AND ctn.insert_date &lt; trunc(:received_date)+1   
+   </if>
+   <if>AND ctn.sewing_plant_code = :sewing_plant_code</if>
+   <if>and ctn.quality_code=:quality_code</if>
+   <if c="$showunresvpieces">
+   and ctndet.req_process_id is null
+   and ctn.suspense_date is null
+   </if>  
+</pre>
+    <h2>
+        Validation details
+    </h2>
+    Bellow queries may have the where clause in the []&nbsp; brackets. It means these
+    are the optional parameters. If you do not want to pass these parameters just remove
+    the [] section.<br />
+    <b>Query:</b><pre> 
+
+SELECT CTN.CARTON_STORAGE_AREA AS CARTON_STORAGE_AREA, 
+     CTN.VWH_ID AS "VWH_ID",
+	 CTN.LOCATION_ID AS "LOCATION_ID",
+	 CTN.CARTON_ID AS "CARTON_ID",
+	 CTN.SEWING_PLANT_CODE AS "SEWING_PLANT_CODE",
+	 CTN.INSERT_DATE AS "RECEIVED_DATE",
+	 CTN.PRICE_SEASON_CODE AS "SEASON_CODE",
+	 CTNDET.STYLE AS "STYLE",
+	 CTNDET.COLOR AS "COLOR",
+	 CTNDET.DIMENSION AS "DIMENSION",
+	 CTNDET.SKU_SIZE AS "SKU_SIZE",
+	 CTNDET.QUANTITY AS "QUANTITY",
+	 DECODE(CTNDET.REQ_PROCESS_ID, NULL, '', 'YES') AS "Reservation",
+	 nvl(nvl(tia.warehouse_location_id,msl.warehouse_location_id),'Unknown') as "Building"
+	FROM SRC_CARTON CTN
+  LEFT OUTER JOIN SRC_CARTON_DETAIL CTNDET ON CTN.CARTON_ID = CTNDET.CARTON_ID
+  LEFT OUTER JOIN MASTER_STYLE MS ON CTNDET.STYLE = MS.STYLE
+  LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSL
+      ON ctn.LOCATION_ID = MSL.LOCATION_ID
+     and ctn.carton_storage_area = msl.storage_area
+    left outer JOIN TAB_INVENTORY_AREA TIA
+      ON ctn.carton_storage_area = TIA.INVENTORY_STORAGE_AREA
+ WHERE CTN.CARTON_STORAGE_AREA = :CARTON_STORAGE_AREA
+	 AND CTN.CARTON_ID = :CARTON_ID
+	 AND CTNDET.STYLE = :STYLE
+	 AND CTNDET.COLOR = :COLOR
+	 AND CTNDET.DIMENSION = :DIMENSION
+	 AND CTNDET.SKU_SIZE = :SKU_SIZE
+	 AND CTN.SEWING_PLANT_CODE = :SEWING_PLANT_CODE  
+</pre>
+    </R:QUERY> <b>Description:</b><pre><r:description>
+This query gives the location of the SKU in the given area for the given Carton ID and SKU.
+          </r:description>
+          </pre>
+</body>
+</html>

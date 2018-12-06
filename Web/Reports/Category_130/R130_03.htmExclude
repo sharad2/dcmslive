@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style type="text/css">
+        .style1
+        {
+            height: 20px;
+        }
+        </style>
+</head>
+<body>
+<h1 style="text-align: center">
+        130<b>.</b>03<b> : </b>Picking Area Inventory Report</h1>
+    Author : Sanjeev Kumar<br />
+    Reviewed By : Manmohan Bisht<br />
+    $Revision: 5979 $<br />
+    Status: Tested
+    <br /> 
+    Tested By : Hemant K. Singh
+    <p>This report list inventory in various SKU areas except SSS for the passed Label .It can further filter list on the basis of virtual warehouse and building.</p>
+<h2>Overview</h2>
+    <p>Report helps in finding inventory of&nbsp; label in picking areas .Report can also be run with different combinations of Label , Vwh_id and Building. </p>
+<h2>Algorithm</h2>
+<p>The query retrieves&nbsp; all inventory in various SKUs areas along with their details from 
+    IALOC,IALOC_CONTENT and IA, and label of the sku from master_style table.</p>
+        <h2>Parameter</h2>
+        <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center">
+                <b>Name</b>
+            </td>
+            <td align="center">
+                <b>Default</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+         <tr>
+            <td>
+                Label</td>
+            <td>
+                All</td>
+            <td>
+                Label of the SKU</td>
+        </tr>
+         <tr>
+            <td>
+                Vwh</td>
+            <td>
+                All</td>
+            <td>
+                Virtual Warehouse of SKU</td>
+        </tr>
+            <tr>
+            <td>
+                Building</td>
+            <td>
+                All</td>
+            <td>
+                Building of SKU</td>
+            </tr>
+        </table>
+  <h2>OutPut</h2>
+  <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td align="center">
+                <b>Item</b>
+            </td>
+            <td align="center">
+                <b>Summary</b>
+            </td>
+            <td align="center">
+                <b>Default Sort Sequence</b>
+            </td>
+            <td align="center">
+                <b>Detail</b>
+            </td>
+        </tr>
+         <tr>
+            <td>
+                Building</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                1</td>
+            <td>
+                Building of&nbsp; the SKU.</td>
+        </tr> 
+        <tr>
+            <td>
+                VWh</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                2</td>
+            <td>
+                VWH of the SKU.</td>
+        </tr> 
+        <tr>
+            <td>
+                Area</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Area of the SKU.</td>
+        </tr> 
+        <tr>
+            <td>
+                Quantity</td>
+            <td>
+                No
+            </td>
+            <td align="center">
+                &nbsp;</td>
+            <td>
+                Total available quantity of the SKU.</td>
+        </tr>
+         </table>
+        <h2>Performance Detail
+</h2>
+<i>Expected Time for the report output is 3 sec approximately.</i>
+  <h2>Behavior</h2>
+  <ul>
+  <li> Now, report is ready for separate picking area for each Building.</li>
+  </ul>
+  <h2>Issue</h2>
+    No Issue.
+    <h1>Prerequisites</h1>
+<p>Private synonyms for the following tables are required</p>
+
+<p>Use the below script to create the synonyms</p>
+<ul>
+<li>create or replace synonym master_style for dcms4.master_style </li>
+<li>create or replace synonym&nbsp; ia for dcms8.ia</li>
+    <li>create or replace ialoc for dcms8.ialoc</li>
+    <li>create or replace ialoc_content for dcms8.ialoc_content</li>
+    <li>create or replace master_sku for dcms8.master_sku</li>
+</ul>
+<h4>Following appSettings are required:</h4>
+
+<b>No Appsetting used</b>
+<h2>Parameter Validation</h2>
+<h4> No parameter Validation</h4>
+    <h2>Query's documentation:</h2>
+<pre>
+SELECT I.VWH_ID AS VWH_ID,
+       I.IA_ID AS IA_ID,
+       SUM(IC.NUMBER_OF_UNITS) AS QUANTITY,
+       I.WAREHOUSE_LOCATION_ID AS WAREHOUSE_LOCATION_ID,
+       MAX(I.IA_ID||' : '||IA.SHORT_DESCRIPTION) AS DESCRIPTION
+  FROM IALOC I
+  LEFT OUTER JOIN IALOC_CONTENT IC
+    ON I.IA_ID = IC.IA_ID
+   AND I.LOCATION_ID = IC.LOCATION_ID
+  LEFT OUTER JOIN IA
+    ON I.IA_ID = IA.IA_ID
+  LEFT OUTER JOIN MASTER_SKU MSKU
+    ON IC.IACONTENT_ID = MSKU.UPC_CODE
+  LEFT OUTER JOIN MASTER_STYLE MS
+    ON MSKU.STYLE = MS.STYLE
+ WHERE IC.IACONTENT_TYPE_ID = 'SKU'
+    <if>AND I.VWH_ID = :vwh_id</if>
+   <if>AND MS.LABEL_ID = :label_id</if>
+  <if>AND <a pre="I.WAREHOUSE_LOCATION_ID IN (" sep="," post=")">:WAREHOUSE_LOCATION_ID</a></if>
+   AND IC.IA_ID &lt;&gt; 'SSS'
+ GROUP BY I.VWH_ID, I.IA_ID, I.WAREHOUSE_LOCATION_ID
+</pre>
+    <h2>Validation Detail</h2>
+<p>Bellow queries may have the where clause in the [] brackets. It means these are the optional parameters. If you do not want to pass these parameters just remove the [] section. 
+</p>
+<b>Query: Below query is showing area and building wise quanity for the pass label and vwh.</b>
+<pre>
+SSELECT sum(IC.NUMBER_OF_UNITS) AS "Pieces ordered", ia.SHORT_NAME, i.WAREHOUSE_LOCATION_ID
+  FROM IALOC I
+ inner join ia
+    on i.IA_ID = ia.IA_ID
+ INNER JOIN IALOC_CONTENT IC
+    ON I.IA_ID = IC.IA_ID
+   AND I.LOCATION_ID = IC.LOCATION_ID
+ INNER JOIN MASTER_SKU MSKU
+    ON IC.IACONTENT_ID = MSKU.UPC_CODE
+  LEFT OUTER JOIN MASTER_STYLE MS
+    ON MSKU.STYLE = MS.STYLE
+   AND I.LOCATION_ID = IC.LOCATION_ID
+ WHERE IC.IACONTENT_TYPE_ID = 'SKU'
+   AND MS.LABEL_ID = 'JL'
+   AND I.VWH_ID = '15'
+   group by ia.SHORT_NAME, i.WAREHOUSE_LOCATION_ID;
+</pre>
+</body>
+</html>

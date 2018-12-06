@@ -1,0 +1,286 @@
+﻿<html>
+<head>
+    <title>30.08 Inventory Summary report</title>
+</head>
+<body>
+    <h1 style="text-align: center">
+        30.08 Inventory Summary report</h1>
+    <h3>
+    Author : Sanjeev Kumar</h3>
+    Reviewed By: Manmohan Bisht<br />
+    $Revision: 5678 $<br />
+    Status: Tested<br />
+    Tested By: Sanjeev Kumar<br />
+    <p>
+        The report displays the consolidated inventory totals in various storage areas of
+        the Distribution Center along with the Virtual Warehouse and Building.</p>
+    <h2>
+        Overview</h2>
+    <p>
+        In a building there are several areas which contains inventory. The report displays
+        all areas and their inventory in pieces, which are there along with the virtual
+        warehouse.
+    </p>
+    <h2>
+        Algorithm</h2>
+    <p>
+        SKU areas&nbsp; inventory and their quantity are retrieved from 
+        master_raw_inventory and building is retrieved by&nbsp; tab_inventory_area Carton 
+        areas invetory and thier quantity are retrieved src_carton and src_carton_detail 
+        and building is retrieving tab_inventory_area and master_storage_location. </p>
+    <h2>
+        Output</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 25%; text-align: center">
+                <b>Item</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Summary</b>
+            </td>
+            <td style="width: 10%; text-align: center">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;">
+                Area
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%">
+                Inventory Area.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;">
+                Building
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                 &nbsp; 
+            </td>
+            <td style="width: 45%">
+                Building of the area.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;">
+                Pieces
+            </td>
+            <td style="width: 20%; text-align: center">
+                Sum
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%">
+                Total Quantity of SKUs for the given area.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;">
+                VWh
+            </td>
+            <td style="width: 20%; text-align: center">
+                No
+            </td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;
+            </td>
+            <td style="width: 45%">
+                Virtual Warehouse ID.
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;">
+                Total</td>
+            <td style="width: 20%; text-align: center">
+                sum</td>
+            <td style="width: 10%; text-align: center">
+                &nbsp;</td>
+            <td style="width: 45%">
+                This column displays the total quantity per building and area.</td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 20%; text-align: center">
+                <b>Name</b>
+            </td>
+            <td style="width: 15%; text-align: center">
+                <b>Type</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Default</b>
+            </td>
+            <td style="width: 45%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%;">
+                Inventory Quality</td>
+            <td style="width: 15%; text-align: center">
+                String
+            </td>
+            <td style="width: 20%; text-align: center">
+                Select</td>
+            <td style="width: 45%;">
+                Quality of the cartons</td>
+        </tr>
+        </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        Expected Time for the report output is 1 Sec.</p>
+    <h2>
+        Behavior Change</h2>
+    <ul>
+        <li>Showing areas along with their building.</li>
+        <li>In case of no Building against any area,then we show "Unknown" as building of that area.</li>
+        <li>This report using only quality code parameter for run the report instead of 
+            building and vwh-id.</li>
+        <li>Report output change , report is not&nbsp; showing quality code column in the 
+            grid.&nbsp; </li>
+       
+    </ul>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No known issues.</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms requried for the tables:
+    </p>
+    <code>master_raw_inventory,<br />
+        tab_quality_code,<br />
+        tab_inventory_area,<br />
+        src_carton_detail,<br />
+        src_carton,<br />
+        master_storage_location</code>
+    
+    <p>
+        Script to create the synonyms:</p>
+    <code>create or replace synonym master_raw_inventory for dcms4.master_raw_inventory;
+        <br />
+        create or replace synonym tab_quality_code for dcms4.tab_quality_code; <br />
+        create or replace synonym tab_inventory_area for dcms4.tab_inventory_area ;
+        <br />
+        create or replace synonym src_carton_detail for dcms4.src_carton_detail;
+        <br />
+        create or replace synonym src_carton for dcms4.src_carton;
+        <br />
+         create or replace synonym master_storage_location for dcms4.master_storage_location;
+         </code>
+    <h2>
+        Query&#39;s documentation:</h2>
+    <pre>
+ with q1 AS
+ (SELECT skuinv.sku_storage_area AS area,
+         skuinv.quantity AS total_quantity,
+        sum(skuinv.quantity) over(partition by skuinv.sku_storage_area,nvl(tabinv.warehouse_location_id, 'Unknown')) as totalqty,
+         skuinv.vwh_id AS vwh_id,
+         tabinv.stores_what AS area_type,
+         nvl(tabinv.warehouse_location_id, 'Unknown') AS warehouse_location_id,
+         skuinv.quality_code as quality_code
+    FROM master_raw_inventory skuinv
+    LEFT OUTER JOIN tab_inventory_area tabinv
+      ON tabinv.Inventory_Storage_Area = skuinv.sku_storage_area
+   WHERE tabinv.stores_what = 'SKU'
+     and tabinv.Unusable_Inventory IS NULL
+     <if>and skuinv.quality_code=:quality_code </if>   
+     and skuinv.quantity &lt;&gt; 0
+  UNION ALL
+  SELECT ctn.carton_storage_area AS area,
+         ctndet.quantity AS total_quantity,
+         sum(ctndet.quantity) over(partition by ctn.carton_storage_area, nvl(nvl(tabinv.WAREHOUSE_LOCATION_ID, msloc.WAREHOUSE_LOCATION_ID),'Unknown')) as totalqty,
+         ctn.vwh_id AS vwh_id,
+         tabinv.stores_what AS area_type,
+         nvl(nvl(tabinv.WAREHOUSE_LOCATION_ID, msloc.WAREHOUSE_LOCATION_ID),
+             'Unknown') AS warehouse_location_id,
+         ctn.quality_code as quality_code
+    FROM src_carton_detail ctndet
+   INNER JOIN src_carton ctn
+      ON ctn.carton_id = ctndet.carton_id
+    LEFT OUTER JOIN master_storage_location msloc
+      ON ctn.carton_storage_area = msloc.storage_area
+     AND ctn.location_id = msloc.location_id
+    left outer JOIN tab_inventory_area tabinv
+      ON tabinv.inventory_storage_area = ctn.carton_storage_area
+      where 
+      <if>ctn.quality_code=:quality_code</if>
+      )
+select *
+  from q1 pivot XML(SUM(total_quantity) as total_quantity FOR(vwh_id) in(ANY))</pre>
+    <h2>
+        Validation details</h2>
+    <p>
+        These query validates the report data when specified with the area, vwh_id (virtual
+        warehouse) and warehouseloc(warehouse location) as parameters. Enter the specific
+        Area, Virtual Warehouse and Building to validate the data of report for
+        a particular row.</p>
+    <h4>
+        Query: For 
+        Carton Areas; following query will be used to validate the invntory.</h4>
+    <pre>
+ SELECT CTN.CARTON_STORAGE_AREA AS AREA,
+       SUM(CTNDET.QUANTITY) AS TOTAL_QUANTITY,
+       CTN.VWH_ID AS VWH_ID,
+       TABINV.STORES_WHAT AS AREA_TYPE,
+       NVL(NVL(TABINV.WAREHOUSE_LOCATION_ID, MSLOC.WAREHOUSE_LOCATION_ID),
+           'Unknown') AS WAREHOUSE_LOCATION,
+       CTN.QUALITY_CODE AS QUALITY_CODE
+  FROM SRC_CARTON_DETAIL CTNDET
+ INNER JOIN SRC_CARTON CTN
+    ON CTN.CARTON_ID = CTNDET.CARTON_ID
+  LEFT OUTER JOIN MASTER_STORAGE_LOCATION MSLOC
+    ON CTN.CARTON_STORAGE_AREA = MSLOC.STORAGE_AREA
+   AND CTN.LOCATION_ID = MSLOC.LOCATION_ID
+  LEFT OUTER JOIN TAB_INVENTORY_AREA TABINV
+    ON TABINV.INVENTORY_STORAGE_AREA = CTN.CARTON_STORAGE_AREA
+ WHERE 1 = 1
+   AND CTN.VWH_ID = CAST(:VWH_ID AS VARCHAR2(255))
+   AND (TABINV.WAREHOUSE_LOCATION_ID = :BUILDING_ID OR
+       MSLOC.WAREHOUSE_LOCATION_ID = :BUILDING_ID)
+
+ GROUP BY CTN.CARTON_STORAGE_AREA,
+          CTN.VWH_ID,
+          NVL(NVL(TABINV.WAREHOUSE_LOCATION_ID, MSLOC.WAREHOUSE_LOCATION_ID),
+              'Unknown'),
+          TABINV.STORES_WHAT,
+          CTN.QUALITY_CODE
+</pre>
+
+<h4>Query: For SKU Areas; following query will be used to validate the invntory.
+</h4>
+<pre>
+SELECT SKUINV.SKU_STORAGE_AREA AS AREA,
+       SKUINV.QUANTITY AS TOTAL_QUANTITY,
+       SKUINV.VWH_ID AS VWH_ID,
+       TABINV.STORES_WHAT AS AREA_TYPE,
+       NVL(TABINV.WAREHOUSE_LOCATION_ID, 'Unknown') AS WAREHOUSE_LOCATION_ID,
+       SKUINV.QUALITY_CODE AS QUALITY_CODE
+  FROM MASTER_RAW_INVENTORY SKUINV
+  LEFT OUTER JOIN TAB_INVENTORY_AREA TABINV
+    ON TABINV.INVENTORY_STORAGE_AREA = SKUINV.SKU_STORAGE_AREA
+  WHERE TABINV.STORES_WHAT = 'SKU'
+   AND TABINV.UNUSABLE_INVENTORY IS NULL
+   AND SKUINV.QUALITY_CODE = '01'
+   AND SKUINV.QUANTITY <> 0
+</pre>
+</body>
+</html>

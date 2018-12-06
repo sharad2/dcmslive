@@ -1,0 +1,671 @@
+<html>
+<head>
+    <title>Report Documentation</title>
+    <style type="text/css">
+        .style1
+        {
+            width: 8%;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">
+        130<b>.</b>16<b> : </b>Label Season codes for 7 days</h1>
+    <h3>
+        Author :Sanjeev Kumar</h3>
+    <br />
+    $Revision: 5711 $
+    <br />
+    Tested By :&nbsp; Hemant K. Singh<br />
+    Status : Tested<br />
+    <p>
+        The report displays list of SKUs along with quantity for a specified label and season
+        code which is scheduled to be delivered within next 7 days. Additionally, the specified
+        customer can be ignored whenever required.
+    </p>
+    <h2>
+        Overview</h2>
+    <p>
+        The report displays list of SKUs along with quantity for particular label season
+        code scheduled to be delivered within next 7 days. User also has the facility to
+        exclude the customers. This report shows only those Pickslips (either status 1)
+        whose import date is of last 3 months. For particular label, season code and virtual
+        warehouse the report displays:</p>
+    <ul>
+        <li>Sku details along with Quantity</li>
+        <li>BIR Pieces:BIR pieces for passed season code. </li>
+        <li>AWL Pieces :AWL pieces for passed season code</li>
+        <li>FPK Pieces :Number of units(quantity) in forward pick area</li>
+        <li>AWL + BIR + FPK: for passed season code</li>
+        <li>Order - ( AWL + BIR + FPK ):for passed season code</li>
+        <li>VWh:Virtual warehouse id.</li>
+    </ul>
+    <h2>
+        Algorithm</h2>
+    The information for a particular label,VWh and price season code i.e N01,S03,F03,S05,S07,etc
+    scheduled to be delivered within next 7 days is retrieved from tables ps, psdet,
+    dem_pickslip, dem_pickslip_detail, master_style, box and boxdet. The quantity in
+    AWL and BIR for the specified season code has been retrieved from src_carton and
+    src_carton_detail. Quantity in FPK has been retrieved from ialoc and ialoc_content
+    tables. SKUs detail is reterived from master_sku table.
+    <h3>
+        Output</h3>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 25%; text-align: center">
+                <b>Item</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Summary</b>
+            </td>
+            <td style="text-align: center" class="style1">
+                <b>Sort Sequence</b>
+            </td>
+            <td style="width: 35%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Style
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center" class="style1">
+                1
+            </td>
+            <td>
+                Style of the SKU.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Color
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center" class="style1">
+                &nbsp;
+            </td>
+            <td>
+                Color of the SKU.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Dimension
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center" class="style1">
+                &nbsp;
+            </td>
+            <td>
+                Dimension of the SKU
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Size
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center" class="style1">
+                &nbsp;
+            </td>
+            <td>
+                Size of the SKU.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Order Pieces
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center" class="style1">
+                &nbsp;
+            </td>
+            <td>
+                Quantity in pickslip
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Quantity In BIR
+            </td>
+            <td>
+                Sum
+            </td>
+            <td align="center" class="style1">
+            </td>
+            <td>
+                BIR pieces for passed season code. It will be dynamically visible.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Quantity In AWL
+            </td>
+            <td>
+                Sum
+            </td>
+            <td style="text-align: center" class="style1">
+                &nbsp;
+            </td>
+            <td>
+                AWL pieces for passed season code
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Quantity In FPK
+            </td>
+            <td>
+                sum
+            </td>
+            <td align="center" class="style1">
+                &nbsp;
+            </td>
+            <td>
+                Number of units(quantity) in forward pick area. It will be dynamically visible.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Pieces In AWL+BIR+FPK
+            </td>
+            <td>
+                Sum
+            </td>
+            <td class="style1">
+                &nbsp;
+            </td>
+            <td>
+                (AWL + BIR + FPK)for passed season code
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Order - Total Pcs (AWL+BIR+FPK)
+            </td>
+            <td>
+                Sum
+            </td>
+            <td style="text-align: center" class="style1">
+                &nbsp;
+            </td>
+            <td>
+                Order - ( AWL + BIR + FPK )for passed season code
+            </td>
+        </tr>
+        <tr>
+            <td>
+                VWh
+            </td>
+            <td>
+                No
+            </td>
+            <td style="text-align: center" class="style1">
+                &nbsp;
+            </td>
+            <td>
+                Virtual warehouse id.
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Parameters</h2>
+    <table width="100%" cellspacing="1" cellpadding="1" border="1">
+        <tr>
+            <td style="width: 20%; text-align: center">
+                <b>Name</b>
+            </td>
+            <td style="width: 20%; text-align: center">
+                <b>Default</b>
+            </td>
+            <td style="width: 60%; text-align: center">
+                <b>Detail</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Style Label
+            </td>
+            <td>
+                First Label Id getting from style label list
+            </td>
+            <td>
+                Display the drop down for the labels existing in master_style table.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Season Code
+            </td>
+            <td>
+                First Season Code getting from season code list.
+            </td>
+            <td>
+                Display the drop down for different Season codes(N01,S03,F03,S05,S07)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Exclude Customer
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;ID&nbsp; of the customer.</td>
+        </tr>
+        <tr>
+            <td>
+                Virtual Warehouse
+            </td>
+            <td>
+                All
+            </td>
+            <td>
+                Virtual warehouse ID for the season codes
+            </td>
+        </tr>
+    </table>
+    <h2>
+        Performance Detail</h2>
+    <p>
+        <i>Expected Time for the report output is </i>20second</p>
+    <p>
+        This report exhibits linear performance with respect to the SKUs in boxes of a pickslip.
+        There is also a full scan on table SRC_CARTON, SRC_CARTON_DETAIL, BOX, BOXDET, PO,
+        IALOC, IALOC_CONTENT and IA. The query also does a index based scans on tables MASTER_SKU
+        (index used &#39;SKU_PK&#39;), MASTER_STYLE (index used is &#39;STY_PK&#39;, STY_LBL_I),
+        PS and PSDET (index used is &#39;PS_PO_FK_I&#39; and&nbsp; &#39;PSDET_PICKSLIP_FK_I&#39;),
+        DEM_PICKSLIP and DEM_PICKSLIP_DETAIL (index used are &#39;PS_PSIMPORTDATE_I&#39;
+        and &#39;PSDET_PS_FK_I&#39;).</p>
+    <h2>
+        Behavior Change</h2>
+    <h2>
+        Issues</h2>
+    <ul>
+        <li>No Issue</li>
+    </ul>
+    <h2>
+        Parameter Technical Details</h2>
+    <ul>
+        <li>Label ID: This is a drop-down list parameter control.
+            <ul>
+                <li>Query to fill list values:<pre>select tsl.label_id as label_id,tsl.description as label_description from tab_style_label tsl order by tsl.label_id</pre>
+                </li>
+            </ul>
+        </li>
+        <li>Season Code: This is a drop-down list parameter control.
+            <ul>
+                <li>Query to fill list values:
+                    <pre>select tps.price_season_code AS price_season_code, tps.description AS descriptions from tab_price_season tps ORDER BY 1</pre>
+                </li>
+            </ul>
+        </li>
+        <li>Excluding Customer: Enter the Customer ID </li>
+        <li>VWh: This is a list parameter control. By default, inventory of all Warehouse is
+            shown for each area. If your focus is on the inventory in a particular Warehouse,
+            Specify that Warehouse Id. Null value text is "All".
+            <ul>
+                <li>Query to fill list values:
+                    <pre>SELECT vwh_id AS vwh_id, description AS description FROM tab_virtual_warehouse ORDER BY vwh_id</pre>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <h2>
+        Parameter Validation</h2>
+    <ul>
+        <li>No special validations.</li>
+    </ul>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        Private synonyms for the following tables are requried</p>
+    <p>
+        <code>ps,
+            <br />
+            psdet,
+            <br />
+            po,
+            <br />
+            master_style,
+            <br />
+            box,
+            <br />
+            boxdet,
+            <br />
+            dem_pickslip,
+            <br />
+            dem_pickslip_detail,
+            <br />
+            tab_inventory_area,
+            <br />
+            ia,
+            <br />
+            src_carton,<br />
+            src_carton_detail,<br />
+            master_sku,<br />
+            ialoc,<br />
+            ialoc_content,<br />
+        </code>
+    </p>
+    <p>
+        Use the script below to create the synonyms.<code><br />
+            <br />
+            create or replace synonym src_carton for dcms8.ps;<br />
+            create or replace synonym src_carton for dcms8.psdet;<br />
+            create or replace synonym src_carton for dcms8.po;<br />
+            create or replace synonym src_carton for dcms4.master_style;<br />
+            create or replace synonym src_carton for dcms8.box;<br />
+            create or replace synonym src_carton for dcms8.boxdet;<br />
+            create or replace synonym src_carton for dcms4.dem_pickslip;<br />
+            create or replace synonym src_carton for dcms4.dem_pickslip_detail;<br />
+            create or replace synonym src_carton for dcms4.tab_inventory_area;<br />
+            create or replace synonym src_carton for dcms8.ia;<br />
+            create or replace synonym src_carton for dcms4.src_carton;<br />
+            create or replace synonym src_carton_detail for dcms4.src_carton_detail;<br />
+            create or replace synonym master_sku for dcms4.master_sku;<br />
+            create or replace synonym ialoc for dcms8.ialoc;<br />
+            create or replace synonym ialoc_content for dcms8.ialoc_content;<br />
+        </code>&nbsp;
+    </p>
+    <p>
+        Following AppSettings are required:
+        <br />
+        <code>&lt;add key="AwaitedToLocate" value="AWL"/&gt;<br />
+            &nbsp;</code></p>
+    <h2>
+        Query's documentation:</h2>
+    <ul>
+        <li>
+            <p>
+                This query retrieves sku details and order pieces along with warehouse id from tables
+                master_sku,dem_pickslip and dem_pickslip_detail. The queriy below may have the where
+                clause in the [] brackets. It means these are the optional parameters. If you do
+                not want to pass these parameters just remove the [] section.</p>
+        </li>
+    </ul>
+    <pre> 
+WITH ps_order
+AS
+(SELECT ps.vwh_id,
+       p.upc_code,
+       max(sku.style) style,
+       max(sku.color) color,
+       max(sku.dimension) dimension,
+       max(sku.sku_size) sku_size,
+       sum(p.pieces_ordered) tot_pieces
+  FROM ps
+ INNER JOIN psdet p on ps.pickslip_id = p.pickslip_id
+ INNER JOIN po pol on pol.po_id = ps.po_id
+                  and pol.customer_id = ps.customer_id
+                  and pol.iteration = ps.iteration
+ INNER JOIN master_sku sku on p.upc_code = sku.upc_code
+ WHERE ps.reporting_status is not null
+   AND sku.style in (SELECT ms.style
+                       FROM master_style ms
+                      WHERE ms.label_id = CAST(:label_id as varchar2(255))) 
+   [$[customer_Id]$AND ps.customer_id not in ({0})$]
+   AND pol.start_date &gt;= SYSDATE
+   AND pol.start_date &lt; SysDate + 8
+   AND PS.PICKSLIP_IMPORT_DATE &lt; (SYSDATE - 90)
+   [$:vwh_id$AND ps.vwh_id = CAST(:vwh_id as varchar2(255))$]
+ GROUP BY ps.vwh_id, p.upc_code),
+box_order
+AS
+(SELECT box.vwh_id AS VWH_ID,
+        boxdet.upc_code,
+        max(sku.style) style,
+        max(sku.color) color,
+        max(sku.dimension) dimension,
+        max(sku.sku_size) sku_size,
+        SUM(boxdet.CURRENT_PIECES) AS PACKED_PIECES
+   from box box
+  inner join boxdet boxdet on box.pickslip_id = boxdet.pickslip_id
+                          and box.ucc128_id = boxdet.ucc128_id
+   LEFT OUTER JOIN ps on ps.pickslip_id = box.pickslip_id
+   INNER JOIN po pol on pol.po_id = ps.po_id
+                    and pol.customer_id = ps.customer_id
+                    and pol.iteration = ps.iteration
+  inner join master_sku sku on sku.upc_code = boxdet.upc_code
+  WHERE box.stop_process_date is null
+    AND boxdet.stop_process_date is null
+    AND sku.style in
+        (SELECT ms.style
+           FROM master_style ms
+          WHERE ms.label_id = CAST(:label_id as varchar2(255))) 
+    [$[customer_Id]$AND ps.customer_id not in ({0})$]
+    AND pol.start_date &gt;= SYSDATE
+    AND pol.start_date &lt; SysDate + 8
+    AND PS.PICKSLIP_IMPORT_DATE &gt; (SYSDATE - 90)
+    [$:vwh_id$AND box.vwh_id = CAST(:vwh_id as varchar2(255))$]
+  GROUP BY box.vwh_id, boxdet.upc_code
+),          
+ordered_pieces as  
+( 
+SELECT ps_order.vwh_id AS vwh_id,
+       ps_order.upc_code AS upc_code,
+       ps_order.style AS style,
+       ps_order.color AS color,
+       ps_order.dimension AS dim,
+       ps_order.sku_size AS sku_size,
+       (ps_order.tot_pieces - box_order.PACKED_PIECES) Pieces
+  FROM ps_order
+  LEFT outer join  box_order on ps_order.vwh_id = box_order.vwh_id
+                            and ps_order.upc_code = box_order.upc_code
+UNION
+SELECT dp.vwh_id,
+       dpd.upc_code,
+       max(dpd.style),
+       max(dpd.color),
+       max(dpd.dimension),
+       max(dpd.sku_size),
+       sum(dpd.quantity_ordered)
+  FROM dem_pickslip dp
+ INNER JOIN dem_pickslip_detail dpd on dp.pickslip_id = dpd.pickslip_id 
+ where dpd.style in (SELECT /*+index (ms STY_LBL_I)*/
+                            ms.style AS STYLE
+                       FROM master_style ms
+                      WHERE ms.label_id = CAST(:label_id as varchar2(255))) 
+   and dp.ps_status_id = 1
+   [$[customer_Id]$AND dp.customer_id not in ({0})$]
+   AND dp.DELIVERY_DATE &lt; SYSDATE + 8
+   AND dp.PICKSLIP_IMPORT_DATE &gt; (SYSDATE - 90)
+   [$:vwh_id$AND dp.vwh_id = CAST(:vwh_id as varchar2(255))$] 
+ group by dp.vwh_id, dpd.upc_code
+ ),  
+ sku_area_wise AS ( 
+ /* pieces in picking area for the passed label*/
+ select loc.vwh_id AS vwh_id,
+        loccont.iacontent_id AS upc_code,
+        SUM(loccont.number_of_units) AS number_of_units,
+        loc.ia_id AS area
+   from ialoc_content loccont
+  inner join ialoc loc on loc.ia_id = loccont.ia_id 
+                      and loc.location_id = loccont.location_id
+  LEFT OUTER JOIN master_sku sku ON sku.upc_code = loccont.iacontent_id
+  LEFT OUTER JOIN master_style ms ON ms.style = sku.style
+ where loccont.iacontent_type_id = 'SKU'
+   AND loc.ia_id IN (SELECT ia.ia_id FROM ia WHERE picking_area_flag = 'Y')
+   AND ms.label_id=CAST(:label_id as varchar2(255))
+   [$:vwh_id$AND loc.vwh_id = CAST(:vwh_id as Varchar2(255))$]
+  group by loc.vwh_id,
+           loccont.iacontent_id,
+           loc.ia_id
+  UNION
+  select ctn.vwh_id AS vwh_id,
+         ms.upc_code AS upc_code,
+         sum(ctndet.quantity) AS number_of_units,
+         ctn.carton_storage_area AS area
+    from src_carton_detail ctndet
+   inner join src_carton ctn on ctn.carton_id = ctndet.carton_id
+   inner join master_sku ms on ms.style = ctndet.style
+                           and ms.color = ctndet.color
+                           and ms.dimension = ctndet.dimension
+                           and ms.sku_size = ctndet.sku_size
+   inner join master_style sty on sty.style =  ctndet.style
+   where (ctn.carton_storage_area = (SELECT tia.inventory_storage_area 
+                                       FROM tab_inventory_area tia 
+                                      where tia.location_numbering_flag = 'Y') 
+                                     OR ctn.carton_storage_area = CAST(:awaitedToLocate as varchar2(255)))
+     AND sty.label_id = CAST(:label_id as varchar2(255))
+     AND ctn.price_season_code = CAST(:price_season_code  as varchar2(255))
+     [$:vwh_id$AND ctn.vwh_id = CAST(:vwh_id as varchar2(255))$]
+  group by ctn.vwh_id,
+           ms.upc_code,
+           ctn.carton_storage_area), 
+area_sku as (
+  select a.vwh_id AS vwh_id,
+         a.upc_code AS upc_code,
+         MAX(a.style) AS style,
+         MAX(a.color) AS color,
+         MAX(a.dim) AS dim,
+         MAX(a.sku_size) AS sku_size,
+         sum(a.pieces) AS pieces_ordered,
+         area_wise.area AS area,
+         max(area_wise.number_of_units) AS number_of_units
+    from ordered_pieces a
+    LEFT OUTER JOIN sku_area_wise area_wise ON area_wise.vwh_id = a.vwh_id
+                                           AND area_wise.upc_code = a.upc_code
+   group by a.vwh_id,
+            a.upc_code,
+            area_wise.area)
+select q1.vwh_id AS vwh_id,
+       q1.upc_code AS upc_code,
+       q1.style AS style,
+       q1.color AS color,
+       q1.dim AS dim,
+       q1.sku_size AS sku_size,
+       q1.pieces_ordered AS pieces_ordered,
+       nvl(q1.area,'AWL') AS area,
+       q1.number_of_units AS number_of_units,
+       sum(q1.number_of_units) over(partition by q1.vwh_id, q1.upc_code) as tot_pcs_area,
+       q1.pieces_ordered - sum(q1.number_of_units) over(partition by q1.vwh_id, q1.upc_code) AS order_diff
+  from area_sku q1;
+</pre>
+    <b>Description:</b>
+    <pre>This query retrieves sku details and order pieces along with virtual warehouse from tables master_sku,ps, box and boxdet. 
+This query retrieves only remaining order pieces.
+</pre>
+    <h4>
+        Query:</h4>
+    <pre>
+SELECT sku.style,
+       sku.color,
+       sku.dimension,
+       sku.sku_size,
+       SUM(nvl(boxdet.expected_pieces,
+               0) - nvl(boxdet.current_pieces,
+                        0)),
+       ps.vwh_id
+  FROM master_sku sku,
+       boxdet,
+       ps,
+       po,
+       box
+ WHERE boxdet.ucc128_id = box.ucc128_id(+)
+   AND boxdet.pickslip_id = box.pickslip_id(+)
+   AND sku.upc_code = boxdet.upc_code(+)
+   AND box.pickslip_id = ps.pickslip_id
+   AND ps.transfer_date IS NULL
+   AND ps.pickslip_import_date &gt; (SYSDATE - 90)
+   AND box.stop_process_reason IS NULL
+   AND sku.style = '08839'
+   AND sku.color = 'WH'
+   AND sku.dimension = 'C'
+   AND sku.sku_size = '34'
+ GROUP BY sku.style,
+          sku.color,
+          sku.dimension,
+          sku.sku_size,
+          ps.vwh_id;
+</pre>
+    <b>Description:</b>
+    <pre>This query retrieves sku details and order pieces along with virtual warehouse from tables dem_pickslip and dem_pickslip_detail. </pre>
+    <h4>
+        Query:</h4>
+    <pre>
+SELECT pd.style,
+       pd.color,
+       pd.dimension,
+       pd.sku_size,
+       SUM(nvl(pd.quantity_ordered,0)) Order_pieces,
+       p.vwh_id
+  FROM dem_pickslip        p,
+       dem_pickslip_detail pd
+ WHERE p.pickslip_id = pd.pickslip_id
+   AND p.ps_status_id = 1
+   AND pd.style = '08839'
+   AND pd.color = 'WH'
+   AND pd.dimension = 'C'
+   AND pd.sku_size = '34'
+   AND p.pickslip_import_date &gt; (SYSDATE - 90)
+ GROUP BY pd.style,
+          pd.color,
+          pd.dimension,
+          pd.sku_size,
+          p.vwh_id
+          </pre>
+    <b>Description:</b><pre>The above both query retrieves the ordered pieces along with warehouse id.For this please sum up order pieces from both query.</pre>
+    <b>Query:</b><pre>
+SELECT scd.style,
+       scd.color,
+       scd.dimension,
+       scd.sku_size,
+       scd.quantity AS bir_qty,
+       sc.vwh_id
+  FROM src_carton_detail scd,
+       src_carton        sc,
+       master_style      mstyle
+ WHERE sc.carton_storage_area IN ('BIR',
+                                  'AWL')
+   AND scd.carton_id = sc.carton_id
+   AND sc.price_season_code = 'OLD'
+   AND mstyle.label_id = 'MF'
+   AND scd.style = '08839'
+   AND scd.color = 'WH'
+   AND scd.dimension = 'C'
+   AND scd.sku_size = '34'
+</pre>
+    <b>Description:</b><pre>
+The above query retrieves the total  pieces in area  AWL and BIR area along with warehouse id for a particular price season Code.</pre>
+    <b>Query:</b><pre>
+SELECT sku.style          AS style,
+       sku.color          AS color,
+       sku.dimension      AS dimension,
+       sku.sku_size       AS sku_size,
+       ic.number_of_units AS fpk_qty,
+       i.vwh_id
+  FROM ialoc_content ic,
+       master_sku    sku,
+       master_style  mstyle,
+       ialoc         i
+ WHERE ic.ia_id = 'FPK'
+   AND i.ia_id = ic.ia_id
+   AND i.location_id = ic.location_id
+   AND i.assigned_upc_code = ic.iacontent_id
+   AND ic.iacontent_id = sku.upc_code
+   AND i.assigned_upc_code = sku.upc_code
+   AND sku.style = mstyle.style
+   AND sku.style = '08839'
+   AND sku.color = 'WH'
+   AND sku.dimension = 'C'
+   AND sku.sku_size = '34'
+   AND mstyle.label_id = 'MF'
+</pre>
+    <b>Description:</b><pre>
+The above query retrives the total no. of pieces of area FPK along with warehouse id.
+</pre>
+</body>
+</html>
