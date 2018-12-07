@@ -117,11 +117,11 @@
         <i:LinkButtonEx ID="btnUpdateNow" runat="server" Text="Update Now" OnClick="btnUpdateNow_Click" />
         .
     </p>
-    <p>
+<%--    <p>
         <span class="ui-state-highlight ui-button ui-widget ui-corner-all ui-button-text-icon-primary" style="cursor:default"><span class="ui-button-icon-primary ui-icon ui-icon-extlink"></span><span class="ui-button-text">Legacy Reports</span></span>
         <strong style="font-size:1.2em">will be removed on 1<sup>st</sup> July 2013</strong>.
         Legacy Reports run on an old reporting server which we plan to remove. If you use any of these reports, please send an e-mail to IT so that we can move the report to our new server.
-    </p>
+    </p>--%>
     <div class="ui-widget">
         <div class="ui-widget-header">
             Favorites
@@ -139,7 +139,7 @@
             </div>
             <p id="qlInstructions" style="text-align: center; font-size: smaller">
                 <i:ButtonEx runat="server" Icon="Trash" ToolTip="Updated report" />
-                Drop <em>quick link</em> of updated report above to add to favorite list. Drag favorite
+                Drop <em>quick link</em> <%--of updated report--%> above to add to favorite list. Drag favorite
                 here to remove it.
                 <i:ButtonEx runat="server" Icon="Trash" ToolTip="Updated report" />
             </p>
@@ -150,12 +150,13 @@
             <div class="ui-widget">
                 <div class="ui-widget-header" style="padding: 1mm 1mm 1mm 1mm">
                     Quick Links&nbsp;
-                    <i:ButtonEx runat="server" Icon="Custom" CustomIconName='<%# Profile.ReportsInNewWindow ? "ui-icon-newwin" : "ui-icon-link"%>' />
+                    <%--<i:ButtonEx runat="server" Icon="Custom" CustomIconName='<%# Profile.ReportsInNewWindow ? "ui-icon-newwin" : "ui-icon-link"%>' />
                     &nbsp;Updated Report &bull;
                     <i:ButtonEx runat="server" Icon="Custom" CustomIconName="ui-icon-extlink" CssClasses="ui-state-error" />
-                    &nbsp;Original Report &bull;
+                    &nbsp;Original Report--%>
+                    <%--&bull;
                     <i:ButtonEx runat="server" Icon="Custom" CustomIconName="ui-icon-extlink" CssClasses="ui-state-highlight" />
-                    &nbsp;Legacy Report
+                    &nbsp;Legacy Report--%>
                 </div>
                 <div class="ui-widget-content" id="divQuicklinks">
         </HeaderTemplate>

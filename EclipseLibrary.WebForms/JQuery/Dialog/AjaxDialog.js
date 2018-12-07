@@ -1,4 +1,4 @@
-﻿/// <reference path="~/Doc/jquery-1.3.2-vsdoc.js" />
+﻿
 /*
 Usage: $('#mydlg').dialog(...).ajaxDialog(options);
 
